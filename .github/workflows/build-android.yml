@@ -1,0 +1,65 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: r0adkll/setup-android@v2
+        with:
+          api-level: 33
+          components: |
+            platform-tools
+            build-tools;33.0.2
+            platforms;android-33
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Export Next.js static site
+        run: npm run export
+
+      - name: Ensure Capacitor CLI
+        run: npm install @capacitor/cli@latest @capacitor/core@latest --no-save
+
+      - name: Add Android platform if missing
+        run: |
+          if [ ! -d android ]; then
+            npx cap add android
+          fi
+
+      - name: Capacitor sync
+        run: npx cap sync android
+
+      - name: Build Android (release)
+        working-directory: android
+        run: |
+          chmod +x ./gradlew || true
+          ./gradlew assembleRelease
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: teleio-apk
+          path: android/app/build/outputs/apk/release/*.apk
