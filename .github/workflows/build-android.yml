@@ -57,9 +57,40 @@ jobs:
         run: |
           chmod +x ./gradlew || true
           ./gradlew assembleRelease
+      - name: Decode keystore (from secret)
+        if: ${{ secrets.ANDROID_KEYSTORE != '' }}
+        run: |
+          echo "Decoding keystore"
+          mkdir -p android
+          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > android/keystore.jks
+
+      - name: Align APK (zipalign)
+        run: |
+          APK=android/app/build/outputs/apk/release/app-release-unsigned.apk
+          if [ ! -f "$APK" ]; then APK=android/app/build/outputs/apk/release/app-release.apk; fi
+          echo "Using APK: $APK"
+          ZIPALIGN="$ANDROID_HOME/build-tools/33.0.2/zipalign"
+          $ZIPALIGN -v -p 4 "$APK" android/app/build/outputs/apk/release/app-release-aligned.apk
+
+      - name: Sign APK (apksigner)
+        if: ${{ secrets.ANDROID_KEYSTORE != '' }}
+        run: |
+          APKSIGNER="$ANDROID_HOME/build-tools/33.0.2/apksigner"
+          set -e
+          IN=android/app/build/outputs/apk/release/app-release-aligned.apk
+          OUT=android/app/build/outputs/apk/release/app-release-signed.apk
+          echo "Signing $IN -> $OUT"
+          $APKSIGNER sign \
+            --ks android/keystore.jks \
+            --ks-key-alias "${{ secrets.KEY_ALIAS }}" \
+            --ks-pass pass:"${{ secrets.STORE_PASSWORD }}" \
+            --key-pass pass:"${{ secrets.KEY_PASSWORD }}" \
+            --out "$OUT" "$IN"
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: teleio-apk
-          path: android/app/build/outputs/apk/release/*.apk
+          path: |
+            android/app/build/outputs/apk/release/app-release-signed.apk
+            android/app/build/outputs/apk/release/*.apk
