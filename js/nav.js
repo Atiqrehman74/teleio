@@ -54,7 +54,12 @@
     .btn-signin:hover{color:var(--primary);background:#F5F3FF;}
     .btn-instant{padding:8px 18px;background:var(--accent);color:#1a2e05;text-decoration:none;font-size:13.5px;font-weight:700;border-radius:var(--radius-sm);transition:all .18s;white-space:nowrap;}
     .btn-instant:hover{background:var(--accent-dark);}
-    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:none;margin-left:auto;position:relative;z-index:1100;}
+    .nav-mobile-btns{display:none;align-items:center;gap:6px;margin-left:auto;margin-right:6px;}
+    @media(max-width:768px){.nav-mobile-btns{display:flex;}}
+    .nmb-partner{display:flex;align-items:center;gap:4px;padding:5px 10px;background:#F0FDF4;border:1.5px solid #A7F3D0;border-radius:20px;color:#059669;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;}
+    .nmb-signin{display:flex;align-items:center;gap:4px;padding:5px 10px;color:var(--text-medium);font-size:12px;font-weight:500;text-decoration:none;white-space:nowrap;border:1.5px solid var(--border);border-radius:20px;}
+    .nmb-signin:hover,.nmb-partner:hover{opacity:.85;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:none;position:relative;z-index:1100;}
     .hamburger span{display:block;width:22px;height:2px;background:var(--text-dark);border-radius:2px;transition:all .2s;}
     .hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
     .hamburger.active span:nth-child(2){opacity:0;}
@@ -249,6 +254,15 @@
            </a>`
       }
       <a href="${base}pages/instant-visa.html" class="btn-instant">&#x26A1; <span data-i18n="i">Instant Visa</span></a>
+    </div>
+
+    <!-- Mobile-only quick actions (between logo and hamburger) -->
+    <div class="nav-mobile-btns">
+      <a href="${base}pages/partner-program.html" class="nmb-partner">&#x1F91D; Partner</a>
+      ${_user
+        ? `<a href="${base}pages/dashboard.html" class="nmb-signin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${_user.firstName}</a>`
+        : `<a href="${base}pages/signin.html" class="nmb-signin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Sign In</a>`
+      }
     </div>
 
     <button class="hamburger" id="hamburger" aria-label="Menu">
