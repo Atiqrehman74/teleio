@@ -20,7 +20,7 @@ module.exports = function handler(req, res) {
   }
 
   var payload = JSON.stringify({
-    model: 'llama3-8b-8192',
+    model: 'llama-3.1-8b-instant',
     messages: messages,
     max_tokens: 200,
     temperature: 0.75
