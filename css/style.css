@@ -1613,7 +1613,7 @@ footer {
   .iv-info-val { font-size: 10px; white-space: nowrap; letter-spacing: 0; }
   .iv-info-label { font-size: 7px; }
   .iv-card-info { padding: 7px 6px 9px; }
-  .iv-card-name-layer { bottom: 46px !important; }
+  .iv-card-name-layer { bottom: 68px !important; }
   .country-modal-body { grid-template-columns: 1fr; }
   .country-modal-title { font-size: 20px; }
   .iv-calendar { min-width: 300px; }
