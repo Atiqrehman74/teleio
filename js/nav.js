@@ -319,21 +319,7 @@
 
   document.body.insertAdjacentHTML('afterbegin', nav);
 
-  /* ── Wire hamburger toggle ── */
-  document.addEventListener('click', function(e) {
-    const btn = e.target.closest('#hamburger');
-    const menu = document.getElementById('mobileMenu');
-    if (btn && menu) {
-      btn.classList.toggle('active');
-      menu.classList.toggle('open');
-      return;
-    }
-    /* close menu when clicking outside */
-    if (menu && menu.classList.contains('open') && !e.target.closest('.mobile-menu')) {
-      document.getElementById('hamburger')?.classList.remove('active');
-      menu.classList.remove('open');
-    }
-  });
+  /* hamburger toggle handled by main.js */
 
   /* ── Dark mode ── */
   (function() {

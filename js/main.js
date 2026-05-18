@@ -21,6 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = '';
       });
     });
+    // Close menu when clicking outside
+    document.addEventListener('click', e => {
+      if (mobileMenu.classList.contains('open') &&
+          !e.target.closest('#mobileMenu') &&
+          !e.target.closest('#hamburger')) {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
   }
 
   // Close dropdowns when clicking outside
