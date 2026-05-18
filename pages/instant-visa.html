@@ -1,15 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Instant Visa — 70 Countries - Teleio Tourism</title>
+  <title>Instant Visa â€” 70 Countries - Teleio Tourism</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
-  <link rel="shortcut icon" href="../images/favicon.svg">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="shortcut icon" href="../images/favicon.png">
   <style>
-    /* ── PAYMENT MODAL ── */
+    /* â”€â”€ PAYMENT MODAL â”€â”€ */
     #payModal{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(8px);z-index:2500;display:none;align-items:center;justify-content:center;padding:20px}
     #payModal.open{display:flex}
     .pm-box{background:#fff;border-radius:20px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);animation:pmIn .35s cubic-bezier(.34,1.56,.64,1)}
@@ -56,7 +56,7 @@
     .pm-s-ref{background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:9px;padding:10px 16px;font-size:13px;font-weight:700;color:#4F46E5;font-family:monospace;letter-spacing:.1em;display:inline-block;margin-bottom:20px}
     .pm-s-close{padding:12px 28px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
 
-    /* ── MOBILE RESPONSIVE HEADER ── */
+    /* â”€â”€ MOBILE RESPONSIVE HEADER â”€â”€ */
     @media (max-width:768px){
       .iv-header-band{padding:10px 14px!important}
       .iv-header-row{flex-direction:column!important;align-items:stretch!important;gap:8px!important}
@@ -93,7 +93,7 @@
           <div class="iv-filter-bar" id="filterBar">
             <!-- Delivery -->
             <div class="iv-filter" id="f-delivery" onclick="toggleDropdown('dd-delivery','f-delivery')">
-              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#FF6B35,#F59E0B);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">⚡</div>
+              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#FF6B35,#F59E0B);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">âš¡</div>
               <div style="min-width:0">
                 <div class="iv-filter-label">Visa delivery:</div>
                 <div class="iv-filter-val"><span id="lbl-delivery">Any Time</span> <span class="iv-chevron">&#x25BE;</span></div>
@@ -101,15 +101,15 @@
               <div class="iv-dropdown" id="dd-delivery">
                 <div class="iv-dropdown-item selected" data-val="all" onclick="setFilter('delivery','all','Any Time',this)">Any Time <span class="iv-dropdown-count">70</span></div>
                 <div class="iv-dropdown-item" data-val="instant" onclick="setFilter('delivery','instant','Within 24 Hours',this)">Within 24 Hours <span class="iv-dropdown-count">22</span></div>
-                <div class="iv-dropdown-item" data-val="3-5" onclick="setFilter('delivery','3-5','3–5 Days',this)">3–5 Days <span class="iv-dropdown-count">24</span></div>
-                <div class="iv-dropdown-item" data-val="6-7" onclick="setFilter('delivery','6-7','6–7 Days',this)">6–7 Days <span class="iv-dropdown-count">2</span></div>
-                <div class="iv-dropdown-item" data-val="8-30" onclick="setFilter('delivery','8-30','8–30 Days',this)">8–30 Days <span class="iv-dropdown-count">22</span></div>
+                <div class="iv-dropdown-item" data-val="3-5" onclick="setFilter('delivery','3-5','3â€“5 Days',this)">3â€“5 Days <span class="iv-dropdown-count">24</span></div>
+                <div class="iv-dropdown-item" data-val="6-7" onclick="setFilter('delivery','6-7','6â€“7 Days',this)">6â€“7 Days <span class="iv-dropdown-count">2</span></div>
+                <div class="iv-dropdown-item" data-val="8-30" onclick="setFilter('delivery','8-30','8â€“30 Days',this)">8â€“30 Days <span class="iv-dropdown-count">22</span></div>
               </div>
             </div>
             <div class="iv-divider"></div>
             <!-- Type -->
             <div class="iv-filter" id="f-type" onclick="toggleDropdown('dd-type','f-type')">
-              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#3B82F6,#60A5FA);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">🛂</div>
+              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#3B82F6,#60A5FA);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">ðŸ›‚</div>
               <div style="min-width:0">
                 <div class="iv-filter-label">Type:</div>
                 <div class="iv-filter-val"><span id="lbl-type">All Visa Types</span> <span class="iv-chevron">&#x25BE;</span></div>
@@ -125,7 +125,7 @@
             <div class="iv-divider"></div>
             <!-- Documents -->
             <div class="iv-filter" id="f-docs" onclick="toggleDropdown('dd-docs','f-docs')">
-              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#8B8FA8,#A5A8C0);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">📄</div>
+              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#8B8FA8,#A5A8C0);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">ðŸ“„</div>
               <div style="min-width:0">
                 <div class="iv-filter-label">Documents:</div>
                 <div class="iv-filter-val"><span id="lbl-docs">Any Documents</span> <span class="iv-chevron">&#x25BE;</span></div>
@@ -141,7 +141,7 @@
             <div class="iv-divider"></div>
             <!-- Holidays -->
             <div class="iv-filter" id="f-holidays" onclick="toggleDropdown('dd-holidays','f-holidays')">
-              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#6366F1,#818CF8);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">📅</div>
+              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#6366F1,#818CF8);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">ðŸ“…</div>
               <div style="min-width:0">
                 <div class="iv-filter-label">Holidays:</div>
                 <div class="iv-filter-val"><span id="lbl-holidays">Select Dates</span> <span class="iv-chevron">&#x25BE;</span></div>
@@ -150,7 +150,7 @@
                 <div class="iv-cal-header">Check upcoming holidays and plan your<br>trips around long weekends.</div>
                 <div class="iv-cal-upcoming">
                   <div class="up-label">&#x2726; UPCOMING &#x2726;</div>
-                  <div style="font-size:14px">Long weekend on <strong>26–28th May</strong></div>
+                  <div style="font-size:14px">Long weekend on <strong>26â€“28th May</strong></div>
                   <div style="font-size:12px;color:#9CA3AF;margin-top:2px">Arafat (Hajj) Day, 26 May</div>
                 </div>
                 <div class="iv-cal-month">
@@ -187,11 +187,11 @@
       <div style="font-size:15px;color:var(--text-muted)">Showing <strong id="resultCount" style="color:var(--text-dark)">70</strong> countries</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('all')">All</button>
-        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Europe')">🌍 Europe</button>
-        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Asia')">🌏 Asia</button>
-        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Americas')">🌎 Americas</button>
-        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Middle East')">🕌 Middle East</button>
-        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Africa')">🌍 Africa</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Europe')">ðŸŒ Europe</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Asia')">ðŸŒ Asia</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Americas')">ðŸŒŽ Americas</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Middle East')">ðŸ•Œ Middle East</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Africa')">ðŸŒ Africa</button>
       </div>
     </div>
   </div>
@@ -212,7 +212,7 @@
       <div class="country-modal-overlay"></div>
       <div class="country-modal-guarantee" id="modalGuarantee">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Visa Guaranteed on <span id="modalGuaranteeDate">—</span>
+        Visa Guaranteed on <span id="modalGuaranteeDate">â€”</span>
       </div>
       <div class="country-modal-title" id="modalTitle">Country Visa</div>
     </div>
@@ -231,7 +231,7 @@
         <div class="cm-appt-box">
           <div class="cm-appt-date">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span id="modalApptDate">—</span>
+            <span id="modalApptDate">â€”</span>
           </div>
           <div class="cm-appt-link" onclick="document.getElementById('countryModal').classList.remove('open')">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -243,19 +243,19 @@
         <div class="cm-sidebar">
           <div class="cm-sidebar-guarantee" id="modalSideGuarantee">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Visa Guaranteed on —
+            Visa Guaranteed on â€”
           </div>
           <div class="cm-sidebar-fee">
             <span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               Processing Fee
             </span>
-            <strong id="modalFee">—</strong>
+            <strong id="modalFee">â€”</strong>
           </div>
           <button onclick="openPaymentModal(_currentCountry)" class="btn btn-primary btn-full btn-lg" style="justify-content:center;border-radius:50px;border:none;cursor:pointer;font-family:inherit">Start Application</button>
           <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:13px;color:var(--text-muted)">
             <span><strong style="color:var(--text-dark)">Have Queries?</strong><br>Documents, process, price, etc.</span>
-            <div style="width:36px;height:36px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer">💬</div>
+            <div style="width:36px;height:36px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer">ðŸ’¬</div>
           </div>
         </div>
       </div>
@@ -274,8 +274,8 @@
     <div class="pm-summary">
       <div class="pm-flag-wrap" id="pmFlagWrap"><img id="pmFlag" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
       <div>
-        <div class="pm-country" id="pmCountry">—</div>
-        <div class="pm-meta" id="pmMeta">—</div>
+        <div class="pm-country" id="pmCountry">â€”</div>
+        <div class="pm-meta" id="pmMeta">â€”</div>
       </div>
       <div class="pm-price">
         <div class="pm-price-amt" id="pmAmt">AED 0</div>
@@ -309,12 +309,12 @@
           </div>
           <div class="pm-fgroup">
             <label>CVC</label>
-            <input type="text" id="pmCardCvc" placeholder="•••" maxlength="4" autocomplete="cc-csc" inputmode="numeric">
+            <input type="text" id="pmCardCvc" placeholder="â€¢â€¢â€¢" maxlength="4" autocomplete="cc-csc" inputmode="numeric">
           </div>
         </div>
         <button type="submit" class="pm-pay-btn" id="pmPayBtn">
           <div class="pm-spinner"></div>
-          <span class="pm-btn-text" id="pmBtnLabel">Pay →</span>
+          <span class="pm-btn-text" id="pmBtnLabel">Pay â†’</span>
         </button>
       </form>
       <a href="payment.html" class="pm-full-link" id="pmFullLink" target="_blank">
@@ -322,7 +322,7 @@
       </a>
       <div class="pm-secure">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Secured by Stripe · SSL Encrypted
+        Secured by Stripe Â· SSL Encrypted
       </div>
     </div>
 
@@ -341,90 +341,90 @@
 
 <script src="../js/main.js"></script>
 <script>
-// ── COUNTRY DATA ──────────────────────────────────────────────────────────────
+// â”€â”€ COUNTRY DATA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const COUNTRIES = [
   // Americas
-  {name:'United States',flag:'🇺🇸',iso:'us',img:'1485738422979-f5c462d49f74',type:'sticker',valid:'10 Years',fee:700,delivery:'8-30',docs:'passport-bank',bg:['#0D1B2A','#1B3A60'],date:'Sep 15, 2026',region:'Americas',entry:'Multiple',stay:'180 Days'},
-  {name:'Canada',flag:'🇨🇦',iso:'ca',img:'1517935706615-2717063c2225',type:'sticker',valid:'10 Years',fee:800,delivery:'8-30',docs:'passport-bank',bg:['#5A1010','#8B1A1A'],date:'Oct 1, 2026',region:'Americas',entry:'Multiple',stay:'180 Days'},
-  {name:'Mexico',flag:'🇲🇽',iso:'mx',img:'1518638150340-f706e86654de',type:'sticker',valid:'180 Days',fee:275,delivery:'8-30',docs:'passport-emirates',bg:['#0A3D2B','#1A6B4A'],date:'May 27, 2026',region:'Americas',entry:'Single',stay:'180 Days'},
-  {name:'Brazil',flag:'🇧🇷',iso:'br',img:'1516306580123-e6e52b1b7b5f',type:'sticker',valid:'90 Days',fee:400,delivery:'8-30',docs:'passport-bank',bg:['#0A3D0A','#1A5A1A'],date:'Aug 10, 2026',region:'Americas',entry:'Single',stay:'90 Days'},
-  {name:'Argentina',flag:'🇦🇷',iso:'ar',img:'1476231682828-37e571bc172f',type:'free',valid:'90 Days',fee:0,delivery:'instant',docs:'passport',bg:['#1A2744','#2A4A8A'],date:'May 15, 2026',region:'Americas',entry:'Multiple',stay:'90 Days'},
-  {name:'Cuba',flag:'🇨🇺',iso:'cu',img:'1558618666-fcd25c85cd64',type:'on-arrival',valid:'30 Days',fee:100,delivery:'instant',docs:'passport',bg:['#1A0A2E','#2E1A5A'],date:'May 15, 2026',region:'Americas',entry:'Single',stay:'30 Days'},
-  {name:'Peru',flag:'🇵🇪',iso:'pe',img:'1526392060635-9d6019884377',type:'sticker',valid:'90 Days',fee:300,delivery:'8-30',docs:'passport-bank',bg:['#3A1A0A','#6A3010'],date:'Jul 20, 2026',region:'Americas',entry:'Single',stay:'90 Days'},
-  {name:'Colombia',flag:'🇨🇴',iso:'co',img:null,type:'e-visa',valid:'90 Days',fee:200,delivery:'3-5',docs:'passport',bg:['#0A2A1A','#1A4A2A'],date:'Jun 1, 2026',region:'Americas',entry:'Single',stay:'90 Days'},
-  {name:'Chile',flag:'🇨🇱',iso:'cl',img:'1503614472-8c253e3feba0',type:'free',valid:'90 Days',fee:0,delivery:'instant',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'May 15, 2026',region:'Americas',entry:'Multiple',stay:'90 Days'},
+  {name:'United States',flag:'ðŸ‡ºðŸ‡¸',iso:'us',img:'1485738422979-f5c462d49f74',type:'sticker',valid:'10 Years',fee:700,delivery:'8-30',docs:'passport-bank',bg:['#0D1B2A','#1B3A60'],date:'Sep 15, 2026',region:'Americas',entry:'Multiple',stay:'180 Days'},
+  {name:'Canada',flag:'ðŸ‡¨ðŸ‡¦',iso:'ca',img:'1517935706615-2717063c2225',type:'sticker',valid:'10 Years',fee:800,delivery:'8-30',docs:'passport-bank',bg:['#5A1010','#8B1A1A'],date:'Oct 1, 2026',region:'Americas',entry:'Multiple',stay:'180 Days'},
+  {name:'Mexico',flag:'ðŸ‡²ðŸ‡½',iso:'mx',img:'1518638150340-f706e86654de',type:'sticker',valid:'180 Days',fee:275,delivery:'8-30',docs:'passport-emirates',bg:['#0A3D2B','#1A6B4A'],date:'May 27, 2026',region:'Americas',entry:'Single',stay:'180 Days'},
+  {name:'Brazil',flag:'ðŸ‡§ðŸ‡·',iso:'br',img:'1516306580123-e6e52b1b7b5f',type:'sticker',valid:'90 Days',fee:400,delivery:'8-30',docs:'passport-bank',bg:['#0A3D0A','#1A5A1A'],date:'Aug 10, 2026',region:'Americas',entry:'Single',stay:'90 Days'},
+  {name:'Argentina',flag:'ðŸ‡¦ðŸ‡·',iso:'ar',img:'1476231682828-37e571bc172f',type:'free',valid:'90 Days',fee:0,delivery:'instant',docs:'passport',bg:['#1A2744','#2A4A8A'],date:'May 15, 2026',region:'Americas',entry:'Multiple',stay:'90 Days'},
+  {name:'Cuba',flag:'ðŸ‡¨ðŸ‡º',iso:'cu',img:'1558618666-fcd25c85cd64',type:'on-arrival',valid:'30 Days',fee:100,delivery:'instant',docs:'passport',bg:['#1A0A2E','#2E1A5A'],date:'May 15, 2026',region:'Americas',entry:'Single',stay:'30 Days'},
+  {name:'Peru',flag:'ðŸ‡µðŸ‡ª',iso:'pe',img:'1526392060635-9d6019884377',type:'sticker',valid:'90 Days',fee:300,delivery:'8-30',docs:'passport-bank',bg:['#3A1A0A','#6A3010'],date:'Jul 20, 2026',region:'Americas',entry:'Single',stay:'90 Days'},
+  {name:'Colombia',flag:'ðŸ‡¨ðŸ‡´',iso:'co',img:null,type:'e-visa',valid:'90 Days',fee:200,delivery:'3-5',docs:'passport',bg:['#0A2A1A','#1A4A2A'],date:'Jun 1, 2026',region:'Americas',entry:'Single',stay:'90 Days'},
+  {name:'Chile',flag:'ðŸ‡¨ðŸ‡±',iso:'cl',img:'1503614472-8c253e3feba0',type:'free',valid:'90 Days',fee:0,delivery:'instant',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'May 15, 2026',region:'Americas',entry:'Multiple',stay:'90 Days'},
   // Europe
-  {name:'Schengen',flag:'🇪🇺',iso:'eu',img:'1467269204594-9661b134dd2b',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0D1B4A','#1A2F7A'],date:'Jun 11, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'United Kingdom',flag:'🇬🇧',iso:'gb',img:'1513635269975-59663e0ac1ad',type:'sticker',valid:'6 Months',fee:650,delivery:'8-30',docs:'passport-bank',bg:['#0A0A2A','#1A1A4A'],date:'Jul 3, 2026',region:'Europe',entry:'Multiple',stay:'6 Months'},
-  {name:'Switzerland',flag:'🇨🇭',iso:'ch',img:'1506905925346-21bda4d32df4',type:'sticker',valid:'90 Days',fee:900,delivery:'8-30',docs:'passport-bank',bg:['#3A0A0A','#6A1A1A'],date:'Jun 15, 2026',region:'Europe',entry:'Single',stay:'90 Days'},
-  {name:'Norway',flag:'🇳🇴',iso:'no',img:'1531366936337-7c912a4589a7',type:'sticker',valid:'90 Days',fee:900,delivery:'8-30',docs:'passport-bank',bg:['#1A1A3A','#2A2A5A'],date:'Jun 20, 2026',region:'Europe',entry:'Single',stay:'90 Days'},
-  {name:'Russia',flag:'🇷🇺',iso:'ru',img:'1513519245088-0e12902e5a38',type:'sticker',valid:'30 Days',fee:250,delivery:'8-30',docs:'passport-bank',bg:['#1A0A0A','#4A1010'],date:'Aug 5, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
-  {name:'Georgia',flag:'🇬🇪',iso:'ge',img:null,type:'free',valid:'365 Days',fee:0,delivery:'instant',docs:'passport',bg:['#2A1A0A','#5A3A1A'],date:'May 15, 2026',region:'Europe',entry:'Multiple',stay:'365 Days'},
-  {name:'Ukraine',flag:'🇺🇦',iso:'ua',img:null,type:'e-visa',valid:'30 Days',fee:150,delivery:'3-5',docs:'passport',bg:['#0A1A3A','#1A3A7A'],date:'Jun 5, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
-  {name:'Azerbaijan',flag:'🇦🇿',iso:'az',img:null,type:'e-visa',valid:'30 Days',fee:75,delivery:'instant',docs:'passport',bg:['#0A2A1A','#1A5A3A'],date:'May 15, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
-  {name:'Armenia',flag:'🇦🇲',iso:'am',img:null,type:'e-visa',valid:'21 Days',fee:60,delivery:'instant',docs:'passport',bg:['#3A0A0A','#7A1A1A'],date:'May 16, 2026',region:'Europe',entry:'Single',stay:'21 Days'},
-  {name:'Belarus',flag:'🇧🇾',iso:'by',img:null,type:'e-visa',valid:'30 Days',fee:120,delivery:'3-5',docs:'passport',bg:['#0A1A3A','#1A2A5A'],date:'Jun 3, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
-  {name:'Italy',flag:'🇮🇹',iso:'it',img:'1552832230-c0197dd311b5',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A0A3A','#1A1A6A'],date:'Jun 15, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'France',flag:'🇫🇷',iso:'fr',img:'1502602898657-3e91760cbb34',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A0A2A','#1A1A4A'],date:'Jun 18, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'Germany',flag:'🇩🇪',iso:'de',img:'1467269204594-9661b134dd2b',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#101010','#2A2A2A'],date:'Jun 20, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'Spain',flag:'🇪🇸',iso:'es',img:'1539037116277-4db20889f2d4',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1A1A'],date:'Jun 22, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'Greece',flag:'🇬🇷',iso:'gr',img:'1533105079780-92b9be482077',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A1A3A','#1A2A5A'],date:'Jun 25, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'Portugal',flag:'🇵🇹',iso:'pt',img:'1555252333-9f8e92e65df9',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#1A0A2A','#3A1A5A'],date:'Jun 28, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'Netherlands',flag:'🇳🇱',iso:'nl',img:'1512470876302-972faa2aa9a4',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#1A0A0A','#3A1A1A'],date:'Jul 2, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'Poland',flag:'🇵🇱',iso:'pl',img:'1519197924294-4ba991a11128',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1515'],date:'Jul 5, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'Czech Republic',flag:'🇨🇿',iso:'cz',img:'1562883676-8036536622e0',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A0A2A','#1A1A5A'],date:'Jul 8, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
-  {name:'Hungary',flag:'🇭🇺',iso:'hu',img:'1543503890-e81d9e05a52c',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1A1A'],date:'Jul 10, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Schengen',flag:'ðŸ‡ªðŸ‡º',iso:'eu',img:'1467269204594-9661b134dd2b',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0D1B4A','#1A2F7A'],date:'Jun 11, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'United Kingdom',flag:'ðŸ‡¬ðŸ‡§',iso:'gb',img:'1513635269975-59663e0ac1ad',type:'sticker',valid:'6 Months',fee:650,delivery:'8-30',docs:'passport-bank',bg:['#0A0A2A','#1A1A4A'],date:'Jul 3, 2026',region:'Europe',entry:'Multiple',stay:'6 Months'},
+  {name:'Switzerland',flag:'ðŸ‡¨ðŸ‡­',iso:'ch',img:'1506905925346-21bda4d32df4',type:'sticker',valid:'90 Days',fee:900,delivery:'8-30',docs:'passport-bank',bg:['#3A0A0A','#6A1A1A'],date:'Jun 15, 2026',region:'Europe',entry:'Single',stay:'90 Days'},
+  {name:'Norway',flag:'ðŸ‡³ðŸ‡´',iso:'no',img:'1531366936337-7c912a4589a7',type:'sticker',valid:'90 Days',fee:900,delivery:'8-30',docs:'passport-bank',bg:['#1A1A3A','#2A2A5A'],date:'Jun 20, 2026',region:'Europe',entry:'Single',stay:'90 Days'},
+  {name:'Russia',flag:'ðŸ‡·ðŸ‡º',iso:'ru',img:'1513519245088-0e12902e5a38',type:'sticker',valid:'30 Days',fee:250,delivery:'8-30',docs:'passport-bank',bg:['#1A0A0A','#4A1010'],date:'Aug 5, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
+  {name:'Georgia',flag:'ðŸ‡¬ðŸ‡ª',iso:'ge',img:null,type:'free',valid:'365 Days',fee:0,delivery:'instant',docs:'passport',bg:['#2A1A0A','#5A3A1A'],date:'May 15, 2026',region:'Europe',entry:'Multiple',stay:'365 Days'},
+  {name:'Ukraine',flag:'ðŸ‡ºðŸ‡¦',iso:'ua',img:null,type:'e-visa',valid:'30 Days',fee:150,delivery:'3-5',docs:'passport',bg:['#0A1A3A','#1A3A7A'],date:'Jun 5, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
+  {name:'Azerbaijan',flag:'ðŸ‡¦ðŸ‡¿',iso:'az',img:null,type:'e-visa',valid:'30 Days',fee:75,delivery:'instant',docs:'passport',bg:['#0A2A1A','#1A5A3A'],date:'May 15, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
+  {name:'Armenia',flag:'ðŸ‡¦ðŸ‡²',iso:'am',img:null,type:'e-visa',valid:'21 Days',fee:60,delivery:'instant',docs:'passport',bg:['#3A0A0A','#7A1A1A'],date:'May 16, 2026',region:'Europe',entry:'Single',stay:'21 Days'},
+  {name:'Belarus',flag:'ðŸ‡§ðŸ‡¾',iso:'by',img:null,type:'e-visa',valid:'30 Days',fee:120,delivery:'3-5',docs:'passport',bg:['#0A1A3A','#1A2A5A'],date:'Jun 3, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
+  {name:'Italy',flag:'ðŸ‡®ðŸ‡¹',iso:'it',img:'1552832230-c0197dd311b5',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A0A3A','#1A1A6A'],date:'Jun 15, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'France',flag:'ðŸ‡«ðŸ‡·',iso:'fr',img:'1502602898657-3e91760cbb34',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A0A2A','#1A1A4A'],date:'Jun 18, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Germany',flag:'ðŸ‡©ðŸ‡ª',iso:'de',img:'1467269204594-9661b134dd2b',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#101010','#2A2A2A'],date:'Jun 20, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Spain',flag:'ðŸ‡ªðŸ‡¸',iso:'es',img:'1539037116277-4db20889f2d4',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1A1A'],date:'Jun 22, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Greece',flag:'ðŸ‡¬ðŸ‡·',iso:'gr',img:'1533105079780-92b9be482077',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A1A3A','#1A2A5A'],date:'Jun 25, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Portugal',flag:'ðŸ‡µðŸ‡¹',iso:'pt',img:'1555252333-9f8e92e65df9',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#1A0A2A','#3A1A5A'],date:'Jun 28, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Netherlands',flag:'ðŸ‡³ðŸ‡±',iso:'nl',img:'1512470876302-972faa2aa9a4',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#1A0A0A','#3A1A1A'],date:'Jul 2, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Poland',flag:'ðŸ‡µðŸ‡±',iso:'pl',img:'1519197924294-4ba991a11128',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1515'],date:'Jul 5, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Czech Republic',flag:'ðŸ‡¨ðŸ‡¿',iso:'cz',img:'1562883676-8036536622e0',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A0A2A','#1A1A5A'],date:'Jul 8, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Hungary',flag:'ðŸ‡­ðŸ‡º',iso:'hu',img:'1543503890-e81d9e05a52c',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1A1A'],date:'Jul 10, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
   // Middle East
-  {name:'Türkiye',flag:'🇹🇷',iso:'tr',img:'1524231757912-21f4fe3a7200',type:'e-visa',valid:'180 Days',fee:258,delivery:'instant',docs:'passport',bg:['#2A0A05','#5A2010'],date:'May 15, 2026',region:'Middle East',entry:'Multiple',stay:'180 Days'},
-  {name:'Saudi Arabia',flag:'🇸🇦',iso:'sa',img:'1586724237536-f6c3acdb4a13',type:'e-visa',valid:'90 Days',fee:300,delivery:'3-5',docs:'passport',bg:['#0A2A0A','#1A4A1A'],date:'Jun 1, 2026',region:'Middle East',entry:'Multiple',stay:'90 Days'},
-  {name:'Jordan',flag:'🇯🇴',iso:'jo',img:'1548199569-6a6d08cc44fc',type:'e-visa',valid:'30 Days',fee:110,delivery:'instant',docs:'passport',bg:['#3A1A0A','#7A3A1A'],date:'May 15, 2026',region:'Middle East',entry:'Single',stay:'30 Days'},
-  {name:'Egypt',flag:'🇪🇬',iso:'eg',img:'1568322445389-f64ac2515020',type:'e-visa',valid:'30 Days',fee:90,delivery:'3-5',docs:'passport',bg:['#3A2A0A','#6A4A10'],date:'Jun 2, 2026',region:'Middle East',entry:'Single',stay:'30 Days'},
-  {name:'Oman',flag:'🇴🇲',iso:'om',img:null,type:'e-visa',valid:'30 Days',fee:75,delivery:'instant',docs:'passport',bg:['#2A0A0A','#5A1A1A'],date:'May 15, 2026',region:'Middle East',entry:'Single',stay:'30 Days'},
-  {name:'Bahrain',flag:'🇧🇭',iso:'bh',img:null,type:'e-visa',valid:'14 Days',fee:60,delivery:'instant',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'May 15, 2026',region:'Middle East',entry:'Single',stay:'14 Days'},
-  {name:'Kuwait',flag:'🇰🇼',iso:'kw',img:null,type:'e-visa',valid:'90 Days',fee:110,delivery:'3-5',docs:'passport',bg:['#0A1A0A','#1A4A1A'],date:'Jun 5, 2026',region:'Middle East',entry:'Single',stay:'90 Days'},
-  {name:'Qatar',flag:'🇶🇦',iso:'qa',img:'1586704192751-dda7b5fac4ef',type:'free',valid:'30 Days',fee:0,delivery:'instant',docs:'passport',bg:['#2A0A1A','#5A1A3A'],date:'May 15, 2026',region:'Middle East',entry:'Multiple',stay:'30 Days'},
+  {name:'TÃ¼rkiye',flag:'ðŸ‡¹ðŸ‡·',iso:'tr',img:'1524231757912-21f4fe3a7200',type:'e-visa',valid:'180 Days',fee:258,delivery:'instant',docs:'passport',bg:['#2A0A05','#5A2010'],date:'May 15, 2026',region:'Middle East',entry:'Multiple',stay:'180 Days'},
+  {name:'Saudi Arabia',flag:'ðŸ‡¸ðŸ‡¦',iso:'sa',img:'1586724237536-f6c3acdb4a13',type:'e-visa',valid:'90 Days',fee:300,delivery:'3-5',docs:'passport',bg:['#0A2A0A','#1A4A1A'],date:'Jun 1, 2026',region:'Middle East',entry:'Multiple',stay:'90 Days'},
+  {name:'Jordan',flag:'ðŸ‡¯ðŸ‡´',iso:'jo',img:'1548199569-6a6d08cc44fc',type:'e-visa',valid:'30 Days',fee:110,delivery:'instant',docs:'passport',bg:['#3A1A0A','#7A3A1A'],date:'May 15, 2026',region:'Middle East',entry:'Single',stay:'30 Days'},
+  {name:'Egypt',flag:'ðŸ‡ªðŸ‡¬',iso:'eg',img:'1568322445389-f64ac2515020',type:'e-visa',valid:'30 Days',fee:90,delivery:'3-5',docs:'passport',bg:['#3A2A0A','#6A4A10'],date:'Jun 2, 2026',region:'Middle East',entry:'Single',stay:'30 Days'},
+  {name:'Oman',flag:'ðŸ‡´ðŸ‡²',iso:'om',img:null,type:'e-visa',valid:'30 Days',fee:75,delivery:'instant',docs:'passport',bg:['#2A0A0A','#5A1A1A'],date:'May 15, 2026',region:'Middle East',entry:'Single',stay:'30 Days'},
+  {name:'Bahrain',flag:'ðŸ‡§ðŸ‡­',iso:'bh',img:null,type:'e-visa',valid:'14 Days',fee:60,delivery:'instant',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'May 15, 2026',region:'Middle East',entry:'Single',stay:'14 Days'},
+  {name:'Kuwait',flag:'ðŸ‡°ðŸ‡¼',iso:'kw',img:null,type:'e-visa',valid:'90 Days',fee:110,delivery:'3-5',docs:'passport',bg:['#0A1A0A','#1A4A1A'],date:'Jun 5, 2026',region:'Middle East',entry:'Single',stay:'90 Days'},
+  {name:'Qatar',flag:'ðŸ‡¶ðŸ‡¦',iso:'qa',img:'1586704192751-dda7b5fac4ef',type:'free',valid:'30 Days',fee:0,delivery:'instant',docs:'passport',bg:['#2A0A1A','#5A1A3A'],date:'May 15, 2026',region:'Middle East',entry:'Multiple',stay:'30 Days'},
   // Asia
-  {name:'Malaysia',flag:'🇲🇾',iso:'my',img:'1596422846543-75c6fc197f07',type:'e-visa',valid:'6 Months',fee:133,delivery:'3-5',docs:'passport',bg:['#061A22','#0D3040'],date:'Jun 5, 2026',region:'Asia',entry:'Multiple',stay:'6 Months'},
-  {name:'Thailand',flag:'🇹🇭',iso:'th',img:'1528360983277-13d401cdc186',type:'e-visa',valid:'60 Days',fee:110,delivery:'instant',docs:'passport',bg:['#2A0A2A','#5A1A5A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'60 Days'},
-  {name:'Singapore',flag:'🇸🇬',iso:'sg',img:'1508964942454-1a56651d54ac',type:'e-visa',valid:'30 Days',fee:90,delivery:'instant',docs:'passport',bg:['#0A1A3A','#1A3A7A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Japan',flag:'🇯🇵',iso:'jp',img:'1540959733332-eab4deabeeaf',type:'sticker',valid:'90 Days',fee:350,delivery:'6-7',docs:'passport-bank',bg:['#2A0A0A','#6A1A1A'],date:'Jun 25, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
-  {name:'South Korea',flag:'🇰🇷',iso:'kr',img:'1557531365-e8b22d93e1ce',type:'e-visa',valid:'90 Days',fee:180,delivery:'6-7',docs:'passport',bg:['#0A1A2A','#1A2A5A'],date:'Jun 20, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
-  {name:'China',flag:'🇨🇳',iso:'cn',img:'1508804185872-173bbab25c3b',type:'sticker',valid:'30 Days',fee:350,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1515'],date:'Jul 10, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Vietnam',flag:'🇻🇳',iso:'vn',img:'1528181304800-259b08848526',type:'e-visa',valid:'90 Days',fee:80,delivery:'3-5',docs:'passport',bg:['#2A0A0A','#5A1A1A'],date:'Jun 1, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
-  {name:'Indonesia',flag:'🇮🇩',iso:'id',img:'1555400038-63f5ba517a73',type:'on-arrival',valid:'30 Days',fee:100,delivery:'instant',docs:'passport',bg:['#1A2A0A','#3A5A1A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Philippines',flag:'🇵🇭',iso:'ph',img:'1518516288185-38760965d621',type:'e-visa',valid:'30 Days',fee:90,delivery:'3-5',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'Jun 5, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Cambodia',flag:'🇰🇭',iso:'kh',img:'1528181304800-259b08848526',type:'e-visa',valid:'30 Days',fee:70,delivery:'3-5',docs:'passport',bg:['#2A1A0A','#5A3A1A'],date:'Jun 3, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Sri Lanka',flag:'🇱🇰',iso:'lk',img:null,type:'e-visa',valid:'30 Days',fee:75,delivery:'instant',docs:'passport',bg:['#0A2A0A','#1A5A1A'],date:'May 15, 2026',region:'Asia',entry:'Double',stay:'30 Days'},
-  {name:'Nepal',flag:'🇳🇵',iso:'np',img:'1533130061792-64b345e4a6ad',type:'on-arrival',valid:'90 Days',fee:60,delivery:'instant',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
-  {name:'Maldives',flag:'🇲🇻',iso:'mv',img:'1573843981267-be1999ff37cd',type:'free',valid:'30 Days',fee:0,delivery:'instant',docs:'passport',bg:['#0A2A3A','#0A4A5A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'India',flag:'🇮🇳',iso:'in',img:'1564507592333-c60657eea523',type:'e-visa',valid:'60 Days',fee:150,delivery:'3-5',docs:'passport',bg:['#2A1A0A','#5A3A10'],date:'Jun 2, 2026',region:'Asia',entry:'Triple',stay:'60 Days'},
-  {name:'Bangladesh',flag:'🇧🇩',iso:'bd',img:null,type:'sticker',valid:'30 Days',fee:120,delivery:'8-30',docs:'passport',bg:['#0A2A0A','#1A5A1A'],date:'Jul 5, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Kazakhstan',flag:'🇰🇿',iso:'kz',img:null,type:'e-visa',valid:'30 Days',fee:80,delivery:'3-5',docs:'passport',bg:['#0A2A1A','#1A4A3A'],date:'Jun 3, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Uzbekistan',flag:'🇺🇿',iso:'uz',img:null,type:'e-visa',valid:'30 Days',fee:65,delivery:'3-5',docs:'passport',bg:['#1A2A0A','#3A5A1A'],date:'Jun 4, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Kyrgyzstan',flag:'🇰🇬',iso:'kg',img:null,type:'e-visa',valid:'30 Days',fee:50,delivery:'instant',docs:'passport',bg:['#0A1A2A','#1A3A5A'],date:'May 16, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Tajikistan',flag:'🇹🇯',iso:'tj',img:null,type:'e-visa',valid:'45 Days',fee:55,delivery:'instant',docs:'passport',bg:['#2A0A1A','#5A1A3A'],date:'May 16, 2026',region:'Asia',entry:'Single',stay:'45 Days'},
-  {name:'Myanmar',flag:'🇲🇲',iso:'mm',img:null,type:'e-visa',valid:'28 Days',fee:100,delivery:'3-5',docs:'passport',bg:['#2A1A0A','#5A3A1A'],date:'Jun 5, 2026',region:'Asia',entry:'Single',stay:'28 Days'},
-  {name:'Laos',flag:'🇱🇦',iso:'la',img:null,type:'e-visa',valid:'30 Days',fee:65,delivery:'3-5',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'Jun 4, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
-  {name:'Pakistan',flag:'🇵🇰',iso:'pk',img:null,type:'on-arrival',valid:'30 Days',fee:100,delivery:'instant',docs:'passport',bg:['#0A2A0A','#1A5A1A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Malaysia',flag:'ðŸ‡²ðŸ‡¾',iso:'my',img:'1596422846543-75c6fc197f07',type:'e-visa',valid:'6 Months',fee:133,delivery:'3-5',docs:'passport',bg:['#061A22','#0D3040'],date:'Jun 5, 2026',region:'Asia',entry:'Multiple',stay:'6 Months'},
+  {name:'Thailand',flag:'ðŸ‡¹ðŸ‡­',iso:'th',img:'1528360983277-13d401cdc186',type:'e-visa',valid:'60 Days',fee:110,delivery:'instant',docs:'passport',bg:['#2A0A2A','#5A1A5A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'60 Days'},
+  {name:'Singapore',flag:'ðŸ‡¸ðŸ‡¬',iso:'sg',img:'1508964942454-1a56651d54ac',type:'e-visa',valid:'30 Days',fee:90,delivery:'instant',docs:'passport',bg:['#0A1A3A','#1A3A7A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Japan',flag:'ðŸ‡¯ðŸ‡µ',iso:'jp',img:'1540959733332-eab4deabeeaf',type:'sticker',valid:'90 Days',fee:350,delivery:'6-7',docs:'passport-bank',bg:['#2A0A0A','#6A1A1A'],date:'Jun 25, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
+  {name:'South Korea',flag:'ðŸ‡°ðŸ‡·',iso:'kr',img:'1557531365-e8b22d93e1ce',type:'e-visa',valid:'90 Days',fee:180,delivery:'6-7',docs:'passport',bg:['#0A1A2A','#1A2A5A'],date:'Jun 20, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
+  {name:'China',flag:'ðŸ‡¨ðŸ‡³',iso:'cn',img:'1508804185872-173bbab25c3b',type:'sticker',valid:'30 Days',fee:350,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1515'],date:'Jul 10, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Vietnam',flag:'ðŸ‡»ðŸ‡³',iso:'vn',img:'1528181304800-259b08848526',type:'e-visa',valid:'90 Days',fee:80,delivery:'3-5',docs:'passport',bg:['#2A0A0A','#5A1A1A'],date:'Jun 1, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
+  {name:'Indonesia',flag:'ðŸ‡®ðŸ‡©',iso:'id',img:'1555400038-63f5ba517a73',type:'on-arrival',valid:'30 Days',fee:100,delivery:'instant',docs:'passport',bg:['#1A2A0A','#3A5A1A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Philippines',flag:'ðŸ‡µðŸ‡­',iso:'ph',img:'1518516288185-38760965d621',type:'e-visa',valid:'30 Days',fee:90,delivery:'3-5',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'Jun 5, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Cambodia',flag:'ðŸ‡°ðŸ‡­',iso:'kh',img:'1528181304800-259b08848526',type:'e-visa',valid:'30 Days',fee:70,delivery:'3-5',docs:'passport',bg:['#2A1A0A','#5A3A1A'],date:'Jun 3, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Sri Lanka',flag:'ðŸ‡±ðŸ‡°',iso:'lk',img:null,type:'e-visa',valid:'30 Days',fee:75,delivery:'instant',docs:'passport',bg:['#0A2A0A','#1A5A1A'],date:'May 15, 2026',region:'Asia',entry:'Double',stay:'30 Days'},
+  {name:'Nepal',flag:'ðŸ‡³ðŸ‡µ',iso:'np',img:'1533130061792-64b345e4a6ad',type:'on-arrival',valid:'90 Days',fee:60,delivery:'instant',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
+  {name:'Maldives',flag:'ðŸ‡²ðŸ‡»',iso:'mv',img:'1573843981267-be1999ff37cd',type:'free',valid:'30 Days',fee:0,delivery:'instant',docs:'passport',bg:['#0A2A3A','#0A4A5A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'India',flag:'ðŸ‡®ðŸ‡³',iso:'in',img:'1564507592333-c60657eea523',type:'e-visa',valid:'60 Days',fee:150,delivery:'3-5',docs:'passport',bg:['#2A1A0A','#5A3A10'],date:'Jun 2, 2026',region:'Asia',entry:'Triple',stay:'60 Days'},
+  {name:'Bangladesh',flag:'ðŸ‡§ðŸ‡©',iso:'bd',img:null,type:'sticker',valid:'30 Days',fee:120,delivery:'8-30',docs:'passport',bg:['#0A2A0A','#1A5A1A'],date:'Jul 5, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Kazakhstan',flag:'ðŸ‡°ðŸ‡¿',iso:'kz',img:null,type:'e-visa',valid:'30 Days',fee:80,delivery:'3-5',docs:'passport',bg:['#0A2A1A','#1A4A3A'],date:'Jun 3, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Uzbekistan',flag:'ðŸ‡ºðŸ‡¿',iso:'uz',img:null,type:'e-visa',valid:'30 Days',fee:65,delivery:'3-5',docs:'passport',bg:['#1A2A0A','#3A5A1A'],date:'Jun 4, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Kyrgyzstan',flag:'ðŸ‡°ðŸ‡¬',iso:'kg',img:null,type:'e-visa',valid:'30 Days',fee:50,delivery:'instant',docs:'passport',bg:['#0A1A2A','#1A3A5A'],date:'May 16, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Tajikistan',flag:'ðŸ‡¹ðŸ‡¯',iso:'tj',img:null,type:'e-visa',valid:'45 Days',fee:55,delivery:'instant',docs:'passport',bg:['#2A0A1A','#5A1A3A'],date:'May 16, 2026',region:'Asia',entry:'Single',stay:'45 Days'},
+  {name:'Myanmar',flag:'ðŸ‡²ðŸ‡²',iso:'mm',img:null,type:'e-visa',valid:'28 Days',fee:100,delivery:'3-5',docs:'passport',bg:['#2A1A0A','#5A3A1A'],date:'Jun 5, 2026',region:'Asia',entry:'Single',stay:'28 Days'},
+  {name:'Laos',flag:'ðŸ‡±ðŸ‡¦',iso:'la',img:null,type:'e-visa',valid:'30 Days',fee:65,delivery:'3-5',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'Jun 4, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Pakistan',flag:'ðŸ‡µðŸ‡°',iso:'pk',img:null,type:'on-arrival',valid:'30 Days',fee:100,delivery:'instant',docs:'passport',bg:['#0A2A0A','#1A5A1A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
   // Africa
-  {name:'Kenya',flag:'🇰🇪',iso:'ke',img:'1535941339539-591958e75c8d',type:'e-visa',valid:'90 Days',fee:150,delivery:'3-5',docs:'passport',bg:['#1A1A0A','#3A3A10'],date:'Jun 3, 2026',region:'Africa',entry:'Single',stay:'90 Days'},
-  {name:'Tanzania',flag:'🇹🇿',iso:'tz',img:'1516026672322-bc52d61a55d5',type:'e-visa',valid:'90 Days',fee:140,delivery:'3-5',docs:'passport',bg:['#1A0A0A','#3A1515'],date:'Jun 4, 2026',region:'Africa',entry:'Single',stay:'90 Days'},
-  {name:'Rwanda',flag:'🇷🇼',iso:'rw',img:null,type:'e-visa',valid:'30 Days',fee:80,delivery:'3-5',docs:'passport',bg:['#0A1A0A','#1A3A1A'],date:'Jun 5, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
-  {name:'Ethiopia',flag:'🇪🇹',iso:'et',img:null,type:'e-visa',valid:'30 Days',fee:90,delivery:'3-5',docs:'passport',bg:['#0A2A0A','#1A4A1A'],date:'Jun 5, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
-  {name:'Ghana',flag:'🇬🇭',iso:'gh',img:null,type:'sticker',valid:'30 Days',fee:200,delivery:'8-30',docs:'passport-bank',bg:['#2A1A0A','#5A3A10'],date:'Jul 10, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
-  {name:'Nigeria',flag:'🇳🇬',iso:'ng',img:null,type:'sticker',valid:'30 Days',fee:250,delivery:'8-30',docs:'passport-bank',bg:['#0A2A0A','#1A4A1A'],date:'Jul 15, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
-  {name:'South Africa',flag:'🇿🇦',iso:'za',img:'1516026672322-bc52d61a55d5',type:'sticker',valid:'30 Days',fee:200,delivery:'8-30',docs:'passport-bank',bg:['#0A1A0A','#1A3A1A'],date:'Jul 8, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
-  {name:'Morocco',flag:'🇲🇦',iso:'ma',img:'1539020140153-e479b8c22e70',type:'free',valid:'90 Days',fee:0,delivery:'instant',docs:'passport',bg:['#2A0A0A','#5A1A1A'],date:'May 15, 2026',region:'Africa',entry:'Multiple',stay:'90 Days'},
-  {name:'Uganda',flag:'🇺🇬',iso:'ug',img:null,type:'e-visa',valid:'90 Days',fee:110,delivery:'3-5',docs:'passport',bg:['#0A1A0A','#1A3A1A'],date:'Jun 7, 2026',region:'Africa',entry:'Single',stay:'90 Days'},
+  {name:'Kenya',flag:'ðŸ‡°ðŸ‡ª',iso:'ke',img:'1535941339539-591958e75c8d',type:'e-visa',valid:'90 Days',fee:150,delivery:'3-5',docs:'passport',bg:['#1A1A0A','#3A3A10'],date:'Jun 3, 2026',region:'Africa',entry:'Single',stay:'90 Days'},
+  {name:'Tanzania',flag:'ðŸ‡¹ðŸ‡¿',iso:'tz',img:'1516026672322-bc52d61a55d5',type:'e-visa',valid:'90 Days',fee:140,delivery:'3-5',docs:'passport',bg:['#1A0A0A','#3A1515'],date:'Jun 4, 2026',region:'Africa',entry:'Single',stay:'90 Days'},
+  {name:'Rwanda',flag:'ðŸ‡·ðŸ‡¼',iso:'rw',img:null,type:'e-visa',valid:'30 Days',fee:80,delivery:'3-5',docs:'passport',bg:['#0A1A0A','#1A3A1A'],date:'Jun 5, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'Ethiopia',flag:'ðŸ‡ªðŸ‡¹',iso:'et',img:null,type:'e-visa',valid:'30 Days',fee:90,delivery:'3-5',docs:'passport',bg:['#0A2A0A','#1A4A1A'],date:'Jun 5, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'Ghana',flag:'ðŸ‡¬ðŸ‡­',iso:'gh',img:null,type:'sticker',valid:'30 Days',fee:200,delivery:'8-30',docs:'passport-bank',bg:['#2A1A0A','#5A3A10'],date:'Jul 10, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'Nigeria',flag:'ðŸ‡³ðŸ‡¬',iso:'ng',img:null,type:'sticker',valid:'30 Days',fee:250,delivery:'8-30',docs:'passport-bank',bg:['#0A2A0A','#1A4A1A'],date:'Jul 15, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'South Africa',flag:'ðŸ‡¿ðŸ‡¦',iso:'za',img:'1516026672322-bc52d61a55d5',type:'sticker',valid:'30 Days',fee:200,delivery:'8-30',docs:'passport-bank',bg:['#0A1A0A','#1A3A1A'],date:'Jul 8, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'Morocco',flag:'ðŸ‡²ðŸ‡¦',iso:'ma',img:'1539020140153-e479b8c22e70',type:'free',valid:'90 Days',fee:0,delivery:'instant',docs:'passport',bg:['#2A0A0A','#5A1A1A'],date:'May 15, 2026',region:'Africa',entry:'Multiple',stay:'90 Days'},
+  {name:'Uganda',flag:'ðŸ‡ºðŸ‡¬',iso:'ug',img:null,type:'e-visa',valid:'90 Days',fee:110,delivery:'3-5',docs:'passport',bg:['#0A1A0A','#1A3A1A'],date:'Jun 7, 2026',region:'Africa',entry:'Single',stay:'90 Days'},
   // Oceania
-  {name:'Australia',flag:'🇦🇺',iso:'au',img:'1506374322094-6021fc3926f1',type:'e-visa',valid:'12 Months',fee:420,delivery:'3-5',docs:'passport',bg:['#1A1A0A','#3A3A10'],date:'Jun 10, 2026',region:'Oceania',entry:'Multiple',stay:'12 Months'},
-  {name:'New Zealand',flag:'🇳🇿',iso:'nz',img:'1507699622108-4be3abd695ad',type:'e-visa',valid:'12 Months',fee:150,delivery:'3-5',docs:'passport',bg:['#0A1A2A','#1A3A5A'],date:'Jun 8, 2026',region:'Oceania',entry:'Multiple',stay:'12 Months'},
+  {name:'Australia',flag:'ðŸ‡¦ðŸ‡º',iso:'au',img:'1506374322094-6021fc3926f1',type:'e-visa',valid:'12 Months',fee:420,delivery:'3-5',docs:'passport',bg:['#1A1A0A','#3A3A10'],date:'Jun 10, 2026',region:'Oceania',entry:'Multiple',stay:'12 Months'},
+  {name:'New Zealand',flag:'ðŸ‡³ðŸ‡¿',iso:'nz',img:'1507699622108-4be3abd695ad',type:'e-visa',valid:'12 Months',fee:150,delivery:'3-5',docs:'passport',bg:['#0A1A2A','#1A3A5A'],date:'Jun 8, 2026',region:'Oceania',entry:'Multiple',stay:'12 Months'},
 ];
 
-// ── FILTERS STATE ─────────────────────────────────────────────────────────────
+// â”€â”€ FILTERS STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const filters = { delivery: 'all', type: 'all', docs: 'all', region: 'all' };
 
-// ── RENDER CARDS ──────────────────────────────────────────────────────────────
+// â”€â”€ RENDER CARDS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function typeLabel(t) {
   return {
     'e-visa':'E-VISA','sticker':'STICKER','on-arrival':'ON ARRIVAL','free':'VISA-FREE'
@@ -473,7 +473,7 @@ function renderCards() {
   document.getElementById('resultCount').textContent = count;
 }
 
-// ── FILTER DROPDOWN ───────────────────────────────────────────────────────────
+// â”€â”€ FILTER DROPDOWN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function toggleDropdown(ddId, filterId) {
   const isOpen = document.getElementById(ddId).classList.contains('open');
   closeAllDropdowns();
@@ -506,7 +506,7 @@ document.addEventListener('click', e => {
   if (!e.target.closest('.iv-filter')) closeAllDropdowns();
 });
 
-// ── CALENDAR ──────────────────────────────────────────────────────────────────
+// â”€â”€ CALENDAR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let calYear = 2026, calMonth = 4; // May (0-indexed)
 const HOLIDAYS = [26, 27, 28]; // May holidays
 let selectedDay = null;
@@ -558,7 +558,7 @@ function applyCalendar() {
 }
 renderCalendar();
 
-// ── COUNTRY MODAL ─────────────────────────────────────────────────────────────
+// â”€â”€ COUNTRY MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let _currentCountry = null;
 function openCountryModal(c) {
   _currentCountry = c;
@@ -570,12 +570,12 @@ function openCountryModal(c) {
   document.getElementById('modalFee').textContent = feeStr;
   document.getElementById('modalApptDate').textContent = `${c.date} at 09:14 PM`;
   document.getElementById('modalInfoGrid').innerHTML = `
-    <div class="cmi-item"><div class="cmi-icon">🛂</div><div><div class="cmi-label">Type:</div><div class="cmi-val">${typeLabel(c.type)}</div></div></div>
-    <div class="cmi-item"><div class="cmi-icon">📅</div><div><div class="cmi-label">Length of Stay:</div><div class="cmi-val">${c.valid}</div></div></div>
-    <div class="cmi-item"><div class="cmi-icon">⏳</div><div><div class="cmi-label">Validity:</div><div class="cmi-val">${c.valid}</div></div></div>
-    <div class="cmi-item"><div class="cmi-icon">🚪</div><div><div class="cmi-label">Entry:</div><div class="cmi-val">${c.entry}</div></div></div>
-    <div class="cmi-item"><div class="cmi-icon">📄</div><div><div class="cmi-label">Region:</div><div class="cmi-val">${c.region}</div></div></div>
-    <div class="cmi-item"><div class="cmi-icon">💵</div><div><div class="cmi-label">Processing Fee:</div><div class="cmi-val">${feeStr}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">ðŸ›‚</div><div><div class="cmi-label">Type:</div><div class="cmi-val">${typeLabel(c.type)}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">ðŸ“…</div><div><div class="cmi-label">Length of Stay:</div><div class="cmi-val">${c.valid}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">â³</div><div><div class="cmi-label">Validity:</div><div class="cmi-val">${c.valid}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">ðŸšª</div><div><div class="cmi-label">Entry:</div><div class="cmi-val">${c.entry}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">ðŸ“„</div><div><div class="cmi-label">Region:</div><div class="cmi-val">${c.region}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">ðŸ’µ</div><div><div class="cmi-label">Processing Fee:</div><div class="cmi-val">${feeStr}</div></div></div>
   `;
   document.getElementById('countryModal').classList.add('open');
 }
@@ -583,7 +583,7 @@ document.getElementById('countryModal').addEventListener('click', function(e) {
   if (e.target === this) this.classList.remove('open');
 });
 
-// ── PAYMENT MODAL ──────────────────────────────────────────────────────────────
+// â”€â”€ PAYMENT MODAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function openPaymentModal(c) {
   document.getElementById('countryModal').classList.remove('open');
   const feeStr  = c.fee === 0 ? 'FREE' : `AED ${c.fee}`;
@@ -595,9 +595,9 @@ function openPaymentModal(c) {
   pmFlagEl.src = `https://flagcdn.com/w80/${c.iso}.png`;
   pmFlagEl.onerror = () => { document.getElementById('pmFlagWrap').innerHTML = `<span style="font-size:26px;line-height:32px;display:flex;align-items:center;justify-content:center;height:100%">${c.flag}</span>`; };
   document.getElementById('pmCountry').textContent = c.name;
-  document.getElementById('pmMeta').textContent = `${typeLabel(c.type)} · ${c.valid}`;
+  document.getElementById('pmMeta').textContent = `${typeLabel(c.type)} Â· ${c.valid}`;
   document.getElementById('pmAmt').textContent = `AED ${total}`;
-  document.getElementById('pmBtnLabel').textContent = `Pay AED ${total} →`;
+  document.getElementById('pmBtnLabel').textContent = `Pay AED ${total} â†’`;
   // build full checkout link
   const qs = new URLSearchParams({
     country: c.name, fee: c.fee, type: typeLabel(c.type),
@@ -674,7 +674,7 @@ document.getElementById('pmForm').addEventListener('submit', e => {
   }, 2000);
 });
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
+// â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 renderCards();
 </script>
 
