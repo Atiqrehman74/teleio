@@ -409,42 +409,35 @@
 
     /* ── AI API ── */
     getReply: function (text) {
-      var cfg = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.chatbot) ? APP_CONFIG.chatbot : null;
-      if (!cfg || !cfg.apiKey) return Promise.resolve(localResponse(text));
-
-      var endpoint = cfg.provider === 'groq'
-        ? 'https://api.groq.com/openai/v1/chat/completions'
-        : 'https://api.openai.com/v1/chat/completions';
+      var hist = this.history;
 
       /* keep last 8 turns for context */
       var msgs = [{ role: 'system', content: SYSTEM_PROMPT }]
-        .concat(this.history.slice(-8))
+        .concat(hist.slice(-8))
         .concat([{ role: 'user', content: text }]);
 
-      var key = cfg.apiKey;
-      var model = cfg.model || 'gpt-3.5-turbo';
-      var hist = this.history;
-
-      return fetch(endpoint, {
+      /* call the secure server-side proxy (Vercel /api/chat) */
+      return fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + key
-        },
-        body: JSON.stringify({ model: model, messages: msgs, max_tokens: 200, temperature: 0.75 })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: msgs })
       })
-      .then(function (res) { return res.json(); })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
       .then(function (data) {
-        var reply = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        var reply = data.choices && data.choices[0] &&
+                    data.choices[0].message && data.choices[0].message.content;
         if (reply) {
           hist.push({ role: 'user', content: text });
           hist.push({ role: 'assistant', content: reply.trim() });
           return reply.trim();
         }
-        return localResponse(text);
+        throw new Error('empty reply');
       })
       .catch(function (err) {
-        console.warn('[Aria] API error:', err.message);
+        console.warn('[Aria] /api/chat failed (' + err.message + ') — using keyword fallback');
         return localResponse(text);
       });
     },

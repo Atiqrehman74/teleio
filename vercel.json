@@ -2,6 +2,6 @@
   "version": 2,
   "framework": null,
   "outputDirectory": ".",
-  "installCommand": "",
+  "installCommand": "npm install",
   "buildCommand": ""
 }
