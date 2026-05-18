@@ -52,3 +52,6 @@ Notes
 - iOS requires a Mac with Xcode.
 - You can customize `capacitor.config.json` appId/appName.
 - For PWAs and better native integration, consider adding a service worker and manifest.
+ 
+<!-- CI trigger: commit to start Android workflow -->
+<!-- Trigger time: 2026-05-19 -->
