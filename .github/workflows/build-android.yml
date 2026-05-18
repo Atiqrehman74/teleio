@@ -25,6 +25,19 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Debug environment
+        run: |
+          echo "---- ENV ----"
+          echo "PATH=$PATH"
+          echo "HOME=$HOME"
+          echo "sdkmanager: $(command -v sdkmanager || echo 'not found')"
+          echo "java: $(command -v java || echo 'not found')"
+          java -version || true
+          node -v || true
+          ls -la $HOME || true
+          echo "---- END ENV ----"
+
+
       - name: Setup Android SDK
         run: |
           set -e
