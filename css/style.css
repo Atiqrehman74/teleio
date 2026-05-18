@@ -425,7 +425,7 @@ font[face] { font-family: inherit !important; }  /* GT wraps text in <font> tags
 .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ===== PAGE WRAPPER ===== */
-.page-wrapper { padding-top: 66px; }
+.page-wrapper { padding-top: 76px; }
 
 /* ===== BUTTONS ===== */
 .btn {

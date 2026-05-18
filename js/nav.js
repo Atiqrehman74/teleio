@@ -23,11 +23,11 @@
     :root{--primary:#4F46E5;--primary-dark:#4338CA;--secondary:#3B82F6;--accent:#84CC16;--accent-dark:#65A30D;--bg-light:#F0F0FF;--text-dark:#111827;--text-medium:#374151;--text-muted:#6B7280;--border:#E5E7EB;--white:#FFFFFF;--shadow-lg:0 10px 40px rgba(0,0,0,0.14);--radius:12px;--radius-sm:8px;--radius-lg:16px;}
     .top-accent{height:4px;background:linear-gradient(90deg,#84CC16,#A3E635,#65A30D);position:fixed;top:0;left:0;right:0;z-index:1100;}
     nav{position:fixed;top:4px;left:0;right:0;background:#fff;z-index:1000;border-bottom:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.05);}
-    .nav-container{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:62px;gap:8px;}
+    .nav-container{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:72px;gap:8px;}
     .nav-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;margin-right:16px;}
-    .nav-logo-img{height:48px;width:auto;display:block;object-fit:contain;transition:opacity .2s;}
+    .nav-logo-img{height:58px;width:auto;display:block;object-fit:contain;transition:opacity .2s;}
     .nav-logo:hover .nav-logo-img{opacity:.85;}
-    @media(max-width:768px){.nav-logo-img{height:36px;}}
+    @media(max-width:768px){.nav-logo-img{height:42px;}}
     body.dark-mode .nav-logo-img{filter:brightness(0) invert(1);}
     .nav-links{display:flex;align-items:center;gap:2px;flex:1;}
     .nav-item{position:relative;}
