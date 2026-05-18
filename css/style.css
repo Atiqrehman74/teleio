@@ -567,6 +567,43 @@ font[face] { font-family: inherit !important; }  /* GT wraps text in <font> tags
 
 .hero h1 .highlight { color: #002AD1; }
 
+/* ── Hero Travel Bar ── */
+.hero-travel-bar {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(15,15,30,0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50px;
+  padding: 6px 8px;
+  gap: 2px;
+  margin: 20px 0 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.htb-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border-radius: 40px;
+  color: rgba(255,255,255,0.78);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all .18s;
+}
+.htb-item:hover { color: #fff; background: rgba(255,255,255,0.12); }
+.htb-item.active { background: #fff; color: #002AD1; }
+.htb-item.active svg { stroke: #002AD1; }
+.htb-item svg { flex-shrink: 0; }
+@media (max-width: 768px) {
+  .hero-travel-bar { gap: 0; padding: 4px 6px; border-radius: 16px; }
+  .htb-item { padding: 7px 10px; font-size: 12px; gap: 5px; }
+  .htb-item span.htb-label { display: none; }
+}
+
 /* Typewriter */
 .tw-cursor {
   display: inline-block;
