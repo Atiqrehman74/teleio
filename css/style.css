@@ -569,7 +569,7 @@ font[face] { font-family: inherit !important; }  /* GT wraps text in <font> tags
 
 /* ── Hero Travel Bar ── */
 .hero-travel-bar {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   background: rgba(255,255,255,0.12);
   backdrop-filter: blur(8px);
@@ -579,13 +579,15 @@ font[face] { font-family: inherit !important; }  /* GT wraps text in <font> tags
   padding: 4px;
   gap: 2px;
   margin: 18px 0 6px;
-  flex-wrap: nowrap;
+  width: 100%;
 }
 .htb-item {
+  flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 7px;
-  padding: 9px 18px;
+  padding: 10px 8px;
   border-radius: 50px;
   color: rgba(255,255,255,0.75);
   text-decoration: none;
@@ -593,6 +595,7 @@ font[face] { font-family: inherit !important; }  /* GT wraps text in <font> tags
   font-weight: 600;
   white-space: nowrap;
   transition: all .18s;
+  text-align: center;
 }
 .htb-item:hover { color: #fff; background: rgba(255,255,255,0.15); }
 .htb-item.active { background: #fff; color: #002AD1; }
