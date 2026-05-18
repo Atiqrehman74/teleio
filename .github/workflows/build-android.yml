@@ -28,23 +28,29 @@ jobs:
       - name: Setup Android SDK
         run: |
           set -e
-          apt-get update
-          apt-get install -y wget unzip lib32z1 lib32ncurses6 lib32stdc++6
-          mkdir -p $HOME/android-sdk/cmdline-tools
-          cd $HOME/android-sdk
-          if [ -d cmdline-tools/latest ]; then
-            rm -rf cmdline-tools/latest
+          export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
+          export ANDROID_HOME=/usr/local/share/android-sdk
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+
+          if ! command -v sdkmanager >/dev/null 2>&1; then
+            echo "sdkmanager not found; installing command line tools locally"
+            mkdir -p $HOME/android-sdk/cmdline-tools
+            cd $HOME/android-sdk
+            curl -L https://dl.google.com/android/repository/commandlinetools-linux-11499072_latest.zip -o /tmp/cmdline-tools.zip
+            unzip -q /tmp/cmdline-tools.zip -d cmdline-tools
+            mv cmdline-tools/cmdline-tools cmdline-tools/latest
+            chmod -R a+rX $HOME/android-sdk/cmdline-tools/latest
+            export ANDROID_SDK_ROOT=$HOME/android-sdk
+            export ANDROID_HOME=$HOME/android-sdk
+            export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
           fi
-          wget https://dl.google.com/android/repository/commandlinetools-linux-11499072_latest.zip -O /tmp/cmdline-tools.zip
-          unzip -q /tmp/cmdline-tools.zip -d cmdline-tools
-          mv cmdline-tools/cmdline-tools cmdline-tools/latest
-          chmod -R a+rX $HOME/android-sdk/cmdline-tools/latest
-          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$HOME/android-sdk --licenses || true
-          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$HOME/android-sdk "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+
+          yes | sdkmanager --licenses || true
+          yes | sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
         env:
-          ANDROID_SDK_ROOT: $HOME/android-sdk
-          ANDROID_HOME: $HOME/android-sdk
-          PATH: $HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH
+          ANDROID_SDK_ROOT: /usr/local/share/android-sdk
+          ANDROID_HOME: /usr/local/share/android-sdk
+          PATH: /usr/local/share/android-sdk/cmdline-tools/latest/bin:/usr/local/share/android-sdk/platform-tools:$PATH
 
       - name: Install dependencies
         run: npm ci
