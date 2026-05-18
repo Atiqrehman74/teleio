@@ -1,0 +1,6 @@
+{
+  "appId": "com.atiqrehman.teleio",
+  "appName": "Teleio Tourism",
+  "webDir": "out",
+  "bundledWebRuntime": false
+}
