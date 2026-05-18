@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search &amp; Book Travel - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+</head>
+<body>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper">
+  <div style="background:var(--bg-light);min-height:90vh;padding:40px 24px">
+    <div style="max-width:1000px;margin:0 auto">
+
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Home
+      </a>
+
+      <h1 style="font-size:36px;font-weight:800;margin-bottom:6px">Search &amp; Book</h1>
+      <p style="color:var(--text-muted);margin-bottom:32px">Find the best deals on flights, hotels, cars, and more</p>
+
+      <!-- Search Box -->
+      <div class="form-card mb-32">
+        <!-- Tabs -->
+        <div class="tabs mb-24" id="travelTabs">
+          <button class="tab-btn active" data-tab="flights">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+            Flights
+          </button>
+          <button class="tab-btn" data-tab="hotels">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Hotels
+          </button>
+          <button class="tab-btn" data-tab="cars">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-1"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+            Cars
+          </button>
+          <button class="tab-btn" data-tab="yachts">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1"/><path d="M4 18l2-8h12l2 8"/><path d="M12 10V4"/><path d="M8 10l4-6 4 6"/></svg>
+            Yachts
+          </button>
+          <button class="tab-btn" data-tab="packages">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            Packages
+          </button>
+        </div>
+
+        <form id="travelSearchForm">
+          <div id="flights" class="tab-panel active">
+            <div class="search-form-grid">
+              <div class="form-group sfg-wide"><label>From</label><input type="text" class="form-control" placeholder="City or airport"></div>
+              <div class="form-group sfg-wide"><label>To</label><input type="text" class="form-control" placeholder="City or airport"></div>
+              <div class="form-group"><label>Depart</label><input type="date" class="form-control"></div>
+              <div class="form-group"><label>Return</label><input type="date" class="form-control"></div>
+              <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                Search
+              </button></div>
+            </div>
+          </div>
+
+          <div id="hotels" class="tab-panel">
+            <div class="search-form-grid">
+              <div class="form-group sfg-full"><label>Destination</label><input type="text" class="form-control" placeholder="City or hotel name"></div>
+              <div class="form-group"><label>Check-in</label><input type="date" class="form-control"></div>
+              <div class="form-group"><label>Check-out</label><input type="date" class="form-control"></div>
+              <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                Search
+              </button></div>
+            </div>
+          </div>
+
+          <div id="cars" class="tab-panel">
+            <div class="search-form-grid">
+              <div class="form-group sfg-full"><label>Pick-up Location</label><input type="text" class="form-control" placeholder="City or airport"></div>
+              <div class="form-group"><label>Pick-up Date</label><input type="date" class="form-control"></div>
+              <div class="form-group"><label>Return Date</label><input type="date" class="form-control"></div>
+              <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                Search
+              </button></div>
+            </div>
+          </div>
+
+          <div id="yachts" class="tab-panel">
+            <div class="search-form-grid">
+              <div class="form-group sfg-full"><label>Marina / Destination</label><input type="text" class="form-control" placeholder="e.g., Monaco, Dubai"></div>
+              <div class="form-group"><label>From Date</label><input type="date" class="form-control"></div>
+              <div class="form-group"><label>To Date</label><input type="date" class="form-control"></div>
+              <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                Search
+              </button></div>
+            </div>
+          </div>
+
+          <div id="packages" class="tab-panel">
+            <div class="search-form-grid">
+              <div class="form-group sfg-wide"><label>From</label><input type="text" class="form-control" placeholder="Your city"></div>
+              <div class="form-group sfg-wide"><label>Destination</label><input type="text" class="form-control" placeholder="Where to?"></div>
+              <div class="form-group"><label>Travel Dates</label><input type="date" class="form-control"></div>
+              <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                Search
+              </button></div>
+            </div>
+          </div>
+        </form>
+
+        <div id="searchResults" style="margin-top:16px"></div>
+      </div>
+
+      <!-- Category Cards -->
+      <div class="grid-4 mb-40">
+        <a href="#flights" class="feature-card" onclick="switchTab('flights')">
+          <div class="feature-icon blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+          </div>
+          <h3>Flights</h3>
+          <p>Search and compare flights</p>
+        </a>
+        <a href="#hotels" class="feature-card" onclick="switchTab('hotels')">
+          <div class="feature-icon purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3>Hotels</h3>
+          <p>Find perfect accommodations</p>
+        </a>
+        <a href="#cars" class="feature-card" onclick="switchTab('cars')">
+          <div class="feature-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 4v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <h3>Car Rentals</h3>
+          <p>Rent cars worldwide</p>
+        </a>
+        <a href="#packages" class="feature-card" onclick="switchTab('packages')">
+          <div class="feature-icon orange">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <h3>Packages</h3>
+          <p>All-inclusive deals</p>
+        </a>
+      </div>
+
+      <!-- Featured Deals -->
+      <h2 style="font-size:24px;font-weight:800;margin-bottom:20px">Featured Deals</h2>
+      <div class="grid-3">
+        <div class="deal-card">
+          <div class="deal-thumb" style="background:linear-gradient(135deg,#667EEA,#764BA2);display:flex;align-items:center;justify-content:center">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Paris, France</div>
+            <div class="deal-from">From Dubai &middot; 7 nights</div>
+            <div class="deal-price"><span class="amount">$899</span><span class="per">/ person</span></div>
+            <a href="#" class="btn btn-primary btn-full" style="margin-top:12px">Book Now</a>
+          </div>
+        </div>
+        <div class="deal-card">
+          <div class="deal-thumb" style="background:linear-gradient(135deg,#11998e,#38ef7d);display:flex;align-items:center;justify-content:center">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1"/><path d="M4 18l2-8h12l2 8"/><path d="M12 10V4"/><path d="M8 10l4-6 4 6"/></svg>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">Maldives</div>
+            <div class="deal-from">From London &middot; 5 nights</div>
+            <div class="deal-price"><span class="amount">$1,299</span><span class="per">/ person</span></div>
+            <a href="#" class="btn btn-primary btn-full" style="margin-top:12px">Book Now</a>
+          </div>
+        </div>
+        <div class="deal-card">
+          <div class="deal-thumb" style="background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="deal-body">
+            <div class="deal-name">New York, USA</div>
+            <div class="deal-from">From Karachi &middot; 10 nights</div>
+            <div class="deal-price"><span class="amount">$1,150</span><span class="per">/ person</span></div>
+            <a href="#" class="btn btn-primary btn-full" style="margin-top:12px">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tab);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === tab);
+  });
+  document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+  return false;
+}
+</script>
+</body>
+</html>

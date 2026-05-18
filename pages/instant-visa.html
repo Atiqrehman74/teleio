@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instant Visa — 70 Countries - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+  <style>
+    /* ── PAYMENT MODAL ── */
+    #payModal{position:fixed;inset:0;background:rgba(15,23,42,.65);backdrop-filter:blur(8px);z-index:2500;display:none;align-items:center;justify-content:center;padding:20px}
+    #payModal.open{display:flex}
+    .pm-box{background:#fff;border-radius:20px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);animation:pmIn .35s cubic-bezier(.34,1.56,.64,1)}
+    @keyframes pmIn{from{transform:scale(.8) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+    .pm-head{padding:20px 22px 0;display:flex;justify-content:space-between;align-items:center}
+    .pm-head-title{font-size:17px;font-weight:800;color:#1E293B}
+    .pm-close{width:32px;height:32px;border:none;background:#F1F5F9;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:#64748B;transition:background .15s}
+    .pm-close:hover{background:#E2E8F0}
+    .pm-summary{margin:16px 22px;background:#F8FAFC;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px}
+    .pm-flag-wrap{width:48px;height:32px;border-radius:6px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+    .pm-flag-wrap img{width:100%;height:100%;object-fit:cover}
+    .pm-country{font-size:15px;font-weight:700;color:#1E293B}
+    .pm-meta{font-size:12px;color:#64748B;margin-top:2px}
+    .pm-price{margin-left:auto;text-align:right}
+    .pm-price-amt{font-size:18px;font-weight:800;color:#4F46E5}
+    .pm-price-label{font-size:11px;color:#94A3B8;margin-top:1px}
+    .pm-body{padding:0 22px 22px}
+    .pm-fgroup{margin-bottom:14px}
+    .pm-fgroup label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:5px}
+    .pm-fgroup input{width:100%;padding:11px 13px;border:1.5px solid #E2E8F0;border-radius:9px;font-size:14px;color:#1E293B;background:#fff;transition:border-color .2s,box-shadow .2s;box-sizing:border-box;font-family:'Inter',sans-serif}
+    .pm-fgroup input:focus{outline:none;border-color:#4F46E5;box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+    .pm-fgroup input.pm-err{border-color:#EF4444;box-shadow:0 0 0 3px rgba(239,68,68,.1)}
+    .pm-frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .pm-card-wrap{position:relative}
+    .pm-card-wrap input{padding-right:60px;letter-spacing:.05em}
+    .pm-card-badge{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;display:none;color:#fff}
+    .pm-divider{font-size:11px;color:#94A3B8;text-align:center;margin:14px 0 12px;position:relative}
+    .pm-divider::before,.pm-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:#E2E8F0}
+    .pm-divider::before{left:0}.pm-divider::after{right:0}
+    .pm-pay-btn{width:100%;padding:14px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Inter',sans-serif;transition:transform .15s,box-shadow .15s}
+    .pm-pay-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(79,70,229,.35)}
+    .pm-pay-btn:disabled{opacity:.65;cursor:not-allowed;transform:none;box-shadow:none}
+    .pm-spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+    .pm-pay-btn.loading .pm-spinner{display:block}
+    .pm-pay-btn.loading .pm-btn-text{display:none}
+    .pm-full-link{display:block;text-align:center;margin-top:12px;font-size:12px;color:#64748B;text-decoration:none}
+    .pm-full-link:hover{color:#4F46E5}
+    .pm-secure{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;color:#94A3B8;margin-top:12px}
+    .pm-success{text-align:center;padding:32px 22px 24px}
+    .pm-s-check{width:64px;height:64px;background:linear-gradient(135deg,#10B981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;animation:popIn .5s cubic-bezier(.34,1.56,.64,1)}
+    @keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
+    .pm-s-title{font-size:20px;font-weight:800;color:#1E293B;margin-bottom:6px}
+    .pm-s-sub{font-size:13px;color:#64748B;margin-bottom:16px;line-height:1.5}
+    .pm-s-ref{background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:9px;padding:10px 16px;font-size:13px;font-weight:700;color:#4F46E5;font-family:monospace;letter-spacing:.1em;display:inline-block;margin-bottom:20px}
+    .pm-s-close{padding:12px 28px;background:linear-gradient(135deg,#4F46E5,#7C3AED);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Inter',sans-serif}
+  </style>
+</head>
+<body>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper">
+
+  <!-- HEADER BAND -->
+  <div style="background:white;border-bottom:1px solid var(--border);padding:18px 24px;position:sticky;top:66px;z-index:300">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          <div style="width:36px;height:36px;border:2px dashed #9CA3AF;border-radius:50%;display:flex;align-items:center;justify-content:center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#374151" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:12px;color:var(--text-muted)">Visas On Time</div>
+            <div style="font-size:14px;font-weight:700">Guaranteed</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <!-- FILTER BAR -->
+          <div class="iv-filter-bar" id="filterBar">
+            <!-- Delivery -->
+            <div class="iv-filter" id="f-delivery" onclick="toggleDropdown('dd-delivery','f-delivery')">
+              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#FF6B35,#F59E0B);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">⚡</div>
+              <div style="min-width:0">
+                <div class="iv-filter-label">Visa delivery:</div>
+                <div class="iv-filter-val"><span id="lbl-delivery">Any Time</span> <span class="iv-chevron">&#x25BE;</span></div>
+              </div>
+              <div class="iv-dropdown" id="dd-delivery">
+                <div class="iv-dropdown-item selected" data-val="all" onclick="setFilter('delivery','all','Any Time',this)">Any Time <span class="iv-dropdown-count">70</span></div>
+                <div class="iv-dropdown-item" data-val="instant" onclick="setFilter('delivery','instant','Within 24 Hours',this)">Within 24 Hours <span class="iv-dropdown-count">22</span></div>
+                <div class="iv-dropdown-item" data-val="3-5" onclick="setFilter('delivery','3-5','3–5 Days',this)">3–5 Days <span class="iv-dropdown-count">24</span></div>
+                <div class="iv-dropdown-item" data-val="6-7" onclick="setFilter('delivery','6-7','6–7 Days',this)">6–7 Days <span class="iv-dropdown-count">2</span></div>
+                <div class="iv-dropdown-item" data-val="8-30" onclick="setFilter('delivery','8-30','8–30 Days',this)">8–30 Days <span class="iv-dropdown-count">22</span></div>
+              </div>
+            </div>
+            <div class="iv-divider"></div>
+            <!-- Type -->
+            <div class="iv-filter" id="f-type" onclick="toggleDropdown('dd-type','f-type')">
+              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#3B82F6,#60A5FA);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">🛂</div>
+              <div style="min-width:0">
+                <div class="iv-filter-label">Type:</div>
+                <div class="iv-filter-val"><span id="lbl-type">All Visa Types</span> <span class="iv-chevron">&#x25BE;</span></div>
+              </div>
+              <div class="iv-dropdown" id="dd-type">
+                <div class="iv-dropdown-item selected" data-val="all" onclick="setFilter('type','all','All Visa Types',this)">All Visa Types <span class="iv-dropdown-count">70</span></div>
+                <div class="iv-dropdown-item" data-val="e-visa" onclick="setFilter('type','e-visa','e-Visa',this)">e-Visa <span class="iv-dropdown-count">36</span></div>
+                <div class="iv-dropdown-item" data-val="sticker" onclick="setFilter('type','sticker','Sticker Visa',this)">Sticker Visa <span class="iv-dropdown-count">22</span></div>
+                <div class="iv-dropdown-item" data-val="on-arrival" onclick="setFilter('type','on-arrival','Visa on Arrival',this)">Visa on Arrival <span class="iv-dropdown-count">6</span></div>
+                <div class="iv-dropdown-item" data-val="free" onclick="setFilter('type','free','Visa-Free',this)">Visa-Free <span class="iv-dropdown-count">6</span></div>
+              </div>
+            </div>
+            <div class="iv-divider"></div>
+            <!-- Documents -->
+            <div class="iv-filter" id="f-docs" onclick="toggleDropdown('dd-docs','f-docs')">
+              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#8B8FA8,#A5A8C0);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">📄</div>
+              <div style="min-width:0">
+                <div class="iv-filter-label">Documents:</div>
+                <div class="iv-filter-val"><span id="lbl-docs">Any Documents</span> <span class="iv-chevron">&#x25BE;</span></div>
+              </div>
+              <div class="iv-dropdown" id="dd-docs">
+                <div class="iv-dropdown-item selected" data-val="all" onclick="setFilter('docs','all','Any Documents',this)">Any Documents <span class="iv-dropdown-count">70</span></div>
+                <div class="iv-dropdown-item" data-val="passport" onclick="setFilter('docs','passport','Only Passport',this)">Only Passport <span class="iv-dropdown-count">34</span></div>
+                <div class="iv-dropdown-item" data-val="passport-bank" onclick="setFilter('docs','passport-bank','Passport &amp; Bank Statements',this)">Passport &amp; Bank Statements <span class="iv-dropdown-count">22</span></div>
+                <div class="iv-dropdown-item" data-val="passport-emirates" onclick="setFilter('docs','passport-emirates','Passport &amp; Emirates ID',this)">Passport &amp; Emirates ID <span class="iv-dropdown-count">8</span></div>
+                <div class="iv-dropdown-item" data-val="us-uk-schengen" onclick="setFilter('docs','us-uk-schengen','With US/UK/Schengen Visa',this)">With US/UK/Schengen Visa <span class="iv-dropdown-count">6</span></div>
+              </div>
+            </div>
+            <div class="iv-divider"></div>
+            <!-- Holidays -->
+            <div class="iv-filter" id="f-holidays" onclick="toggleDropdown('dd-holidays','f-holidays')">
+              <div class="iv-filter-icon" style="width:32px;height:32px;background:linear-gradient(135deg,#6366F1,#818CF8);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">📅</div>
+              <div style="min-width:0">
+                <div class="iv-filter-label">Holidays:</div>
+                <div class="iv-filter-val"><span id="lbl-holidays">Select Dates</span> <span class="iv-chevron">&#x25BE;</span></div>
+              </div>
+              <div class="iv-dropdown iv-calendar" id="dd-holidays">
+                <div class="iv-cal-header">Check upcoming holidays and plan your<br>trips around long weekends.</div>
+                <div class="iv-cal-upcoming">
+                  <div class="up-label">&#x2726; UPCOMING &#x2726;</div>
+                  <div style="font-size:14px">Long weekend on <strong>26–28th May</strong></div>
+                  <div style="font-size:12px;color:#9CA3AF;margin-top:2px">Arafat (Hajj) Day, 26 May</div>
+                </div>
+                <div class="iv-cal-month">
+                  <button class="iv-cal-nav" onclick="changeMonth(-1);event.stopPropagation()">&#x2039;</button>
+                  <span id="calMonthLabel">May, 2026</span>
+                  <button class="iv-cal-nav" onclick="changeMonth(1);event.stopPropagation()">&#x203A;</button>
+                </div>
+                <div class="iv-cal-grid" id="calDayLabels">
+                  <div class="iv-cal-day-label">Mo</div><div class="iv-cal-day-label">Tu</div>
+                  <div class="iv-cal-day-label">We</div><div class="iv-cal-day-label">Th</div>
+                  <div class="iv-cal-day-label">Fr</div><div class="iv-cal-day-label">Sa</div>
+                  <div class="iv-cal-day-label">Su</div>
+                </div>
+                <div class="iv-cal-grid" id="calDays"></div>
+                <div class="iv-cal-footer">
+                  <span>Guaranteed visas before<br><strong id="calSelectedLabel">Select a date</strong></span>
+                  <button class="iv-cal-select" id="calSelectBtn" onclick="applyCalendar();event.stopPropagation()">Select</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Search icon -->
+        <a href="#" style="width:44px;height:44px;border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-dark);text-decoration:none">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS COUNT -->
+  <div style="background:#F9FAFB;padding:14px 24px;border-bottom:1px solid var(--border)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <div style="font-size:15px;color:var(--text-muted)">Showing <strong id="resultCount" style="color:var(--text-dark)">70</strong> countries</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('all')">All</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Europe')">🌍 Europe</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Asia')">🌏 Asia</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Americas')">🌎 Americas</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Middle East')">🕌 Middle East</button>
+        <button class="country-btn" style="padding:6px 14px;font-size:13px" onclick="filterRegion('Africa')">🌍 Africa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNTRY GRID -->
+  <div style="background:white;padding:32px 24px 64px">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="iv-grid" id="countryGrid"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- COUNTRY DETAIL MODAL -->
+<div class="modal-overlay" id="countryModal" style="align-items:center;padding:20px">
+  <div class="country-modal">
+    <div class="country-modal-hero" id="modalHero">
+      <div class="country-modal-overlay"></div>
+      <div class="country-modal-guarantee" id="modalGuarantee">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Visa Guaranteed on <span id="modalGuaranteeDate">—</span>
+      </div>
+      <div class="country-modal-title" id="modalTitle">Country Visa</div>
+    </div>
+    <div class="country-modal-body" id="modalBody">
+      <div>
+        <h2 style="font-size:22px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px">
+          Appointment Information
+          <div style="width:32px;height:3px;background:var(--primary);border-radius:2px;margin-left:4px"></div>
+        </h2>
+        <div class="cmi-grid" id="modalInfoGrid" style="margin-top:20px"></div>
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px">
+          <span style="width:12px;height:12px;border-radius:50%;background:var(--primary);display:inline-block"></span>
+          Get a Guaranteed Appointment on
+          <div style="flex:1;height:2px;background:var(--primary);border-radius:2px;margin-left:4px"></div>
+        </h3>
+        <div class="cm-appt-box">
+          <div class="cm-appt-date">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span id="modalApptDate">—</span>
+          </div>
+          <div class="cm-appt-link" onclick="document.getElementById('countryModal').classList.remove('open')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            View Timeline &#x25BE;
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="cm-sidebar">
+          <div class="cm-sidebar-guarantee" id="modalSideGuarantee">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Visa Guaranteed on —
+          </div>
+          <div class="cm-sidebar-fee">
+            <span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Processing Fee
+            </span>
+            <strong id="modalFee">—</strong>
+          </div>
+          <button onclick="openPaymentModal(_currentCountry)" class="btn btn-primary btn-full btn-lg" style="justify-content:center;border-radius:50px;border:none;cursor:pointer;font-family:inherit">Start Application</button>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;font-size:13px;color:var(--text-muted)">
+            <span><strong style="color:var(--text-dark)">Have Queries?</strong><br>Documents, process, price, etc.</span>
+            <div style="width:36px;height:36px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer">💬</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div id="payModal">
+  <div class="pm-box">
+    <div class="pm-head">
+      <div class="pm-head-title">Complete Payment</div>
+      <button class="pm-close" onclick="document.getElementById('payModal').classList.remove('open')">&#x2715;</button>
+    </div>
+
+    <div class="pm-summary">
+      <div class="pm-flag-wrap" id="pmFlagWrap"><img id="pmFlag" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+      <div>
+        <div class="pm-country" id="pmCountry">—</div>
+        <div class="pm-meta" id="pmMeta">—</div>
+      </div>
+      <div class="pm-price">
+        <div class="pm-price-amt" id="pmAmt">AED 0</div>
+        <div class="pm-price-label">incl. VAT &amp; fees</div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div id="pmFormWrap" class="pm-body">
+      <form id="pmForm" novalidate autocomplete="on">
+        <div class="pm-fgroup">
+          <label>Email Address</label>
+          <input type="email" id="pmEmail" placeholder="john@example.com" autocomplete="email">
+        </div>
+        <div class="pm-divider">Card Details</div>
+        <div class="pm-fgroup">
+          <label>Cardholder Name</label>
+          <input type="text" id="pmCardName" placeholder="Name on card" autocomplete="cc-name">
+        </div>
+        <div class="pm-fgroup">
+          <label>Card Number</label>
+          <div class="pm-card-wrap">
+            <input type="text" id="pmCardNumber" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number" inputmode="numeric">
+            <div class="pm-card-badge" id="pmCardBadge"></div>
+          </div>
+        </div>
+        <div class="pm-frow">
+          <div class="pm-fgroup">
+            <label>Expiry</label>
+            <input type="text" id="pmCardExpiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp" inputmode="numeric">
+          </div>
+          <div class="pm-fgroup">
+            <label>CVC</label>
+            <input type="text" id="pmCardCvc" placeholder="•••" maxlength="4" autocomplete="cc-csc" inputmode="numeric">
+          </div>
+        </div>
+        <button type="submit" class="pm-pay-btn" id="pmPayBtn">
+          <div class="pm-spinner"></div>
+          <span class="pm-btn-text" id="pmBtnLabel">Pay →</span>
+        </button>
+      </form>
+      <a href="payment.html" class="pm-full-link" id="pmFullLink" target="_blank">
+        Open full checkout page &rarr;
+      </a>
+      <div class="pm-secure">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Secured by Stripe · SSL Encrypted
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div id="pmSuccessWrap" class="pm-success" style="display:none">
+      <div class="pm-s-check">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="pm-s-title">Payment Successful!</div>
+      <div class="pm-s-sub">Your visa application is confirmed.<br>Check your email for the receipt.</div>
+      <div class="pm-s-ref" id="pmSuccessRef">TV-00000000</div><br>
+      <button class="pm-s-close" onclick="document.getElementById('payModal').classList.remove('open')">Done</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+// ── COUNTRY DATA ──────────────────────────────────────────────────────────────
+const COUNTRIES = [
+  // Americas
+  {name:'United States',flag:'🇺🇸',iso:'us',img:'1485738422979-f5c462d49f74',type:'sticker',valid:'10 Years',fee:700,delivery:'8-30',docs:'passport-bank',bg:['#0D1B2A','#1B3A60'],date:'Sep 15, 2026',region:'Americas',entry:'Multiple',stay:'180 Days'},
+  {name:'Canada',flag:'🇨🇦',iso:'ca',img:'1517935706615-2717063c2225',type:'sticker',valid:'10 Years',fee:800,delivery:'8-30',docs:'passport-bank',bg:['#5A1010','#8B1A1A'],date:'Oct 1, 2026',region:'Americas',entry:'Multiple',stay:'180 Days'},
+  {name:'Mexico',flag:'🇲🇽',iso:'mx',img:'1518638150340-f706e86654de',type:'sticker',valid:'180 Days',fee:275,delivery:'8-30',docs:'passport-emirates',bg:['#0A3D2B','#1A6B4A'],date:'May 27, 2026',region:'Americas',entry:'Single',stay:'180 Days'},
+  {name:'Brazil',flag:'🇧🇷',iso:'br',img:'1516306580123-e6e52b1b7b5f',type:'sticker',valid:'90 Days',fee:400,delivery:'8-30',docs:'passport-bank',bg:['#0A3D0A','#1A5A1A'],date:'Aug 10, 2026',region:'Americas',entry:'Single',stay:'90 Days'},
+  {name:'Argentina',flag:'🇦🇷',iso:'ar',img:'1476231682828-37e571bc172f',type:'free',valid:'90 Days',fee:0,delivery:'instant',docs:'passport',bg:['#1A2744','#2A4A8A'],date:'May 15, 2026',region:'Americas',entry:'Multiple',stay:'90 Days'},
+  {name:'Cuba',flag:'🇨🇺',iso:'cu',img:'1558618666-fcd25c85cd64',type:'on-arrival',valid:'30 Days',fee:100,delivery:'instant',docs:'passport',bg:['#1A0A2E','#2E1A5A'],date:'May 15, 2026',region:'Americas',entry:'Single',stay:'30 Days'},
+  {name:'Peru',flag:'🇵🇪',iso:'pe',img:'1526392060635-9d6019884377',type:'sticker',valid:'90 Days',fee:300,delivery:'8-30',docs:'passport-bank',bg:['#3A1A0A','#6A3010'],date:'Jul 20, 2026',region:'Americas',entry:'Single',stay:'90 Days'},
+  {name:'Colombia',flag:'🇨🇴',iso:'co',img:null,type:'e-visa',valid:'90 Days',fee:200,delivery:'3-5',docs:'passport',bg:['#0A2A1A','#1A4A2A'],date:'Jun 1, 2026',region:'Americas',entry:'Single',stay:'90 Days'},
+  {name:'Chile',flag:'🇨🇱',iso:'cl',img:'1503614472-8c253e3feba0',type:'free',valid:'90 Days',fee:0,delivery:'instant',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'May 15, 2026',region:'Americas',entry:'Multiple',stay:'90 Days'},
+  // Europe
+  {name:'Schengen',flag:'🇪🇺',iso:'eu',img:'1467269204594-9661b134dd2b',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0D1B4A','#1A2F7A'],date:'Jun 11, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'United Kingdom',flag:'🇬🇧',iso:'gb',img:'1513635269975-59663e0ac1ad',type:'sticker',valid:'6 Months',fee:650,delivery:'8-30',docs:'passport-bank',bg:['#0A0A2A','#1A1A4A'],date:'Jul 3, 2026',region:'Europe',entry:'Multiple',stay:'6 Months'},
+  {name:'Switzerland',flag:'🇨🇭',iso:'ch',img:'1506905925346-21bda4d32df4',type:'sticker',valid:'90 Days',fee:900,delivery:'8-30',docs:'passport-bank',bg:['#3A0A0A','#6A1A1A'],date:'Jun 15, 2026',region:'Europe',entry:'Single',stay:'90 Days'},
+  {name:'Norway',flag:'🇳🇴',iso:'no',img:'1531366936337-7c912a4589a7',type:'sticker',valid:'90 Days',fee:900,delivery:'8-30',docs:'passport-bank',bg:['#1A1A3A','#2A2A5A'],date:'Jun 20, 2026',region:'Europe',entry:'Single',stay:'90 Days'},
+  {name:'Russia',flag:'🇷🇺',iso:'ru',img:'1513519245088-0e12902e5a38',type:'sticker',valid:'30 Days',fee:250,delivery:'8-30',docs:'passport-bank',bg:['#1A0A0A','#4A1010'],date:'Aug 5, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
+  {name:'Georgia',flag:'🇬🇪',iso:'ge',img:null,type:'free',valid:'365 Days',fee:0,delivery:'instant',docs:'passport',bg:['#2A1A0A','#5A3A1A'],date:'May 15, 2026',region:'Europe',entry:'Multiple',stay:'365 Days'},
+  {name:'Ukraine',flag:'🇺🇦',iso:'ua',img:null,type:'e-visa',valid:'30 Days',fee:150,delivery:'3-5',docs:'passport',bg:['#0A1A3A','#1A3A7A'],date:'Jun 5, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
+  {name:'Azerbaijan',flag:'🇦🇿',iso:'az',img:null,type:'e-visa',valid:'30 Days',fee:75,delivery:'instant',docs:'passport',bg:['#0A2A1A','#1A5A3A'],date:'May 15, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
+  {name:'Armenia',flag:'🇦🇲',iso:'am',img:null,type:'e-visa',valid:'21 Days',fee:60,delivery:'instant',docs:'passport',bg:['#3A0A0A','#7A1A1A'],date:'May 16, 2026',region:'Europe',entry:'Single',stay:'21 Days'},
+  {name:'Belarus',flag:'🇧🇾',iso:'by',img:null,type:'e-visa',valid:'30 Days',fee:120,delivery:'3-5',docs:'passport',bg:['#0A1A3A','#1A2A5A'],date:'Jun 3, 2026',region:'Europe',entry:'Single',stay:'30 Days'},
+  {name:'Italy',flag:'🇮🇹',iso:'it',img:'1552832230-c0197dd311b5',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A0A3A','#1A1A6A'],date:'Jun 15, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'France',flag:'🇫🇷',iso:'fr',img:'1502602898657-3e91760cbb34',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A0A2A','#1A1A4A'],date:'Jun 18, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Germany',flag:'🇩🇪',iso:'de',img:'1467269204594-9661b134dd2b',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#101010','#2A2A2A'],date:'Jun 20, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Spain',flag:'🇪🇸',iso:'es',img:'1539037116277-4db20889f2d4',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1A1A'],date:'Jun 22, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Greece',flag:'🇬🇷',iso:'gr',img:'1533105079780-92b9be482077',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A1A3A','#1A2A5A'],date:'Jun 25, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Portugal',flag:'🇵🇹',iso:'pt',img:'1555252333-9f8e92e65df9',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#1A0A2A','#3A1A5A'],date:'Jun 28, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Netherlands',flag:'🇳🇱',iso:'nl',img:'1512470876302-972faa2aa9a4',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#1A0A0A','#3A1A1A'],date:'Jul 2, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Poland',flag:'🇵🇱',iso:'pl',img:'1519197924294-4ba991a11128',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1515'],date:'Jul 5, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Czech Republic',flag:'🇨🇿',iso:'cz',img:'1562883676-8036536622e0',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#0A0A2A','#1A1A5A'],date:'Jul 8, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  {name:'Hungary',flag:'🇭🇺',iso:'hu',img:'1543503890-e81d9e05a52c',type:'sticker',valid:'90 Days',fee:843,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1A1A'],date:'Jul 10, 2026',region:'Europe',entry:'Multiple',stay:'90 Days'},
+  // Middle East
+  {name:'Türkiye',flag:'🇹🇷',iso:'tr',img:'1524231757912-21f4fe3a7200',type:'e-visa',valid:'180 Days',fee:258,delivery:'instant',docs:'passport',bg:['#2A0A05','#5A2010'],date:'May 15, 2026',region:'Middle East',entry:'Multiple',stay:'180 Days'},
+  {name:'Saudi Arabia',flag:'🇸🇦',iso:'sa',img:'1586724237536-f6c3acdb4a13',type:'e-visa',valid:'90 Days',fee:300,delivery:'3-5',docs:'passport',bg:['#0A2A0A','#1A4A1A'],date:'Jun 1, 2026',region:'Middle East',entry:'Multiple',stay:'90 Days'},
+  {name:'Jordan',flag:'🇯🇴',iso:'jo',img:'1548199569-6a6d08cc44fc',type:'e-visa',valid:'30 Days',fee:110,delivery:'instant',docs:'passport',bg:['#3A1A0A','#7A3A1A'],date:'May 15, 2026',region:'Middle East',entry:'Single',stay:'30 Days'},
+  {name:'Egypt',flag:'🇪🇬',iso:'eg',img:'1568322445389-f64ac2515020',type:'e-visa',valid:'30 Days',fee:90,delivery:'3-5',docs:'passport',bg:['#3A2A0A','#6A4A10'],date:'Jun 2, 2026',region:'Middle East',entry:'Single',stay:'30 Days'},
+  {name:'Oman',flag:'🇴🇲',iso:'om',img:null,type:'e-visa',valid:'30 Days',fee:75,delivery:'instant',docs:'passport',bg:['#2A0A0A','#5A1A1A'],date:'May 15, 2026',region:'Middle East',entry:'Single',stay:'30 Days'},
+  {name:'Bahrain',flag:'🇧🇭',iso:'bh',img:null,type:'e-visa',valid:'14 Days',fee:60,delivery:'instant',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'May 15, 2026',region:'Middle East',entry:'Single',stay:'14 Days'},
+  {name:'Kuwait',flag:'🇰🇼',iso:'kw',img:null,type:'e-visa',valid:'90 Days',fee:110,delivery:'3-5',docs:'passport',bg:['#0A1A0A','#1A4A1A'],date:'Jun 5, 2026',region:'Middle East',entry:'Single',stay:'90 Days'},
+  {name:'Qatar',flag:'🇶🇦',iso:'qa',img:'1586704192751-dda7b5fac4ef',type:'free',valid:'30 Days',fee:0,delivery:'instant',docs:'passport',bg:['#2A0A1A','#5A1A3A'],date:'May 15, 2026',region:'Middle East',entry:'Multiple',stay:'30 Days'},
+  // Asia
+  {name:'Malaysia',flag:'🇲🇾',iso:'my',img:'1596422846543-75c6fc197f07',type:'e-visa',valid:'6 Months',fee:133,delivery:'3-5',docs:'passport',bg:['#061A22','#0D3040'],date:'Jun 5, 2026',region:'Asia',entry:'Multiple',stay:'6 Months'},
+  {name:'Thailand',flag:'🇹🇭',iso:'th',img:'1528360983277-13d401cdc186',type:'e-visa',valid:'60 Days',fee:110,delivery:'instant',docs:'passport',bg:['#2A0A2A','#5A1A5A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'60 Days'},
+  {name:'Singapore',flag:'🇸🇬',iso:'sg',img:'1508964942454-1a56651d54ac',type:'e-visa',valid:'30 Days',fee:90,delivery:'instant',docs:'passport',bg:['#0A1A3A','#1A3A7A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Japan',flag:'🇯🇵',iso:'jp',img:'1540959733332-eab4deabeeaf',type:'sticker',valid:'90 Days',fee:350,delivery:'6-7',docs:'passport-bank',bg:['#2A0A0A','#6A1A1A'],date:'Jun 25, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
+  {name:'South Korea',flag:'🇰🇷',iso:'kr',img:'1557531365-e8b22d93e1ce',type:'e-visa',valid:'90 Days',fee:180,delivery:'6-7',docs:'passport',bg:['#0A1A2A','#1A2A5A'],date:'Jun 20, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
+  {name:'China',flag:'🇨🇳',iso:'cn',img:'1508804185872-173bbab25c3b',type:'sticker',valid:'30 Days',fee:350,delivery:'8-30',docs:'passport-bank',bg:['#2A0A0A','#5A1515'],date:'Jul 10, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Vietnam',flag:'🇻🇳',iso:'vn',img:'1528181304800-259b08848526',type:'e-visa',valid:'90 Days',fee:80,delivery:'3-5',docs:'passport',bg:['#2A0A0A','#5A1A1A'],date:'Jun 1, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
+  {name:'Indonesia',flag:'🇮🇩',iso:'id',img:'1555400038-63f5ba517a73',type:'on-arrival',valid:'30 Days',fee:100,delivery:'instant',docs:'passport',bg:['#1A2A0A','#3A5A1A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Philippines',flag:'🇵🇭',iso:'ph',img:'1518516288185-38760965d621',type:'e-visa',valid:'30 Days',fee:90,delivery:'3-5',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'Jun 5, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Cambodia',flag:'🇰🇭',iso:'kh',img:'1528181304800-259b08848526',type:'e-visa',valid:'30 Days',fee:70,delivery:'3-5',docs:'passport',bg:['#2A1A0A','#5A3A1A'],date:'Jun 3, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Sri Lanka',flag:'🇱🇰',iso:'lk',img:null,type:'e-visa',valid:'30 Days',fee:75,delivery:'instant',docs:'passport',bg:['#0A2A0A','#1A5A1A'],date:'May 15, 2026',region:'Asia',entry:'Double',stay:'30 Days'},
+  {name:'Nepal',flag:'🇳🇵',iso:'np',img:'1533130061792-64b345e4a6ad',type:'on-arrival',valid:'90 Days',fee:60,delivery:'instant',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'90 Days'},
+  {name:'Maldives',flag:'🇲🇻',iso:'mv',img:'1573843981267-be1999ff37cd',type:'free',valid:'30 Days',fee:0,delivery:'instant',docs:'passport',bg:['#0A2A3A','#0A4A5A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'India',flag:'🇮🇳',iso:'in',img:'1564507592333-c60657eea523',type:'e-visa',valid:'60 Days',fee:150,delivery:'3-5',docs:'passport',bg:['#2A1A0A','#5A3A10'],date:'Jun 2, 2026',region:'Asia',entry:'Triple',stay:'60 Days'},
+  {name:'Bangladesh',flag:'🇧🇩',iso:'bd',img:null,type:'sticker',valid:'30 Days',fee:120,delivery:'8-30',docs:'passport',bg:['#0A2A0A','#1A5A1A'],date:'Jul 5, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Kazakhstan',flag:'🇰🇿',iso:'kz',img:null,type:'e-visa',valid:'30 Days',fee:80,delivery:'3-5',docs:'passport',bg:['#0A2A1A','#1A4A3A'],date:'Jun 3, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Uzbekistan',flag:'🇺🇿',iso:'uz',img:null,type:'e-visa',valid:'30 Days',fee:65,delivery:'3-5',docs:'passport',bg:['#1A2A0A','#3A5A1A'],date:'Jun 4, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Kyrgyzstan',flag:'🇰🇬',iso:'kg',img:null,type:'e-visa',valid:'30 Days',fee:50,delivery:'instant',docs:'passport',bg:['#0A1A2A','#1A3A5A'],date:'May 16, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Tajikistan',flag:'🇹🇯',iso:'tj',img:null,type:'e-visa',valid:'45 Days',fee:55,delivery:'instant',docs:'passport',bg:['#2A0A1A','#5A1A3A'],date:'May 16, 2026',region:'Asia',entry:'Single',stay:'45 Days'},
+  {name:'Myanmar',flag:'🇲🇲',iso:'mm',img:null,type:'e-visa',valid:'28 Days',fee:100,delivery:'3-5',docs:'passport',bg:['#2A1A0A','#5A3A1A'],date:'Jun 5, 2026',region:'Asia',entry:'Single',stay:'28 Days'},
+  {name:'Laos',flag:'🇱🇦',iso:'la',img:null,type:'e-visa',valid:'30 Days',fee:65,delivery:'3-5',docs:'passport',bg:['#1A0A2A','#3A1A5A'],date:'Jun 4, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  {name:'Pakistan',flag:'🇵🇰',iso:'pk',img:null,type:'on-arrival',valid:'30 Days',fee:100,delivery:'instant',docs:'passport',bg:['#0A2A0A','#1A5A1A'],date:'May 15, 2026',region:'Asia',entry:'Single',stay:'30 Days'},
+  // Africa
+  {name:'Kenya',flag:'🇰🇪',iso:'ke',img:'1535941339539-591958e75c8d',type:'e-visa',valid:'90 Days',fee:150,delivery:'3-5',docs:'passport',bg:['#1A1A0A','#3A3A10'],date:'Jun 3, 2026',region:'Africa',entry:'Single',stay:'90 Days'},
+  {name:'Tanzania',flag:'🇹🇿',iso:'tz',img:'1516026672322-bc52d61a55d5',type:'e-visa',valid:'90 Days',fee:140,delivery:'3-5',docs:'passport',bg:['#1A0A0A','#3A1515'],date:'Jun 4, 2026',region:'Africa',entry:'Single',stay:'90 Days'},
+  {name:'Rwanda',flag:'🇷🇼',iso:'rw',img:null,type:'e-visa',valid:'30 Days',fee:80,delivery:'3-5',docs:'passport',bg:['#0A1A0A','#1A3A1A'],date:'Jun 5, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'Ethiopia',flag:'🇪🇹',iso:'et',img:null,type:'e-visa',valid:'30 Days',fee:90,delivery:'3-5',docs:'passport',bg:['#0A2A0A','#1A4A1A'],date:'Jun 5, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'Ghana',flag:'🇬🇭',iso:'gh',img:null,type:'sticker',valid:'30 Days',fee:200,delivery:'8-30',docs:'passport-bank',bg:['#2A1A0A','#5A3A10'],date:'Jul 10, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'Nigeria',flag:'🇳🇬',iso:'ng',img:null,type:'sticker',valid:'30 Days',fee:250,delivery:'8-30',docs:'passport-bank',bg:['#0A2A0A','#1A4A1A'],date:'Jul 15, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'South Africa',flag:'🇿🇦',iso:'za',img:'1516026672322-bc52d61a55d5',type:'sticker',valid:'30 Days',fee:200,delivery:'8-30',docs:'passport-bank',bg:['#0A1A0A','#1A3A1A'],date:'Jul 8, 2026',region:'Africa',entry:'Single',stay:'30 Days'},
+  {name:'Morocco',flag:'🇲🇦',iso:'ma',img:'1539020140153-e479b8c22e70',type:'free',valid:'90 Days',fee:0,delivery:'instant',docs:'passport',bg:['#2A0A0A','#5A1A1A'],date:'May 15, 2026',region:'Africa',entry:'Multiple',stay:'90 Days'},
+  {name:'Uganda',flag:'🇺🇬',iso:'ug',img:null,type:'e-visa',valid:'90 Days',fee:110,delivery:'3-5',docs:'passport',bg:['#0A1A0A','#1A3A1A'],date:'Jun 7, 2026',region:'Africa',entry:'Single',stay:'90 Days'},
+  // Oceania
+  {name:'Australia',flag:'🇦🇺',iso:'au',img:'1506374322094-6021fc3926f1',type:'e-visa',valid:'12 Months',fee:420,delivery:'3-5',docs:'passport',bg:['#1A1A0A','#3A3A10'],date:'Jun 10, 2026',region:'Oceania',entry:'Multiple',stay:'12 Months'},
+  {name:'New Zealand',flag:'🇳🇿',iso:'nz',img:'1507699622108-4be3abd695ad',type:'e-visa',valid:'12 Months',fee:150,delivery:'3-5',docs:'passport',bg:['#0A1A2A','#1A3A5A'],date:'Jun 8, 2026',region:'Oceania',entry:'Multiple',stay:'12 Months'},
+];
+
+// ── FILTERS STATE ─────────────────────────────────────────────────────────────
+const filters = { delivery: 'all', type: 'all', docs: 'all', region: 'all' };
+
+// ── RENDER CARDS ──────────────────────────────────────────────────────────────
+function typeLabel(t) {
+  return {
+    'e-visa':'E-VISA','sticker':'STICKER','on-arrival':'ON ARRIVAL','free':'VISA-FREE'
+  }[t] || t.toUpperCase();
+}
+
+function renderCards() {
+  const grid = document.getElementById('countryGrid');
+  grid.innerHTML = '';
+  let count = 0;
+  COUNTRIES.forEach((c, i) => {
+    const show = (
+      (filters.delivery === 'all' || c.delivery === filters.delivery) &&
+      (filters.type === 'all' || c.type === filters.type) &&
+      (filters.docs === 'all' || c.docs === filters.docs || filters.docs === 'all') &&
+      (filters.region === 'all' || c.region === filters.region)
+    );
+    if (!show) return;
+    count++;
+    const feeStr = c.fee === 0 ? 'FREE' : `AED ${c.fee}`;
+    const el = document.createElement('div');
+    el.className = 'iv-card';
+    el.innerHTML = `
+      <div class="iv-card-photo" style="background:linear-gradient(165deg,${c.bg[0]} 0%,${c.bg[1]} 100%);position:relative;overflow:hidden">
+        ${c.img ? `<img src="https://images.unsplash.com/photo-${c.img}?auto=format&fit=crop&w=500&q=70" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.55;mix-blend-mode:luminosity" loading="lazy" onerror="this.style.display='none'" alt="${c.name}">` : ''}
+        <div class="iv-card-overlay" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.35) 55%,rgba(0,0,0,0.1) 100%)"></div>
+        <div style="position:absolute;top:12px;left:12px;z-index:3">
+          <img src="https://flagcdn.com/w40/${c.iso}.png" style="width:42px;height:28px;object-fit:cover;border-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,0.5);display:block" alt="${c.name}" onerror="this.outerHTML='<span style=\\'font-size:26px\\'>${c.flag}</span>'">
+        </div>
+        <div style="position:absolute;bottom:56px;left:0;right:0;z-index:3;padding:0 12px">
+          <div style="font-size:15px;font-weight:800;color:#fff;letter-spacing:0.04em;text-transform:uppercase;text-shadow:0 2px 10px rgba(0,0,0,0.9),0 1px 3px rgba(0,0,0,0.8);line-height:1.2">${c.name}</div>
+        </div>
+        <div class="iv-card-info" style="position:absolute;bottom:0;left:0;right:0;z-index:2">
+          <div class="iv-info-col"><span class="iv-info-label">TYPE</span><span class="iv-info-val">${typeLabel(c.type)}</span></div>
+          <div class="iv-info-col"><span class="iv-info-label">VALID</span><span class="iv-info-val">${c.valid}</span></div>
+          <div class="iv-info-col"><span class="iv-info-label">FEES</span><span class="iv-info-val">${feeStr}</span></div>
+        </div>
+      </div>
+      <div class="iv-card-footer">
+        <span class="iv-guaranteed">Guaranteed Visa on</span>
+        <div class="iv-gdate">${c.date}, 9:14 PM</div>
+      </div>`;
+    el.addEventListener('click', () => openCountryModal(c));
+    grid.appendChild(el);
+  });
+  document.getElementById('resultCount').textContent = count;
+}
+
+// ── FILTER DROPDOWN ───────────────────────────────────────────────────────────
+function toggleDropdown(ddId, filterId) {
+  const isOpen = document.getElementById(ddId).classList.contains('open');
+  closeAllDropdowns();
+  if (!isOpen) {
+    document.getElementById(ddId).classList.add('open');
+    document.getElementById(filterId).classList.add('active-filter');
+  }
+}
+function closeAllDropdowns() {
+  document.querySelectorAll('.iv-dropdown').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.iv-filter').forEach(f => f.classList.remove('active-filter'));
+}
+function setFilter(key, val, label, el) {
+  event.stopPropagation();
+  filters[key] = val;
+  document.getElementById('lbl-' + key).textContent = label;
+  el.closest('.iv-dropdown').querySelectorAll('.iv-dropdown-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  closeAllDropdowns();
+  renderCards();
+}
+function filterRegion(r) {
+  filters.region = r;
+  document.querySelectorAll('.country-btn').forEach(b => b.style.borderColor = '');
+  event.target.style.borderColor = 'var(--primary)';
+  event.target.style.color = 'var(--primary)';
+  renderCards();
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.iv-filter')) closeAllDropdowns();
+});
+
+// ── CALENDAR ──────────────────────────────────────────────────────────────────
+let calYear = 2026, calMonth = 4; // May (0-indexed)
+const HOLIDAYS = [26, 27, 28]; // May holidays
+let selectedDay = null;
+function renderCalendar() {
+  document.getElementById('calMonthLabel').textContent =
+    new Date(calYear, calMonth).toLocaleString('en', {month:'long', year:'numeric'});
+  const grid = document.getElementById('calDays');
+  grid.innerHTML = '';
+  const firstDay = new Date(calYear, calMonth, 1).getDay(); // Sun=0
+  const adjusted = (firstDay === 0 ? 6 : firstDay - 1); // Mon=0
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const prevDays = new Date(calYear, calMonth, 0).getDate();
+  for (let i = adjusted - 1; i >= 0; i--) {
+    const d = document.createElement('div');
+    d.className = 'iv-cal-day other-month';
+    d.textContent = prevDays - i;
+    grid.appendChild(d);
+  }
+  const today = new Date();
+  for (let day = 1; day <= daysInMonth; day++) {
+    const d = document.createElement('div');
+    d.className = 'iv-cal-day';
+    d.textContent = day;
+    if (calYear === today.getFullYear() && calMonth === today.getMonth() && day === today.getDate()) d.classList.add('today');
+    if (calMonth === 4 && HOLIDAYS.includes(day)) d.classList.add('holiday');
+    if (day === selectedDay) d.style.background = 'var(--primary)', d.style.color = 'white';
+    d.addEventListener('click', e => { e.stopPropagation(); selectDay(day); });
+    grid.appendChild(d);
+  }
+}
+function selectDay(day) {
+  selectedDay = day;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('calSelectedLabel').textContent = `${day} ${months[calMonth]} ${calYear}`;
+  document.getElementById('calSelectBtn').classList.add('ready');
+  renderCalendar();
+}
+function changeMonth(dir) {
+  calMonth += dir;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+}
+function applyCalendar() {
+  if (!selectedDay) return;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('lbl-holidays').textContent = `${selectedDay} ${months[calMonth]}`;
+  closeAllDropdowns();
+}
+renderCalendar();
+
+// ── COUNTRY MODAL ─────────────────────────────────────────────────────────────
+let _currentCountry = null;
+function openCountryModal(c) {
+  _currentCountry = c;
+  const feeStr = c.fee === 0 ? 'FREE' : `AED ${c.fee}`;
+  document.getElementById('modalHero').style.background = `linear-gradient(165deg,${c.bg[0]} 0%,${c.bg[1]} 100%)`;
+  document.getElementById('modalTitle').innerHTML = `${c.flag} ${c.name} Visa for Pakistani Citizens`;
+  document.getElementById('modalGuaranteeDate').textContent = `${c.date}`;
+  document.getElementById('modalSideGuarantee').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Visa Guaranteed on ${c.date}`;
+  document.getElementById('modalFee').textContent = feeStr;
+  document.getElementById('modalApptDate').textContent = `${c.date} at 09:14 PM`;
+  document.getElementById('modalInfoGrid').innerHTML = `
+    <div class="cmi-item"><div class="cmi-icon">🛂</div><div><div class="cmi-label">Type:</div><div class="cmi-val">${typeLabel(c.type)}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">📅</div><div><div class="cmi-label">Length of Stay:</div><div class="cmi-val">${c.valid}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">⏳</div><div><div class="cmi-label">Validity:</div><div class="cmi-val">${c.valid}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">🚪</div><div><div class="cmi-label">Entry:</div><div class="cmi-val">${c.entry}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">📄</div><div><div class="cmi-label">Region:</div><div class="cmi-val">${c.region}</div></div></div>
+    <div class="cmi-item"><div class="cmi-icon">💵</div><div><div class="cmi-label">Processing Fee:</div><div class="cmi-val">${feeStr}</div></div></div>
+  `;
+  document.getElementById('countryModal').classList.add('open');
+}
+document.getElementById('countryModal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
+// ── PAYMENT MODAL ──────────────────────────────────────────────────────────────
+function openPaymentModal(c) {
+  document.getElementById('countryModal').classList.remove('open');
+  const feeStr  = c.fee === 0 ? 'FREE' : `AED ${c.fee}`;
+  const svc     = 50;
+  const vat     = Math.round((c.fee + svc) * 0.05);
+  const total   = c.fee + svc + vat;
+  const pmFlagEl = document.getElementById('pmFlag');
+  pmFlagEl.style.display = 'block';
+  pmFlagEl.src = `https://flagcdn.com/w80/${c.iso}.png`;
+  pmFlagEl.onerror = () => { document.getElementById('pmFlagWrap').innerHTML = `<span style="font-size:26px;line-height:32px;display:flex;align-items:center;justify-content:center;height:100%">${c.flag}</span>`; };
+  document.getElementById('pmCountry').textContent = c.name;
+  document.getElementById('pmMeta').textContent = `${typeLabel(c.type)} · ${c.valid}`;
+  document.getElementById('pmAmt').textContent = `AED ${total}`;
+  document.getElementById('pmBtnLabel').textContent = `Pay AED ${total} →`;
+  // build full checkout link
+  const qs = new URLSearchParams({
+    country: c.name, fee: c.fee, type: typeLabel(c.type),
+    valid: c.valid, entry: c.entry, date: c.date,
+    iso: c.iso, img: c.img||'', bg0: c.bg[0], bg1: c.bg[1]
+  }).toString();
+  document.getElementById('pmFullLink').href = `payment.html?${qs}`;
+  // reset form
+  document.getElementById('pmForm').reset();
+  ['pmCardName','pmCardNumber','pmCardExpiry','pmCardCvc','pmEmail'].forEach(id =>
+    document.getElementById(id)?.classList.remove('pm-err'));
+  document.getElementById('pmFormWrap').style.display = '';
+  document.getElementById('pmSuccessWrap').style.display = 'none';
+  document.getElementById('payModal').classList.add('open');
+}
+
+document.getElementById('payModal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
+// Card type detection (shared)
+const CTYPES = [
+  {re:/^4/,         label:'VISA', bg:'#1A1F71'},
+  {re:/^5[1-5]|^2[2-7]/,label:'MC', bg:'#EB001B'},
+  {re:/^3[47]/,     label:'AMEX',bg:'#007BC1'},
+  {re:/^6(?:011|5)/,label:'DISC',bg:'#FF6600'},
+];
+function detectCT(n){ return CTYPES.find(c=>c.re.test(n))||null; }
+
+const pmNum    = document.getElementById('pmCardNumber');
+const pmBadge  = document.getElementById('pmCardBadge');
+const pmExpiry = document.getElementById('pmCardExpiry');
+const pmCvc    = document.getElementById('pmCardCvc');
+
+pmNum.addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g,'').slice(0,16);
+  e.target.value = v.match(/.{1,4}/g)?.join(' ')||v;
+  const ct = detectCT(v);
+  if(ct){ pmBadge.style.cssText=`display:block;background:${ct.bg};color:#fff;border:none`; pmBadge.textContent=ct.label; }
+  else pmBadge.style.display='none';
+});
+pmExpiry.addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g,'').slice(0,4);
+  if(v.length>=2) v=v.slice(0,2)+' / '+v.slice(2);
+  e.target.value=v;
+});
+pmCvc.addEventListener('input', e => { e.target.value=e.target.value.replace(/\D/g,'').slice(0,4); });
+
+function pmValidate() {
+  const fields = [
+    {id:'pmCardName',   ok: document.getElementById('pmCardName').value.trim()!=''},
+    {id:'pmEmail',      ok: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('pmEmail').value)},
+    {id:'pmCardNumber', ok: pmNum.value.replace(/\s/g,'').length>=16},
+    {id:'pmCardExpiry', ok: pmExpiry.value.replace(/[\s\/]/g,'').length>=4},
+    {id:'pmCardCvc',    ok: pmCvc.value.length>=3},
+  ];
+  let ok=true;
+  fields.forEach(f=>{ document.getElementById(f.id).classList.toggle('pm-err',!f.ok); if(!f.ok)ok=false; });
+  return ok;
+}
+
+function genRef(){ const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let r='TV-';for(let i=0;i<8;i++)r+=c[Math.floor(Math.random()*c.length)];return r; }
+
+document.getElementById('pmForm').addEventListener('submit', e => {
+  e.preventDefault();
+  if(!pmValidate()) return;
+  const btn = document.getElementById('pmPayBtn');
+  btn.disabled=true; btn.classList.add('loading');
+  setTimeout(()=>{
+    btn.classList.remove('loading');
+    document.getElementById('pmFormWrap').style.display='none';
+    document.getElementById('pmSuccessRef').textContent=genRef();
+    document.getElementById('pmSuccessWrap').style.display='';
+  }, 2000);
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+renderCards();
+</script>
+
+</body>
+</html>

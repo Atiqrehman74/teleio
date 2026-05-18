@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Visa Status - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+</head>
+<body>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper">
+  <div style="background:#F0FAF4;min-height:90vh;padding:40px 24px">
+    <div style="max-width:680px;margin:0 auto">
+
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Visa Hub
+      </a>
+
+      <div style="text-align:center;margin-bottom:32px">
+        <h1 style="font-size:36px;font-weight:800">Track Your Visa Status</h1>
+        <p style="color:var(--text-muted);margin-top:8px">Real-time updates on your application</p>
+      </div>
+
+      <div class="form-card">
+        <h2>Enter Tracking ID</h2>
+        <p class="form-subtitle">Find your tracking ID in the confirmation email</p>
+        <form id="trackForm" style="display:flex;gap:12px;align-items:flex-end">
+          <div class="form-group" style="flex:1;margin-bottom:0">
+            <input type="text" id="trackingId" class="form-control" placeholder="e.g., VIS-2024-12345" style="height:46px">
+          </div>
+          <button type="submit" class="btn btn-primary" style="height:46px;white-space:nowrap">&#x1F50D; Track</button>
+        </form>
+      </div>
+
+      <div id="trackResult" style="display:none;margin-top:24px"></div>
+
+      <div class="card mt-24">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">Try Sample IDs</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <button class="country-btn" onclick="tryId('VIS-2026-00123')">VIS-2026-00123</button>
+          <button class="country-btn" onclick="tryId('VIS-2026-00456')">VIS-2026-00456</button>
+          <button class="country-btn" onclick="tryId('VIS-2026-00789')">VIS-2026-00789</button>
+        </div>
+      </div>
+
+      <div class="alert alert-info mt-24">
+        &#x2139;&#xFE0F; <span>Tracking IDs are sent to your email after successful application submission. Format: VIS-YYYY-NNNNN</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+function tryId(id) {
+  document.getElementById('trackingId').value = id;
+  document.getElementById('trackForm').dispatchEvent(new Event('submit'));
+}
+</script>
+</body>
+</html>

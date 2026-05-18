@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="../js/nav.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --primary:#4F46E5; --bg:#F8FAFC; --card:#fff; --border:#E2E8F0; --text:#0F172A; --muted:#64748B; --radius:12px; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--bg); }
+
+    .page-hero {
+      background: linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#312E81 100%);
+      padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(79,70,229,.25) 0%, transparent 70%);
+    }
+    .hero-inner { position:relative; max-width:640px; margin:0 auto; }
+    .chip { display:inline-flex; align-items:center; gap:6px;
+      background:rgba(99,102,241,.2); border:1px solid rgba(99,102,241,.35);
+      color:#A5B4FC; border-radius:50px; padding:5px 16px;
+      font-size:12.5px; font-weight:600; margin-bottom:20px; }
+    .hero-inner h1 { font-size:clamp(26px,4vw,40px); font-weight:900; color:#fff; margin-bottom:12px; }
+    .hero-inner p  { color:#94A3B8; font-size:15px; }
+    .hero-inner .updated { color:#6EE7B7; font-size:13px; margin-top:8px; }
+
+    .layout { max-width:960px; margin:0 auto; padding:52px 24px 80px;
+      display:grid; grid-template-columns:220px 1fr; gap:36px; align-items:start; }
+
+    .toc { position:sticky; top:80px; background:var(--card);
+      border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
+    .toc h4 { font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase;
+      letter-spacing:.08em; margin-bottom:14px; }
+    .toc a { display:block; font-size:13px; color:var(--muted); text-decoration:none;
+      padding:5px 0; border-left:2px solid transparent; padding-left:10px;
+      transition:all .15s; margin-bottom:2px; }
+    .toc a:hover { color:var(--primary); border-color:var(--primary); }
+
+    .article {}
+    .doc-section { background:var(--card); border:1px solid var(--border);
+      border-radius:var(--radius); padding:28px 32px; margin-bottom:20px; }
+    .doc-section h2 { font-size:18px; font-weight:800; color:var(--text); margin-bottom:14px;
+      padding-bottom:12px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+    .doc-section h3 { font-size:15px; font-weight:700; margin:18px 0 8px; color:var(--text); }
+    .doc-section p  { color:var(--muted); font-size:14px; line-height:1.8; margin-bottom:12px; }
+    .doc-section p:last-child { margin-bottom:0; }
+    .doc-section ul { list-style:none; display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+    .doc-section ul li { display:flex; gap:10px; font-size:14px; color:var(--muted); line-height:1.6; }
+    .doc-section ul li::before { content:'•'; color:var(--primary); font-weight:700; flex-shrink:0; }
+
+    .warn-box { background:#FEF9C3; border:1px solid #FDE047; border-radius:10px;
+      padding:16px 18px; margin-bottom:16px; }
+    .warn-box p { color:#854D0E; font-size:13.5px; margin:0; }
+
+    .page-footer { background:#0F172A; color:#475569; padding:28px 24px; text-align:center; font-size:13px; }
+    .page-footer a { color:#64748B; text-decoration:none; }
+    .page-footer a:hover { color:#94A3B8; }
+
+    @media(max-width:768px) {
+      .layout { grid-template-columns:1fr; }
+      .toc { position:static; }
+      .doc-section { padding:22px; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="hero-inner">
+    <div class="chip">&#x1F4DC; Legal Document</div>
+    <h1>Terms of Service</h1>
+    <p>Please read these terms carefully before using our services.</p>
+    <p class="updated">Last updated: 1 January 2026 &nbsp;|&nbsp; Effective date: 1 January 2026</p>
+  </div>
+</section>
+
+<div class="layout">
+
+  <nav class="toc">
+    <h4>Contents</h4>
+    <a href="#s1">1. Acceptance</a>
+    <a href="#s2">2. Our Services</a>
+    <a href="#s3">3. User Accounts</a>
+    <a href="#s4">4. Visa Services</a>
+    <a href="#s5">5. Payments &amp; Refunds</a>
+    <a href="#s6">6. Partner Program</a>
+    <a href="#s7">7. Prohibited Use</a>
+    <a href="#s8">8. Intellectual Property</a>
+    <a href="#s9">9. Disclaimers</a>
+    <a href="#s10">10. Limitation of Liability</a>
+    <a href="#s11">11. Termination</a>
+    <a href="#s12">12. Governing Law</a>
+    <a href="#s13">13. Contact</a>
+  </nav>
+
+  <article class="article">
+
+    <div class="warn-box">
+      <p>&#x26A0;&#xFE0F; <strong>Important:</strong> By using Teleio Tourism's website or services, you agree to be bound by these Terms. If you disagree with any part, do not use our services.</p>
+    </div>
+
+    <div class="doc-section" id="s1">
+      <h2>&#x2705; 1. Acceptance of Terms</h2>
+      <p>These Terms of Service ("Terms") govern your access to and use of Teleio Tourism LLC's website, applications, and services (collectively, the "Service"). By accessing or using our Service, you confirm that you are at least 18 years old, have the legal capacity to enter this agreement, and accept these Terms in full.</p>
+      <p>These Terms constitute a legally binding agreement between you and Teleio Tourism LLC, registered in Dubai, UAE.</p>
+    </div>
+
+    <div class="doc-section" id="s2">
+      <h2>&#x1F30D; 2. Our Services</h2>
+      <p>Teleio Tourism provides the following services:</p>
+      <ul>
+        <li>Visa application assistance and processing for 70+ countries</li>
+        <li>Eligibility checking, document review, and submission to relevant embassies</li>
+        <li>Travel booking services: flights, hotels, car rentals, packages, and UAE activities</li>
+        <li>Partner referral program for travel agencies and freelance agents</li>
+        <li>AI-powered travel tools: passport power index, fee calculator, document checklist</li>
+      </ul>
+      <p>We act as an <strong>intermediary</strong> between applicants and embassies/consulates. We do not guarantee visa approvals — final decisions rest solely with the relevant government authority.</p>
+    </div>
+
+    <div class="doc-section" id="s3">
+      <h2>&#x1F464; 3. User Accounts</h2>
+      <p>To access certain features, you must create an account. You agree to:</p>
+      <ul>
+        <li>Provide accurate, complete, and current registration information</li>
+        <li>Maintain the confidentiality of your password and not share it with third parties</li>
+        <li>Notify us immediately of any unauthorised account access</li>
+        <li>Accept responsibility for all activities that occur under your account</li>
+      </ul>
+      <p>We reserve the right to suspend or terminate accounts that violate these Terms or that we reasonably believe are being used fraudulently.</p>
+    </div>
+
+    <div class="doc-section" id="s4">
+      <h2>&#x1F6C2; 4. Visa Application Services</h2>
+      <h3>Your responsibilities</h3>
+      <ul>
+        <li>Providing accurate, truthful, and complete information and documents</li>
+        <li>Ensuring your passport is valid for the required period</li>
+        <li>Meeting all eligibility requirements for the visa you are applying for</li>
+        <li>Applying with sufficient time before your intended travel date</li>
+      </ul>
+      <h3>Our responsibilities</h3>
+      <ul>
+        <li>Reviewing your documents for completeness before submission</li>
+        <li>Submitting your application to the correct authority accurately</li>
+        <li>Keeping you informed of your application status in real time</li>
+        <li>Providing a full refund of our service fee if we make an error in submission</li>
+      </ul>
+      <h3>No guarantee of approval</h3>
+      <p>Visa approval is at the sole discretion of the relevant embassy or government authority. Teleio Tourism cannot guarantee approval and is not liable for refusal. Visa fees paid to embassies are non-refundable regardless of outcome.</p>
+    </div>
+
+    <div class="doc-section" id="s5">
+      <h2>&#x1F4B0; 5. Payments &amp; Refunds</h2>
+      <h3>Pricing</h3>
+      <p>All prices are displayed in AED and include our service fee. Embassy/government fees are itemised separately. Prices are subject to change; you will be notified before any change affects your active application.</p>
+      <h3>Refund policy</h3>
+      <ul>
+        <li><strong>Service fee:</strong> Fully refundable if you cancel before we submit your application to the embassy</li>
+        <li><strong>Service fee after submission:</strong> Non-refundable once submitted, unless we made an error</li>
+        <li><strong>Embassy fees:</strong> Non-refundable in all cases (paid directly to the embassy on your behalf)</li>
+        <li><strong>Visa refusal:</strong> Our service fee is non-refundable for refusals unless the refusal was due to our error</li>
+      </ul>
+      <p>To request a refund, email <a href="mailto:billing@teleiotourism.com">billing@teleiotourism.com</a> within 14 days of your application date.</p>
+    </div>
+
+    <div class="doc-section" id="s6">
+      <h2>&#x1F91D; 6. Partner Program</h2>
+      <p>Partner accounts are subject to these Terms plus our separate <strong>Partner Program Agreement</strong>, available on the Partner Portal. Key provisions:</p>
+      <ul>
+        <li>Commission is earned only on successfully completed bookings (approved visa, confirmed travel)</li>
+        <li>Tier upgrades (Bronze → Silver → Gold → Platinum) are automatic based on confirmed referral count</li>
+        <li>Commission rates and payout schedules are as displayed in the Partner Portal at the time of the booking</li>
+        <li>Fraudulent referrals (self-referrals, fake bookings) will result in immediate account termination and forfeiture of all earned commissions</li>
+        <li>Partners must not make misleading representations about Teleio's services or guarantee visa outcomes to clients</li>
+        <li>We reserve the right to modify commission rates with 30 days' notice to partners</li>
+      </ul>
+    </div>
+
+    <div class="doc-section" id="s7">
+      <h2>&#x26D4; 7. Prohibited Use</h2>
+      <p>You agree not to use our Service to:</p>
+      <ul>
+        <li>Submit false, fraudulent, or misleading visa applications or personal information</li>
+        <li>Impersonate another person or entity</li>
+        <li>Attempt to bypass security measures, scrape data, or reverse-engineer our systems</li>
+        <li>Use our platform for any unlawful purpose under UAE or international law</li>
+        <li>Harass, abuse, or harm other users, partners, or staff</li>
+        <li>Introduce malware, viruses, or other harmful code</li>
+        <li>Resell our services without entering into an authorised partner agreement</li>
+      </ul>
+      <p>Violations may result in immediate account termination and may be reported to relevant authorities.</p>
+    </div>
+
+    <div class="doc-section" id="s8">
+      <h2>&#x1F4A1; 8. Intellectual Property</h2>
+      <p>All content on this platform — including but not limited to the website design, AI tools, logos, text, software, and data — is the property of Teleio Tourism LLC and is protected by UAE and international intellectual property laws.</p>
+      <p>You may not reproduce, distribute, modify, or create derivative works of any part of our Service without our express written permission. Partner marketing materials provided in the Marketing Kit may be used solely for the purpose of promoting Teleio Tourism's services.</p>
+    </div>
+
+    <div class="doc-section" id="s9">
+      <h2>&#x26A0;&#xFE0F; 9. Disclaimers</h2>
+      <p>Our Service is provided on an "as is" and "as available" basis without warranties of any kind. We do not warrant that:</p>
+      <ul>
+        <li>The Service will be uninterrupted, error-free, or free of security vulnerabilities</li>
+        <li>Visa applications will be approved by the relevant authority</li>
+        <li>Prices, visa requirements, or processing times displayed are current (always verify with the embassy)</li>
+        <li>Third-party services integrated with our platform (flights, hotels, maps) will meet your expectations</li>
+      </ul>
+      <p>Embassy requirements, visa policies, and processing times can change without notice. We recommend applying well in advance of your travel date.</p>
+    </div>
+
+    <div class="doc-section" id="s10">
+      <h2>&#x1F6A7; 10. Limitation of Liability</h2>
+      <p>To the fullest extent permitted by UAE law, Teleio Tourism's total liability for any claim arising from your use of the Service shall not exceed the amount you paid us for the specific service giving rise to the claim.</p>
+      <p>We are not liable for: indirect, incidental, or consequential damages; loss of profits or data; losses resulting from visa refusals; or losses caused by third-party service failures (airlines, hotels, embassies).</p>
+    </div>
+
+    <div class="doc-section" id="s11">
+      <h2>&#x1F6AA; 11. Termination</h2>
+      <p>You may terminate your account at any time by emailing <a href="mailto:accounts@teleiotourism.com">accounts@teleiotourism.com</a>. We may suspend or terminate your account immediately if you breach these Terms. Upon termination, your right to use the Service ceases immediately. Active visa applications will continue to be processed unless you request cancellation separately.</p>
+    </div>
+
+    <div class="doc-section" id="s12">
+      <h2>&#x2696;&#xFE0F; 12. Governing Law &amp; Disputes</h2>
+      <p>These Terms are governed by the laws of the Emirate of Dubai and the applicable federal laws of the United Arab Emirates. Any disputes shall be subject to the exclusive jurisdiction of the courts of Dubai, UAE.</p>
+      <p>We encourage you to contact us to resolve any dispute informally before initiating legal proceedings. Most concerns can be resolved quickly by emailing <a href="mailto:info@teleiotourism.com">info@teleiotourism.com</a>.</p>
+    </div>
+
+    <div class="doc-section" id="s13">
+      <h2>&#x1F4AC; 13. Contact</h2>
+      <p>For questions about these Terms:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:legal@teleiotourism.com">legal@teleiotourism.com</a></li>
+        <li><strong>Address:</strong> Legal Department, Teleio Tourism LLC, THE PRISM TOWER, 22nd Floor, Unit 2203, Business Bay, Dubai, UAE</li>
+        <li><strong>Phone:</strong> <a href="tel:+971554642958">+971 55 464 2958</a></li>
+      </ul>
+      <p style="margin-top:14px">We may update these Terms periodically. Continued use of our Service after changes are posted constitutes acceptance of the revised Terms.</p>
+    </div>
+
+  </article>
+</div>
+
+<footer class="page-footer">
+  <p>&copy; 2026 Teleio Tourism &nbsp;|&nbsp; <a href="../index.html">Home</a> &nbsp;|&nbsp; <a href="about.html">About</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a> &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a></p>
+  <p style="margin-top:6px">THE PRISM TOWER, 22nd Floor, Unit 2203, Business Bay, Dubai, UAE</p>
+</footer>
+</body>
+</html>

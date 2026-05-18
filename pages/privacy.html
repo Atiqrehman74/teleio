@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="../js/nav.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --primary:#4F46E5; --bg:#F8FAFC; --card:#fff; --border:#E2E8F0; --text:#0F172A; --muted:#64748B; --radius:12px; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--bg); }
+
+    .page-hero {
+      background: linear-gradient(135deg,#0F172A 0%,#1E293B 50%,#312E81 100%);
+      padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(79,70,229,.25) 0%, transparent 70%);
+    }
+    .hero-inner { position:relative; max-width:640px; margin:0 auto; }
+    .chip { display:inline-flex; align-items:center; gap:6px;
+      background:rgba(99,102,241,.2); border:1px solid rgba(99,102,241,.35);
+      color:#A5B4FC; border-radius:50px; padding:5px 16px;
+      font-size:12.5px; font-weight:600; margin-bottom:20px; }
+    .hero-inner h1 { font-size:clamp(26px,4vw,40px); font-weight:900; color:#fff; margin-bottom:12px; }
+    .hero-inner p  { color:#94A3B8; font-size:15px; }
+    .hero-inner .updated { color:#6EE7B7; font-size:13px; margin-top:8px; }
+
+    /* Layout */
+    .layout { max-width:960px; margin:0 auto; padding:52px 24px 80px;
+      display:grid; grid-template-columns:220px 1fr; gap:36px; align-items:start; }
+
+    /* Sticky TOC */
+    .toc { position:sticky; top:80px; background:var(--card);
+      border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
+    .toc h4 { font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase;
+      letter-spacing:.08em; margin-bottom:14px; }
+    .toc a { display:block; font-size:13px; color:var(--muted); text-decoration:none;
+      padding:5px 0; border-left:2px solid transparent; padding-left:10px;
+      transition:all .15s; margin-bottom:2px; }
+    .toc a:hover { color:var(--primary); border-color:var(--primary); }
+
+    /* Article */
+    .article { }
+    .doc-section { background:var(--card); border:1px solid var(--border);
+      border-radius:var(--radius); padding:28px 32px; margin-bottom:20px; }
+    .doc-section h2 { font-size:18px; font-weight:800; color:var(--text); margin-bottom:14px;
+      padding-bottom:12px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+    .doc-section h3 { font-size:15px; font-weight:700; margin:18px 0 8px; color:var(--text); }
+    .doc-section p  { color:var(--muted); font-size:14px; line-height:1.8; margin-bottom:12px; }
+    .doc-section p:last-child { margin-bottom:0; }
+    .doc-section ul { list-style:none; display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+    .doc-section ul li { display:flex; gap:10px; font-size:14px; color:var(--muted); line-height:1.6; }
+    .doc-section ul li::before { content:'•'; color:var(--primary); font-weight:700; flex-shrink:0; }
+
+    .highlight-box { background:#EEF2FF; border:1px solid #C7D2FE; border-radius:10px;
+      padding:16px 18px; margin-bottom:16px; }
+    .highlight-box p { color:#3730A3; font-size:13.5px; margin:0; }
+
+    /* Footer */
+    .page-footer { background:#0F172A; color:#475569; padding:28px 24px; text-align:center; font-size:13px; }
+    .page-footer a { color:#64748B; text-decoration:none; }
+    .page-footer a:hover { color:#94A3B8; }
+
+    @media(max-width:768px) {
+      .layout { grid-template-columns:1fr; }
+      .toc { position:static; }
+      .doc-section { padding:22px; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="page-hero">
+  <div class="hero-inner">
+    <div class="chip">&#x1F512; Legal Document</div>
+    <h1>Privacy Policy</h1>
+    <p>How Teleio Tourism collects, uses and protects your personal data.</p>
+    <p class="updated">Last updated: 1 January 2026 &nbsp;|&nbsp; Effective date: 1 January 2026</p>
+  </div>
+</section>
+
+<div class="layout">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <h4>Contents</h4>
+    <a href="#s1">1. Who We Are</a>
+    <a href="#s2">2. Data We Collect</a>
+    <a href="#s3">3. How We Use Data</a>
+    <a href="#s4">4. Sharing Data</a>
+    <a href="#s5">5. Cookies</a>
+    <a href="#s6">6. Data Security</a>
+    <a href="#s7">7. Your Rights</a>
+    <a href="#s8">8. Data Retention</a>
+    <a href="#s9">9. Children</a>
+    <a href="#s10">10. Contact Us</a>
+  </nav>
+
+  <!-- Article -->
+  <article class="article">
+
+    <div class="highlight-box">
+      <p><strong>Summary:</strong> We collect only what we need to process your visa or travel booking. We never sell your data. You can request deletion at any time by emailing <a href="mailto:privacy@teleiotourism.com" style="color:#4F46E5">privacy@teleiotourism.com</a>.</p>
+    </div>
+
+    <div class="doc-section" id="s1">
+      <h2>&#x1F3E2; 1. Who We Are</h2>
+      <p>Teleio Tourism LLC ("Teleio", "we", "us", "our") is a travel and visa services company registered in Dubai, UAE. Our registered address is:</p>
+      <p><strong>THE PRISM TOWER, 22nd Floor, Unit 2203, Business Bay, Dubai, UAE</strong></p>
+      <p>This Privacy Policy applies to all services offered through our website, mobile applications, and partner portals. For questions, contact <a href="mailto:privacy@teleiotourism.com">privacy@teleiotourism.com</a>.</p>
+    </div>
+
+    <div class="doc-section" id="s2">
+      <h2>&#x1F4CB; 2. Data We Collect</h2>
+      <h3>Information you provide directly</h3>
+      <ul>
+        <li>Full name, date of birth, nationality, and passport details</li>
+        <li>Email address, phone number, and home address</li>
+        <li>Travel itinerary, destination, and trip purpose</li>
+        <li>Payment information (processed via PCI-compliant third parties — we do not store card numbers)</li>
+        <li>Uploaded documents: passport scans, photos, bank statements, travel insurance</li>
+      </ul>
+      <h3>Information collected automatically</h3>
+      <ul>
+        <li>Browser type, IP address, and device information</li>
+        <li>Pages visited, time spent, and click paths on our site</li>
+        <li>Referral source (including partner referral codes)</li>
+        <li>Cookies and local storage data (see Section 5)</li>
+      </ul>
+    </div>
+
+    <div class="doc-section" id="s3">
+      <h2>&#x2699;&#xFE0F; 3. How We Use Your Data</h2>
+      <ul>
+        <li>Processing and submitting your visa application to the relevant embassy or authority</li>
+        <li>Communicating your application status and any requests for additional documents</li>
+        <li>Processing payments and issuing receipts</li>
+        <li>Personalising your experience (saved searches, preferences, dashboard)</li>
+        <li>Sending service-related notifications (not marketing unless you opt in)</li>
+        <li>Detecting and preventing fraud, identity theft, and account misuse</li>
+        <li>Complying with legal obligations under UAE federal law and embassy requirements</li>
+        <li>Improving our AI models and service quality (anonymised/aggregated data only)</li>
+      </ul>
+    </div>
+
+    <div class="doc-section" id="s4">
+      <h2>&#x1F91D; 4. Sharing Your Data</h2>
+      <p>We do <strong>not</strong> sell, rent, or trade your personal data. We share information only in the following circumstances:</p>
+      <ul>
+        <li><strong>Embassies &amp; consulates:</strong> Required to process your visa application.</li>
+        <li><strong>Partner travel agencies:</strong> If you were referred by a partner, they receive only your booking status, not your documents.</li>
+        <li><strong>Payment processors:</strong> Stripe, PayPal, or local gateway — only what is required for transaction processing.</li>
+        <li><strong>Government authorities:</strong> If required by UAE law, court order, or regulatory obligation.</li>
+        <li><strong>Service providers:</strong> Cloud hosting, email delivery, and analytics — all under data processing agreements.</li>
+      </ul>
+    </div>
+
+    <div class="doc-section" id="s5">
+      <h2>&#x1F36A; 5. Cookies &amp; Tracking</h2>
+      <p>We use cookies and browser local storage for the following purposes:</p>
+      <ul>
+        <li><strong>Essential:</strong> User sessions, authentication tokens, form state</li>
+        <li><strong>Functional:</strong> Language preference, recently viewed countries</li>
+        <li><strong>Analytics:</strong> Anonymised page views via privacy-respecting tools</li>
+        <li><strong>Partner tracking:</strong> Referral codes stored in localStorage to attribute commissions correctly</li>
+      </ul>
+      <p>You can clear cookies and local storage at any time through your browser settings. Essential cookies cannot be disabled without affecting site functionality.</p>
+    </div>
+
+    <div class="doc-section" id="s6">
+      <h2>&#x1F512; 6. Data Security</h2>
+      <p>We take the security of your personal data seriously and implement the following measures:</p>
+      <ul>
+        <li>All data in transit encrypted via TLS 1.3</li>
+        <li>Passwords hashed using SHA-256 with per-user salts — never stored in plain text</li>
+        <li>Passport scans and sensitive documents stored in encrypted object storage with strict access controls</li>
+        <li>Admin access to customer data requires multi-factor authentication</li>
+        <li>Regular third-party security audits</li>
+      </ul>
+      <p>Despite our measures, no internet transmission is 100% secure. If you believe your data has been compromised, contact us immediately at <a href="mailto:security@teleiotourism.com">security@teleiotourism.com</a>.</p>
+    </div>
+
+    <div class="doc-section" id="s7">
+      <h2>&#x1F64B; 7. Your Rights</h2>
+      <p>Under UAE data protection law and applicable international standards, you have the right to:</p>
+      <ul>
+        <li><strong>Access:</strong> Request a copy of all personal data we hold about you</li>
+        <li><strong>Correction:</strong> Request correction of inaccurate or incomplete data</li>
+        <li><strong>Deletion:</strong> Request deletion of your account and associated data (subject to legal retention requirements)</li>
+        <li><strong>Portability:</strong> Request your data in a machine-readable format</li>
+        <li><strong>Objection:</strong> Object to processing based on legitimate interests</li>
+        <li><strong>Withdraw consent:</strong> Withdraw marketing consent at any time</li>
+      </ul>
+      <p>To exercise any right, email <a href="mailto:privacy@teleiotourism.com">privacy@teleiotourism.com</a>. We will respond within 30 days.</p>
+    </div>
+
+    <div class="doc-section" id="s8">
+      <h2>&#x1F4C5; 8. Data Retention</h2>
+      <p>We retain your data for the following periods:</p>
+      <ul>
+        <li><strong>Active account data:</strong> For as long as your account is active</li>
+        <li><strong>Visa application records:</strong> 7 years (required by UAE law and embassy requirements)</li>
+        <li><strong>Payment records:</strong> 7 years (financial regulation)</li>
+        <li><strong>Activity logs:</strong> 90 days, then automatically deleted</li>
+        <li><strong>Deleted accounts:</strong> Data purged within 30 days of deletion request, except where legally required to retain</li>
+      </ul>
+    </div>
+
+    <div class="doc-section" id="s9">
+      <h2>&#x1F476; 9. Children's Privacy</h2>
+      <p>Our services are not directed at children under 18. We do not knowingly collect personal data from minors. If a visa application involves a minor, parental consent is required and the parent/guardian is the account holder.</p>
+      <p>If you believe we have inadvertently collected data from a child, please contact us immediately at <a href="mailto:privacy@teleiotourism.com">privacy@teleiotourism.com</a>.</p>
+    </div>
+
+    <div class="doc-section" id="s10">
+      <h2>&#x1F4AC; 10. Contact Us About Privacy</h2>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:privacy@teleiotourism.com">privacy@teleiotourism.com</a></li>
+        <li><strong>Post:</strong> Data Protection Officer, Teleio Tourism LLC, THE PRISM TOWER, 22nd Floor, Unit 2203, Business Bay, Dubai, UAE</li>
+        <li><strong>Phone:</strong> <a href="tel:+971554642958">+971 55 464 2958</a></li>
+      </ul>
+      <p style="margin-top:14px">We may update this Privacy Policy from time to time. We will notify you of significant changes via email or a prominent notice on our website. The "Last updated" date at the top of this page reflects the most recent revision.</p>
+    </div>
+
+  </article>
+</div>
+
+<footer class="page-footer">
+  <p>&copy; 2026 Teleio Tourism &nbsp;|&nbsp; <a href="../index.html">Home</a> &nbsp;|&nbsp; <a href="about.html">About</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a> &nbsp;|&nbsp; <a href="terms.html">Terms of Service</a></p>
+  <p style="margin-top:6px">THE PRISM TOWER, 22nd Floor, Unit 2203, Business Bay, Dubai, UAE</p>
+</footer>
+</body>
+</html>

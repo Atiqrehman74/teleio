@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+</head>
+<body>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper">
+  <div style="background:var(--bg-light);min-height:90vh;padding:32px 24px">
+    <div style="max-width:1200px;margin:0 auto">
+
+      <!-- Welcome Banner -->
+      <div class="dash-welcome">
+        <div class="dash-avatar" id="dash-avatar" style="font-size:22px;font-weight:700;letter-spacing:-0.5px">?</div>
+        <div style="flex:1">
+          <h2 id="dash-greeting">Welcome back!</h2>
+          <p id="dash-subtext">Your travel &amp; visa dashboard — all your applications and trips in one place.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap">
+          <a href="apply-visa.html" class="btn btn-accent">+ Apply for Visa</a>
+          <a href="track-status.html" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:white;background:rgba(255,255,255,0.12)">Track Status</a>
+          <button onclick="AUTH.signOut();window.location.href='signin.html'" class="btn btn-outline" style="border-color:rgba(255,255,255,0.4);color:white;background:rgba(255,255,255,0.08)">Sign Out</button>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="dash-stats">
+        <div class="dash-stat" style="border-top-color:#7C3AED">
+          <div class="dash-stat-icon">📋</div>
+          <div class="dash-stat-val">3</div>
+          <div class="dash-stat-label">Active Visa Applications</div>
+        </div>
+        <div class="dash-stat" style="border-top-color:#10B981">
+          <div class="dash-stat-icon">✈️</div>
+          <div class="dash-stat-val">2</div>
+          <div class="dash-stat-label">Upcoming Trips</div>
+        </div>
+        <div class="dash-stat" style="border-top-color:#3B82F6">
+          <div class="dash-stat-icon">📁</div>
+          <div class="dash-stat-val">7</div>
+          <div class="dash-stat-label">Saved Documents</div>
+        </div>
+        <div class="dash-stat" style="border-top-color:#F59E0B">
+          <div class="dash-stat-icon">🔔</div>
+          <div class="dash-stat-val">4</div>
+          <div class="dash-stat-label">New Notifications</div>
+        </div>
+      </div>
+
+      <!-- Main Layout -->
+      <div class="dash-layout">
+
+        <!-- Left Column -->
+        <div>
+
+          <!-- My Visa Applications -->
+          <div class="card mb-24">
+            <div class="dash-section-title">
+              📋 My Visa Applications
+              <a href="apply-visa.html" class="btn btn-primary" style="margin-left:auto;padding:7px 16px;font-size:13px">+ New Application</a>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="app-table">
+                <thead>
+                  <tr>
+                    <th>Tracking ID</th>
+                    <th>Destination</th>
+                    <th>Type</th>
+                    <th>Submitted</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code style="font-size:12px;background:#F3F4F6;padding:2px 6px;border-radius:4px">VIS-2026-00123</code></td>
+                    <td><strong>🇬🇧 United Kingdom</strong></td>
+                    <td>Tourist</td>
+                    <td>May 10, 2026</td>
+                    <td><span class="pill pill-blue">In Review</span></td>
+                    <td><a href="track-status.html" class="btn btn-outline" style="padding:5px 12px;font-size:12px">Track</a></td>
+                  </tr>
+                  <tr>
+                    <td><code style="font-size:12px;background:#F3F4F6;padding:2px 6px;border-radius:4px">VIS-2026-00456</code></td>
+                    <td><strong>🇺🇸 United States</strong></td>
+                    <td>Business</td>
+                    <td>May 5, 2026</td>
+                    <td><span class="pill pill-green">Approved ✓</span></td>
+                    <td><a href="track-status.html" class="btn btn-outline" style="padding:5px 12px;font-size:12px">View</a></td>
+                  </tr>
+                  <tr>
+                    <td><code style="font-size:12px;background:#F3F4F6;padding:2px 6px;border-radius:4px">VIS-2026-00789</code></td>
+                    <td><strong>🇨🇦 Canada</strong></td>
+                    <td>Tourist</td>
+                    <td>Apr 28, 2026</td>
+                    <td><span class="pill pill-violet">Documents Pending</span></td>
+                    <td><a href="document-checklist.html" class="btn btn-outline" style="padding:5px 12px;font-size:12px">Upload</a></td>
+                  </tr>
+                  <tr>
+                    <td><code style="font-size:12px;background:#F3F4F6;padding:2px 6px;border-radius:4px">VIS-2026-00321</code></td>
+                    <td><strong>🇩🇪 Germany</strong></td>
+                    <td>Tourist</td>
+                    <td>Apr 15, 2026</td>
+                    <td><span class="pill pill-gray">Completed</span></td>
+                    <td><a href="track-status.html" class="btn btn-outline" style="padding:5px 12px;font-size:12px">View</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Upcoming Trips -->
+          <div class="card mb-24">
+            <div class="dash-section-title">
+              ✈️ My Upcoming Trips
+              <a href="travel.html" class="btn btn-primary" style="margin-left:auto;padding:7px 16px;font-size:13px">+ Book Trip</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="trip-card">
+                <div class="trip-thumb" style="background:linear-gradient(135deg,#667EEA,#764BA2)">🗼</div>
+                <div class="trip-body">
+                  <div class="trip-dest">Paris, France</div>
+                  <div class="trip-dates">📅 Jun 15 – Jun 22, 2026 · 7 nights</div>
+                  <div class="trip-tags">
+                    <span class="pill pill-green">Visa Approved</span>
+                    <span class="pill pill-blue">Flight Booked</span>
+                    <span class="pill pill-violet">Hotel Confirmed</span>
+                  </div>
+                </div>
+                <div style="padding:16px;display:flex;align-items:center">
+                  <a href="travel.html" class="btn btn-outline" style="padding:8px 14px;font-size:13px;white-space:nowrap">Manage Trip</a>
+                </div>
+              </div>
+
+              <div class="trip-card">
+                <div class="trip-thumb" style="background:linear-gradient(135deg,#11998e,#38ef7d)">🏝️</div>
+                <div class="trip-body">
+                  <div class="trip-dest">Maldives</div>
+                  <div class="trip-dates">📅 Jul 3 – Jul 8, 2026 · 5 nights</div>
+                  <div class="trip-tags">
+                    <span class="pill pill-green">Visa-Free</span>
+                    <span class="pill pill-gray">Flight Pending</span>
+                  </div>
+                </div>
+                <div style="padding:16px;display:flex;align-items:center">
+                  <a href="travel.html" class="btn btn-primary" style="padding:8px 14px;font-size:13px;white-space:nowrap">Book Flight</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- UAE Tourism Activities -->
+          <div class="card mb-24">
+            <div class="dash-section-title">
+              🇦🇪 UAE Activities — Explore Locally
+            </div>
+            <div class="grid-3" style="gap:14px">
+              <a href="uae-tourism.html#desert" style="display:block;border-radius:var(--radius);overflow:hidden;text-decoration:none;color:var(--text-dark);box-shadow:var(--shadow)">
+                <div style="height:120px;background:linear-gradient(135deg,#C2933A,#E5B84A);display:flex;align-items:center;justify-content:center;font-size:40px">🏜️</div>
+                <div style="padding:12px"><strong style="font-size:14px">Desert Safari</strong><p style="font-size:12px;color:var(--text-muted);margin-top:2px">From AED 150/person</p></div>
+              </a>
+              <a href="uae-tourism.html#burj" style="display:block;border-radius:var(--radius);overflow:hidden;text-decoration:none;color:var(--text-dark);box-shadow:var(--shadow)">
+                <div style="height:120px;background:linear-gradient(135deg,#1A1A2E,#16213E);display:flex;align-items:center;justify-content:center;font-size:40px">🗼</div>
+                <div style="padding:12px"><strong style="font-size:14px">Burj Khalifa</strong><p style="font-size:12px;color:var(--text-muted);margin-top:2px">From AED 140/person</p></div>
+              </a>
+              <a href="uae-tourism.html#balloon" style="display:block;border-radius:var(--radius);overflow:hidden;text-decoration:none;color:var(--text-dark);box-shadow:var(--shadow)">
+                <div style="height:120px;background:linear-gradient(135deg,#E63946,#F4A261);display:flex;align-items:center;justify-content:center;font-size:40px">🎈</div>
+                <div style="padding:12px"><strong style="font-size:14px">Hot Air Balloon</strong><p style="font-size:12px;color:var(--text-muted);margin-top:2px">From AED 800/person</p></div>
+              </a>
+            </div>
+            <div style="margin-top:14px">
+              <a href="uae-tourism.html" class="btn btn-outline btn-full" style="justify-content:center">View All UAE Activities →</a>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="card">
+            <div class="dash-section-title">🕐 Recent Activity</div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-left"><div class="timeline-dot done"></div><div class="timeline-connector"></div></div>
+                <div class="timeline-content">
+                  <div class="timeline-title">UK Visa Application Submitted</div>
+                  <div class="timeline-meta">May 10, 2026 · 10:32 AM — Application ID: VIS-2026-00123</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-left"><div class="timeline-dot done"></div><div class="timeline-connector"></div></div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Documents Verified for UK Visa</div>
+                  <div class="timeline-meta">May 11, 2026 · 2:15 PM — All documents accepted</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-left"><div class="timeline-dot active"></div><div class="timeline-connector"></div></div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Canada Visa — Documents Required</div>
+                  <div class="timeline-meta">May 12, 2026 · 9:00 AM — Please upload bank statement</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-left"><div class="timeline-dot done"></div><div class="timeline-connector"></div></div>
+                <div class="timeline-content">
+                  <div class="timeline-title">US Business Visa — Approved!</div>
+                  <div class="timeline-meta">May 5, 2026 · 3:45 PM — Valid for 10 years</div>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-left"><div class="timeline-dot done"></div></div>
+                <div class="timeline-content">
+                  <div class="timeline-title">Paris Trip — Hotels Booked</div>
+                  <div class="timeline-meta">May 3, 2026 · 11:20 AM — Le Marais Hotel, 7 nights</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Sidebar -->
+        <div>
+
+          <!-- Quick Actions -->
+          <div class="card mb-20">
+            <div class="dash-section-title">⚡ Quick Actions</div>
+            <a href="eligibility-checker.html" class="quick-action">
+              <div class="quick-action-icon" style="background:#F3EDFF">🛡️</div>
+              <div><strong>Check Visa Eligibility</strong><span>Instant checker for 195+ countries</span></div>
+            </a>
+            <a href="apply-visa.html" class="quick-action">
+              <div class="quick-action-icon" style="background:#EFF6FF">📋</div>
+              <div><strong>Apply for Visa</strong><span>AI-guided application</span></div>
+            </a>
+            <a href="track-status.html" class="quick-action">
+              <div class="quick-action-icon" style="background:#ECFDF5">🕐</div>
+              <div><strong>Track Application</strong><span>Real-time status updates</span></div>
+            </a>
+            <a href="travel.html" class="quick-action">
+              <div class="quick-action-icon" style="background:#EFF6FF">✈️</div>
+              <div><strong>Book a Flight</strong><span>Compare & book instantly</span></div>
+            </a>
+            <a href="photo-tool.html" class="quick-action">
+              <div class="quick-action-icon" style="background:#FEF2F2">📷</div>
+              <div><strong>Visa Photo Tool</strong><span>AI compliance checker</span></div>
+            </a>
+            <a href="uae-tourism.html" class="quick-action">
+              <div class="quick-action-icon" style="background:#FFF7ED">🇦🇪</div>
+              <div><strong>UAE Activities</strong><span>Book local experiences</span></div>
+            </a>
+          </div>
+
+          <!-- Notifications -->
+          <div class="card mb-20">
+            <div class="dash-section-title">🔔 Notifications</div>
+            <div class="notif-item">
+              <div class="notif-dot unread"></div>
+              <div>
+                <strong style="font-size:13.5px">UK Visa — Under Review</strong>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:2px">Expected decision by May 15, 2026</p>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-dot unread"></div>
+              <div>
+                <strong style="font-size:13.5px">Canada Visa — Upload Required</strong>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:2px">Bank statement (last 3 months) needed</p>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-dot unread"></div>
+              <div>
+                <strong style="font-size:13.5px">Paris Trip — Check-in Reminder</strong>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:2px">Online check-in opens Jun 8, 2026</p>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-dot unread"></div>
+              <div>
+                <strong style="font-size:13.5px">Desert Safari Booking Confirmed</strong>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:2px">Pickup: May 20, 2026 at 3:30 PM</p>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-dot read"></div>
+              <div>
+                <strong style="font-size:13.5px">US Visa Approved</strong>
+                <p style="font-size:12px;color:var(--text-muted);margin-top:2px">Valid 10 years, multiple entry</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passport Info -->
+          <div class="card" style="background:linear-gradient(135deg,#0F172A,#1E293B);color:white">
+            <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94A3B8;margin-bottom:16px">&#x1F6C2; My Passport</div>
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+              <div id="pp-flag" style="font-size:42px">&#x1F6C2;</div>
+              <div>
+                <div id="pp-nationality" style="font-size:18px;font-weight:700">—</div>
+                <div style="font-size:13px;color:#94A3B8">Member since <span id="pp-since">—</span></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+              <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:12px">
+                <div id="pp-free" style="font-size:22px;font-weight:800;color:#84CC16">—</div>
+                <div style="font-size:11px;color:#94A3B8">Visa-Free Countries</div>
+              </div>
+              <div style="background:rgba(255,255,255,0.08);border-radius:8px;padding:12px">
+                <div id="pp-arrival" style="font-size:22px;font-weight:800;color:#3B82F6">—</div>
+                <div style="font-size:11px;color:#94A3B8">Visa on Arrival</div>
+              </div>
+            </div>
+            <a href="passport-index.html" class="btn btn-accent btn-full" style="justify-content:center">View Full Passport Power &#x2192;</a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+(function() {
+  var user = AUTH.getCurrentUser();
+  if (!user) { window.location.href = 'signin.html'; return; }
+
+  /* Welcome banner */
+  var initials = (user.firstName[0] + (user.lastName ? user.lastName[0] : '')).toUpperCase();
+  document.getElementById('dash-avatar').textContent    = initials;
+  document.getElementById('dash-greeting').textContent  = 'Welcome back, ' + user.firstName + (user.lastName ? ' ' + user.lastName : '') + '!';
+  document.getElementById('dash-subtext').textContent   = 'Signed in as ' + user.email + ' — manage your applications and trips below.';
+
+  /* Passport card */
+  var passportData = {
+    'Emirati':    { flag: '&#x1F1E6;&#x1F1EA;', free: 175, arrival: 37 },
+    'Pakistani':  { flag: '&#x1F1F5;&#x1F1F0;', free: 33,  arrival: 42 },
+    'Indian':     { flag: '&#x1F1EE;&#x1F1F3;', free: 62,  arrival: 32 },
+    'British':    { flag: '&#x1F1EC;&#x1F1E7;', free: 190, arrival: 13 },
+    'American':   { flag: '&#x1F1FA;&#x1F1F8;', free: 186, arrival: 9  },
+    'Canadian':   { flag: '&#x1F1E8;&#x1F1E6;', free: 185, arrival: 11 },
+    'Australian': { flag: '&#x1F1E6;&#x1F1FA;', free: 185, arrival: 10 }
+  };
+  var pp = passportData[user.nationality] || { flag: '&#x1F6C2;', free: '—', arrival: '—' };
+  document.getElementById('pp-flag').innerHTML        = pp.flag;
+  document.getElementById('pp-nationality').textContent = user.nationality || 'Not set';
+  document.getElementById('pp-free').textContent      = pp.free;
+  document.getElementById('pp-arrival').textContent   = pp.arrival;
+  var since = new Date(user.loginAt || Date.now());
+  document.getElementById('pp-since').textContent     = since.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+})();
+</script>
+</body>
+</html>

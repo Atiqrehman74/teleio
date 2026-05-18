@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Visa Eligibility Checker - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+</head>
+<body>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper">
+  <div style="background:var(--bg-light);min-height:90vh;padding:40px 24px">
+    <div style="max-width:720px;margin:0 auto">
+
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Visa Hub
+      </a>
+
+      <div class="page-title-section" style="padding:0 0 32px;text-align:center">
+        <h1 style="font-size:36px;font-weight:800">AI Visa Eligibility Checker</h1>
+        <p style="color:var(--text-muted);margin-top:8px">Get instant visa requirements and eligibility status</p>
+      </div>
+
+      <div class="form-card">
+        <h2>Check Your Eligibility</h2>
+        <p class="form-subtitle">Enter your travel details below</p>
+
+        <form id="eligibilityForm">
+          <div class="form-group">
+            <label for="nationality">Your Nationality</label>
+            <input type="text" id="nationality" class="form-control" placeholder="e.g., Pakistan">
+          </div>
+          <div class="form-group">
+            <label for="destination">Destination Country</label>
+            <input type="text" id="destination" class="form-control" placeholder="e.g., United States">
+          </div>
+          <div class="form-group">
+            <label for="purpose">Travel Purpose</label>
+            <select id="purpose" class="form-control">
+              <option value="tourism">Tourism</option>
+              <option value="business">Business</option>
+              <option value="student">Student</option>
+              <option value="work">Work</option>
+              <option value="transit">Transit</option>
+              <option value="medical">Medical</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full btn-lg">&#x2726; Check Eligibility</button>
+        </form>
+      </div>
+
+      <div id="eligibilityResult" style="display:none;margin-top:24px"></div>
+
+      <div class="card mt-24">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">Popular Checks</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="country-btn" onclick="quickCheck('Pakistan','United Kingdom')">Pakistan &rarr; UK</button>
+          <button class="country-btn" onclick="quickCheck('India','United States')">India &rarr; USA</button>
+          <button class="country-btn" onclick="quickCheck('Bangladesh','Canada')">Bangladesh &rarr; Canada</button>
+          <button class="country-btn" onclick="quickCheck('Nigeria','Germany')">Nigeria &rarr; Germany</button>
+          <button class="country-btn" onclick="quickCheck('Philippines','Japan')">Philippines &rarr; Japan</button>
+          <button class="country-btn" onclick="quickCheck('Indonesia','Australia')">Indonesia &rarr; Australia</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+function quickCheck(from, to) {
+  document.getElementById('nationality').value = from;
+  document.getElementById('destination').value = to;
+  document.getElementById('eligibilityForm').dispatchEvent(new Event('submit'));
+}
+</script>
+</body>
+</html>

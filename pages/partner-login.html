@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partner Login — Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0F172A; min-height: 100vh;
+           display: flex; align-items: center; justify-content: center; padding: 24px; }
+
+    .wrap { width: 100%; max-width: 460px; }
+
+    .logo { text-align: center; margin-bottom: 32px; }
+    .logo-icon { width: 52px; height: 52px; border-radius: 14px;
+      background: linear-gradient(135deg, #059669, #10B981);
+      display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .logo h1 { color: #fff; font-size: 22px; font-weight: 800; }
+    .logo p  { color: #64748B; font-size: 13px; margin-top: 4px; }
+
+    .tabs { display: flex; background: #1E293B; border-radius: 12px; padding: 4px;
+      margin-bottom: 24px; }
+    .tab { flex: 1; padding: 10px; border: none; background: none; border-radius: 9px;
+      font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+      color: #64748B; transition: all .15s; }
+    .tab.active { background: #fff; color: #0F172A; box-shadow: 0 1px 4px rgba(0,0,0,.15); }
+
+    .card { background: #1E293B; border: 1px solid #334155; border-radius: 18px; padding: 28px; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .field { margin-bottom: 16px; }
+    .field label { display: block; color: #94A3B8; font-size: 11.5px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 7px; }
+    .field input, .field select { width: 100%; background: #0F172A; border: 1.5px solid #334155;
+      border-radius: 10px; padding: 11px 14px; color: #F1F5F9; font-size: 14px;
+      font-family: inherit; outline: none; transition: border-color .15s;
+      -webkit-appearance: none; }
+    .field input:focus, .field select:focus { border-color: #10B981; }
+    .field input::placeholder { color: #475569; }
+    .field select option { background: #1E293B; }
+
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .btn-main { width: 100%; background: linear-gradient(135deg,#059669,#10B981);
+      color: #fff; border: none; border-radius: 10px; padding: 13px;
+      font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit;
+      transition: opacity .15s; margin-top: 6px; }
+    .btn-main:hover { opacity: .9; }
+    .btn-main:disabled { opacity: .6; cursor: not-allowed; }
+
+    .error { background: #7F1D1D; border: 1px solid #EF4444; color: #FCA5A5;
+      border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: none; }
+    .success { background: #064E3B; border: 1px solid #10B981; color: #6EE7B7;
+      border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: none; }
+
+    .hint { background: #0F172A; border: 1px solid #1E3A5F; border-radius: 10px;
+      padding: 14px; margin-top: 20px; }
+    .hint h4 { color: #34D399; font-size: 11.5px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .06em; margin-bottom: 8px; }
+    .hint-row { display: flex; justify-content: space-between; font-size: 12px;
+      padding: 4px 0; color: #94A3B8; }
+    .hint-row code { color: #60A5FA; font-family: monospace; }
+
+    .back { text-align: center; margin-top: 20px; }
+    .back a { color: #475569; font-size: 13px; text-decoration: none; transition: color .15s; }
+    .back a:hover { color: #94A3B8; }
+    .back span { color: #334155; margin: 0 6px; }
+
+    .terms { color: #475569; font-size: 11.5px; margin-top: 12px; text-align: center; line-height: 1.5; }
+    .terms a { color: #34D399; text-decoration: none; }
+  </style>
+</head>
+<body>
+<script src="../js/partner-auth.js"></script>
+
+<div class="wrap">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+      </svg>
+    </div>
+    <h1>Partner Portal</h1>
+    <p>Teleio Tourism Partnership Program</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('login')">Sign In</button>
+    <button class="tab" onclick="switchTab('register')">Become a Partner</button>
+  </div>
+
+  <div class="card">
+    <!-- LOGIN -->
+    <div id="panel-login" class="panel active">
+      <div id="login-error" class="error"></div>
+      <div id="login-success" class="success"></div>
+      <form onsubmit="doLogin(event)">
+        <div class="field">
+          <label>Partner Email</label>
+          <input type="email" id="l-email" placeholder="your@agency.com" required autocomplete="username">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="l-pass" placeholder="Enter your password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn-main" id="login-btn">Sign In to Partner Portal</button>
+      </form>
+
+      <div class="hint">
+        <h4>&#x1F511; Demo Account</h4>
+        <div class="hint-row"><span>Email</span><code>demo@teleio.com</code></div>
+        <div class="hint-row"><span>Password</span><code>Partner@2026!</code></div>
+        <div class="hint-row"><span>Tier</span><span style="color:#D97706;font-weight:600">&#x1F947; Gold Partner</span></div>
+      </div>
+    </div>
+
+    <!-- REGISTER -->
+    <div id="panel-register" class="panel">
+      <div id="reg-error" class="error"></div>
+      <div id="reg-success" class="success"></div>
+      <form onsubmit="doRegister(event)">
+        <div class="row2">
+          <div class="field">
+            <label>First Name</label>
+            <input type="text" id="r-fname" placeholder="John" required>
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input type="text" id="r-lname" placeholder="Smith" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>Company / Agency Name</label>
+          <input type="text" id="r-company" placeholder="e.g. Sky Travel Agency" required>
+        </div>
+        <div class="field">
+          <label>Partner Type</label>
+          <select id="r-type" required>
+            <option value="">Select type...</option>
+            <option value="travel-agency">Travel Agency</option>
+            <option value="tour-operator">Tour Operator</option>
+            <option value="hotel">Hotel / Resort</option>
+            <option value="freelance">Freelance Agent</option>
+            <option value="corporate">Corporate</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Business Email</label>
+          <input type="email" id="r-email" placeholder="you@company.com" required autocomplete="username">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" id="r-phone" placeholder="+971 50 000 0000">
+          </div>
+          <div class="field">
+            <label>Country</label>
+            <input type="text" id="r-country" placeholder="UAE">
+          </div>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" id="r-pass" placeholder="Min 8 characters" required autocomplete="new-password" minlength="8">
+        </div>
+        <button type="submit" class="btn-main" id="reg-btn">Create Partner Account</button>
+      </form>
+      <p class="terms">By signing up you agree to our <a href="#">Partner Terms</a> &amp; <a href="#">Commission Policy</a>.</p>
+    </div>
+  </div>
+
+  <div class="back">
+    <a href="../pages/partner-program.html">&#x1F4CB; View Partnership Program</a>
+    <span>|</span>
+    <a href="../index.html">&#x2190; Back to main site</a>
+  </div>
+</div>
+
+<script>
+  if (PARTNER_AUTH.isAuthenticated()) window.location.href = 'partner-dashboard.html';
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1)));
+    document.getElementById('panel-login').classList.toggle('active', tab==='login');
+    document.getElementById('panel-register').classList.toggle('active', tab==='register');
+  }
+
+  async function doLogin(e) {
+    e.preventDefault();
+    var btn = document.getElementById('login-btn');
+    var err = document.getElementById('login-error');
+    err.style.display = 'none';
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    try {
+      await PARTNER_AUTH.signIn(
+        document.getElementById('l-email').value,
+        document.getElementById('l-pass').value
+      );
+      window.location.href = 'partner-dashboard.html';
+    } catch(ex) {
+      err.textContent = ex.message; err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Sign In to Partner Portal';
+    }
+  }
+
+  async function doRegister(e) {
+    e.preventDefault();
+    var btn = document.getElementById('reg-btn');
+    var err = document.getElementById('reg-error');
+    err.style.display = 'none';
+    btn.disabled = true; btn.textContent = 'Creating account…';
+    try {
+      await PARTNER_AUTH.register({
+        firstName: document.getElementById('r-fname').value,
+        lastName:  document.getElementById('r-lname').value,
+        company:   document.getElementById('r-company').value,
+        type:      document.getElementById('r-type').value,
+        email:     document.getElementById('r-email').value,
+        password:  document.getElementById('r-pass').value,
+        phone:     document.getElementById('r-phone').value,
+        country:   document.getElementById('r-country').value
+      });
+      window.location.href = 'partner-dashboard.html';
+    } catch(ex) {
+      err.textContent = ex.message; err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Create Partner Account';
+    }
+  }
+</script>
+</body>
+</html>

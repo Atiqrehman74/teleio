@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Singapore Passport - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+  <style>
+    .passport-book {
+      width: 340px;
+      min-height: 480px;
+      background: linear-gradient(145deg, #8B1A1A, #C0392B, #8B1A1A);
+      border-radius: 8px 16px 16px 8px;
+      padding: 40px 32px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: -8px 8px 30px rgba(0,0,0,0.35), 4px 0 0 #7a1515;
+      position: relative;
+    }
+    .passport-book::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 18px;
+      background: linear-gradient(90deg, #5a0f0f, #7a1515, #8B1A1A);
+      border-radius: 8px 0 0 8px;
+    }
+    .passport-emblem {
+      font-size: 80px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+    }
+    .passport-text {
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.9;
+      line-height: 1.8;
+    }
+    .passport-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+    .passport-flag {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.4);
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.15);
+      letter-spacing: .05em;
+    }
+    .visa-map {
+      background: #F8FAFC;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+    .map-legend { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .simple-map {
+      width: 100%; height: 300px;
+      background: linear-gradient(180deg, #E0F2FE 0%, #BAE6FD 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-regions {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 40% at 20% 55%, #86EFAC 0%, transparent 60%),
+        radial-gradient(ellipse 30% 40% at 55% 50%, #86EFAC 0%, transparent 50%),
+        radial-gradient(ellipse 35% 35% at 72% 48%, #86EFAC 0%, transparent 50%),
+        radial-gradient(ellipse 12% 20% at 42% 52%, #FCA5A5 0%, transparent 60%),
+        radial-gradient(ellipse 15% 25% at 58% 55%, #93C5FD 0%, transparent 60%),
+        radial-gradient(ellipse 8% 12% at 80% 50%, #C4B5FD 0%, transparent 60%);
+    }
+    .map-label { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.8); z-index: 1; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+  </style>
+</head>
+<body>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper">
+  <div style="background:white;padding:32px 24px">
+    <div style="max-width:1100px;margin:0 auto">
+
+      <!-- Nav Row -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px">
+        <a href="passport-index.html" class="back-link" style="margin:0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Index
+        </a>
+        <a href="#" class="back-link" style="margin:0;flex-direction:row-reverse">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+
+      <!-- Passport Hero -->
+      <div class="passport-hero-grid" style="display:grid;grid-template-columns:auto 1fr;gap:60px;align-items:center;margin-bottom:48px">
+        <div class="passport-book-wrap">
+          <div class="passport-book">
+            <div class="passport-text">Republic of<br>Singapore</div>
+            <div class="passport-emblem">&#x1F981;</div>
+            <div class="passport-title">Passport</div>
+            <div class="passport-flag">SG</div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Passport Power Index</div>
+          <h1 style="font-size:clamp(32px,5vw,52px);font-weight:800;margin-bottom:6px">Singapore</h1>
+          <p style="color:var(--text-muted);font-size:16px;margin-bottom:28px">Global Travel Freedom Analysis</p>
+
+          <div style="display:inline-flex;align-items:center;gap:16px;background:#111;border-radius:12px;padding:16px 24px;margin-bottom:24px;flex-wrap:wrap">
+            <div style="text-align:center">
+              <div style="font-size:28px;font-weight:800;color:white">#1</div>
+              <div style="font-size:11px;color:#9CA3AF">Global Rank</div>
+            </div>
+            <div style="width:1px;height:40px;background:#374151"></div>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:white">Out of 198 countries</div>
+              <div style="font-size:12px;color:#9CA3AF">Henley Passport Index</div>
+            </div>
+          </div>
+
+          <div>
+            <button class="btn btn-dark" style="display:inline-flex;align-items:center;gap:8px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              Share Passport
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="passport-stats-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:40px">
+        <div class="stat-box"><div class="stat-icon">&#x1F30D;</div><div class="stat-value">165</div><div class="stat-label">Visa-Free</div></div>
+        <div class="stat-box"><div class="stat-icon">&#x2708;&#xFE0F;</div><div class="stat-value">28</div><div class="stat-label">Visa on Arrival</div></div>
+        <div class="stat-box"><div class="stat-icon">&#x1F4CB;</div><div class="stat-value">16</div><div class="stat-label">eVisa</div></div>
+        <div class="stat-box"><div class="stat-icon">&#x1F6E1;&#xFE0F;</div><div class="stat-value">17</div><div class="stat-label">Visa Required</div></div>
+        <div class="stat-box"><div class="stat-icon">&#x1F4C8;</div><div class="stat-value">85%</div><div class="stat-label">Mobility Score</div></div>
+        <div class="stat-box"><div class="stat-icon">&#x1F451;</div><div class="stat-value">#1</div><div class="stat-label">Global Rank</div></div>
+      </div>
+
+      <!-- Info Cards -->
+      <div class="grid-3 mb-40">
+        <div class="stat-box">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div><div class="stat-label">World Reach</div><div class="stat-value" style="font-size:36px">85%</div><div class="stat-label">of all countries accessible</div></div>
+            <span style="font-size:20px">&#x1F30D;</span>
+          </div>
+          <div class="passport-progress" style="margin-top:12px"><div class="passport-progress-fill" style="width:85%"></div></div>
+        </div>
+        <div class="stat-box">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div><div class="stat-label">Population</div><div class="stat-value" style="font-size:36px">5.9M</div><div class="stat-label">passport holders worldwide</div></div>
+            <span style="font-size:20px">&#x1F465;</span>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div style="display:flex;justify-content:space-between;align-items:start">
+            <div><div class="stat-label">Region</div><div class="stat-value" style="font-size:36px">Asia</div><div class="stat-label">continental region</div></div>
+            <span style="font-size:20px">&#x1F4CD;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Global Visa Map -->
+      <div class="visa-map mb-40">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <div style="width:36px;height:36px;background:#111;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">&#x1F5FA;</div>
+          <div>
+            <h3 style="font-size:18px;font-weight:700">Global Visa Map</h3>
+            <p style="font-size:13px;color:var(--text-muted)">Interactive visualization of visa requirements worldwide</p>
+          </div>
+        </div>
+
+        <div class="grid-4" style="gap:12px;margin-bottom:20px">
+          <div style="background:white;border-radius:8px;padding:14px;border:1px solid var(--border)">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><div class="legend-dot" style="background:#22C55E"></div><span style="font-size:12px;color:var(--text-muted)">Visa-Free</span></div>
+            <div style="font-size:20px;font-weight:800">165</div>
+          </div>
+          <div style="background:white;border-radius:8px;padding:14px;border:1px solid var(--border)">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><div class="legend-dot" style="background:#3B82F6"></div><span style="font-size:12px;color:var(--text-muted)">Visa on Arrival</span></div>
+            <div style="font-size:20px;font-weight:800">28</div>
+          </div>
+          <div style="background:white;border-radius:8px;padding:14px;border:1px solid var(--border)">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><div class="legend-dot" style="background:#8B5CF6"></div><span style="font-size:12px;color:var(--text-muted)">eVisa</span></div>
+            <div style="font-size:20px;font-weight:800">16</div>
+          </div>
+          <div style="background:white;border-radius:8px;padding:14px;border:1px solid var(--border)">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><div class="legend-dot" style="background:#EF4444"></div><span style="font-size:12px;color:var(--text-muted)">Visa Required</span></div>
+            <div style="font-size:20px;font-weight:800">17</div>
+          </div>
+        </div>
+
+        <div class="simple-map">
+          <div class="map-regions"></div>
+          <div class="map-label">Interactive World Map &middot; Hover countries for details</div>
+        </div>
+      </div>
+
+      <!-- Visa Categories -->
+      <h2 style="font-size:22px;font-weight:700;margin-bottom:16px">Visa Categories</h2>
+      <div class="visa-cat-tabs">
+        <button class="visa-cat-btn active" data-cat="all">&#x1F30D; Visa-Free (165)</button>
+        <button class="visa-cat-btn" data-cat="arrival">&#x2708;&#xFE0F; Visa on Arrival (28)</button>
+        <button class="visa-cat-btn" data-cat="evisa">&#x1F4CB; eVisa (16)</button>
+        <button class="visa-cat-btn" data-cat="required">&#x1F6E1;&#xFE0F; Visa Required (17)</button>
+      </div>
+
+      <div style="background:white;border-radius:var(--radius);border:1px solid var(--border);padding:20px">
+        <div class="country-grid">
+          <span class="country-btn" data-cat="all">China</span>
+          <span class="country-btn" data-cat="all">Cote d'Ivoire</span>
+          <span class="country-btn" data-cat="all">Djibouti</span>
+          <span class="country-btn" data-cat="all">Japan</span>
+          <span class="country-btn" data-cat="all">South Korea</span>
+          <span class="country-btn" data-cat="all">Albania</span>
+          <span class="country-btn" data-cat="all">Andorra</span>
+          <span class="country-btn" data-cat="all">Angola</span>
+          <span class="country-btn" data-cat="all">Anguilla</span>
+          <span class="country-btn" data-cat="all">Antigua and Barbuda</span>
+          <span class="country-btn" data-cat="all">Argentina</span>
+          <span class="country-btn" data-cat="all">Armenia</span>
+          <span class="country-btn" data-cat="all">Aruba</span>
+          <span class="country-btn" data-cat="all">Austria</span>
+          <span class="country-btn" data-cat="all">Bahamas</span>
+          <span class="country-btn" data-cat="all">Barbados</span>
+          <span class="country-btn" data-cat="all">Belarus</span>
+          <span class="country-btn" data-cat="all">Belgium</span>
+          <span class="country-btn" data-cat="all">Belize</span>
+          <span class="country-btn" data-cat="all">Bermuda</span>
+          <span class="country-btn" data-cat="all">Bonaire; St. Eustatius and Saba</span>
+          <span class="country-btn" data-cat="all">Bosnia and Herzegovina</span>
+          <span class="country-btn" data-cat="all">Botswana</span>
+          <span class="country-btn" data-cat="all">Brazil</span>
+          <span class="country-btn" data-cat="all">Brunei</span>
+          <span class="country-btn" data-cat="all">Bulgaria</span>
+          <span class="country-btn" data-cat="all">Burkina Faso</span>
+          <span class="country-btn" data-cat="all">Cambodia</span>
+          <span class="country-btn" data-cat="all">Cape Verde Islands</span>
+          <span class="country-btn" data-cat="all">Cayman Islands</span>
+          <span class="country-btn" data-cat="all">Chile</span>
+          <span class="country-btn" data-cat="all">Colombia</span>
+          <span class="country-btn" data-cat="arrival">Kenya</span>
+          <span class="country-btn" data-cat="arrival">Sri Lanka</span>
+          <span class="country-btn" data-cat="arrival">Maldives</span>
+          <span class="country-btn" data-cat="arrival">Ethiopia</span>
+          <span class="country-btn" data-cat="evisa">India</span>
+          <span class="country-btn" data-cat="evisa">Turkey</span>
+          <span class="country-btn" data-cat="evisa">Australia</span>
+          <span class="country-btn" data-cat="required">Afghanistan</span>
+          <span class="country-btn" data-cat="required">North Korea</span>
+          <span class="country-btn" data-cat="required">Pakistan</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

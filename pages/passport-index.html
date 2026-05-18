@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passport Power Index - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+</head>
+<body>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper">
+  <div style="background:white;min-height:90vh;padding:40px 24px">
+    <div style="max-width:1100px;margin:0 auto">
+
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Tools
+      </a>
+
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
+        <div style="width:48px;height:48px;background:#111;border-radius:10px;display:flex;align-items:center;justify-content:center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h1 style="font-size:36px;font-weight:800">Passport Power Index</h1>
+      </div>
+      <p style="color:var(--text-muted);margin-bottom:40px">Discover the world's most powerful passports and explore visa-free travel destinations</p>
+
+      <!-- Top Passports -->
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:6px">Top Passports</h2>
+      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Explore the world's most powerful passports</p>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px">
+        <a href="passport-detail.html?country=singapore" class="passport-card">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#8B1A1A,#C0392B)">
+            <img src="https://flagcdn.com/w80/sg.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Singapore">
+            <div class="passport-rank">#1</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">Singapore</div>
+            <div class="passport-card-region">Asia</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>165</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:85%"></div></div>
+          </div>
+        </a>
+        <a href="passport-detail.html?country=belgium" class="passport-card">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#800020,#A0002E)">
+            <img src="https://flagcdn.com/w80/be.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Belgium">
+            <div class="passport-rank">#2</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">Belgium</div>
+            <div class="passport-card-region">Europe</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>163</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:83%"></div></div>
+          </div>
+        </a>
+        <a href="passport-detail.html?country=finland" class="passport-card">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#003580,#0053A0)">
+            <img src="https://flagcdn.com/w80/fi.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Finland">
+            <div class="passport-rank">#3</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">Finland</div>
+            <div class="passport-card-region">Europe</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>162</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:82%"></div></div>
+          </div>
+        </a>
+        <a href="passport-detail.html?country=france" class="passport-card">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#00267F,#0032A0)">
+            <img src="https://flagcdn.com/w80/fr.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="France">
+            <div class="passport-rank">#4</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">France</div>
+            <div class="passport-card-region">Europe</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>162</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:82%"></div></div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Search & Filter -->
+      <div class="card mb-24">
+        <div class="passport-filter-bar">
+          <div class="search-box">
+            <span class="search-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </span>
+            <input type="text" placeholder="Search by country name..." id="passportSearch">
+          </div>
+          <select class="form-control" id="regionFilter">
+            <option value="">All Regions</option>
+            <option value="Europe">Europe</option>
+            <option value="Asia">Asia</option>
+            <option value="Americas">Americas</option>
+            <option value="Africa">Africa</option>
+            <option value="Oceania">Oceania</option>
+            <option value="Middle East">Middle East</option>
+          </select>
+          <select class="form-control">
+            <option>Sort by Rank</option>
+            <option>Sort by Visa-Free</option>
+            <option>Sort by Name</option>
+          </select>
+          <button class="btn btn-dark" style="display:flex;align-items:center;gap:6px;white-space:nowrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+            Compare Passports
+          </button>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:10px;text-align:right">&#x2197; 10 passports found</p>
+      </div>
+
+      <!-- Passport List -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">
+        <a href="passport-detail.html?country=germany" class="passport-card passport-list-item" data-region="Europe">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#333,#555)">
+            <img src="https://flagcdn.com/w80/de.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Germany">
+            <div class="passport-rank">#5</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">Germany</div>
+            <div class="passport-card-region">Europe</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>161</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:81%"></div></div>
+          </div>
+        </a>
+        <a href="passport-detail.html?country=italy" class="passport-card passport-list-item" data-region="Europe">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#1a6b1a,#2E8B57)">
+            <img src="https://flagcdn.com/w80/it.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Italy">
+            <div class="passport-rank">#6</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">Italy</div>
+            <div class="passport-card-region">Europe</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>161</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:81%"></div></div>
+          </div>
+        </a>
+        <a href="passport-detail.html?country=japan" class="passport-card passport-list-item" data-region="Asia">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#1a1a4e,#2c2c7e)">
+            <img src="https://flagcdn.com/w80/jp.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Japan">
+            <div class="passport-rank">#7</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">Japan</div>
+            <div class="passport-card-region">Asia</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>160</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:80%"></div></div>
+          </div>
+        </a>
+        <a href="passport-detail.html?country=uk" class="passport-card passport-list-item" data-region="Europe">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#003580,#1a4a9a)">
+            <img src="https://flagcdn.com/w80/gb.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="United Kingdom">
+            <div class="passport-rank">#8</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">United Kingdom</div>
+            <div class="passport-card-region">Europe</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>157</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:79%"></div></div>
+          </div>
+        </a>
+        <a href="passport-detail.html?country=usa" class="passport-card passport-list-item" data-region="Americas">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#1a1a6e,#2c2c9e)">
+            <img src="https://flagcdn.com/w80/us.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="United States">
+            <div class="passport-rank">#9</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">United States</div>
+            <div class="passport-card-region">Americas</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>156</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:78%"></div></div>
+          </div>
+        </a>
+        <a href="passport-detail.html?country=canada" class="passport-card passport-list-item" data-region="Americas">
+          <div class="passport-cover" style="background:linear-gradient(135deg,#8B1A1A,#C0392B)">
+            <img src="https://flagcdn.com/w80/ca.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Canada">
+            <div class="passport-rank">#10</div>
+          </div>
+          <div class="passport-card-body">
+            <div class="passport-card-country">Canada</div>
+            <div class="passport-card-region">Americas</div>
+            <div class="passport-card-stat"><span>Visa-Free</span><strong>154</strong></div>
+            <div class="passport-progress"><div class="passport-progress-fill" style="width:77%"></div></div>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

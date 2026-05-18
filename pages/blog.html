@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Insights Blog - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+  <style>
+    .blog-hero-section{position:relative;height:380px;overflow:hidden}
+    .blog-hero-section img{width:100%;height:100%;object-fit:cover}
+    .blog-hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(79,70,229,0.82),rgba(59,130,246,0.7));display:flex;align-items:center;justify-content:center;text-align:center;padding:0 24px}
+    .blog-hero-overlay h1{font-size:clamp(32px,5vw,52px);font-weight:800;color:white;margin-bottom:12px}
+    .blog-hero-overlay p{font-size:18px;color:rgba(255,255,255,0.88);max-width:520px;margin:0}
+
+    .filter-bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:24px;background:white;border-bottom:1px solid var(--border);position:sticky;top:66px;z-index:50}
+    .filter-btn{padding:8px 20px;border-radius:50px;font-size:13.5px;font-weight:600;border:1.5px solid var(--border);background:none;cursor:pointer;font-family:inherit;color:var(--text-medium);transition:all .18s}
+    .filter-btn.active,.filter-btn:hover{background:var(--primary);color:white;border-color:var(--primary)}
+
+    .featured-card{display:grid;grid-template-columns:1fr 1fr;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--border);margin-bottom:48px;text-decoration:none;color:inherit;background:white}
+    .featured-img{position:relative;min-height:320px;overflow:hidden}
+    .featured-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+    .featured-card:hover .featured-img img{transform:scale(1.04)}
+    .featured-body{padding:40px;display:flex;flex-direction:column;justify-content:center}
+
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+    .bc{background:white;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+    .bc:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .bc-img{height:200px;overflow:hidden;position:relative}
+    .bc-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+    .bc:hover .bc-img img{transform:scale(1.06)}
+    .bc-body{padding:20px 22px;flex:1;display:flex;flex-direction:column}
+    .bc-cat{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:8px}
+    .bc-title{font-size:16px;font-weight:700;line-height:1.4;margin-bottom:10px;color:var(--text-dark)}
+    .bc-excerpt{font-size:13.5px;color:var(--text-muted);line-height:1.65;flex:1;margin-bottom:14px}
+    .bc-meta{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-muted);border-top:1px solid var(--border);padding-top:12px;margin-top:auto}
+    .bc-read{font-size:12px;font-weight:600;color:var(--primary);white-space:nowrap}
+
+    @media(max-width:900px){.grid-3{grid-template-columns:repeat(2,1fr)}.featured-card{grid-template-columns:1fr}}
+    @media(max-width:600px){.grid-3{grid-template-columns:1fr}.blog-hero-section{height:240px}.featured-img{min-height:200px}.featured-body{padding:24px}}
+  </style>
+</head>
+<body>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper" style="padding-top:66px">
+
+  <!-- Hero Banner -->
+  <div class="blog-hero-section">
+    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1400&q=80&fit=crop&h=400" alt="Travel blog banner">
+    <div class="blog-hero-overlay">
+      <div>
+        <h1>Travel Insights</h1>
+        <p>Expert visa guides, destination tips, and travel news &mdash; updated weekly</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterPosts('all',this)">All Articles</button>
+    <button class="filter-btn" onclick="filterPosts('visa',this)">&#x1F4C4; Visa Guides</button>
+    <button class="filter-btn" onclick="filterPosts('destinations',this)">&#x1F30D; Destinations</button>
+    <button class="filter-btn" onclick="filterPosts('tips',this)">&#x1F4A1; Travel Tips</button>
+    <button class="filter-btn" onclick="filterPosts('news',this)">&#x1F4F0; News</button>
+  </div>
+
+  <div style="background:var(--bg-light);padding:48px 24px 80px">
+    <div style="max-width:1140px;margin:0 auto">
+
+      <!-- Featured Article -->
+      <a href="blog-uk-visa.html" class="featured-card" data-cat="visa">
+        <div class="featured-img">
+          <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80&fit=crop&h=500" alt="London Tower Bridge at night">
+          <div style="position:absolute;top:20px;left:20px;background:var(--accent);color:#1a2e05;font-size:11px;font-weight:800;padding:5px 14px;border-radius:50px;text-transform:uppercase;letter-spacing:.06em">&#9733; Featured</div>
+        </div>
+        <div class="featured-body">
+          <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:10px">Visa Guide</div>
+          <h2 style="font-size:clamp(20px,2.5vw,26px);font-weight:800;line-height:1.3;margin-bottom:14px;color:var(--text-dark)">Complete Guide to UK Tourist Visa 2026: Requirements, Fees &amp; Application Steps</h2>
+          <p style="color:var(--text-muted);line-height:1.75;margin-bottom:20px;font-size:15px">Planning a trip to the United Kingdom? Here&rsquo;s everything you need to know &mdash; from eligibility and required documents to fees, processing times, and proven tips for a successful application.</p>
+          <div style="display:flex;gap:12px;font-size:13px;color:var(--text-muted);margin-bottom:24px">
+            <span>May 8, 2026</span><span>&middot;</span><span>12 min read</span><span>&middot;</span><span>By Teleio Tourism Team</span>
+          </div>
+          <span class="btn btn-primary" style="align-self:flex-start">Read Full Article &rarr;</span>
+        </div>
+      </a>
+
+      <!-- Blog Grid -->
+      <div class="grid-3" id="blog-grid">
+
+        <!-- 1 -->
+        <a href="blog-visa-free.html" class="bc" data-cat="destinations">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80&fit=crop&h=300" alt="Maldives beach">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Destinations</div>
+            <div class="bc-title">Top 10 Visa-Free Destinations for 2026</div>
+            <div class="bc-excerpt">Explore stunning destinations you can visit without a visa &mdash; updated for 2026. From the Maldives to Georgia, these gems require zero paperwork.</div>
+            <div class="bc-meta"><span>May 5, 2026 &middot; 6 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 2 -->
+        <a href="blog-visa-tips.html" class="bc" data-cat="tips">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80&fit=crop&h=300" alt="Visa application documents">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Travel Tips</div>
+            <div class="bc-title">How to Get Your Visa Approved First Time</div>
+            <div class="bc-excerpt">Expert tips on crafting the perfect visa application to maximize approval chances and avoid the most common rejection mistakes.</div>
+            <div class="bc-meta"><span>May 2, 2026 &middot; 5 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 3 -->
+        <a href="blog-us-visa.html" class="bc" data-cat="visa">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&q=80&fit=crop&h=300" alt="New York City skyline">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Visa Guide</div>
+            <div class="bc-title">US B1/B2 Visa: Complete 2026 Guide</div>
+            <div class="bc-excerpt">Everything about US tourist and business visa: DS-160 form, required documents, interview prep, and what to expect at the embassy.</div>
+            <div class="bc-meta"><span>April 28, 2026 &middot; 9 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 4 -->
+        <a href="blog-schengen.html" class="bc" data-cat="visa">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80&fit=crop&h=300" alt="Paris Eiffel Tower at dusk">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Visa Guide</div>
+            <div class="bc-title">Schengen Visa 2026: Travel 27 Countries with One Visa</div>
+            <div class="bc-excerpt">One visa, 27 countries. Learn how to apply step by step &mdash; documents, bank statements, insurance, and embassy tips.</div>
+            <div class="bc-meta"><span>April 20, 2026 &middot; 7 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 5 -->
+        <a href="blog-passport.html" class="bc" data-cat="news">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80&fit=crop&h=300" alt="Passport and travel documents">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">News</div>
+            <div class="bc-title">Henley Passport Index 2026: Singapore Leads</div>
+            <div class="bc-excerpt">Singapore tops the index with 195 visa-free destinations. See the full ranking and find out where your passport stands in 2026.</div>
+            <div class="bc-meta"><span>April 15, 2026 &middot; 4 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 6 -->
+        <a href="blog-ramadan.html" class="bc" data-cat="destinations">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?w=600&q=80&fit=crop&h=300" alt="Istanbul Blue Mosque at night">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Destinations</div>
+            <div class="bc-title">Best Travel Destinations to Experience Ramadan 2026</div>
+            <div class="bc-excerpt">Discover the best places to experience Ramadan &mdash; from Istanbul&rsquo;s mosques to Abu Dhabi&rsquo;s lavish Iftar tents and Marrakech bazaars.</div>
+            <div class="bc-meta"><span>April 10, 2026 &middot; 5 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 7 -->
+        <a href="blog-canada-pr.html" class="bc" data-cat="visa">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80&fit=crop&h=300" alt="Canadian Rocky Mountains and lake">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Visa Guide</div>
+            <div class="bc-title">Canada PR 2026: Express Entry CRS Points Guide</div>
+            <div class="bc-excerpt">Everything you need to know about Canada&rsquo;s Express Entry, CRS points breakdown, and how to maximize your profile score for an ITA.</div>
+            <div class="bc-meta"><span>April 5, 2026 &middot; 10 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 8 -->
+        <a href="blog-insurance.html" class="bc" data-cat="tips">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80&fit=crop&h=300" alt="Airplane window view at sunset">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Travel Tips</div>
+            <div class="bc-title">Why Travel Insurance Is Non-Negotiable in 2026</div>
+            <div class="bc-excerpt">Medical emergencies abroad can cost tens of thousands. Here&rsquo;s how to choose the right travel insurance for your trip and visa requirements.</div>
+            <div class="bc-meta"><span>March 30, 2026 &middot; 6 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 9 -->
+        <a href="blog-australia-eta.html" class="bc" data-cat="visa">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80&fit=crop&h=300" alt="Sydney Opera House and Harbour Bridge">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Visa Guide</div>
+            <div class="bc-title">Australia ETA &amp; eVisitor 2026: Apply in Minutes</div>
+            <div class="bc-excerpt">Australia&rsquo;s digital visa makes entry simple for eligible countries. Learn who qualifies, how to apply, costs, and what to do if rejected.</div>
+            <div class="bc-meta"><span>March 22, 2026 &middot; 5 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 10 -->
+        <a href="blog-uae-golden-visa.html" class="bc" data-cat="visa">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&fit=crop&h=300" alt="Dubai skyline at dusk">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Visa Guide</div>
+            <div class="bc-title">UAE Golden Visa 2026: Who Qualifies &amp; How to Apply</div>
+            <div class="bc-excerpt">The UAE Golden Visa offers 5 or 10-year residency for investors, skilled professionals, students and entrepreneurs. Complete guide inside.</div>
+            <div class="bc-meta"><span>March 15, 2026 &middot; 8 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 11 -->
+        <a href="blog-dubai-guide.html" class="bc" data-cat="destinations">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1582672060674-bc2bd808a8b5?w=600&q=80&fit=crop&h=300" alt="Dubai Marina at night">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Destinations</div>
+            <div class="bc-title">Dubai Complete Travel Guide 2026: What to See, Do &amp; Eat</div>
+            <div class="bc-excerpt">From Burj Khalifa to hidden souks, desert safaris to world-class dining &mdash; your definitive guide to making the most of Dubai in 2026.</div>
+            <div class="bc-meta"><span>March 8, 2026 &middot; 11 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+        <!-- 12 -->
+        <a href="blog-japan-visa.html" class="bc" data-cat="visa">
+          <div class="bc-img">
+            <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80&fit=crop&h=300" alt="Mount Fuji with cherry blossoms">
+          </div>
+          <div class="bc-body">
+            <div class="bc-cat">Visa Guide</div>
+            <div class="bc-title">Japan Tourist Visa 2026: Requirements &amp; Application Guide</div>
+            <div class="bc-excerpt">Japan has fully reopened to tourists. Here&rsquo;s a complete guide to Japan tourist visa requirements, documents, and top travel tips.</div>
+            <div class="bc-meta"><span>March 1, 2026 &middot; 7 min read</span><span class="bc-read">Read &rarr;</span></div>
+          </div>
+        </a>
+
+      </div><!-- /grid -->
+
+      <!-- Newsletter CTA -->
+      <div style="background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:var(--radius-lg);padding:48px 40px;text-align:center;color:white;margin:56px 0 0">
+        <h2 style="font-size:28px;font-weight:800;margin-bottom:10px">Never Miss a Visa Update</h2>
+        <p style="font-size:16px;opacity:.9;margin:0 0 28px;max-width:420px;margin-left:auto;margin-right:auto">Get the latest visa news, travel tips, and exclusive deals delivered to your inbox every week.</p>
+        <div style="display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap;justify-content:center">
+          <input type="email" placeholder="your@email.com" style="flex:1;padding:12px 18px;border-radius:var(--radius-sm);border:none;font-size:15px;font-family:inherit;min-width:180px;outline:none">
+          <button onclick="this.textContent='Subscribed!';this.style.background='#65A30D'" style="padding:12px 24px;background:var(--accent);color:#1a2e05;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .2s">Subscribe Free</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+function filterPosts(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('#blog-grid .bc').forEach(function(card) {
+    if (cat === 'all') { card.style.display = ''; return; }
+    card.style.display = (card.getAttribute('data-cat') === cat) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visa Photo Tool - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+</head>
+<body>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper">
+  <div style="background:var(--bg-light);min-height:90vh;padding:40px 24px">
+    <div style="max-width:800px;margin:0 auto">
+      <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Home
+      </a>
+      <div style="text-align:center;margin-bottom:32px">
+        <h1 style="font-size:36px;font-weight:800">Visa Photo Tool</h1>
+        <p style="color:var(--text-muted);margin-top:8px">AI-powered photo compliance checker</p>
+      </div>
+
+      <div class="form-card mb-24">
+        <h2>Upload Your Photo</h2>
+        <p class="form-subtitle">Our AI will check compliance against international visa photo standards</p>
+
+        <div class="form-group">
+          <label>Target Country</label>
+          <select class="form-control">
+            <option>United Kingdom</option>
+            <option>United States</option>
+            <option>Schengen Countries</option>
+            <option>Canada</option>
+            <option>Australia</option>
+          </select>
+        </div>
+
+        <div class="upload-area" style="position:relative;margin-bottom:20px">
+          <div class="upload-icon">&#x1F4F7;</div>
+          <div class="upload-title">Click or drag to upload your photo</div>
+          <div class="upload-sub">JPG, PNG &middot; Max 5MB &middot; Min 600&times;800px recommended</div>
+          <input type="file" id="photoUpload" accept=".jpg,.jpeg,.png" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+        </div>
+
+        <div id="photoResult"></div>
+      </div>
+
+      <!-- Requirements Guide -->
+      <div class="card">
+        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">Photo Requirements Guide</h3>
+        <div class="checklist">
+          <div class="checklist-item">
+            <span class="check-icon">&#x1F4CF;</span>
+            <div class="check-content"><strong>Size Requirements</strong><p>35&times;45mm (standard) &middot; Printed at 300 DPI minimum</p></div>
+          </div>
+          <div class="checklist-item">
+            <span class="check-icon">&#x2B1C;</span>
+            <div class="check-content"><strong>Background</strong><p>Plain white or off-white background &middot; No patterns or shadows</p></div>
+          </div>
+          <div class="checklist-item">
+            <span class="check-icon">&#x1F464;</span>
+            <div class="check-content"><strong>Face Position</strong><p>Looking directly at camera &middot; Centered in frame &middot; 70-80% of frame height</p></div>
+          </div>
+          <div class="checklist-item">
+            <span class="check-icon">&#x1F441;&#xFE0F;</span>
+            <div class="check-content"><strong>Eyes &amp; Expression</strong><p>Eyes open and clearly visible &middot; Neutral expression &middot; Mouth closed</p></div>
+          </div>
+          <div class="checklist-item">
+            <span class="check-icon">&#x1F576;&#xFE0F;</span>
+            <div class="check-content"><strong>Glasses</strong><p>No glasses (most countries require this for new applications)</p></div>
+          </div>
+          <div class="checklist-item">
+            <span class="check-icon">&#x1F4A1;</span>
+            <div class="check-content"><strong>Lighting</strong><p>Evenly lit &middot; No shadows on face or background &middot; No red-eye</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

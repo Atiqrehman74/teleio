@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="../js/nav.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #4F46E5; --primary-dark: #4338CA;
+      --bg: #F8FAFC; --card: #fff; --border: #E2E8F0;
+      --text: #0F172A; --muted: #64748B; --radius: 14px;
+    }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--bg); }
+
+    /* ── Hero ── */
+    .page-hero {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #312E81 100%);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      opacity: 0.5;
+      z-index: 0;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(79,70,229,.25) 0%, transparent 70%);
+      z-index: 1;
+    }
+    .page-hero-inner { position: relative; max-width: 680px; margin: 0 auto; z-index: 2; }
+    .hero-chip { display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(99,102,241,.2); border: 1px solid rgba(99,102,241,.35);
+      color: #A5B4FC; border-radius: 50px; padding: 5px 16px;
+      font-size: 12.5px; font-weight: 600; margin-bottom: 22px; }
+    .page-hero h1 { font-size: clamp(28px,4vw,46px); font-weight: 900; color: #fff;
+      line-height: 1.15; margin-bottom: 16px; }
+    .page-hero h1 span { color: #818CF8; }
+    .page-hero p { color: #94A3B8; font-size: 16px; line-height: 1.6; }
+
+    /* ── Layout ── */
+    .contact-layout {
+      max-width: 1180px; margin: 0 auto;
+      padding: 56px 24px 80px;
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ── Info column ── */
+    .info-col { display: flex; flex-direction: column; gap: 16px; }
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .info-card-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .info-card-icon {
+      width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .info-card-hdr h3 { font-size: 15px; font-weight: 700; }
+    .info-card-hdr p  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+    .info-row { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0;
+      border-bottom: 1px solid #F1F5F9; }
+    .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .info-row-icon { width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .info-row-text { flex: 1; }
+    .info-row-label { font-size: 11px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
+    .info-row-val { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.5; }
+    .info-row-val a { color: var(--primary); text-decoration: none; }
+    .info-row-val a:hover { text-decoration: underline; }
+
+    /* Hours table */
+    .hours-table { width: 100%; font-size: 13px; }
+    .hours-row { display: flex; justify-content: space-between; padding: 5px 0;
+      border-bottom: 1px solid #F8FAFC; }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-day   { color: var(--muted); }
+    .hours-time  { font-weight: 600; color: var(--text); }
+    .hours-time.open { color: #059669; }
+    .hours-time.all-day { color: var(--primary); }
+
+    /* Social row */
+    .social-row { display: flex; gap: 8px; margin-top: 8px; }
+    .soc-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      border: 1.5px solid var(--border); background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; transition: all .18s; cursor: pointer;
+      flex-shrink: 0;
+    }
+    .soc-btn:hover { transform: translateY(-2px); border-color: transparent; }
+    .soc-btn.si-instagram:hover { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+    .soc-btn.si-tiktok:hover   { background: #010101; }
+    .soc-btn.si-youtube:hover  { background: #FF0000; }
+    .soc-btn.si-facebook:hover { background: #1877F2; }
+    .soc-btn.si-x:hover        { background: #000000; }
+    .soc-btn.si-linkedin:hover { background: #0A66C2; }
+    .soc-btn:hover svg { fill: white; stroke: white; }
+
+    /* WhatsApp quick-action */
+    .wa-btn {
+      display: flex; align-items: center; gap: 10px;
+      background: #25D366; color: #fff; border-radius: 11px;
+      padding: 13px 18px; text-decoration: none; font-size: 14px;
+      font-weight: 700; transition: opacity .15s; margin-top: 4px;
+    }
+    .wa-btn:hover { opacity: .9; }
+
+    /* ── Form column ── */
+    .form-col {}
+
+    .form-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .form-card-hdr {
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    }
+    .form-card-hdr h2 { color: #fff; font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .form-card-hdr p  { color: #C7D2FE; font-size: 13.5px; }
+
+    .form-body { padding: 28px; }
+    .form-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 12px; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 7px; }
+    .field input, .field select, .field textarea {
+      width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 11px 14px; font-size: 14px; font-family: inherit; color: var(--text);
+      outline: none; transition: border-color .15s; background: var(--bg);
+      -webkit-appearance: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--primary); background: #fff;
+    }
+    .field input::placeholder, .field textarea::placeholder { color: #94A3B8; }
+    .field textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+    .field select option { background: #fff; }
+
+    .btn-submit {
+      width: 100%; background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      color: #fff; border: none; border-radius: 10px; padding: 14px;
+      font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: opacity .15s;
+    }
+    .btn-submit:hover { opacity: .92; }
+    .btn-submit:disabled { opacity: .65; cursor: not-allowed; }
+
+    .form-success {
+      display: none; text-align: center; padding: 32px 24px;
+    }
+    .form-success-icon { font-size: 56px; margin-bottom: 16px; }
+    .form-success h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .form-success p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    /* ── Map ── */
+    .map-section { max-width: 1180px; margin: 0 auto 64px; padding: 0 24px; }
+    .map-hdr { display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+    .map-hdr h2 { font-size: 20px; font-weight: 800; }
+    .map-hdr a { display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary); color: #fff; border-radius: 9px;
+      padding: 9px 18px; font-size: 13px; font-weight: 600; text-decoration: none;
+      transition: opacity .15s; }
+    .map-hdr a:hover { opacity: .88; }
+    .map-wrap {
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      height: 420px;
+    }
+    .map-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+    /* ── FAQ strip ── */
+    .faq-strip { background: linear-gradient(135deg,#0F172A,#1E293B); padding: 56px 24px; }
+    .faq-strip-inner { max-width: 860px; margin: 0 auto; }
+    .faq-strip h2 { color: #fff; font-size: 22px; font-weight: 800; margin-bottom: 28px; text-align: center; }
+    .faq-items { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .faq-item { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px; padding: 18px 20px; }
+    .faq-item h4 { color: #fff; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .faq-item p  { color: #94A3B8; font-size: 13px; line-height: 1.6; }
+
+    /* ── Footer ── */
+    .page-footer {
+      background: #0F172A; color: #CBD5E1;
+      padding: 32px 24px; text-align: center;
+    }
+    .page-footer p { font-size: 13px; color: #475569; }
+    .page-footer a { color: #64748B; text-decoration: none; }
+    .page-footer a:hover { color: #94A3B8; }
+
+    .footer-socials-foot { display: flex; gap: 8px; justify-content: center; margin-top: 14px; }
+    .fsf-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; transition: background .2s, transform .15s;
+    }
+    .fsf-icon:hover { transform: translateY(-2px); border-color: transparent; }
+    .fsf-icon.si-instagram:hover { background: linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888); }
+    .fsf-icon.si-tiktok:hover   { background: #010101; box-shadow: 0 0 0 1px #EE1D52; }
+    .fsf-icon.si-youtube:hover  { background: #FF0000; }
+    .fsf-icon.si-facebook:hover { background: #1877F2; }
+    .fsf-icon.si-x:hover        { background: #000; border-color: #333; }
+    .fsf-icon.si-linkedin:hover { background: #0A66C2; }
+
+    @media(max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; }
+      .info-col { order: 2; }
+      .form-col { order: 1; }
+      .faq-items { grid-template-columns: 1fr; }
+      .form-grid2 { grid-template-columns: 1fr; }
+    }
+    @media(max-width: 600px) {
+      .map-wrap { height: 300px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<section class="page-hero">
+  <img src="../images/contact-header.jpg" alt="" class="page-hero-bg">
+  <div class="page-hero-inner">
+    <div class="hero-chip">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Dubai, UAE
+    </div>
+    <h1>Get in Touch with<br><span>Teleio Tourism</span></h1>
+    <p>Our team is available 24/7 to assist with visas, travel bookings, and partnership inquiries.</p>
+  </div>
+</section>
+
+<!-- ── Main layout ── -->
+<div class="contact-layout">
+
+  <!-- ── Left: info column ── -->
+  <aside class="info-col">
+
+    <!-- Head Office -->
+    <div class="info-card">
+      <div class="info-card-hdr">
+        <div class="info-card-icon" style="background:#EFF6FF">&#x1F3E2;</div>
+        <div>
+          <h3>Head Office</h3>
+          <p>Business Bay, Dubai UAE</p>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon" style="background:#F0FDF4">&#x1F4CD;</div>
+        <div class="info-row-text">
+          <div class="info-row-label">Address</div>
+          <div class="info-row-val">
+            THE PRISM TOWER<br>
+            22nd Floor, Unit 2203<br>
+            Business Bay, Dubai, UAE
+          </div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon" style="background:#FEF9C3">&#x2709;&#xFE0F;</div>
+        <div class="info-row-text">
+          <div class="info-row-label">Email</div>
+          <div class="info-row-val"><a href="mailto:info@teleiotourism.com">info@teleiotourism.com</a></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon" style="background:#F3EDFF">&#x1F4DE;</div>
+        <div class="info-row-text">
+          <div class="info-row-label">Call 24/7</div>
+          <div class="info-row-val"><a href="tel:+971554642958">+971 55 464 2958</a></div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon" style="background:#ECFDF5">&#x1F4AC;</div>
+        <div class="info-row-text">
+          <div class="info-row-label">WhatsApp</div>
+          <div class="info-row-val"><a href="https://wa.me/971554642958">+971 55 464 2958</a></div>
+        </div>
+      </div>
+      <a href="https://wa.me/971554642958" class="wa-btn" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+
+    <!-- Office Hours -->
+    <div class="info-card">
+      <div class="info-card-hdr">
+        <div class="info-card-icon" style="background:#FFFBEB">&#x1F551;</div>
+        <div>
+          <h3>Office Hours</h3>
+          <p>Phone support is always available</p>
+        </div>
+      </div>
+      <div class="hours-table">
+        <div class="hours-row"><span class="hours-day">Monday – Friday</span><span class="hours-time open">9:00 AM – 7:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Saturday</span><span class="hours-time open">10:00 AM – 5:00 PM</span></div>
+        <div class="hours-row"><span class="hours-day">Sunday</span><span class="hours-time" style="color:#EF4444">Closed</span></div>
+        <div class="hours-row"><span class="hours-day">Phone / WhatsApp</span><span class="hours-time all-day">24 / 7</span></div>
+      </div>
+    </div>
+
+    <!-- Follow us -->
+    <div class="info-card">
+      <div class="info-card-hdr">
+        <div class="info-card-icon" style="background:#FCE7F3">&#x1F4F1;</div>
+        <div><h3>Follow Us</h3><p>Stay connected on social media</p></div>
+      </div>
+      <div class="social-row">
+        <!-- Instagram -->
+        <a href="#" class="soc-btn si-instagram" aria-label="Instagram" title="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="#64748B" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.5" stroke="#64748B" stroke-width="1.8"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="#64748B"/>
+          </svg>
+        </a>
+        <!-- TikTok -->
+        <a href="#" class="soc-btn si-tiktok" aria-label="TikTok" title="TikTok">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#64748B">
+            <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.97a8.27 8.27 0 004.83 1.55V7.07a4.85 4.85 0 01-1.06-.38z"/>
+          </svg>
+        </a>
+        <!-- YouTube -->
+        <a href="#" class="soc-btn si-youtube" aria-label="YouTube" title="YouTube">
+          <svg width="20" height="14" viewBox="0 0 24 17" fill="none">
+            <path d="M23.5 2.6A3 3 0 0021.4.4C19.5 0 12 0 12 0S4.5 0 2.6.5A3 3 0 00.5 2.6C0 4.5 0 8.5 0 8.5s0 4 .5 5.9a3 3 0 002.1 2.1C4.5 17 12 17 12 17s7.5 0 9.4-.5a3 3 0 002.1-2.1c.5-1.9.5-5.9.5-5.9s0-4-.5-5.9z" fill="#64748B"/>
+            <path d="M9.75 12.14L15.5 8.5 9.75 4.86v7.28z" fill="white"/>
+          </svg>
+        </a>
+        <!-- Facebook -->
+        <a href="#" class="soc-btn si-facebook" aria-label="Facebook" title="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#64748B">
+            <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+          </svg>
+        </a>
+        <!-- X -->
+        <a href="#" class="soc-btn si-x" aria-label="X (Twitter)" title="X (Twitter)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#64748B">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.402 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+          </svg>
+        </a>
+        <!-- LinkedIn -->
+        <a href="#" class="soc-btn si-linkedin" aria-label="LinkedIn" title="LinkedIn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="#64748B">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── Right: contact form ── -->
+  <div class="form-col">
+    <div class="form-card">
+      <div class="form-card-hdr">
+        <h2>Send Us a Message</h2>
+        <p>We typically respond within 2 business hours during office hours.</p>
+      </div>
+      <div class="form-body">
+        <div id="contact-form-wrap">
+          <form id="contact-form" onsubmit="submitContact(event)">
+            <div class="form-grid2">
+              <div class="field">
+                <label>First Name *</label>
+                <input type="text" id="cf-fname" placeholder="John" required>
+              </div>
+              <div class="field">
+                <label>Last Name *</label>
+                <input type="text" id="cf-lname" placeholder="Smith" required>
+              </div>
+            </div>
+            <div class="form-grid2">
+              <div class="field">
+                <label>Email Address *</label>
+                <input type="email" id="cf-email" placeholder="john@example.com" required>
+              </div>
+              <div class="field">
+                <label>Phone / WhatsApp</label>
+                <input type="tel" id="cf-phone" placeholder="+971 50 000 0000">
+              </div>
+            </div>
+            <div class="field">
+              <label>Inquiry Type *</label>
+              <select id="cf-type" required>
+                <option value="">Select inquiry type…</option>
+                <option>Visa Application</option>
+                <option>Track Visa Status</option>
+                <option>Travel Booking (Flights / Hotels)</option>
+                <option>UAE Tourism & Activities</option>
+                <option>Partnership Program</option>
+                <option>Complaint / Feedback</option>
+                <option>General Inquiry</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Country of Interest</label>
+              <select id="cf-country">
+                <option value="">Select country (if applicable)…</option>
+                <option>United Kingdom</option>
+                <option>United States</option>
+                <option>UAE (Dubai)</option>
+                <option>Schengen Area</option>
+                <option>Canada</option>
+                <option>Australia</option>
+                <option>Turkey</option>
+                <option>Thailand</option>
+                <option>Malaysia</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Message *</label>
+              <textarea id="cf-msg" placeholder="Tell us how we can help you…" required></textarea>
+            </div>
+            <div class="field" style="display:flex;align-items:flex-start;gap:10px;margin-bottom:22px">
+              <input type="checkbox" id="cf-agree" required style="width:auto;margin-top:3px;flex-shrink:0;accent-color:var(--primary)">
+              <label for="cf-agree" style="text-transform:none;font-size:13px;color:var(--muted);letter-spacing:0;cursor:pointer">
+                I agree to the <a href="#" style="color:var(--primary);text-decoration:none">Privacy Policy</a> and consent to being contacted by Teleio Tourism.
+              </label>
+            </div>
+            <button type="submit" class="btn-submit" id="cf-submit">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Send Message
+            </button>
+          </form>
+        </div>
+        <!-- Success state -->
+        <div id="contact-success" class="form-success">
+          <div class="form-success-icon">&#x1F4EC;</div>
+          <h3>Message Sent!</h3>
+          <p>Thank you for reaching out. Our team will get back to you at <strong id="success-email"></strong> within 2 business hours.</p>
+          <button onclick="resetForm()" style="margin-top:20px;background:var(--primary);color:#fff;border:none;border-radius:9px;padding:11px 24px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer">Send Another Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /contact-layout -->
+
+<!-- ── Google Map ── -->
+<div class="map-section">
+  <div class="map-hdr">
+    <h2>&#x1F4CD; Find Us — The Prism Tower, Business Bay</h2>
+    <a href="https://maps.google.com/?q=The+Prism+Tower,Business+Bay,Dubai,UAE" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Open in Google Maps
+    </a>
+  </div>
+  <div class="map-wrap">
+    <iframe
+      src="https://maps.google.com/maps?q=The+Prism+Tower,Business+Bay,Dubai,UAE&t=&z=16&ie=UTF8&iwloc=&output=embed"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Teleio Tourism — The Prism Tower, Business Bay, Dubai">
+    </iframe>
+  </div>
+</div>
+
+<!-- ── FAQ strip ── -->
+<section class="faq-strip">
+  <div class="faq-strip-inner">
+    <h2>Quick Answers</h2>
+    <div class="faq-items">
+      <div class="faq-item">
+        <h4>How long does visa processing take?</h4>
+        <p>Tourist visas are typically processed in 2–5 business days. Express processing is available for most countries in 24 hours.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I visit your office without an appointment?</h4>
+        <p>Yes — walk-ins are welcome during office hours (Mon–Fri 9am–7pm, Sat 10am–5pm). For complex cases, we recommend booking a slot.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Do you have parking at The Prism Tower?</h4>
+        <p>Yes, visitor parking is available in the building basement. The tower is also a 5-minute walk from Business Bay Metro Station.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I get support in Arabic or Urdu?</h4>
+        <p>Absolutely. Our team speaks English, Arabic, Urdu, Hindi, and Filipino. Call or WhatsApp us and we'll connect you with the right agent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="page-footer">
+  <div class="footer-socials-foot">
+    <a href="#" class="fsf-icon si-instagram" title="Instagram">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="2" width="20" height="20" rx="5" stroke="white" stroke-width="1.8"/>
+        <circle cx="12" cy="12" r="4.5" stroke="white" stroke-width="1.8"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="white"/>
+      </svg>
+    </a>
+    <a href="#" class="fsf-icon si-tiktok" title="TikTok">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.97a8.27 8.27 0 004.83 1.55V7.07a4.85 4.85 0 01-1.06-.38z"/>
+      </svg>
+    </a>
+    <a href="#" class="fsf-icon si-youtube" title="YouTube">
+      <svg width="20" height="14" viewBox="0 0 24 17" fill="none">
+        <path d="M23.5 2.6A3 3 0 0021.4.4C19.5 0 12 0 12 0S4.5 0 2.6.5A3 3 0 00.5 2.6C0 4.5 0 8.5 0 8.5s0 4 .5 5.9a3 3 0 002.1 2.1C4.5 17 12 17 12 17s7.5 0 9.4-.5a3 3 0 002.1-2.1c.5-1.9.5-5.9.5-5.9s0-4-.5-5.9z" fill="white"/>
+        <path d="M9.75 12.14L15.5 8.5 9.75 4.86v7.28z" fill="#0F172A"/>
+      </svg>
+    </a>
+    <a href="#" class="fsf-icon si-facebook" title="Facebook">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="white">
+        <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.313 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+      </svg>
+    </a>
+    <a href="#" class="fsf-icon si-x" title="X (Twitter)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.402 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+      </svg>
+    </a>
+    <a href="#" class="fsf-icon si-linkedin" title="LinkedIn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="white">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+    </a>
+  </div>
+  <p style="margin-top:16px">&copy; 2026 Teleio Tourism &nbsp;|&nbsp; <a href="../index.html">Home</a> &nbsp;|&nbsp; <a href="partner-program.html">Partner Program</a> &nbsp;|&nbsp; <a href="signin.html">Sign In</a></p>
+  <p style="margin-top:6px">THE PRISM TOWER, 22nd Floor, Unit 2203, Business Bay, Dubai, UAE</p>
+</footer>
+
+<script>
+function submitContact(e) {
+  e.preventDefault();
+  var btn   = document.getElementById('cf-submit');
+  var email = document.getElementById('cf-email').value;
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-dasharray="56" stroke-dashoffset="14"/></svg> Sending…';
+
+  /* Simulate send delay */
+  setTimeout(function() {
+    document.getElementById('cf-fname').value = '';
+    document.getElementById('cf-lname').value = '';
+    document.getElementById('cf-email').value = '';
+    document.getElementById('cf-phone').value = '';
+    document.getElementById('cf-type').value  = '';
+    document.getElementById('cf-country').value = '';
+    document.getElementById('cf-msg').value   = '';
+    document.getElementById('cf-agree').checked = false;
+    document.getElementById('success-email').textContent = email;
+    document.getElementById('contact-form-wrap').style.display = 'none';
+    document.getElementById('contact-success').style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message';
+  }, 1400);
+}
+
+function resetForm() {
+  document.getElementById('contact-form-wrap').style.display = 'block';
+  document.getElementById('contact-success').style.display = 'none';
+}
+</script>
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</body>
+</html>

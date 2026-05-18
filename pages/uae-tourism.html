@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UAE Tourism - Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <link rel="shortcut icon" href="../images/favicon.svg">
+</head>
+<body>
+<script src="../js/nav.js"></script>
+
+<div class="page-wrapper">
+
+  <!-- UAE HERO -->
+  <section class="uae-hero" style="min-height:52vh;display:flex;align-items:center;position:relative;overflow:hidden">
+    <!-- Dark gradient base -->
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,20,60,0.95) 0%,rgba(5,35,80,0.88) 100%)"></div>
+    <!-- Burj Khalifa background image at 40% opacity -->
+    <img
+      src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1600&q=85&fit=crop&h=900"
+      alt=""
+      aria-hidden="true"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;opacity:0.4;pointer-events:none;user-select:none"
+    >
+
+    <div style="position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:70px 24px;color:white;width:100%">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:50px;padding:6px 18px;font-size:13px;font-weight:600;margin-bottom:20px">
+        🇦🇪 Official UAE Tourism Hub
+      </div>
+      <h1 style="font-size:clamp(32px,5vw,58px);font-weight:800;line-height:1.15;margin-bottom:16px">
+        Discover the Magic of<br><span style="color:#FFD700">United Arab Emirates</span>
+      </h1>
+      <p style="font-size:clamp(15px,2vw,18px);opacity:0.85;max-width:560px;margin-bottom:36px">
+        From golden deserts to glittering skyscrapers — explore 50+ world-class activities across Dubai, Abu Dhabi, and beyond.
+      </p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="#activities" class="btn btn-accent btn-lg">🏜️ Explore Activities</a>
+        <a href="apply-visa.html" class="btn" style="background:rgba(255,255,255,0.15);color:white;border:1.5px solid rgba(255,255,255,0.3);font-size:16px;padding:14px 32px;border-radius:10px">🛡️ Get UAE Visa</a>
+      </div>
+
+      <!-- Stats -->
+      <div style="display:flex;gap:36px;margin-top:48px;flex-wrap:wrap">
+        <div><strong style="font-size:26px;font-weight:800;color:#FFD700">50+</strong><br><span style="font-size:13px;opacity:0.7">Activities</span></div>
+        <div><strong style="font-size:26px;font-weight:800;color:#FFD700">7</strong><br><span style="font-size:13px;opacity:0.7">Emirates</span></div>
+        <div><strong style="font-size:26px;font-weight:800;color:#FFD700">4.9★</strong><br><span style="font-size:13px;opacity:0.7">Avg Rating</span></div>
+        <div><strong style="font-size:26px;font-weight:800;color:#FFD700">200K+</strong><br><span style="font-size:13px;opacity:0.7">Happy Visitors</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORY TABS -->
+  <div style="background:white;border-bottom:1px solid var(--border);position:sticky;top:66px;z-index:100;padding:0 24px">
+    <div style="max-width:1100px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:12px 0">
+      <button class="tab-btn active" data-tab="tab-all" style="flex-shrink:0">🌟 All Activities</button>
+      <button class="tab-btn" data-tab="tab-adventure" style="flex-shrink:0">🏜️ Adventure</button>
+      <button class="tab-btn" data-tab="tab-culture" style="flex-shrink:0">🗼 Landmarks</button>
+      <button class="tab-btn" data-tab="tab-water" style="flex-shrink:0">🏄 Water & Beach</button>
+      <button class="tab-btn" data-tab="tab-entertainment" style="flex-shrink:0">🎡 Entertainment</button>
+      <button class="tab-btn" data-tab="tab-dining" style="flex-shrink:0">🍴 Dining</button>
+    </div>
+  </div>
+
+  <div style="background:var(--bg-light);padding:48px 24px" id="activities">
+    <div style="max-width:1100px;margin:0 auto">
+
+      <!-- ── ALL ACTIVITIES ── -->
+      <div id="tab-all" class="tab-panel active">
+
+        <!-- SECTION: Adventure & Outdoors -->
+        <div class="section-header" style="text-align:left;margin-bottom:24px">
+          <h2 style="font-size:26px">🏜️ Adventures &amp; Outdoors</h2>
+          <p>Heart-pumping experiences in UAE's spectacular landscapes</p>
+        </div>
+        <div class="grid-3 mb-48" style="gap:20px">
+
+          <a id="desert" href="#desert" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#C2933A,#E8C05A,#A0712A);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Desert Safari">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">⭐ Most Popular</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Dubai Desert Conservation Reserve</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Desert Safari Experience</div>
+              <div class="activity-desc">Thrilling dune bashing in a 4x4, sandboarding, camel riding, and an overnight camp under the stars with BBQ dinner and entertainment.</div>
+              <div class="activity-meta">
+                <span>⏱ 7 hours</span>
+                <span>👥 2–20 people</span>
+                <span>📍 Dubai</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 150 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Desert Safari')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a id="balloon" href="#balloon" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#E63946,#F4A261,#FFBA08);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Hot Air Balloon">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">🌅 Sunrise</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Al Ain Desert · Early morning departure</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Hot Air Balloon Ride</div>
+              <div class="activity-desc">Float silently over the desert at sunrise, witnessing breathtaking views of the dunes and UAE landscapes from above. Includes breakfast.</div>
+              <div class="activity-meta">
+                <span>⏱ 4 hours</span>
+                <span>👥 Up to 20</span>
+                <span>📍 Dubai / Al Ain</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 800 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Hot Air Balloon')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a id="camel" href="#camel" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#9C6B2E,#C2933A,#D4A843);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1548685983-8f35c8c87ea8?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Camel Riding">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">🌟 Traditional</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Al Marmoom Desert · All levels welcome</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Camel Riding &amp; Desert Camp</div>
+              <div class="activity-desc">Experience traditional Bedouin culture with a camel ride through golden dunes followed by authentic Emirati tea, dates, and shisha.</div>
+              <div class="activity-meta">
+                <span>⏱ 3 hours</span>
+                <span>👥 2–30 people</span>
+                <span>📍 Dubai</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 90 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Camel Riding')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a id="hatta" href="#hatta" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#2D6A4F,#52B788,#74C69D);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Hatta Mountain">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">🏕️ Day Trip</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Hatta Mountains · Hajar Range</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Hatta Mountain Adventure</div>
+              <div class="activity-desc">Explore the majestic Hajar Mountains with kayaking on Hatta Dam, mountain biking, hiking trails, and a visit to the heritage village.</div>
+              <div class="activity-meta">
+                <span>⏱ Full day</span>
+                <span>👥 2–15 people</span>
+                <span>📍 Hatta, Dubai</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 220 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Hatta Mountain')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a id="water" href="#water" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#0077B6,#00B4D8,#90E0EF);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Water Sports">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">💦 Water Fun</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Dubai Marina &amp; Jumeirah Beach</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Water Sports Package</div>
+              <div class="activity-desc">Jet skiing, parasailing, wakeboarding, banana boat rides, and flyboarding at Dubai's stunning coastal locations with certified instructors.</div>
+              <div class="activity-meta">
+                <span>⏱ 2–5 hours</span>
+                <span>👥 1–10 people</span>
+                <span>📍 Jumeirah / Marina</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 200 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Water Sports')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a id="diving" href="#diving" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#023E8A,#0096C7,#48CAE4);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1559825481-12a05cc00344?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Scuba Diving">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">🐠 Marine Life</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Musandam Fjords · Palm Jumeirah</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Scuba Diving &amp; Snorkeling</div>
+              <div class="activity-desc">Discover the UAE's vibrant underwater world — coral reefs, shipwrecks, tropical fish, and sea turtles. Suitable for all skill levels.</div>
+              <div class="activity-meta">
+                <span>⏱ 3–5 hours</span>
+                <span>👥 2–12 people</span>
+                <span>📍 Dubai / Fujairah</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 350 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Scuba Diving')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- SECTION: Landmarks & Culture -->
+        <div class="section-header" style="text-align:left;margin-bottom:24px">
+          <h2 style="font-size:26px">🗼 Iconic Landmarks</h2>
+          <p>World-famous attractions that define the UAE skyline</p>
+        </div>
+        <div class="grid-3 mb-48" style="gap:20px">
+
+          <a id="burj" href="#burj" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(160deg,#0D1B2A,#1B2838,#1A2535);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Burj Khalifa">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">🏆 #1 Attraction</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">At The Top — 124th, 125th &amp; 148th floors</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Burj Khalifa — At The Top</div>
+              <div class="activity-desc">Visit the world's tallest tower and enjoy breathtaking 360° views of Dubai's skyline, desert, and the Arabian Gulf from observation decks.</div>
+              <div class="activity-meta">
+                <span>⏱ 1.5 hours</span>
+                <span>👥 Any group size</span>
+                <span>📍 Downtown Dubai</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 140 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Burj Khalifa')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a id="mall" href="#mall" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#0F3460,#1A6EC7,#2187D0);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Dubai Mall">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">🌐 World's Largest</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Dubai Mall · Downtown Dubai</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Dubai Mall Experience</div>
+              <div class="activity-desc">Shop at 1,200+ stores, visit the Dubai Aquarium &amp; Underwater Zoo, the iconic Dubai Fountain, VR Park, and the Olympic-sized ice rink.</div>
+              <div class="activity-meta">
+                <span>⏱ Half/Full day</span>
+                <span>👥 Any group</span>
+                <span>📍 Downtown Dubai</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 100 <span>/ entry</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Dubai Mall')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#1B4332,#2D6A4F,#40916C)">
+              🕌
+              <div class="activity-badge">🌟 Cultural</div>
+              <div class="activity-thumb-label">Sheikh Zayed Grand Mosque · Abu Dhabi</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Sheikh Zayed Grand Mosque</div>
+              <div class="activity-desc">One of the world's largest mosques and an architectural masterpiece — featuring 1,000+ columns, 82 domes, and the world's largest hand-knotted carpet.</div>
+              <div class="activity-meta">
+                <span>⏱ 2 hours</span>
+                <span>👥 Any group</span>
+                <span>📍 Abu Dhabi</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">Free <span>/ entry</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Grand Mosque')">Book Tour</button>
+              </div>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- SECTION: Entertainment -->
+        <div class="section-header" style="text-align:left;margin-bottom:24px">
+          <h2 style="font-size:26px">🎡 Entertainment &amp; Theme Parks</h2>
+          <p>World-class entertainment for all ages</p>
+        </div>
+        <div class="grid-3 mb-48" style="gap:20px">
+
+          <a id="global" href="#global" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#7B2D8B,#C062E2,#9B59B6);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Global Village">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">🌍 80+ Countries</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Global Village · Oct–Apr Season</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Global Village</div>
+              <div class="activity-desc">The world's largest tourism, leisure and entertainment project — explore pavilions from 80+ countries, enjoy live shows, food, shopping, and rides.</div>
+              <div class="activity-meta">
+                <span>⏱ 4–6 hours</span>
+                <span>👥 Family friendly</span>
+                <span>📍 Sheikh Zayed Road</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 25 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Global Village')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a id="parks" href="#parks" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#D62828,#F77F00,#FCBF49);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Theme Parks">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">🚀 Thrills</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">IMG Worlds of Adventure · Dubai Parks</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Theme Parks Bundle</div>
+              <div class="activity-desc">Experience IMG Worlds of Adventure (world's largest indoor theme park), Motiongate Dubai, Legoland, and Bollywood Parks — all in one day pass.</div>
+              <div class="activity-meta">
+                <span>⏱ Full day</span>
+                <span>👥 Family &amp; groups</span>
+                <span>📍 Jebel Ali</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 299 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Theme Parks')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#3A0CA3,#7209B7,#F72585)">
+              🎭
+              <div class="activity-badge">✨ Nightly</div>
+              <div class="activity-thumb-label">Dubai Creek · Gold Souk · Spice Souk</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Old Dubai Heritage Night Tour</div>
+              <div class="activity-desc">Cruise Dubai Creek on a traditional Abra, explore the Gold and Spice Souks, visit the Al Fahidi Historical Neighbourhood and enjoy Emirati cuisine.</div>
+              <div class="activity-meta">
+                <span>⏱ 5 hours</span>
+                <span>👥 2–20 people</span>
+                <span>📍 Al Fahidi, Dubai</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 175 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Heritage Tour')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+        </div>
+
+        <!-- SECTION: Dining & Beach -->
+        <div class="section-header" style="text-align:left;margin-bottom:24px">
+          <h2 style="font-size:26px">🍴 Dining, Beach &amp; Marina</h2>
+          <p>Indulge in world-class cuisine and coastal luxury</p>
+        </div>
+        <div class="grid-3 mb-48" style="gap:20px">
+
+          <a id="food" href="#food" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#6A040F,#DC2F02,#E85D04);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1555396273-b75da2674c43?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Food Tours">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">👨‍🍳 Emirati</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Al Seef · Meena Bazaar · Global Village</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Emirati Food &amp; Culinary Tour</div>
+              <div class="activity-desc">Taste authentic Emirati dishes — Machboos, Harees, Luqaimat, and Karak chai — guided by a local food expert through Dubai's vibrant food scene.</div>
+              <div class="activity-meta">
+                <span>⏱ 3 hours</span>
+                <span>👥 2–12 people</span>
+                <span>📍 Old Dubai</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 250 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Food Tour')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a id="beach" href="#beach" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#0096C7,#00B4D8,#90E0EF);position:relative;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1562883676-8036536622e0?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Beach & Marina">
+              <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div>
+              <div class="activity-badge" style="position:relative;z-index:2">☀️ Year-round</div>
+              <div class="activity-thumb-label" style="position:relative;z-index:2">Jumeirah Beach · Palm Atlantis · La Mer</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Beach &amp; Marina Day Package</div>
+              <div class="activity-desc">Relax at Jumeirah Beach, sail the Dubai Marina, enjoy a sunset dhow cruise with dinner, and soak in the luxury coastal atmosphere of the UAE.</div>
+              <div class="activity-meta">
+                <span>⏱ Full day</span>
+                <span>👥 Any group</span>
+                <span>📍 Jumeirah / Marina</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 320 <span>/ person</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Beach Package')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="activity-card" onclick="return false">
+            <div class="activity-thumb" style="background:linear-gradient(135deg,#0F3460,#533483,#E94560)">
+              ⛵
+              <div class="activity-badge">🌇 Sunset</div>
+              <div class="activity-thumb-label">Dubai Marina · Arabian Gulf</div>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Luxury Yacht Charter</div>
+              <div class="activity-desc">Private yacht charter across the Arabian Gulf — choose from 2-hour sunset cruises to full-day trips along the Palm Jumeirah and Dubai coastline.</div>
+              <div class="activity-meta">
+                <span>⏱ 2–8 hours</span>
+                <span>👥 Up to 20</span>
+                <span>📍 Dubai Marina</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div class="activity-price">AED 600 <span>/ hour</span></div>
+                <button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Yacht Charter')">Book Now</button>
+              </div>
+            </div>
+          </a>
+
+        </div>
+
+      </div><!-- /tab-all -->
+
+      <!-- ── ADVENTURE TAB ── -->
+      <div id="tab-adventure" class="tab-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px">
+          <h2>🏜️ Adventure Activities</h2><p>Outdoor thrills across UAE's diverse landscapes</p>
+        </div>
+        <div class="grid-3" style="gap:20px">
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#C2933A,#E8C05A);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Desert Safari"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">⭐ Popular</div><div class="activity-thumb-label" style="position:relative;z-index:2">Dubai Desert</div></div><div class="activity-body"><div class="activity-title">Desert Safari</div><div class="activity-desc">Dune bashing, sandboarding, camel ride &amp; BBQ dinner under the stars.</div><div class="activity-meta"><span>⏱ 7hr</span><span>📍 Dubai</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 150 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Desert Safari')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#E63946,#F4A261);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Hot Air Balloon"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">🌅 Sunrise</div><div class="activity-thumb-label" style="position:relative;z-index:2">Dubai Desert</div></div><div class="activity-body"><div class="activity-title">Hot Air Balloon</div><div class="activity-desc">Sunrise flight over the desert with breakfast. Unforgettable panoramic views.</div><div class="activity-meta"><span>⏱ 4hr</span><span>📍 Al Ain</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 800 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Balloon')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#2D6A4F,#52B788);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Hatta Mountain"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">🏕️ Day Trip</div><div class="activity-thumb-label" style="position:relative;z-index:2">Hajar Mountains</div></div><div class="activity-body"><div class="activity-title">Hatta Mountain Adventure</div><div class="activity-desc">Kayaking, mountain biking &amp; heritage village in the spectacular Hajar range.</div><div class="activity-meta"><span>⏱ Full day</span><span>📍 Hatta</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 220 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Hatta')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#9C6B2E,#D4A843);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1548685983-8f35c8c87ea8?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Camel Riding"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">🌟 Cultural</div><div class="activity-thumb-label" style="position:relative;z-index:2">Al Marmoom</div></div><div class="activity-body"><div class="activity-title">Camel Riding</div><div class="activity-desc">Traditional Bedouin camel experience with camp visit and Emirati refreshments.</div><div class="activity-meta"><span>⏱ 3hr</span><span>📍 Dubai</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 90 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Camel')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#023E8A,#48CAE4);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1559825481-12a05cc00344?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Scuba Diving"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">🐠 Marine</div><div class="activity-thumb-label" style="position:relative;z-index:2">Fujairah / Palm</div></div><div class="activity-body"><div class="activity-title">Scuba Diving</div><div class="activity-desc">Explore coral reefs, shipwrecks and marine life. Beginner &amp; advanced dives.</div><div class="activity-meta"><span>⏱ 4hr</span><span>📍 Fujairah</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 350 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Diving')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#1B4332,#95D5B2)">🏕️<div class="activity-badge">🌙 Overnight</div><div class="activity-thumb-label">Ras Al Khaimah</div></div><div class="activity-body"><div class="activity-title">Mountain Camping</div><div class="activity-desc">Overnight camping in Ras Al Khaimah mountains with guided sunset hike &amp; bonfire.</div><div class="activity-meta"><span>⏱ Overnight</span><span>📍 RAK</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 380 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Camping')">Book</button></div></div></div>
+        </div>
+      </div>
+
+      <!-- ── LANDMARKS TAB ── -->
+      <div id="tab-culture" class="tab-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px">
+          <h2>🗼 Iconic Landmarks</h2><p>The world-famous icons of the UAE</p>
+        </div>
+        <div class="grid-3" style="gap:20px">
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(160deg,#0D1B2A,#1B2838);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Burj Khalifa"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">🏆 #1</div><div class="activity-thumb-label" style="position:relative;z-index:2">Downtown Dubai</div></div><div class="activity-body"><div class="activity-title">Burj Khalifa — At The Top</div><div class="activity-desc">360° views from the world's tallest building at 124th &amp; 148th floor observation decks.</div><div class="activity-meta"><span>⏱ 1.5hr</span><span>📍 Downtown Dubai</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 140 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Burj Khalifa')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#1B4332,#2D6A4F)">🕌<div class="activity-badge">🌟 Cultural</div><div class="activity-thumb-label">Abu Dhabi</div></div><div class="activity-body"><div class="activity-title">Sheikh Zayed Mosque</div><div class="activity-desc">World's largest mosque — stunning architecture, marble, and the world's biggest carpet.</div><div class="activity-meta"><span>⏱ 2hr</span><span>📍 Abu Dhabi</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">Free <span>entry</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Grand Mosque')">Book Tour</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#6D3A3A,#C41E3A)">🏰<div class="activity-badge">🕌 Heritage</div><div class="activity-thumb-label">Al Ain</div></div><div class="activity-body"><div class="activity-title">Al Ain Oasis &amp; Fort</div><div class="activity-desc">UNESCO World Heritage Al Ain Oasis, Jahili Fort and the Al Ain National Museum.</div><div class="activity-meta"><span>⏱ Full day</span><span>📍 Al Ain</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 120 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Al Ain')">Book</button></div></div></div>
+        </div>
+      </div>
+
+      <!-- ── WATER TAB ── -->
+      <div id="tab-water" class="tab-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px">
+          <h2>🏄 Water &amp; Beach Activities</h2><p>The UAE's stunning coastline awaits</p>
+        </div>
+        <div class="grid-3" style="gap:20px">
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#0077B6,#90E0EF);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Water Sports"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">💦 Action</div><div class="activity-thumb-label" style="position:relative;z-index:2">Dubai Marina</div></div><div class="activity-body"><div class="activity-title">Water Sports Package</div><div class="activity-desc">Jet ski, parasailing, wakeboarding &amp; flyboarding with certified instructors.</div><div class="activity-meta"><span>⏱ 3hr</span><span>📍 Jumeirah</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 200 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Water Sports')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#023E8A,#48CAE4);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1559825481-12a05cc00344?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Scuba Diving"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">🐠 Marine</div><div class="activity-thumb-label" style="position:relative;z-index:2">Fujairah</div></div><div class="activity-body"><div class="activity-title">Scuba Diving</div><div class="activity-desc">Discover coral reefs, marine life and shipwrecks off the UAE's East Coast.</div><div class="activity-meta"><span>⏱ 4hr</span><span>📍 Fujairah</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 350 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Diving')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#0096C7,#90E0EF);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1562883676-8036536622e0?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Beach & Marina"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">☀️ Relax</div><div class="activity-thumb-label" style="position:relative;z-index:2">Jumeirah / Palm</div></div><div class="activity-body"><div class="activity-title">Beach &amp; Marina Day</div><div class="activity-desc">Premium beach access, sunset dhow cruise and dinner in Dubai Marina.</div><div class="activity-meta"><span>⏱ Full day</span><span>📍 Jumeirah</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 320 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Beach Day')">Book</button></div></div></div>
+        </div>
+      </div>
+
+      <!-- ── ENTERTAINMENT TAB ── -->
+      <div id="tab-entertainment" class="tab-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px">
+          <h2>🎡 Entertainment &amp; Theme Parks</h2><p>World-class fun for all ages</p>
+        </div>
+        <div class="grid-3" style="gap:20px">
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#7B2D8B,#C062E2);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Global Village"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">🌍 80+ Nations</div><div class="activity-thumb-label" style="position:relative;z-index:2">Global Village</div></div><div class="activity-body"><div class="activity-title">Global Village</div><div class="activity-desc">80+ country pavilions, live shows, cuisine, rides and entertainment. Oct–Apr season.</div><div class="activity-meta"><span>⏱ 5hr</span><span>📍 Sheikh Zayed Rd</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 25 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Global Village')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#D62828,#FCBF49);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Theme Parks"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">🚀 Thrills</div><div class="activity-thumb-label" style="position:relative;z-index:2">IMG Worlds</div></div><div class="activity-body"><div class="activity-title">Theme Parks Bundle</div><div class="activity-desc">IMG Worlds, Motiongate, Legoland &amp; Bollywood Parks — multi-park day pass.</div><div class="activity-meta"><span>⏱ Full day</span><span>📍 Jebel Ali</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 299 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Theme Parks')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#3A0CA3,#F72585)">🎭<div class="activity-badge">✨ Nightly</div><div class="activity-thumb-label">Dubai Creek</div></div><div class="activity-body"><div class="activity-title">Heritage Night Tour</div><div class="activity-desc">Dubai Creek Abra cruise, Gold &amp; Spice Souk, Al Fahidi historical district with Emirati dinner.</div><div class="activity-meta"><span>⏱ 5hr</span><span>📍 Al Fahidi</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 175 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Heritage Tour')">Book</button></div></div></div>
+        </div>
+      </div>
+
+      <!-- ── DINING TAB ── -->
+      <div id="tab-dining" class="tab-panel">
+        <div class="section-header" style="text-align:left;margin-bottom:24px">
+          <h2>🍴 Dining &amp; Culinary Experiences</h2><p>Flavours from around the world, right here in the UAE</p>
+        </div>
+        <div class="grid-3" style="gap:20px">
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#6A040F,#E85D04);position:relative;overflow:hidden"><img src="https://images.unsplash.com/photo-1555396273-b75da2674c43?auto=format&fit=crop&w=600&q=75" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.85" loading="lazy" onerror="this.style.display='none'" alt="Food Tours"><div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.4) 0%,transparent 60%)"></div><div class="activity-badge" style="position:relative;z-index:2">👨‍🍳 Local</div><div class="activity-thumb-label" style="position:relative;z-index:2">Old Dubai</div></div><div class="activity-body"><div class="activity-title">Emirati Food Tour</div><div class="activity-desc">Taste authentic Machboos, Harees, Luqaimat &amp; Karak chai led by a local food guide.</div><div class="activity-meta"><span>⏱ 3hr</span><span>📍 Al Seef</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 250 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Food Tour')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#0F3460,#E94560)">⛵<div class="activity-badge">🌇 Sunset</div><div class="activity-thumb-label">Dubai Marina</div></div><div class="activity-body"><div class="activity-title">Sunset Dhow Dinner Cruise</div><div class="activity-desc">Buffet dinner aboard a traditional dhow sailing along the Dubai Marina skyline.</div><div class="activity-meta"><span>⏱ 2.5hr</span><span>📍 Dubai Marina</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 199 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Dhow Cruise')">Book</button></div></div></div>
+          <div class="activity-card"><div class="activity-thumb" style="background:linear-gradient(135deg,#1B1B2F,#E94560)">🌃<div class="activity-badge">⭐ Luxury</div><div class="activity-thumb-label">Burj Al Arab</div></div><div class="activity-body"><div class="activity-title">Luxury Rooftop Dining</div><div class="activity-desc">Fine dining at Dubai's most iconic restaurants with panoramic skyline &amp; sea views.</div><div class="activity-meta"><span>⏱ 2hr</span><span>📍 Jumeirah / DIFC</span></div><div style="display:flex;align-items:center;justify-content:space-between"><div class="activity-price">AED 500 <span>/person</span></div><button class="btn btn-primary" style="padding:8px 18px;font-size:13px" onclick="bookActivity('Rooftop Dining')">Book</button></div></div></div>
+        </div>
+      </div>
+
+      <!-- ── VISA CTA BANNER ── -->
+      <div style="background:linear-gradient(135deg,#0F172A,#1E293B,#0F3460);border-radius:var(--radius-lg);padding:40px;text-align:center;color:white;margin-top:48px">
+        <div style="font-size:36px;margin-bottom:12px">🇦🇪</div>
+        <h2 style="font-size:28px;font-weight:800;margin-bottom:10px">Planning to Visit the UAE?</h2>
+        <p style="opacity:0.75;font-size:16px;max-width:500px;margin:0 auto 28px">Get your UAE Tourist Visa fast — AI-powered processing, 3–5 business days. 60-day single and multiple entry available.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a href="eligibility-checker.html" class="btn btn-accent btn-lg">Check Eligibility</a>
+          <a href="apply-visa.html" class="btn btn-lg" style="background:rgba(255,255,255,0.12);color:white;border:1.5px solid rgba(255,255,255,0.3)">Apply for UAE Visa</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:40px;margin-bottom:8px">🎉</div>
+      <h3 style="font-size:20px;font-weight:700" id="modalTitle">Desert Safari</h3>
+      <p style="color:var(--text-muted);font-size:14px">Select your date and group size</p>
+    </div>
+    <div class="form-group">
+      <label>Activity Date</label>
+      <input type="date" class="form-control" id="bookDate">
+    </div>
+    <div class="form-group">
+      <label>Number of People</label>
+      <select class="form-control" id="bookPeople">
+        <option>1 Person</option>
+        <option>2 People</option>
+        <option selected>3–5 People</option>
+        <option>6–10 People</option>
+        <option>10+ People (Group)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Special Requests (optional)</label>
+      <input type="text" class="form-control" placeholder="Dietary requirements, accessibility, etc.">
+    </div>
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="btn btn-primary btn-full" onclick="confirmBooking()">✓ Confirm Booking</button>
+      <button class="btn btn-outline" onclick="closeModal()" style="flex-shrink:0;padding:11px 20px">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+function bookActivity(name) {
+  document.getElementById('modalTitle').textContent = name;
+  document.getElementById('bookDate').valueAsDate = new Date(Date.now() + 86400000 * 7);
+  document.getElementById('bookingModal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('bookingModal').classList.remove('open');
+}
+function confirmBooking() {
+  closeModal();
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#10B981;color:white;padding:14px 28px;border-radius:10px;font-weight:600;font-size:15px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,0.2);';
+  toast.textContent = '✓ Booking confirmed! Check your dashboard for details.';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 4000);
+} 
+document.getElementById('bookingModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html> 

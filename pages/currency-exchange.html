@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Currency Exchange — Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+  <script src="../js/nav.js"></script>
+  <style>
+    body { background: #F1F5F9; font-family: 'Inter', sans-serif; }
+
+    .cx-hero {
+      background: linear-gradient(135deg, #312E81 0%, #4338CA 50%, #4F46E5 100%);
+      padding: 60px 24px 48px; text-align: center; position: relative; overflow: hidden;
+    }
+    .cx-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(129,140,248,.25) 0%, transparent 70%);
+    }
+    .cx-hero-inner { position: relative; max-width: 600px; margin: 0 auto; }
+    .cx-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2); color: #C7D2FE; border-radius: 50px;
+      padding: 5px 16px; font-size: 12.5px; font-weight: 600; margin-bottom: 18px; }
+    .cx-hero h1 { font-size: clamp(28px,4vw,42px); font-weight: 900; color: #fff; margin-bottom: 10px; }
+    .cx-hero p { color: #A5B4FC; font-size: 15px; }
+
+    .cx-wrap { max-width: 820px; margin: -28px auto 48px; padding: 0 20px; }
+
+    /* Main converter card */
+    .cx-card {
+      background: #fff; border-radius: 20px; box-shadow: 0 8px 40px rgba(0,0,0,.10);
+      overflow: hidden;
+    }
+    .cx-card-hdr {
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      padding: 20px 28px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .cx-card-hdr h2 { color: #fff; font-size: 16px; font-weight: 700; }
+    .cx-live-dot { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #C7D2FE; }
+    .cx-dot { width: 8px; height: 8px; border-radius: 50%; background: #34D399; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
+
+    .cx-body { padding: 28px; }
+
+    /* Amount + currencies row */
+    .cx-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: end; margin-bottom: 20px; }
+    @media(max-width:600px){ .cx-row { grid-template-columns: 1fr; } .cx-swap-btn { margin: 0 auto; } }
+
+    .cx-field label { display: block; font-size: 11px; font-weight: 700; color: #64748B;
+      text-transform: uppercase; letter-spacing: .06em; margin-bottom: 7px; }
+    .cx-field input, .cx-field select {
+      width: 100%; padding: 14px 16px; border: 1.5px solid #E2E8F0; border-radius: 12px;
+      font-size: 18px; font-weight: 700; color: #1E293B; font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color .15s; background: #F8FAFC; box-sizing: border-box;
+    }
+    .cx-field input:focus, .cx-field select:focus { border-color: #4F46E5; background: #fff; box-shadow: 0 0 0 3px rgba(79,70,229,.1); }
+    .cx-field select { font-size: 14px; font-weight: 600; cursor: pointer; }
+
+    .cx-swap-btn {
+      width: 46px; height: 46px; border-radius: 50%; background: #EEF2FF;
+      border: 2px solid #C7D2FE; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; transition: all .2s; flex-shrink: 0; margin-bottom: 1px;
+    }
+    .cx-swap-btn:hover { background: #4F46E5; border-color: #4F46E5; }
+    .cx-swap-btn:hover svg { stroke: white; }
+    .cx-swap-btn svg { stroke: #4F46E5; transition: stroke .2s; }
+
+    /* Result box */
+    .cx-result {
+      background: linear-gradient(135deg, #EEF2FF, #F5F3FF);
+      border: 1.5px solid #C7D2FE; border-radius: 14px;
+      padding: 20px 24px; margin-bottom: 20px; text-align: center;
+    }
+    .cx-result-rate { font-size: 32px; font-weight: 900; color: #4F46E5; margin-bottom: 4px; }
+    .cx-result-label { font-size: 13px; color: #64748B; }
+    .cx-result-rate-line { font-size: 13px; color: #94A3B8; margin-top: 8px; }
+
+    /* Quick amounts */
+    .cx-quick { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .cx-quick-btn {
+      padding: 7px 16px; border: 1.5px solid #E2E8F0; border-radius: 50px;
+      font-size: 13px; font-weight: 600; color: #475569; background: #fff;
+      cursor: pointer; transition: all .15s; font-family: 'Inter', sans-serif;
+    }
+    .cx-quick-btn:hover, .cx-quick-btn.active { background: #4F46E5; color: #fff; border-color: #4F46E5; }
+
+    /* XE button */
+    .cx-xe-btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px; background: #fff; border: 2px solid #E2E8F0;
+      border-radius: 12px; font-size: 14px; font-weight: 700; color: #374151;
+      text-decoration: none; transition: all .2s; cursor: pointer;
+    }
+    .cx-xe-btn:hover { border-color: #4F46E5; color: #4F46E5; background: #EEF2FF; }
+
+    /* Popular pairs */
+    .cx-pairs { margin-top: 28px; }
+    .cx-pairs h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; color: #1E293B; }
+    .cx-pairs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 10px; }
+    .cx-pair-card {
+      background: #fff; border: 1.5px solid #E2E8F0; border-radius: 12px;
+      padding: 14px 16px; cursor: pointer; transition: all .15s;
+    }
+    .cx-pair-card:hover { border-color: #4F46E5; box-shadow: 0 2px 12px rgba(79,70,229,.1); }
+    .cx-pair-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .cx-pair-name { font-size: 13px; font-weight: 700; color: #1E293B; }
+    .cx-pair-rate { font-size: 15px; font-weight: 800; color: #4F46E5; }
+    .cx-pair-sub { font-size: 11px; color: #94A3B8; }
+
+    .cx-update { font-size: 11px; color: #94A3B8; text-align: center; margin-top: 16px; }
+
+    .cx-disclaimer {
+      background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 12px;
+      padding: 14px 18px; margin-top: 16px;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .cx-disclaimer p { font-size: 12px; color: #92400E; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="cx-hero">
+  <div class="cx-hero-inner">
+    <div class="cx-chip">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Live Exchange Rates
+    </div>
+    <h1>Currency Exchange</h1>
+    <p>Real-time rates powered by XE.com &mdash; the world&rsquo;s trusted currency authority</p>
+  </div>
+</div>
+
+<!-- Converter -->
+<div class="cx-wrap">
+  <div class="cx-card">
+    <div class="cx-card-hdr">
+      <h2>Currency Converter</h2>
+      <div class="cx-live-dot"><div class="cx-dot"></div> Live rates</div>
+    </div>
+    <div class="cx-body">
+
+      <!-- Amount & currency selectors -->
+      <div class="cx-row">
+        <div class="cx-field">
+          <label>Amount</label>
+          <input type="number" id="cx-amount" value="1000" min="0" step="any">
+        </div>
+        <button class="cx-swap-btn" onclick="swapCurrencies()" title="Swap currencies">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+          </svg>
+        </button>
+        <div class="cx-field">
+          <label>Convert to</label>
+          <select id="cx-to"></select>
+        </div>
+      </div>
+
+      <!-- From currency -->
+      <div class="cx-field" style="margin-bottom:20px">
+        <label>From</label>
+        <select id="cx-from"></select>
+      </div>
+
+      <!-- Quick amounts -->
+      <div class="cx-quick" id="cx-quick">
+        <span style="font-size:12px;font-weight:600;color:#94A3B8;align-self:center">Quick:</span>
+        <button class="cx-quick-btn" onclick="setAmount(100)">100</button>
+        <button class="cx-quick-btn" onclick="setAmount(500)">500</button>
+        <button class="cx-quick-btn active" onclick="setAmount(1000)">1,000</button>
+        <button class="cx-quick-btn" onclick="setAmount(5000)">5,000</button>
+        <button class="cx-quick-btn" onclick="setAmount(10000)">10,000</button>
+      </div>
+
+      <!-- Result -->
+      <div class="cx-result">
+        <div class="cx-result-rate" id="cx-result-val">—</div>
+        <div class="cx-result-label" id="cx-result-label">Loading live rates...</div>
+        <div class="cx-result-rate-line" id="cx-rate-line"></div>
+      </div>
+
+      <!-- Open on XE.com -->
+      <a id="cx-xe-link" href="https://www.xe.com/currencyconverter/" target="_blank" rel="noopener" class="cx-xe-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        View Full Converter &amp; Charts on XE.com
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+
+      <div class="cx-update" id="cx-updated">Fetching live rates...</div>
+
+      <div class="cx-disclaimer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p>Rates shown are mid-market rates for informational purposes. Actual transaction rates from banks or exchange providers may differ. Rates refresh automatically every 10 minutes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popular pairs -->
+  <div class="cx-pairs">
+    <h3>Popular Currency Pairs</h3>
+    <div class="cx-pairs-grid" id="cx-pairs-grid">
+      <div style="color:#94A3B8;font-size:13px;grid-column:1/-1">Loading rates...</div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+const CURRENCIES = [
+  { code:'AED', name:'UAE Dirham' },
+  { code:'USD', name:'US Dollar' },
+  { code:'EUR', name:'Euro' },
+  { code:'GBP', name:'British Pound' },
+  { code:'PKR', name:'Pakistani Rupee' },
+  { code:'INR', name:'Indian Rupee' },
+  { code:'SAR', name:'Saudi Riyal' },
+  { code:'CAD', name:'Canadian Dollar' },
+  { code:'AUD', name:'Australian Dollar' },
+  { code:'JPY', name:'Japanese Yen' },
+  { code:'CNY', name:'Chinese Yuan' },
+  { code:'CHF', name:'Swiss Franc' },
+  { code:'SGD', name:'Singapore Dollar' },
+  { code:'MYR', name:'Malaysian Ringgit' },
+  { code:'TRY', name:'Turkish Lira' },
+  { code:'BDT', name:'Bangladeshi Taka' },
+  { code:'PHP', name:'Philippine Peso' },
+  { code:'EGP', name:'Egyptian Pound' },
+  { code:'NGN', name:'Nigerian Naira' },
+  { code:'KWD', name:'Kuwaiti Dinar' },
+  { code:'QAR', name:'Qatari Riyal' },
+  { code:'OMR', name:'Omani Rial' },
+  { code:'BHD', name:'Bahraini Dinar' },
+  { code:'IDR', name:'Indonesian Rupiah' },
+  { code:'THB', name:'Thai Baht' },
+  { code:'ZAR', name:'South African Rand' },
+  { code:'NZD', name:'New Zealand Dollar' },
+  { code:'HKD', name:'Hong Kong Dollar' },
+];
+
+const POPULAR_PAIRS = [
+  { from:'AED', to:'USD' },
+  { from:'AED', to:'EUR' },
+  { from:'AED', to:'GBP' },
+  { from:'AED', to:'PKR' },
+  { from:'AED', to:'INR' },
+  { from:'USD', to:'AED' },
+  { from:'GBP', to:'AED' },
+  { from:'EUR', to:'AED' },
+];
+
+let rates = {};
+let lastUpdated = '';
+
+// Populate selects
+function buildSelects() {
+  const from = document.getElementById('cx-from');
+  const to   = document.getElementById('cx-to');
+  CURRENCIES.forEach(c => {
+    const o1 = new Option(`${c.code} — ${c.name}`, c.code);
+    const o2 = new Option(`${c.code} — ${c.name}`, c.code);
+    from.appendChild(o1);
+    to.appendChild(o2);
+  });
+  from.value = 'AED';
+  to.value   = 'USD';
+}
+
+// Fetch rates via our server proxy (tries XE.com first, fallback to ECB)
+async function fetchRates(base) {
+  try {
+    document.getElementById('cx-updated').textContent = 'Fetching live rates...';
+    const res  = await fetch(`/api/rates?base=${base}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    rates = data.rates;
+    rates[base] = 1;
+    lastUpdated = new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+    const src = data.source === 'xe.com' ? 'XE.com' : 'ECB mid-market';
+    document.getElementById('cx-updated').textContent = `Live rates · Updated ${lastUpdated} · Source: ${src}`;
+    return true;
+  } catch {
+    document.getElementById('cx-updated').textContent = 'Could not fetch live rates. Is the server running?';
+    return false;
+  }
+}
+
+function convert() {
+  const amount = parseFloat(document.getElementById('cx-amount').value) || 0;
+  const from   = document.getElementById('cx-from').value;
+  const to     = document.getElementById('cx-to').value;
+
+  if (!rates[to]) {
+    document.getElementById('cx-result-val').textContent   = '—';
+    document.getElementById('cx-result-label').textContent = 'Rate unavailable';
+    return;
+  }
+
+  const rate   = rates[to];
+  const result = amount * rate;
+
+  document.getElementById('cx-result-val').textContent =
+    `${result.toLocaleString('en-US', { maximumFractionDigits: 4 })} ${to}`;
+  document.getElementById('cx-result-label').textContent =
+    `${amount.toLocaleString()} ${from} = ${result.toLocaleString('en-US', { maximumFractionDigits:4 })} ${to}`;
+  document.getElementById('cx-rate-line').textContent =
+    `1 ${from} = ${rate.toFixed(6)} ${to} · 1 ${to} = ${(1/rate).toFixed(6)} ${from}`;
+
+  // Update XE link
+  document.getElementById('cx-xe-link').href =
+    `https://www.xe.com/currencyconverter/convert/?Amount=${amount}&From=${from}&To=${to}`;
+}
+
+async function onFromChange() {
+  const base = document.getElementById('cx-from').value;
+  await fetchRates(base);
+  convert();
+  renderPairs();
+}
+
+async function swapCurrencies() {
+  const from = document.getElementById('cx-from');
+  const to   = document.getElementById('cx-to');
+  const tmp  = from.value;
+  from.value = to.value;
+  to.value   = tmp;
+  await onFromChange();
+}
+
+function setAmount(n) {
+  document.getElementById('cx-amount').value = n;
+  document.querySelectorAll('.cx-quick-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  convert();
+}
+
+function renderPairs() {
+  const grid = document.getElementById('cx-pairs-grid');
+  const base = document.getElementById('cx-from').value;
+  grid.innerHTML = POPULAR_PAIRS.map(p => {
+    const r = rates[p.to] !== undefined ? rates[p.to].toFixed(4) : '—';
+    return `
+      <div class="cx-pair-card" onclick="setPair('${p.from}','${p.to}')">
+        <div class="cx-pair-top">
+          <div class="cx-pair-name">${p.from} / ${p.to}</div>
+          <div class="cx-pair-rate">${p.from === base ? r : '—'}</div>
+        </div>
+        <div class="cx-pair-sub">1 ${p.from} = ${p.from === base ? r + ' ' + p.to : 'select to view'}</div>
+      </div>`;
+  }).join('');
+}
+
+async function setPair(from, to) {
+  document.getElementById('cx-from').value = from;
+  document.getElementById('cx-to').value   = to;
+  await onFromChange();
+}
+
+// Events
+document.getElementById('cx-from').addEventListener('change', onFromChange);
+document.getElementById('cx-to').addEventListener('change', convert);
+document.getElementById('cx-amount').addEventListener('input', convert);
+
+// Init
+buildSelects();
+fetchRates('AED').then(() => { convert(); renderPairs(); });
+</script>
+</body>
+</html>
