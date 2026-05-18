@@ -58,11 +58,16 @@ jobs:
           chmod +x ./gradlew || true
           ./gradlew assembleRelease
       - name: Decode keystore (from secret)
-        if: ${{ secrets.ANDROID_KEYSTORE != '' }}
+        env:
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
         run: |
-          echo "Decoding keystore"
-          mkdir -p android
-          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > android/keystore.jks
+          if [ -n "$ANDROID_KEYSTORE" ]; then
+            echo "Decoding keystore"
+            mkdir -p android
+            echo "$ANDROID_KEYSTORE" | base64 --decode > android/keystore.jks
+          else
+            echo "ANDROID_KEYSTORE not set; skipping decode"
+          fi
 
       - name: Align APK (zipalign)
         run: |
@@ -73,19 +78,27 @@ jobs:
           $ZIPALIGN -v -p 4 "$APK" android/app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Sign APK (apksigner)
-        if: ${{ secrets.ANDROID_KEYSTORE != '' }}
+        env:
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          APKSIGNER="$ANDROID_HOME/build-tools/33.0.2/apksigner"
-          set -e
-          IN=android/app/build/outputs/apk/release/app-release-aligned.apk
-          OUT=android/app/build/outputs/apk/release/app-release-signed.apk
-          echo "Signing $IN -> $OUT"
-          $APKSIGNER sign \
-            --ks android/keystore.jks \
-            --ks-key-alias "${{ secrets.KEY_ALIAS }}" \
-            --ks-pass pass:"${{ secrets.STORE_PASSWORD }}" \
-            --key-pass pass:"${{ secrets.KEY_PASSWORD }}" \
-            --out "$OUT" "$IN"
+          if [ -n "$ANDROID_KEYSTORE" ]; then
+            APKSIGNER="$ANDROID_HOME/build-tools/33.0.2/apksigner"
+            set -e
+            IN=android/app/build/outputs/apk/release/app-release-aligned.apk
+            OUT=android/app/build/outputs/apk/release/app-release-signed.apk
+            echo "Signing $IN -> $OUT"
+            $APKSIGNER sign \
+              --ks android/keystore.jks \
+              --ks-key-alias "$KEY_ALIAS" \
+              --ks-pass pass:"$STORE_PASSWORD" \
+              --key-pass pass:"$KEY_PASSWORD" \
+              --out "$OUT" "$IN"
+          else
+            echo "ANDROID_KEYSTORE not set; skipping signing"
+          fi
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
