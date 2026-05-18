@@ -621,7 +621,8 @@ font[face] { font-family: inherit !important; }  /* GT wraps text in <font> tags
   font-size: clamp(16px, 2vw, 20px);
   opacity: 0.85;
   max-width: 580px;
-  margin: 0 auto 40px;
+  margin: 0 auto 24px;
+  text-align: center;
 }
 
 .hero-search {
@@ -1204,7 +1205,7 @@ footer {
   .hero { min-height: auto; }
   .hero-content { padding: 60px 16px 50px; max-width: 100%; }
   .hero h1 { font-size: 26px; word-break: break-word; overflow-wrap: break-word; }
-  .hero p { font-size: 14px; max-width: 100%; }
+  .hero p { font-size: 14px; max-width: 100%; text-align: center; }
   #hero-h1 { font-size: 26px; }
   .hero-search { flex-direction: column; gap: 12px; padding: 20px; }
   .hero-search-field { width: 100%; }
