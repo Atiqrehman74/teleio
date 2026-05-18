@@ -26,6 +26,10 @@
   --red: #EF4444;
 }
 
+/* ===== BASE ===== */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: hidden; max-width: 100%; }
+
 /* ===== DARK MODE ===== */
 /* data-dark on html prevents flash of light background */
 html[data-dark='1'] body { background: #0f172a; }
@@ -104,7 +108,7 @@ nav {
   margin-right: 16px;
 }
 .nav-logo-img {
-  height: 50px;
+  height: 36px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -112,7 +116,7 @@ nav {
 }
 .nav-logo:hover .nav-logo-img { opacity: .85; }
 body.dark-mode .nav-logo-img { filter: brightness(0) invert(1); }
-@media (max-width: 768px) { .nav-logo-img { height: 36px; } }
+@media (max-width: 768px) { .nav-logo-img { height: 26px; } }
 
 .logo-icon {
   width: 36px; height: 36px;
@@ -1158,9 +1162,10 @@ footer {
 
   /* HERO */
   .hero { min-height: auto; }
-  .hero-content { padding: 60px 20px 50px; }
-  .hero h1 { font-size: 28px; }
-  .hero p { font-size: 15px; }
+  .hero-content { padding: 60px 16px 50px; max-width: 100%; }
+  .hero h1 { font-size: 26px; word-break: break-word; overflow-wrap: break-word; }
+  .hero p { font-size: 14px; max-width: 100%; }
+  #hero-h1 { font-size: 26px; }
   .hero-search { flex-direction: column; gap: 12px; padding: 20px; }
   .hero-search-field { width: 100%; }
   .hero-search .btn { width: 100%; }

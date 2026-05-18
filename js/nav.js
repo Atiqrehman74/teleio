@@ -25,9 +25,9 @@
     nav{position:fixed;top:4px;left:0;right:0;background:#fff;z-index:1000;border-bottom:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.05);}
     .nav-container{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:62px;gap:8px;}
     .nav-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;margin-right:16px;}
-    .nav-logo-img{height:50px;width:auto;display:block;object-fit:contain;transition:opacity .2s;}
+    .nav-logo-img{height:36px;width:auto;display:block;object-fit:contain;transition:opacity .2s;}
     .nav-logo:hover .nav-logo-img{opacity:.85;}
-    @media(max-width:768px){.nav-logo-img{height:36px;}}
+    @media(max-width:768px){.nav-logo-img{height:26px;}}
     body.dark-mode .nav-logo-img{filter:brightness(0) invert(1);}
     .nav-links{display:flex;align-items:center;gap:2px;flex:1;}
     .nav-item{position:relative;}
@@ -54,12 +54,12 @@
     .btn-signin:hover{color:var(--primary);background:#F5F3FF;}
     .btn-instant{padding:8px 18px;background:var(--accent);color:#1a2e05;text-decoration:none;font-size:13.5px;font-weight:700;border-radius:var(--radius-sm);transition:all .18s;white-space:nowrap;}
     .btn-instant:hover{background:var(--accent-dark);}
-    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:none;margin-left:auto;}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:none;margin-left:auto;position:relative;z-index:1100;}
     .hamburger span{display:block;width:22px;height:2px;background:var(--text-dark);border-radius:2px;transition:all .2s;}
     .hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
     .hamburger.active span:nth-child(2){opacity:0;}
     .hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-    .mobile-menu{display:none;position:fixed;top:66px;left:0;right:0;bottom:0;background:white;z-index:999;overflow-y:auto;padding:20px 24px;border-top:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.12);}
+    .mobile-menu{display:none;position:fixed;top:66px;left:0;right:0;bottom:0;background:white;z-index:1050;overflow-y:auto;padding:20px 24px;border-top:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,.12);}
     .mobile-menu.open{display:block;}
     .mobile-nav-section{margin-bottom:20px;}
     .mobile-nav-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
