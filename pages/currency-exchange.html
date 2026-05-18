@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Currency Exchange â€” Teleio Tourism</title>
+  <title>Currency Exchange — Teleio Tourism</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" type="image/png" href="../images/favicon.png">
@@ -177,7 +177,7 @@
 
       <!-- Result -->
       <div class="cx-result">
-        <div class="cx-result-rate" id="cx-result-val">â€”</div>
+        <div class="cx-result-rate" id="cx-result-val">—</div>
         <div class="cx-result-label" id="cx-result-label">Loading live rates...</div>
         <div class="cx-result-rate-line" id="cx-rate-line"></div>
       </div>
@@ -259,8 +259,8 @@ function buildSelects() {
   const from = document.getElementById('cx-from');
   const to   = document.getElementById('cx-to');
   CURRENCIES.forEach(c => {
-    const o1 = new Option(`${c.code} â€” ${c.name}`, c.code);
-    const o2 = new Option(`${c.code} â€” ${c.name}`, c.code);
+    const o1 = new Option(`${c.code} — ${c.name}`, c.code);
+    const o2 = new Option(`${c.code} — ${c.name}`, c.code);
     from.appendChild(o1);
     to.appendChild(o2);
   });
@@ -279,7 +279,7 @@ async function fetchRates(base) {
     rates[base] = 1;
     lastUpdated = new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
     const src = data.source === 'xe.com' ? 'XE.com' : 'ECB mid-market';
-    document.getElementById('cx-updated').textContent = `Live rates Â· Updated ${lastUpdated} Â· Source: ${src}`;
+    document.getElementById('cx-updated').textContent = `Live rates · Updated ${lastUpdated} · Source: ${src}`;
     return true;
   } catch {
     document.getElementById('cx-updated').textContent = 'Could not fetch live rates. Is the server running?';
@@ -293,7 +293,7 @@ function convert() {
   const to     = document.getElementById('cx-to').value;
 
   if (!rates[to]) {
-    document.getElementById('cx-result-val').textContent   = 'â€”';
+    document.getElementById('cx-result-val').textContent   = '—';
     document.getElementById('cx-result-label').textContent = 'Rate unavailable';
     return;
   }
@@ -306,7 +306,7 @@ function convert() {
   document.getElementById('cx-result-label').textContent =
     `${amount.toLocaleString()} ${from} = ${result.toLocaleString('en-US', { maximumFractionDigits:4 })} ${to}`;
   document.getElementById('cx-rate-line').textContent =
-    `1 ${from} = ${rate.toFixed(6)} ${to} Â· 1 ${to} = ${(1/rate).toFixed(6)} ${from}`;
+    `1 ${from} = ${rate.toFixed(6)} ${to} · 1 ${to} = ${(1/rate).toFixed(6)} ${from}`;
 
   // Update XE link
   document.getElementById('cx-xe-link').href =
@@ -340,12 +340,12 @@ function renderPairs() {
   const grid = document.getElementById('cx-pairs-grid');
   const base = document.getElementById('cx-from').value;
   grid.innerHTML = POPULAR_PAIRS.map(p => {
-    const r = rates[p.to] !== undefined ? rates[p.to].toFixed(4) : 'â€”';
+    const r = rates[p.to] !== undefined ? rates[p.to].toFixed(4) : '—';
     return `
       <div class="cx-pair-card" onclick="setPair('${p.from}','${p.to}')">
         <div class="cx-pair-top">
           <div class="cx-pair-name">${p.from} / ${p.to}</div>
-          <div class="cx-pair-rate">${p.from === base ? r : 'â€”'}</div>
+          <div class="cx-pair-rate">${p.from === base ? r : '—'}</div>
         </div>
         <div class="cx-pair-sub">1 ${p.from} = ${p.from === base ? r + ' ' + p.to : 'select to view'}</div>
       </div>`;

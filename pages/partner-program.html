@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Partner Program â€” Teleio Tourism</title>
+  <title>Partner Program — Teleio Tourism</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,7 +14,7 @@
     }
     body { font-family: 'Inter', sans-serif; color: var(--text); background: #fff; }
 
-    /* â”€â”€ Hero â”€â”€ */
+    /* ── Hero ── */
     .hero {
       background: linear-gradient(135deg, #064E3B 0%, #065F46 40%, #047857 70%, #0F172A 100%);
       padding: 100px 24px 80px; text-align: center; position: relative; overflow: hidden;
@@ -47,7 +47,7 @@
     .h-stat-val { font-size: 32px; font-weight: 800; color: #fff; }
     .h-stat-lbl { font-size: 13px; color: #6EE7B7; margin-top: 4px; }
 
-    /* â”€â”€ Sections â”€â”€ */
+    /* ── Sections ── */
     .section { padding: 72px 24px; }
     .section-inner { max-width: 1100px; margin: 0 auto; }
     .section-title { text-align: center; margin-bottom: 52px; }
@@ -57,7 +57,7 @@
       border-radius: 50px; padding: 4px 14px; font-size: 12px; font-weight: 700;
       text-transform: uppercase; letter-spacing: .06em; margin-bottom: 16px; }
 
-    /* â”€â”€ How it works â”€â”€ */
+    /* ── How it works ── */
     .steps { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 28px; }
     .step { text-align: center; padding: 32px 24px; }
     .step-num { width: 52px; height: 52px; border-radius: 50%;
@@ -68,7 +68,7 @@
     .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
     .step p { color: var(--muted); font-size: 14px; line-height: 1.6; }
 
-    /* â”€â”€ Tier cards â”€â”€ */
+    /* ── Tier cards ── */
     .tiers { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); gap: 20px; }
     .tier-card { border-radius: 16px; padding: 28px; border: 2px solid transparent;
       position: relative; overflow: hidden; transition: transform .2s, box-shadow .2s; }
@@ -82,7 +82,7 @@
       padding: 8px 12px; border-radius: 8px; background: rgba(0,0,0,.04); }
     .tier-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
     .tier-features li { font-size: 13.5px; display: flex; gap: 8px; align-items: flex-start; }
-    .tier-features li::before { content:'âœ“'; color: var(--primary); font-weight: 700; flex-shrink: 0; }
+    .tier-features li::before { content:'✓'; color: var(--primary); font-weight: 700; flex-shrink: 0; }
     .best-val { position: absolute; top: 14px; right: -22px; background: var(--gold);
       color: #fff; font-size: 10px; font-weight: 700; padding: 4px 30px;
       transform: rotate(30deg); }
@@ -92,7 +92,7 @@
     .tier-gold     { background: #FFFBEB; }
     .tier-platinum { background: #F5F3FF; }
 
-    /* â”€â”€ Partner types â”€â”€ */
+    /* ── Partner types ── */
     .partner-types { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 16px; }
     .type-card { padding: 24px 20px; border-radius: 14px; border: 1.5px solid var(--border);
       text-align: center; transition: all .15s; cursor: pointer; }
@@ -101,7 +101,7 @@
     .type-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
     .type-card p  { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-    /* â”€â”€ Benefits â”€â”€ */
+    /* ── Benefits ── */
     .benefits { background: linear-gradient(135deg,#064E3B,#065F46); padding: 72px 24px; }
     .benefits-inner { max-width: 1100px; margin: 0 auto; }
     .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 24px; margin-top: 48px; }
@@ -114,7 +114,7 @@
     .benefits .section-title .chip { background: rgba(16,185,129,.2); color: #34D399; }
     .benefits .section-title p { color: #6EE7B7; }
 
-    /* â”€â”€ Testimonials â”€â”€ */
+    /* ── Testimonials ── */
     .testimonials { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 20px; }
     .testi { padding: 24px; border-radius: 14px; border: 1.5px solid var(--border); background: #FAFAFA; }
     .testi-text { font-size: 14px; line-height: 1.7; color: #374151; margin-bottom: 18px;
@@ -128,12 +128,12 @@
     .testi-tier { font-size: 11px; font-weight: 600; border-radius: 50px;
       padding: 2px 10px; margin-top: 2px; display: inline-block; }
 
-    /* â”€â”€ CTA â”€â”€ */
+    /* ── CTA ── */
     .cta { background: #F0FDF4; padding: 80px 24px; text-align: center; }
     .cta h2 { font-size: 36px; font-weight: 900; margin-bottom: 16px; }
     .cta p { color: var(--muted); font-size: 17px; max-width: 520px; margin: 0 auto 36px; line-height: 1.6; }
 
-    /* â”€â”€ FAQ â”€â”€ */
+    /* ── FAQ ── */
     .faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
     .faq-item { border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
     .faq-q { padding: 16px 20px; font-weight: 600; font-size: 14.5px; cursor: pointer;
@@ -146,7 +146,7 @@
     .faq-chevron { transition: transform .2s; font-size: 12px; }
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
 
-    /* â”€â”€ Nav â”€â”€ */
+    /* ── Nav ── */
     .top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: rgba(6,78,59,.95); backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(255,255,255,.08); padding: 0 24px; height: 60px;
@@ -193,7 +193,7 @@
 
 <div class="page-start">
 
-<!-- â”€â”€ HERO â”€â”€ -->
+<!-- ── HERO ── -->
 <section class="hero">
   <img src="../images/become-partner.jpg" alt="" class="hero-bg-img">
   <div class="hero-inner">
@@ -206,7 +206,7 @@
     <div class="hero-btns">
       <a href="partner-login.html" class="btn-hero btn-primary">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        Become a Partner â€” Free
+        Become a Partner — Free
       </a>
       <a href="#how-it-works" class="btn-hero btn-outline">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
@@ -222,13 +222,13 @@
   </div>
 </section>
 
-<!-- â”€â”€ HOW IT WORKS â”€â”€ -->
+<!-- ── HOW IT WORKS ── -->
 <section class="section" id="how-it-works">
   <div class="section-inner">
     <div class="section-title">
       <div class="chip">Simple Process</div>
       <h2>Start Earning in 4 Simple Steps</h2>
-      <p>From sign-up to your first commission â€” no upfront fees, no complex setup.</p>
+      <p>From sign-up to your first commission — no upfront fees, no complex setup.</p>
     </div>
     <div class="steps">
       <div class="step">
@@ -255,7 +255,7 @@
   </div>
 </section>
 
-<!-- â”€â”€ PARTNER TYPES â”€â”€ -->
+<!-- ── PARTNER TYPES ── -->
 <section class="section" style="background:#F8FAFC;padding-top:0;padding-bottom:64px">
   <div class="section-inner">
     <div class="section-title">
@@ -293,20 +293,20 @@
   </div>
 </section>
 
-<!-- â”€â”€ TIERS â”€â”€ -->
+<!-- ── TIERS ── -->
 <section class="section" id="tiers">
   <div class="section-inner">
     <div class="section-title">
       <div class="chip">Commission Tiers</div>
       <h2>Earn More as You Grow</h2>
-      <p>Your commission rate increases automatically as you refer more clients â€” no applications required.</p>
+      <p>Your commission rate increases automatically as you refer more clients — no applications required.</p>
     </div>
     <div class="tiers">
       <div class="tier-card tier-bronze">
         <div class="tier-badge" style="background:#FFF3CD;color:#C2933A">&#x1F947; Bronze</div>
         <div class="tier-comm" style="color:#C2933A">8%</div>
         <div class="tier-comm-lbl">Commission per booking</div>
-        <div class="tier-req">0â€“9 referrals</div>
+        <div class="tier-req">0–9 referrals</div>
         <ul class="tier-features">
           <li>Unique referral link</li>
           <li>Real-time dashboard</li>
@@ -318,7 +318,7 @@
         <div class="tier-badge" style="background:#F1F5F9;color:#6B7280">&#x1F948; Silver</div>
         <div class="tier-comm" style="color:#6B7280">10%</div>
         <div class="tier-comm-lbl">Commission per booking</div>
-        <div class="tier-req">10â€“19 referrals</div>
+        <div class="tier-req">10–19 referrals</div>
         <ul class="tier-features">
           <li>Everything in Bronze</li>
           <li>Priority support</li>
@@ -331,7 +331,7 @@
         <div class="tier-badge" style="background:#FFFBEB;color:#D97706">&#x1F947; Gold</div>
         <div class="tier-comm" style="color:#D97706">12%</div>
         <div class="tier-comm-lbl">Commission per booking</div>
-        <div class="tier-req" style="background:rgba(217,119,6,.08)">20â€“49 referrals</div>
+        <div class="tier-req" style="background:rgba(217,119,6,.08)">20–49 referrals</div>
         <ul class="tier-features">
           <li>Everything in Silver</li>
           <li>Dedicated account manager</li>
@@ -358,7 +358,7 @@
   </div>
 </section>
 
-<!-- â”€â”€ BENEFITS â”€â”€ -->
+<!-- ── BENEFITS ── -->
 <section class="benefits">
   <div class="benefits-inner">
     <div class="section-title">
@@ -401,7 +401,7 @@
   </div>
 </section>
 
-<!-- â”€â”€ TESTIMONIALS â”€â”€ -->
+<!-- ── TESTIMONIALS ── -->
 <section class="section">
   <div class="section-inner">
     <div class="section-title">
@@ -447,7 +447,7 @@
   </div>
 </section>
 
-<!-- â”€â”€ FAQ â”€â”€ -->
+<!-- ── FAQ ── -->
 <section class="section" style="background:#F8FAFC" id="faq">
   <div class="section-inner">
     <div class="section-title">
@@ -457,7 +457,7 @@
     <div class="faq-list">
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Is it free to join the Partner Program? <span class="faq-chevron">&#x25BC;</span></div>
-        <div class="faq-a">Yes â€” completely free. There are no joining fees, monthly fees, or hidden charges. You sign up and start earning immediately.</div>
+        <div class="faq-a">Yes — completely free. There are no joining fees, monthly fees, or hidden charges. You sign up and start earning immediately.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">How are commissions calculated? <span class="faq-chevron">&#x25BC;</span></div>
@@ -473,7 +473,7 @@
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Can I track how many people used my referral link? <span class="faq-chevron">&#x25BC;</span></div>
-        <div class="faq-a">Yes. Your partner dashboard shows every referral click, application submitted, booking completed, and commission earned â€” all in real time.</div>
+        <div class="faq-a">Yes. Your partner dashboard shows every referral click, application submitted, booking completed, and commission earned — all in real time.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Can I add sub-agents under my account? <span class="faq-chevron">&#x25BC;</span></div>
@@ -483,7 +483,7 @@
   </div>
 </section>
 
-<!-- â”€â”€ CTA â”€â”€ -->
+<!-- ── CTA ── -->
 <section class="cta">
   <div class="section-title" style="margin-bottom:0">
     <div class="chip">Get Started Today</div>
@@ -500,7 +500,7 @@
   </div>
 </section>
 
-<!-- â”€â”€ Footer â”€â”€ -->
+<!-- ── Footer ── -->
 <footer style="background:#0F172A;padding:28px 24px;text-align:center">
   <p style="color:#475569;font-size:13px">
     &copy; 2026 Teleio Tourism. All rights reserved. &nbsp;|&nbsp;

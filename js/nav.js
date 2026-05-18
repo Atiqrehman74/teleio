@@ -1,4 +1,4 @@
-﻿/* Shared navigation injector for sub-pages */
+/* Shared navigation injector for sub-pages */
 (function() {
   /* Apply dark mode immediately to prevent flash */
   try { if (localStorage.getItem('teleio_theme') === 'dark') document.body.classList.add('dark-mode'); } catch(e) {}
@@ -78,7 +78,7 @@
       .nav-links,.nav-right{display:none !important;}
       .hamburger{display:flex;}
     }
-    /* â”€â”€ Dark mode â”€â”€ */
+    /* ── Dark mode ── */
     body{transition:background .25s,color .25s;}
     body.dark-mode{--bg-page:#0f172a;--bg-light:#1e293b;--white:#1e293b;--text-dark:#f1f5f9;--text-medium:#cbd5e1;--text-muted:#94a3b8;--border:#334155;background:#0f172a;color:#f1f5f9;}
     body.dark-mode nav{background:#1e293b;border-color:#334155;}
@@ -101,10 +101,10 @@
     body.dark-mode .theme-toggle{border-color:#334155;color:#cbd5e1;}
     body.dark-mode .theme-toggle:hover{background:#0f172a;color:#f1f5f9;}
     body.dark-mode .hamburger span{background:#f1f5f9;}
-    /* â”€â”€ Theme toggle button â”€â”€ */
+    /* ── Theme toggle button ── */
     .theme-toggle{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-medium);transition:all .2s;flex-shrink:0;}
     .theme-toggle:hover{background:var(--bg-light);color:var(--text-dark);}
-    /* â”€â”€ Language switcher â”€â”€ */
+    /* ── Language switcher ── */
     .lang-item-wrap{position:relative;}
     .lang-code{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:17px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;font-size:9px;font-weight:800;border-radius:3px;letter-spacing:.05em;padding:0 3px;flex-shrink:0;}
     .lang-btn{display:flex;align-items:center;gap:6px;padding:6px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:none;cursor:pointer;font-size:13px;color:var(--text-medium);font-family:inherit;transition:all .2s;white-space:nowrap;}
@@ -136,11 +136,11 @@
         </button>
         <div class="dropdown dropdown-travel">
           <div class="dropdown-col-title">Book Travel</div>
-          <a href="${base}pages/travel.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#1a6ec7,#48cae4)">âœˆï¸</div><div class="di-text"><strong>Flights</strong><span>Search &amp; compare flights</span></div></a>
-          <a href="${base}pages/travel.html#hotels" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6)">ðŸ¨</div><div class="di-text"><strong>Hotels</strong><span>Find perfect stays</span></div></a>
-          <a href="${base}pages/travel.html#cars" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#065f46,#10b981)">ðŸš—</div><div class="di-text"><strong>Cars</strong><span>Rent vehicles worldwide</span></div></a>
-          <a href="${base}pages/travel.html#packages" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#c2410c,#f97316)">ðŸ“¦</div><div class="di-text"><strong>Packages</strong><span>All-inclusive deals</span></div></a>
-          <a href="${base}pages/travel.html#yachts" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">â›µ</div><div class="di-text"><strong>Yachts</strong><span>Luxury yacht rentals</span></div></a>
+          <a href="${base}pages/travel.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#1a6ec7,#48cae4)">✈️</div><div class="di-text"><strong>Flights</strong><span>Search &amp; compare flights</span></div></a>
+          <a href="${base}pages/travel.html#hotels" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6)">🏨</div><div class="di-text"><strong>Hotels</strong><span>Find perfect stays</span></div></a>
+          <a href="${base}pages/travel.html#cars" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#065f46,#10b981)">🚗</div><div class="di-text"><strong>Cars</strong><span>Rent vehicles worldwide</span></div></a>
+          <a href="${base}pages/travel.html#packages" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#c2410c,#f97316)">📦</div><div class="di-text"><strong>Packages</strong><span>All-inclusive deals</span></div></a>
+          <a href="${base}pages/travel.html#yachts" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">⛵</div><div class="di-text"><strong>Yachts</strong><span>Luxury yacht rentals</span></div></a>
         </div>
       </div>
 
@@ -154,17 +154,17 @@
         <div class="dropdown dropdown-visa">
           <div class="dropdown-col">
             <div class="dropdown-col-title">Visa Application</div>
-            <a href="${base}pages/eligibility-checker.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)">ðŸ›¡ï¸</div><div class="di-text"><strong>Check Eligibility</strong><span>Instant visa checker</span></div></a>
-            <a href="${base}pages/apply-visa.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#1e40af,#3b82f6)">ðŸ“‹</div><div class="di-text"><strong>Apply for Visa</strong><span>AI-guided application</span></div></a>
-            <a href="${base}pages/track-status.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#065f46,#10b981)">ðŸ•</div><div class="di-text"><strong>Track Status</strong><span>Real-time tracking</span></div></a>
-            <a href="${base}pages/resources.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#92400e,#d97706)">ðŸŒ</div><div class="di-text"><strong>Resources &amp; Guides</strong><span>Country guides &amp; FAQs</span></div></a>
+            <a href="${base}pages/eligibility-checker.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)">🛡️</div><div class="di-text"><strong>Check Eligibility</strong><span>Instant visa checker</span></div></a>
+            <a href="${base}pages/apply-visa.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#1e40af,#3b82f6)">📋</div><div class="di-text"><strong>Apply for Visa</strong><span>AI-guided application</span></div></a>
+            <a href="${base}pages/track-status.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#065f46,#10b981)">🕐</div><div class="di-text"><strong>Track Status</strong><span>Real-time tracking</span></div></a>
+            <a href="${base}pages/resources.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#92400e,#d97706)">🌐</div><div class="di-text"><strong>Resources &amp; Guides</strong><span>Country guides &amp; FAQs</span></div></a>
           </div>
           <div class="dropdown-col">
             <div class="dropdown-col-title">Visa Tools</div>
-            <a href="${base}pages/photo-tool.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#9f1239,#e11d48)">ðŸ“·</div><div class="di-text"><strong>Visa Photo Tool</strong><span>AI photo compliance</span></div></a>
-            <a href="${base}pages/fee-calculator.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#c2410c,#ea580c)">ðŸ§®</div><div class="di-text"><strong>Fee Calculator</strong><span>Estimate costs</span></div></a>
-            <a href="${base}pages/document-checklist.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#166534,#16a34a)">âœ…</div><div class="di-text"><strong>Document Checklist</strong><span>Required documents</span></div></a>
-            <a href="${base}pages/appointment-finder.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8)">ðŸ“…</div><div class="di-text"><strong>Appointment Finder</strong><span>Embassy slots</span></div></a>
+            <a href="${base}pages/photo-tool.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#9f1239,#e11d48)">📷</div><div class="di-text"><strong>Visa Photo Tool</strong><span>AI photo compliance</span></div></a>
+            <a href="${base}pages/fee-calculator.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#c2410c,#ea580c)">🧮</div><div class="di-text"><strong>Fee Calculator</strong><span>Estimate costs</span></div></a>
+            <a href="${base}pages/document-checklist.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#166534,#16a34a)">✅</div><div class="di-text"><strong>Document Checklist</strong><span>Required documents</span></div></a>
+            <a href="${base}pages/appointment-finder.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8)">📅</div><div class="di-text"><strong>Appointment Finder</strong><span>Embassy slots</span></div></a>
           </div>
         </div>
       </div>
@@ -178,9 +178,9 @@
         </button>
         <div class="dropdown dropdown-tools">
           <div class="dropdown-col-title">Travel Tools</div>
-          <a href="${base}pages/passport-index.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0f766e,#14b8a6)">ðŸŒ</div><div class="di-text"><strong>Passport Power Index</strong><span>Compare passports</span></div></a>
-          <a href="${base}pages/currency-exchange.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">ðŸ’±</div><div class="di-text"><strong>Currency Converter</strong><span>Live exchange rates</span></div></a>
-          <a href="${base}pages/document-checklist.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0369a1,#0284c7)">ðŸ“‹</div><div class="di-text"><strong>Trip Planner</strong><span>Plan your journey</span></div></a>
+          <a href="${base}pages/passport-index.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0f766e,#14b8a6)">🌍</div><div class="di-text"><strong>Passport Power Index</strong><span>Compare passports</span></div></a>
+          <a href="${base}pages/currency-exchange.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">💱</div><div class="di-text"><strong>Currency Converter</strong><span>Live exchange rates</span></div></a>
+          <a href="${base}pages/document-checklist.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0369a1,#0284c7)">📋</div><div class="di-text"><strong>Trip Planner</strong><span>Plan your journey</span></div></a>
         </div>
       </div>
 
@@ -193,24 +193,24 @@
         <div class="dropdown dropdown-uae">
           <div class="dropdown-col">
             <div class="dropdown-col-title">Adventures &amp; Outdoors</div>
-            <a href="${base}pages/uae-tourism.html#desert" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#C2933A,#E5B84A)">ðŸœï¸</div><div class="di-text"><strong>Desert Safari</strong><span>Dune bashing &amp; overnight camp</span></div></a>
-            <a href="${base}pages/uae-tourism.html#water" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0077B6,#48CAE4)">ðŸ„</div><div class="di-text"><strong>Water Sports</strong><span>Jet ski, parasailing &amp; more</span></div></a>
-            <a href="${base}pages/uae-tourism.html#balloon" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#E63946,#F4A261)">ðŸŽˆ</div><div class="di-text"><strong>Hot Air Balloon</strong><span>Sunrise desert flights</span></div></a>
-            <a href="${base}pages/uae-tourism.html#diving" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#023E8A,#0096C7)">ðŸ¤¿</div><div class="di-text"><strong>Scuba Diving</strong><span>Coral reefs &amp; marine life</span></div></a>
-            <a href="${base}pages/uae-tourism.html#camel" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#9C6B2E,#C2933A)">ðŸª</div><div class="di-text"><strong>Camel Riding</strong><span>Traditional desert experience</span></div></a>
-            <a href="${base}pages/uae-tourism.html#hatta" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#2D6A4F,#52B788)">ðŸ”ï¸</div><div class="di-text"><strong>Hatta Mountains</strong><span>Hiking &amp; kayaking</span></div></a>
+            <a href="${base}pages/uae-tourism.html#desert" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#C2933A,#E5B84A)">🏜️</div><div class="di-text"><strong>Desert Safari</strong><span>Dune bashing &amp; overnight camp</span></div></a>
+            <a href="${base}pages/uae-tourism.html#water" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0077B6,#48CAE4)">🏄</div><div class="di-text"><strong>Water Sports</strong><span>Jet ski, parasailing &amp; more</span></div></a>
+            <a href="${base}pages/uae-tourism.html#balloon" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#E63946,#F4A261)">🎈</div><div class="di-text"><strong>Hot Air Balloon</strong><span>Sunrise desert flights</span></div></a>
+            <a href="${base}pages/uae-tourism.html#diving" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#023E8A,#0096C7)">🤿</div><div class="di-text"><strong>Scuba Diving</strong><span>Coral reefs &amp; marine life</span></div></a>
+            <a href="${base}pages/uae-tourism.html#camel" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#9C6B2E,#C2933A)">🐪</div><div class="di-text"><strong>Camel Riding</strong><span>Traditional desert experience</span></div></a>
+            <a href="${base}pages/uae-tourism.html#hatta" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#2D6A4F,#52B788)">🏔️</div><div class="di-text"><strong>Hatta Mountains</strong><span>Hiking &amp; kayaking</span></div></a>
           </div>
           <div class="dropdown-col">
             <div class="dropdown-col-title">Culture &amp; Entertainment</div>
-            <a href="${base}pages/uae-tourism.html#burj" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#1A1A2E,#16213E)">ðŸ—¼</div><div class="di-text"><strong>Burj Khalifa</strong><span>At The Top experience</span></div></a>
-            <a href="${base}pages/uae-tourism.html#global" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#7B2D8B,#C062E2)">ðŸŽ¡</div><div class="di-text"><strong>Global Village</strong><span>80+ country pavilions</span></div></a>
-            <a href="${base}pages/uae-tourism.html#mall" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0F3460,#1A6EC7)">ðŸ›ï¸</div><div class="di-text"><strong>Dubai Mall</strong><span>World's largest mall</span></div></a>
-            <a href="${base}pages/uae-tourism.html#parks" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#D62828,#F77F00)">ðŸŽ¢</div><div class="di-text"><strong>Theme Parks</strong><span>IMG Worlds, Motiongate</span></div></a>
-            <a href="${base}pages/uae-tourism.html#food" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#6A040F,#DC2F02)">ðŸ´</div><div class="di-text"><strong>Food Tours</strong><span>Emirati &amp; world cuisine</span></div></a>
-            <a href="${base}pages/uae-tourism.html#beach" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0096C7,#00B4D8)">ðŸ–ï¸</div><div class="di-text"><strong>Beach &amp; Marina</strong><span>Jumeirah, Palm Beach</span></div></a>
+            <a href="${base}pages/uae-tourism.html#burj" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#1A1A2E,#16213E)">🗼</div><div class="di-text"><strong>Burj Khalifa</strong><span>At The Top experience</span></div></a>
+            <a href="${base}pages/uae-tourism.html#global" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#7B2D8B,#C062E2)">🎡</div><div class="di-text"><strong>Global Village</strong><span>80+ country pavilions</span></div></a>
+            <a href="${base}pages/uae-tourism.html#mall" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0F3460,#1A6EC7)">🛍️</div><div class="di-text"><strong>Dubai Mall</strong><span>World's largest mall</span></div></a>
+            <a href="${base}pages/uae-tourism.html#parks" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#D62828,#F77F00)">🎢</div><div class="di-text"><strong>Theme Parks</strong><span>IMG Worlds, Motiongate</span></div></a>
+            <a href="${base}pages/uae-tourism.html#food" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#6A040F,#DC2F02)">🍴</div><div class="di-text"><strong>Food Tours</strong><span>Emirati &amp; world cuisine</span></div></a>
+            <a href="${base}pages/uae-tourism.html#beach" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0096C7,#00B4D8)">🏖️</div><div class="di-text"><strong>Beach &amp; Marina</strong><span>Jumeirah, Palm Beach</span></div></a>
           </div>
           <div style="grid-column:1/-1;border-top:1px solid var(--border);padding-top:12px;margin-top:4px">
-            <a href="${base}pages/uae-tourism.html" class="btn btn-primary btn-full" style="justify-content:center">ðŸ‡¦ðŸ‡ª Explore All UAE Activities â†’</a>
+            <a href="${base}pages/uae-tourism.html" class="btn btn-primary btn-full" style="justify-content:center">🇦🇪 Explore All UAE Activities →</a>
           </div>
         </div>
       </div>
@@ -274,32 +274,32 @@
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-nav-section">
     <div class="mobile-nav-title">Book Travel</div>
-    <a href="${base}pages/travel.html" class="mobile-nav-link">âœˆï¸ Flights</a>
-    <a href="${base}pages/travel.html#hotels" class="mobile-nav-link">ðŸ¨ Hotels</a>
-    <a href="${base}pages/travel.html#cars" class="mobile-nav-link">ðŸš— Cars</a>
-    <a href="${base}pages/travel.html#packages" class="mobile-nav-link">ðŸ“¦ Packages</a>
-    <a href="${base}pages/travel.html#yachts" class="mobile-nav-link">â›µ Yachts</a>
+    <a href="${base}pages/travel.html" class="mobile-nav-link">✈️ Flights</a>
+    <a href="${base}pages/travel.html#hotels" class="mobile-nav-link">🏨 Hotels</a>
+    <a href="${base}pages/travel.html#cars" class="mobile-nav-link">🚗 Cars</a>
+    <a href="${base}pages/travel.html#packages" class="mobile-nav-link">📦 Packages</a>
+    <a href="${base}pages/travel.html#yachts" class="mobile-nav-link">⛵ Yachts</a>
   </div>
   <div class="mobile-nav-section">
     <div class="mobile-nav-title">Visa Services</div>
-    <a href="${base}pages/eligibility-checker.html" class="mobile-nav-link">ðŸ›¡ï¸ Check Eligibility</a>
-    <a href="${base}pages/apply-visa.html" class="mobile-nav-link">ðŸ“‹ Apply for Visa</a>
-    <a href="${base}pages/track-status.html" class="mobile-nav-link">ðŸ• Track Status</a>
-    <a href="${base}pages/resources.html" class="mobile-nav-link">ðŸŒ Resources &amp; Guides</a>
-    <a href="${base}pages/photo-tool.html" class="mobile-nav-link">ðŸ“· Visa Photo Tool</a>
-    <a href="${base}pages/fee-calculator.html" class="mobile-nav-link">ðŸ§® Fee Calculator</a>
-    <a href="${base}pages/document-checklist.html" class="mobile-nav-link">âœ… Document Checklist</a>
-    <a href="${base}pages/appointment-finder.html" class="mobile-nav-link">ðŸ“… Appointment Finder</a>
+    <a href="${base}pages/eligibility-checker.html" class="mobile-nav-link">🛡️ Check Eligibility</a>
+    <a href="${base}pages/apply-visa.html" class="mobile-nav-link">📋 Apply for Visa</a>
+    <a href="${base}pages/track-status.html" class="mobile-nav-link">🕐 Track Status</a>
+    <a href="${base}pages/resources.html" class="mobile-nav-link">🌐 Resources &amp; Guides</a>
+    <a href="${base}pages/photo-tool.html" class="mobile-nav-link">📷 Visa Photo Tool</a>
+    <a href="${base}pages/fee-calculator.html" class="mobile-nav-link">🧮 Fee Calculator</a>
+    <a href="${base}pages/document-checklist.html" class="mobile-nav-link">✅ Document Checklist</a>
+    <a href="${base}pages/appointment-finder.html" class="mobile-nav-link">📅 Appointment Finder</a>
   </div>
   <div class="mobile-nav-section">
-    <div class="mobile-nav-title">ðŸ‡¦ðŸ‡ª UAE Tourism</div>
-    <a href="${base}pages/uae-tourism.html#desert" class="mobile-nav-link">ðŸœï¸ Desert Safari</a>
-    <a href="${base}pages/uae-tourism.html#water" class="mobile-nav-link">ðŸ„ Water Sports</a>
-    <a href="${base}pages/uae-tourism.html#balloon" class="mobile-nav-link">ðŸŽˆ Hot Air Balloon</a>
-    <a href="${base}pages/uae-tourism.html#burj" class="mobile-nav-link">ðŸ—¼ Burj Khalifa</a>
-    <a href="${base}pages/uae-tourism.html#global" class="mobile-nav-link">ðŸŽ¡ Global Village</a>
-    <a href="${base}pages/uae-tourism.html#mall" class="mobile-nav-link">ðŸ›ï¸ Dubai Mall</a>
-    <a href="${base}pages/uae-tourism.html" class="mobile-nav-link" style="color:var(--primary);font-weight:600">â†’ View All UAE Activities</a>
+    <div class="mobile-nav-title">🇦🇪 UAE Tourism</div>
+    <a href="${base}pages/uae-tourism.html#desert" class="mobile-nav-link">🏜️ Desert Safari</a>
+    <a href="${base}pages/uae-tourism.html#water" class="mobile-nav-link">🏄 Water Sports</a>
+    <a href="${base}pages/uae-tourism.html#balloon" class="mobile-nav-link">🎈 Hot Air Balloon</a>
+    <a href="${base}pages/uae-tourism.html#burj" class="mobile-nav-link">🗼 Burj Khalifa</a>
+    <a href="${base}pages/uae-tourism.html#global" class="mobile-nav-link">🎡 Global Village</a>
+    <a href="${base}pages/uae-tourism.html#mall" class="mobile-nav-link">🛍️ Dubai Mall</a>
+    <a href="${base}pages/uae-tourism.html" class="mobile-nav-link" style="color:var(--primary);font-weight:600">→ View All UAE Activities</a>
   </div>
   <div class="mobile-nav-section">
     <div class="mobile-nav-title">Tools &amp; More</div>
@@ -323,7 +323,7 @@
       <button class="lang-item-mobile" data-lang="ar" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:none;cursor:pointer;font-size:12px;font-family:inherit;color:var(--text-dark)">AR &#x639;&#x631;&#x628;&#x64A;</button>
       <button class="lang-item-mobile" data-lang="ur" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:none;cursor:pointer;font-size:12px;font-family:inherit;color:var(--text-dark)">UR &#x627;&#x631;&#x62F;&#x648;</button>
       <button class="lang-item-mobile" data-lang="hi" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:none;cursor:pointer;font-size:12px;font-family:inherit;color:var(--text-dark)">HI &#x939;&#x93F;&#x928;&#x94D;&#x926;&#x940;</button>
-      <button class="lang-item-mobile" data-lang="fr" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:none;cursor:pointer;font-size:12px;font-family:inherit;color:var(--text-dark)">FR FranÃ§ais</button>
+      <button class="lang-item-mobile" data-lang="fr" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:none;cursor:pointer;font-size:12px;font-family:inherit;color:var(--text-dark)">FR Français</button>
       <button class="lang-item-mobile" data-lang="de" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:none;cursor:pointer;font-size:12px;font-family:inherit;color:var(--text-dark)">DE Deutsch</button>
       <button class="lang-item-mobile" data-lang="zh" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:none;cursor:pointer;font-size:12px;font-family:inherit;color:var(--text-dark)">ZH &#x4E2D;&#x6587;</button>
       <button class="lang-item-mobile" data-lang="ru" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:none;cursor:pointer;font-size:12px;font-family:inherit;color:var(--text-dark)">RU &#x420;&#x443;&#x441;</button>
@@ -335,7 +335,7 @@
 
   /* hamburger toggle handled by main.js */
 
-  /* â”€â”€ Dark mode â”€â”€ */
+  /* ── Dark mode ── */
   (function() {
     updateThemeIcon(document.body.classList.contains('dark-mode'));
 
@@ -357,7 +357,7 @@
     }
   })();
 
-  /* â”€â”€ Language switcher + translations â”€â”€ */
+  /* ── Language switcher + translations ── */
   (function() {
     var langMeta = {
       en:{code:'EN',rtl:false}, ar:{code:'AR',rtl:true}, ur:{code:'UR',rtl:true},
@@ -365,48 +365,48 @@
       zh:{code:'ZH',rtl:false}, ru:{code:'RU',rtl:false}
     };
 
-    /* Translation dictionary â€” keys match data-i18n attributes */
+    /* Translation dictionary — keys match data-i18n attributes */
     var TRANS = {
       en:{t:'Travel',v:'Visa Services',o:'Tools',u:'UAE Tourism',p:'Become Partner',s:'Sign In',i:'Instant Visa',
-          b:'âœ¦ AI-Powered Travel & Visa Platform',
+          b:'✦ AI-Powered Travel & Visa Platform',
           h:'Travel Smarter with<br><span class="highlight">Teleio Tourism</span>',
-          sub:'From instant visa checks to seamless bookings â€” everything you need for your perfect journey.',
-          tc:'âœ¦ Check Visa',ti:'âš¡ Instant Visa',n:'Nationality',d:'Destination',pu:'Purpose',fb:'âœ¦ Check Visa'},
-      ar:{t:'Ø§Ù„Ø³ÙØ±',v:'Ø®Ø¯Ù…Ø§Øª Ø§Ù„ØªØ£Ø´ÙŠØ±Ø©',o:'Ø§Ù„Ø£Ø¯ÙˆØ§Øª',u:'Ø³ÙŠØ§Ø­Ø© Ø§Ù„Ø¥Ù…Ø§Ø±Ø§Øª',p:'ÙƒÙ† Ø´Ø±ÙŠÙƒØ§Ù‹',s:'ØªØ³Ø¬ÙŠÙ„ Ø§Ù„Ø¯Ø®ÙˆÙ„',i:'ØªØ£Ø´ÙŠØ±Ø© ÙÙˆØ±ÙŠØ©',
-          b:'âœ¦ Ù…Ù†ØµØ© Ø§Ù„Ø³ÙØ± ÙˆØ§Ù„ØªØ£Ø´ÙŠØ±Ø© Ø§Ù„Ø°ÙƒÙŠØ©',
-          h:'Ø³Ø§ÙØ± Ø¨Ø°ÙƒØ§Ø¡ Ù…Ø¹<br><span class="highlight">ØªÙŠÙ„ÙŠÙˆ ØªÙˆØ±ÙŠØ²Ù…</span>',
-          sub:'Ù…Ù† ÙØ­Øµ Ø§Ù„ØªØ£Ø´ÙŠØ±Ø© Ø§Ù„ÙÙˆØ±ÙŠ Ø¥Ù„Ù‰ Ø§Ù„Ø­Ø¬Ø² Ø§Ù„Ø³Ù„Ø³ â€” ÙƒÙ„ Ù…Ø§ ØªØ­ØªØ§Ø¬Ù‡ Ù„Ø±Ø­Ù„ØªÙƒ Ø§Ù„Ù…Ø«Ø§Ù„ÙŠØ©.',
-          tc:'âœ¦ ÙØ­Øµ Ø§Ù„ØªØ£Ø´ÙŠØ±Ø©',ti:'âš¡ ØªØ£Ø´ÙŠØ±Ø© ÙÙˆØ±ÙŠØ©',n:'Ø§Ù„Ø¬Ù†Ø³ÙŠØ©',d:'Ø§Ù„ÙˆØ¬Ù‡Ø©',pu:'Ø§Ù„ØºØ±Ø¶',fb:'âœ¦ ÙØ­Øµ Ø§Ù„ØªØ£Ø´ÙŠØ±Ø©'},
-      ur:{t:'Ø³ÙØ±',v:'ÙˆÛŒØ²Ø§ Ø³Ø±ÙˆØ³Ø²',o:'Ù¹ÙˆÙ„Ø²',u:'Ø§Ù…Ø§Ø±Ø§Øª Ø³ÛŒØ§Ø­Øª',p:'Ù¾Ø§Ø±Ù¹Ù†Ø± Ø¨Ù†ÛŒÚº',s:'Ø³Ø§Ø¦Ù† Ø§Ù†',i:'ÙÙˆØ±ÛŒ ÙˆÛŒØ²Ø§',
-          b:'âœ¦ Ø§Û’ Ø¢Ø¦ÛŒ Ù¹Ø±ÛŒÙˆÙ„ Ø§ÙˆØ± ÙˆÛŒØ²Ø§ Ù¾Ù„ÛŒÙ¹ ÙØ§Ø±Ù…',
-          h:'Ø³Ù…Ø§Ø±Ù¹ Ø³ÙØ± Ú©Ø±ÛŒÚº<br><span class="highlight">Teleio Tourism</span>',
-          sub:'ÙÙˆØ±ÛŒ ÙˆÛŒØ²Ø§ Ú†ÛŒÚ© Ø³Û’ Ø¢Ø³Ø§Ù† Ø¨Ú©Ù†Ú¯ ØªÚ© â€” Ø¢Ù¾ Ú©Û’ Ø¨ÛØªØ±ÛŒÙ† Ø³ÙØ± Ú©Û’ Ù„ÛŒÛ’ Ø³Ø¨ Ú©Ú†Ú¾Û”',
-          tc:'âœ¦ ÙˆÛŒØ²Ø§ Ú†ÛŒÚ©',ti:'âš¡ ÙÙˆØ±ÛŒ ÙˆÛŒØ²Ø§',n:'Ù‚ÙˆÙ…ÛŒØª',d:'Ù…Ù†Ø²Ù„',pu:'Ù…Ù‚ØµØ¯',fb:'âœ¦ ÙˆÛŒØ²Ø§ Ú†ÛŒÚ©'},
-      hi:{t:'à¤¯à¤¾à¤¤à¥à¤°à¤¾',v:'à¤µà¥€à¤œà¤¼à¤¾ à¤¸à¥‡à¤µà¤¾à¤à¤‚',o:'à¤‰à¤ªà¤•à¤°à¤£',u:'UAE à¤ªà¤°à¥à¤¯à¤Ÿà¤¨',p:'à¤ªà¤¾à¤°à¥à¤Ÿà¤¨à¤° à¤¬à¤¨à¥‡à¤‚',s:'à¤¸à¤¾à¤‡à¤¨ à¤‡à¤¨',i:'à¤¤à¤¤à¥à¤•à¤¾à¤² à¤µà¥€à¤œà¤¼à¤¾',
-          b:'âœ¦ AI-à¤¸à¤‚à¤šà¤¾à¤²à¤¿à¤¤ à¤¯à¤¾à¤¤à¥à¤°à¤¾ à¤”à¤° à¤µà¥€à¤œà¤¼à¤¾ à¤ªà¥à¤²à¥‡à¤Ÿà¤«à¤¼à¥‰à¤°à¥à¤®',
-          h:'à¤¸à¥à¤®à¤¾à¤°à¥à¤Ÿ à¤¯à¤¾à¤¤à¥à¤°à¤¾ à¤•à¤°à¥‡à¤‚<br><span class="highlight">Teleio Tourism</span>',
-          sub:'à¤¤à¤¤à¥à¤•à¤¾à¤² à¤µà¥€à¤œà¤¼à¤¾ à¤œà¤¾à¤‚à¤š à¤¸à¥‡ à¤†à¤¸à¤¾à¤¨ à¤¬à¥à¤•à¤¿à¤‚à¤— à¤¤à¤• â€” à¤†à¤ªà¤•à¥€ à¤ªà¤°à¤«à¥‡à¤•à¥à¤Ÿ à¤¯à¤¾à¤¤à¥à¤°à¤¾ à¤•à¥‡ à¤²à¤¿à¤ à¤¸à¤¬ à¤•à¥à¤›à¥¤',
-          tc:'âœ¦ à¤µà¥€à¤œà¤¼à¤¾ à¤œà¤¾à¤‚à¤šà¥‡à¤‚',ti:'âš¡ à¤¤à¤¤à¥à¤•à¤¾à¤² à¤µà¥€à¤œà¤¼à¤¾',n:'à¤°à¤¾à¤·à¥à¤Ÿà¥à¤°à¥€à¤¯à¤¤à¤¾',d:'à¤—à¤‚à¤¤à¤µà¥à¤¯',pu:'à¤‰à¤¦à¥à¤¦à¥‡à¤¶à¥à¤¯',fb:'âœ¦ à¤µà¥€à¤œà¤¼à¤¾ à¤œà¤¾à¤‚à¤šà¥‡à¤‚'},
-      fr:{t:'Voyage',v:'Services Visa',o:'Outils',u:'Tourisme UAE',p:'Devenir Partenaire',s:'Se Connecter',i:'Visa InstantanÃ©',
-          b:'âœ¦ Plateforme Voyage & Visa IA',
+          sub:'From instant visa checks to seamless bookings — everything you need for your perfect journey.',
+          tc:'✦ Check Visa',ti:'⚡ Instant Visa',n:'Nationality',d:'Destination',pu:'Purpose',fb:'✦ Check Visa'},
+      ar:{t:'السفر',v:'خدمات التأشيرة',o:'الأدوات',u:'سياحة الإمارات',p:'كن شريكاً',s:'تسجيل الدخول',i:'تأشيرة فورية',
+          b:'✦ منصة السفر والتأشيرة الذكية',
+          h:'سافر بذكاء مع<br><span class="highlight">تيليو توريزم</span>',
+          sub:'من فحص التأشيرة الفوري إلى الحجز السلس — كل ما تحتاجه لرحلتك المثالية.',
+          tc:'✦ فحص التأشيرة',ti:'⚡ تأشيرة فورية',n:'الجنسية',d:'الوجهة',pu:'الغرض',fb:'✦ فحص التأشيرة'},
+      ur:{t:'سفر',v:'ویزا سروسز',o:'ٹولز',u:'امارات سیاحت',p:'پارٹنر بنیں',s:'سائن ان',i:'فوری ویزا',
+          b:'✦ اے آئی ٹریول اور ویزا پلیٹ فارم',
+          h:'سمارٹ سفر کریں<br><span class="highlight">Teleio Tourism</span>',
+          sub:'فوری ویزا چیک سے آسان بکنگ تک — آپ کے بہترین سفر کے لیے سب کچھ۔',
+          tc:'✦ ویزا چیک',ti:'⚡ فوری ویزا',n:'قومیت',d:'منزل',pu:'مقصد',fb:'✦ ویزا چیک'},
+      hi:{t:'यात्रा',v:'वीज़ा सेवाएं',o:'उपकरण',u:'UAE पर्यटन',p:'पार्टनर बनें',s:'साइन इन',i:'तत्काल वीज़ा',
+          b:'✦ AI-संचालित यात्रा और वीज़ा प्लेटफ़ॉर्म',
+          h:'स्मार्ट यात्रा करें<br><span class="highlight">Teleio Tourism</span>',
+          sub:'तत्काल वीज़ा जांच से आसान बुकिंग तक — आपकी परफेक्ट यात्रा के लिए सब कुछ।',
+          tc:'✦ वीज़ा जांचें',ti:'⚡ तत्काल वीज़ा',n:'राष्ट्रीयता',d:'गंतव्य',pu:'उद्देश्य',fb:'✦ वीज़ा जांचें'},
+      fr:{t:'Voyage',v:'Services Visa',o:'Outils',u:'Tourisme UAE',p:'Devenir Partenaire',s:'Se Connecter',i:'Visa Instantané',
+          b:'✦ Plateforme Voyage & Visa IA',
           h:'Voyagez Plus Intelligemment avec<br><span class="highlight">Teleio Tourism</span>',
-          sub:'Des vÃ©rifications instantanÃ©es aux rÃ©servations fluides â€” tout pour votre voyage parfait.',
-          tc:'âœ¦ VÃ©rifier Visa',ti:'âš¡ Visa InstantanÃ©',n:'NationalitÃ©',d:'Destination',pu:'Motif',fb:'âœ¦ VÃ©rifier Visa'},
+          sub:'Des vérifications instantanées aux réservations fluides — tout pour votre voyage parfait.',
+          tc:'✦ Vérifier Visa',ti:'⚡ Visa Instantané',n:'Nationalité',d:'Destination',pu:'Motif',fb:'✦ Vérifier Visa'},
       de:{t:'Reisen',v:'Visa-Services',o:'Tools',u:'VAE-Tourismus',p:'Partner werden',s:'Anmelden',i:'Sofortvisum',
-          b:'âœ¦ KI-gestÃ¼tzte Reise- und Visaplattform',
+          b:'✦ KI-gestützte Reise- und Visaplattform',
           h:'Intelligenter reisen mit<br><span class="highlight">Teleio Tourism</span>',
-          sub:'Von sofortigen VisaprÃ¼fungen bis nahtlosen Buchungen â€” alles fÃ¼r Ihre perfekte Reise.',
-          tc:'âœ¦ Visum prÃ¼fen',ti:'âš¡ Sofortvisum',n:'StaatsangehÃ¶rigkeit',d:'Reiseziel',pu:'Zweck',fb:'âœ¦ Visum prÃ¼fen'},
-      zh:{t:'æ—…è¡Œ',v:'ç­¾è¯æœåŠ¡',o:'å·¥å…·',u:'é˜¿è”é…‹æ—…æ¸¸',p:'æˆä¸ºåˆä½œä¼™ä¼´',s:'ç™»å½•',i:'å³æ—¶ç­¾è¯',
-          b:'âœ¦ AIé©±åŠ¨çš„æ—…è¡Œå’Œç­¾è¯å¹³å°',
-          h:'æ™ºæ…§æ—…è¡Œ<br><span class="highlight">Teleio Tourism</span>',
-          sub:'ä»Žå³æ—¶ç­¾è¯æ£€æŸ¥åˆ°æ— ç¼é¢„è®¢â€”â€”æ‚¨å®Œç¾Žæ—…ç¨‹æ‰€éœ€çš„ä¸€åˆ‡ã€‚',
-          tc:'âœ¦ æŸ¥è¯¢ç­¾è¯',ti:'âš¡ å³æ—¶ç­¾è¯',n:'å›½ç±',d:'ç›®çš„åœ°',pu:'ç›®çš„',fb:'âœ¦ æŸ¥è¯¢ç­¾è¯'},
-      ru:{t:'ÐŸÑƒÑ‚ÐµÑˆÐµÑÑ‚Ð²Ð¸Ñ',v:'Ð’Ð¸Ð·Ð¾Ð²Ñ‹Ðµ ÑƒÑÐ»ÑƒÐ³Ð¸',o:'Ð˜Ð½ÑÑ‚Ñ€ÑƒÐ¼ÐµÐ½Ñ‚Ñ‹',u:'Ð¢ÑƒÑ€Ð¸Ð·Ð¼ ÐžÐÐ­',p:'Ð¡Ñ‚Ð°Ñ‚ÑŒ Ð¿Ð°Ñ€Ñ‚Ð½ÐµÑ€Ð¾Ð¼',s:'Ð’Ð¾Ð¹Ñ‚Ð¸',i:'ÐœÐ³Ð½Ð¾Ð²ÐµÐ½Ð½Ð°Ñ Ð²Ð¸Ð·Ð°',
-          b:'âœ¦ Ð˜Ð˜-Ð¿Ð»Ð°Ñ‚Ñ„Ð¾Ñ€Ð¼Ð° Ð´Ð»Ñ Ð¿ÑƒÑ‚ÐµÑˆÐµÑÑ‚Ð²Ð¸Ð¹ Ð¸ Ð²Ð¸Ð·',
-          h:'ÐŸÑƒÑ‚ÐµÑˆÐµÑÑ‚Ð²ÑƒÐ¹Ñ‚Ðµ ÑƒÐ¼Ð½ÐµÐµ Ñ<br><span class="highlight">Teleio Tourism</span>',
-          sub:'ÐžÑ‚ Ð¼Ð³Ð½Ð¾Ð²ÐµÐ½Ð½Ð¾Ð¹ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ¸ Ð²Ð¸Ð·Ñ‹ Ð´Ð¾ Ð±Ñ€Ð¾Ð½Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ â€” Ð²ÑÑ‘ Ð´Ð»Ñ Ð²Ð°ÑˆÐµÐ³Ð¾ Ð¸Ð´ÐµÐ°Ð»ÑŒÐ½Ð¾Ð³Ð¾ Ð¿ÑƒÑ‚ÐµÑˆÐµÑÑ‚Ð²Ð¸Ñ.',
-          tc:'âœ¦ ÐŸÑ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ Ð²Ð¸Ð·Ñƒ',ti:'âš¡ ÐœÐ³Ð½Ð¾Ð²ÐµÐ½Ð½Ð°Ñ Ð²Ð¸Ð·Ð°',n:'Ð“Ñ€Ð°Ð¶Ð´Ð°Ð½ÑÑ‚Ð²Ð¾',d:'ÐÐ°Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ',pu:'Ð¦ÐµÐ»ÑŒ',fb:'âœ¦ ÐŸÑ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ Ð²Ð¸Ð·Ñƒ'},
+          sub:'Von sofortigen Visaprüfungen bis nahtlosen Buchungen — alles für Ihre perfekte Reise.',
+          tc:'✦ Visum prüfen',ti:'⚡ Sofortvisum',n:'Staatsangehörigkeit',d:'Reiseziel',pu:'Zweck',fb:'✦ Visum prüfen'},
+      zh:{t:'旅行',v:'签证服务',o:'工具',u:'阿联酋旅游',p:'成为合作伙伴',s:'登录',i:'即时签证',
+          b:'✦ AI驱动的旅行和签证平台',
+          h:'智慧旅行<br><span class="highlight">Teleio Tourism</span>',
+          sub:'从即时签证检查到无缝预订——您完美旅程所需的一切。',
+          tc:'✦ 查询签证',ti:'⚡ 即时签证',n:'国籍',d:'目的地',pu:'目的',fb:'✦ 查询签证'},
+      ru:{t:'Путешествия',v:'Визовые услуги',o:'Инструменты',u:'Туризм ОАЭ',p:'Стать партнером',s:'Войти',i:'Мгновенная виза',
+          b:'✦ ИИ-платформа для путешествий и виз',
+          h:'Путешествуйте умнее с<br><span class="highlight">Teleio Tourism</span>',
+          sub:'От мгновенной проверки визы до бронирования — всё для вашего идеального путешествия.',
+          tc:'✦ Проверить визу',ti:'⚡ Мгновенная виза',n:'Гражданство',d:'Направление',pu:'Цель',fb:'✦ Проверить визу'},
     };
 
     var currentLang = localStorage.getItem('teleio_lang') || 'en';
@@ -471,9 +471,9 @@
     window._teleioApplyLang = applyLang;
   })();
 
-  /* â”€â”€ Google Translate auto-translation â”€â”€ */
+  /* ── Google Translate auto-translation ── */
   (function() {
-    /* Map our lang codes â†’ Google Translate language codes */
+    /* Map our lang codes → Google Translate language codes */
     var GT_CODES = { ar:'ar', ur:'ur', hi:'hi', fr:'fr', de:'de', zh:'zh-CN', ru:'ru' };
 
     /* Inject hidden container Google Translate needs */
@@ -491,7 +491,7 @@
         includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru',
         autoDisplay: false
       }, 'google_translate_element');
-      /* Do NOT trigger here â€” the googtrans cookie handles auto-translation on load.
+      /* Do NOT trigger here — the googtrans cookie handles auto-translation on load.
          Calling _doGoogleTranslate on every page load causes infinite reload loops. */
     };
 
@@ -510,7 +510,7 @@
         ev.initEvent('change', true, true);
         select.dispatchEvent(ev);
       } else {
-        /* Widget not ready â€” use cookie fallback */
+        /* Widget not ready — use cookie fallback */
         document.cookie = 'googtrans=/en/' + code + '; path=/';
         location.reload();
       }
@@ -542,7 +542,7 @@
     }
   })();
 
-  /* â”€â”€ Load voice chatbot â”€â”€ */
+  /* ── Load voice chatbot ── */
   function loadScript(src) {
     var s = document.createElement('script');
     s.src = src;

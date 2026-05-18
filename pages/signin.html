@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -84,7 +84,7 @@
           <button class="tab-btn" data-tab="register-panel">Register</button>
         </div>
 
-        <!-- â”€â”€ SIGN IN â”€â”€ -->
+        <!-- ── SIGN IN ── -->
         <div id="signin-panel" class="tab-panel active">
 
           <!-- Social buttons -->
@@ -138,7 +138,7 @@
           </form>
         </div>
 
-        <!-- â”€â”€ REGISTER â”€â”€ -->
+        <!-- ── REGISTER ── -->
         <div id="register-panel" class="tab-panel">
 
           <!-- Social buttons -->
@@ -210,7 +210,7 @@
           </form>
         </div>
 
-        <!-- â”€â”€ SUCCESS â”€â”€ -->
+        <!-- ── SUCCESS ── -->
         <div id="authSuccess" style="display:none" class="fade-in">
           <div style="text-align:center;padding:20px 0">
             <div style="font-size:52px;margin-bottom:16px">&#x1F389;</div>
@@ -231,7 +231,7 @@
   /* Redirect if already signed in */
   if (AUTH.isAuthenticated()) window.location.href = 'dashboard.html';
 
-  /* â”€â”€ Helpers â”€â”€ */
+  /* ── Helpers ── */
   function showSuccess(name) {
     if (name) document.getElementById('success-title').textContent = 'Welcome, ' + name + '!';
     document.getElementById('authSuccess').style.display = 'block';
@@ -248,7 +248,7 @@
     });
   }
 
-  /* â”€â”€ Google Sign-In â”€â”€ */
+  /* ── Google Sign-In ── */
   function initGoogle() {
     if (!window.google) return;
     var clientId = (typeof APP_CONFIG !== 'undefined') ? APP_CONFIG.google.clientId : '';
@@ -290,7 +290,7 @@
     });
   }
 
-  /* â”€â”€ Facebook Sign-In â”€â”€ */
+  /* ── Facebook Sign-In ── */
   function signInWithFacebook() {
     var appId = (typeof APP_CONFIG !== 'undefined') ? APP_CONFIG.facebook.appId : '';
     if (!appId || !window.FB) { showSocialNotice(); return; }
@@ -320,7 +320,7 @@
     if (!hasGoogle && !hasFB) showSocialNotice();
   });
 
-  /* â”€â”€ Email Sign In â”€â”€ */
+  /* ── Email Sign In ── */
   async function handleSignin(e) {
     e.preventDefault();
     var btn   = document.getElementById('si-btn');
@@ -343,7 +343,7 @@
     }
   }
 
-  /* â”€â”€ Email Register â”€â”€ */
+  /* ── Email Register ── */
   async function handleRegister(e) {
     e.preventDefault();
     var btn   = document.getElementById('r-btn');
