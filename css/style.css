@@ -1837,3 +1837,335 @@ footer {
 
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
 .loading { animation: pulse 1.5s infinite; }
+
+
+/* ============================================
+   NEW USER EXCLUSIVE + PROMO BANNERS
+   ============================================ */
+.promo-section {
+  background: var(--white);
+  padding: 36px 24px 28px;
+}
+
+/* --- New User Exclusive --- */
+.nue-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 14px;
+}
+
+.nue-cards {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.nue-card {
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.nue-welcome {
+  background: linear-gradient(140deg, #EFF6FF 0%, #DBEAFE 60%, #C7D2FE 100%);
+  border: 1.5px solid #BFDBFE;
+}
+
+.nue-welcome-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  flex: 1;
+}
+.nue-welcome-content p { font-size: 0.95rem; color: var(--text-dark); line-height: 1.5; }
+.nue-welcome-content strong { font-weight: 700; }
+.nue-welcome-emoji { font-size: 2.2rem; flex-shrink: 0; line-height: 1; }
+
+.nue-offer {
+  border: 1.5px dashed #FECDD3;
+  background: var(--white);
+}
+
+.nue-offer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.nue-offer-pct {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.2;
+}
+
+.nue-offer-cat {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.nue-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--text-muted);
+  border-radius: 50%;
+  font-size: 9px;
+  color: var(--text-muted);
+  cursor: help;
+  font-style: normal;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.nue-offer-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.btn-nue-claim {
+  display: block;
+  padding: 9px 14px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.83rem;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: auto;
+}
+.btn-nue-claim:hover { background: var(--primary-dark); }
+
+/* --- Promo Banners --- */
+.promo-banners {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 14px;
+  align-items: stretch;
+}
+
+/* Left slider */
+.promo-slider-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 220px;
+}
+
+.promo-slider { width: 100%; height: 100%; position: relative; }
+
+.promo-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.65s ease;
+}
+.promo-slide.active { opacity: 1; }
+.promo-slide > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.promo-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 16px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  background: linear-gradient(to right, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.22) 55%, transparent 100%);
+}
+.promo-overlay-pink {
+  background: linear-gradient(to right, rgba(20,30,80,0.72) 0%, rgba(20,30,80,0.3) 55%, transparent 100%);
+}
+
+/* Logo: sized like nav logo — height-constrained, never stretches */
+.promo-brand-logo {
+  height: 34px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+  display: block;
+}
+
+.promo-text { display: flex; flex-direction: column; gap: 2px; }
+.promo-text h3 {
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.15;
+  margin: 0;
+}
+.promo-text h3 strong { font-weight: 800; }
+.promo-text p { font-size: 0.88rem; color: rgba(255,255,255,0.9); margin: 0; }
+
+.promo-exp {
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+}
+.promo-magic { font-size: 1.45rem; font-style: italic; color: #fff !important; font-weight: 400 !important; margin: 0; }
+.promo-magic strong { font-style: normal; font-weight: 800 !important; }
+
+.promo-tac { font-size: 0.68rem; color: rgba(255,255,255,0.55); display: block; margin-top: 3px; }
+
+/* Arrows */
+.promo-prev, .promo-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+  border: none;
+  color: white;
+  font-size: 1.6rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 2;
+  line-height: 1;
+  padding: 0;
+}
+.promo-prev:hover, .promo-next:hover { background: rgba(255,255,255,0.38); }
+.promo-prev { left: 10px; }
+.promo-next { right: 10px; }
+
+/* Dots (shared style) */
+.promo-dots, .promo-side-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 2;
+}
+.promo-dot, .promo-side-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.promo-dot.active, .promo-side-dot.active { background: white; width: 18px; }
+
+/* Right side slider */
+.promo-side { display: flex; flex-direction: column; }
+
+.promo-side-slider-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 220px;
+}
+
+.promo-side-slider { width: 100%; height: 100%; position: relative; }
+
+.promo-side-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.65s ease;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: white;
+}
+.promo-side-slide.active { opacity: 1; }
+
+.promo-side-head { display: flex; align-items: center; gap: 10px; }
+.promo-side-logo {
+  height: 28px;
+  width: auto;
+  max-width: 80px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  display: block;
+  flex-shrink: 0;
+}
+.promo-side-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.4); flex-shrink: 0; }
+.promo-side-partner { font-size: 0.78rem; color: rgba(255,255,255,0.9); font-weight: 600; }
+
+.promo-side-h4 { font-size: 0.88rem; font-weight: 500; line-height: 1.35; color: white; margin: 0; }
+.promo-side-h4 strong { font-size: 1.5rem; font-weight: 800; display: block; line-height: 1.1; }
+
+.promo-side-tac { font-size: 0.66rem; color: rgba(255,255,255,0.55); }
+
+.promo-side-btn {
+  display: inline-block;
+  background: #F59E0B;
+  color: white;
+  padding: 7px 16px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.8rem;
+  width: fit-content;
+  transition: background 0.2s;
+  margin-top: auto;
+}
+.promo-side-btn:hover { background: #D97706; }
+
+.promo-side-art {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-size: 2.4rem;
+  opacity: 0.2;
+  pointer-events: none;
+  display: flex;
+  gap: 4px;
+}
+
+/* Dark mode */
+body.dark-mode .promo-section { background: #1e293b; }
+body.dark-mode .nue-welcome { background: linear-gradient(140deg, #1e3a5f 0%, #172d52 100%); border-color: #2563eb55; }
+body.dark-mode .nue-offer { background: #0f172a; border-color: #fb718555; }
+body.dark-mode .nue-welcome-content p { color: #f1f5f9; }
+body.dark-mode .nue-offer-pct { color: #f1f5f9; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nue-cards { grid-template-columns: 1fr 1fr; }
+  .nue-welcome { grid-column: 1 / -1; }
+  .promo-banners { grid-template-columns: 1fr; }
+  .promo-side-slider-wrap { height: 160px; }
+}
+
+@media (max-width: 600px) {
+  .promo-slider-wrap { height: 175px; }
+  .promo-brand-logo { height: 26px; }
+  .promo-side-logo { height: 22px; }
+  .promo-text h3 { font-size: 1.25rem; }
+  .promo-side-h4 strong { font-size: 1.2rem; }
+  .nue-offer-pct { font-size: 1.2rem; }
+}
+
+@media (max-width: 420px) {
+  .nue-cards { grid-template-columns: 1fr; }
+  .nue-welcome { grid-column: auto; }
+}
