@@ -654,6 +654,8 @@
       } else if (result.paymentIntent.status === 'succeeded') {
         // Payment succeeded — create Xeni hotel reservation
         var xeniBookingRef = '';
+        var bookingStatus  = '';
+        var cancelNote     = '';
         if (bookingToken) {
           try {
             var phone = document.getElementById('phone').value.trim();
@@ -671,8 +673,36 @@
             });
             var bookData = await bookRes.json();
             xeniBookingRef = (bookData.data && (bookData.data.booking_id || bookData.data.reference)) || '';
+
+            // Retrieve full booking details to show confirmed status + cancellation policy
+            if (xeniBookingRef) {
+              try {
+                var detRes  = await fetch('/api/travel/hotel-booking?booking_id=' + encodeURIComponent(xeniBookingRef));
+                var detData = await detRes.json();
+                var bd = detData.data;
+                if (bd) {
+                  bookingStatus = bd.booking_status || '';
+                  // Summarise cancellation policy from first room
+                  var pol = bd.rooms && bd.rooms[0] && bd.rooms[0].rate && bd.rooms[0].rate.cancellation_policy;
+                  if (pol && pol.length) {
+                    var freePol = pol.find(function(p) { return p.estimate_amount === 0; });
+                    var penPol  = pol.find(function(p) { return p.estimate_amount > 0; });
+                    if (freePol && freePol.end) {
+                      var freeUntil = new Date(freePol.end).toLocaleDateString(undefined, { day:'numeric', month:'short', year:'numeric' });
+                      cancelNote = 'Free cancellation until <strong>' + freeUntil + '</strong>';
+                      if (penPol) cancelNote += ' · after that ' + bd.currency + ' ' + Number(penPol.estimate_amount).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + ' penalty';
+                    }
+                  }
+                }
+              } catch (_) {}
+            }
           } catch (_) { /* non-fatal — Stripe already charged */ }
         }
+
+        var statusColor = bookingStatus === 'CONFIRMED' ? '#16A34A' : bookingStatus === 'CANCELLED' ? '#DC2626' : '#64748B';
+        var statusBadge = bookingStatus
+          ? '<span style="display:inline-block;margin-left:8px;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;background:' + (bookingStatus === 'CONFIRMED' ? '#DCFCE7' : '#FEE2E2') + ';color:' + statusColor + '">' + bookingStatus + '</span>'
+          : '';
 
         document.getElementById('booking-form').style.display = 'none';
         var box = document.getElementById('success-box');
@@ -680,9 +710,10 @@
         document.getElementById('success-msg').innerHTML =
           '<strong>' + propName + '</strong> booked for <strong>' + adults + ' guest' + (adults > 1 ? 's' : '') + '</strong>.<br>' +
           'Check-in: <strong>' + fmt(checkin) + '</strong> · Check-out: <strong>' + fmt(checkout) + '</strong><br><br>' +
+          (cancelNote ? cancelNote + '<br>' : '') +
           'Confirmation sent to <strong>' + email + '</strong><br>' +
           'Payment ref: <code style="font-size:11px;color:#64748B">' + result.paymentIntent.id + '</code>' +
-          (xeniBookingRef ? '<br>Booking ref: <code style="font-size:11px;color:#64748B">' + xeniBookingRef + '</code>' : '');
+          (xeniBookingRef ? '<br>Booking ref: <code style="font-size:11px;color:#64748B">' + xeniBookingRef + '</code>' + statusBadge : '');
       }
     } catch (err) {
       document.getElementById('card-errors').textContent = err.message || 'Payment failed. Please try again.';
