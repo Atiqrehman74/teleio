@@ -55,7 +55,7 @@ function getToken() {
   });
 }
 
-async function xeniReq(method, endpoint, body) {
+async function xeniReq(method, endpoint, body, extraHeaders) {
   const token = await getToken();
   return new Promise((resolve, reject) => {
     const urlObj  = new URL(endpoint, XENI_BASE);
@@ -69,6 +69,7 @@ async function xeniReq(method, endpoint, body) {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Authorization': token,
+        ...extraHeaders,
       },
     };
     if (payload) opts.headers['Content-Length'] = Buffer.byteLength(payload);
