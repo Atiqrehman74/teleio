@@ -282,6 +282,10 @@
           <div class="success-title">Booking Confirmed!</div>
           <div class="success-sub" id="success-msg"></div>
           <a href="../index.html" class="success-back">Back to Home</a>
+          <div id="cancel-wrap" style="margin-top:16px;display:none">
+            <button id="cancel-btn" onclick="cancelBooking()" style="background:none;border:1.5px solid #EF4444;color:#EF4444;padding:10px 22px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">Cancel Booking</button>
+            <div id="cancel-msg" style="margin-top:10px;font-size:13px"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -707,6 +711,11 @@
         document.getElementById('booking-form').style.display = 'none';
         var box = document.getElementById('success-box');
         box.style.display = 'block';
+        // Show cancel button if booking is active and refundable
+        if (xeniBookingRef && bookingStatus !== 'CANCELLED') {
+          document.getElementById('cancel-wrap').style.display = 'block';
+          document.getElementById('cancel-btn').dataset.bookingId = xeniBookingRef;
+        }
         document.getElementById('success-msg').innerHTML =
           '<strong>' + propName + '</strong> booked for <strong>' + adults + ' guest' + (adults > 1 ? 's' : '') + '</strong>.<br>' +
           'Check-in: <strong>' + fmt(checkin) + '</strong> · Check-out: <strong>' + fmt(checkout) + '</strong><br><br>' +
@@ -720,6 +729,40 @@
       btn.disabled = false; btn.classList.remove('loading');
     }
   });
+  /* ── Cancel Booking ── */
+  window.cancelBooking = async function () {
+    var btn = document.getElementById('cancel-btn');
+    var msg = document.getElementById('cancel-msg');
+    var bid = btn.dataset.bookingId;
+    if (!bid) return;
+    if (!confirm('Are you sure you want to cancel this booking? This cannot be undone.')) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Cancelling…';
+    msg.textContent = '';
+
+    try {
+      var r = await fetch('/api/travel/hotel-cancel', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking_id: bid })
+      });
+      var d = await r.json();
+      if (!r.ok || d.error) throw new Error(d.error || 'Cancellation failed');
+
+      btn.style.display = 'none';
+      document.querySelector('.success-icon').textContent = '✕';
+      document.querySelector('.success-icon').style.background = '#FEE2E2';
+      document.querySelector('.success-title').textContent = 'Booking Cancelled';
+      msg.style.color = '#16A34A';
+      msg.textContent = 'Your booking has been cancelled successfully.';
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Cancel Booking';
+      msg.style.color = '#EF4444';
+      msg.textContent = err.message || 'Cancellation failed. Please contact support.';
+    }
+  };
+
 })();
 </script>
 </body>

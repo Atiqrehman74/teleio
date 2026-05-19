@@ -187,6 +187,9 @@ app.post('/api/travel/hotel-book', require('./api/travel/hotel-book'));
 // Hotel booking retrieval by booking_id
 app.get('/api/travel/hotel-booking', require('./api/travel/hotel-booking-get'));
 
+// Hotel booking cancellation
+app.post('/api/travel/hotel-cancel', require('./api/travel/hotel-cancel'));
+
 // Hotel room availability
 app.post('/api/travel/hotel-availability', require('./api/travel/hotel-availability'));
 
