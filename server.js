@@ -213,22 +213,35 @@ app.post('/api/travel/flights', async (req, res) => {
 
 // Cars search
 app.post('/api/travel/cars', async (req, res) => {
+  function toDateTime(d) { return d && !d.includes('T') ? d + 'T10:00:00' : d; }
+  function getLocParams(loc, prefix) {
+    const iata = loc.iata_code || (loc.type === 'airport' && loc.code) || '';
+    if (iata) return `${prefix}_type=airport&${prefix}_code=${encodeURIComponent(iata)}`;
+    if (loc.coordinates && loc.coordinates.lat)
+      return `${prefix}_type=geo&${prefix}_code=${encodeURIComponent(loc.coordinates.lat + ',' + loc.coordinates.lng)}`;
+    const code = loc.code || loc.id || '';
+    return code ? `${prefix}_type=location&${prefix}_code=${encodeURIComponent(code)}` : `${prefix}_type=geo&${prefix}_code=`;
+  }
   try {
-    const { pickupLocation, pickupDate, returnDate } = req.body;
+    const { pickupLocation, pickupDate, returnDate, dropoffLocation } = req.body;
     if (!pickupLocation || !pickupDate || !returnDate) return res.status(400).json({ error: 'pickupLocation, pickupDate and returnDate are required' });
     const auto = await xeniReq('GET', `/cars/api/v2/autocomplete?key=${encodeURIComponent(pickupLocation)}`);
     const locs = Array.isArray(auto) ? auto : (auto.data || auto.locations || []);
     const loc = locs[0];
-    if (!loc) return res.json({ rentals: [], message: 'Location not found' });
-    const pickup = loc.coordinates ? `${loc.coordinates.lat},${loc.coordinates.lng}` : (loc.code || loc.iata_code || pickupLocation);
+    if (!loc) return res.json({ rentals: [], message: 'Location not found. Try a city or airport code.' });
+    const dropLoc = loc;
+    const country = loc.country_code || 'AE';
+    const pickupParams = getLocParams(loc, 'pickup');
+    const returnParams = getLocParams(dropLoc, 'return');
+    const pd = encodeURIComponent(toDateTime(pickupDate));
+    const rd = encodeURIComponent(toDateTime(returnDate));
     const result = await xeniReq('GET',
-      `/cars/api/v2/rentals?country=${loc.country_code || 'US'}&pickup_type=geo&return_type=geo` +
-      `&pickup_code=${encodeURIComponent(pickup)}&return_code=${encodeURIComponent(pickup)}` +
-      `&currency=USD&pickup_date=${encodeURIComponent(pickupDate)}&return_date=${encodeURIComponent(returnDate)}&driver_age=25&page=1&limit=20`
+      `/cars/api/v2/rentals?country=${country}&${pickupParams}&${returnParams}` +
+      `&currency=USD&pickup_date=${pd}&return_date=${rd}&driver_age=25&page=1&limit=20`
     );
     res.json(result);
   } catch (err) {
-    console.error('Cars error:', err.message);
+    console.error('Cars error:', err.message, err.body && JSON.stringify(err.body));
     res.status(err.status || 500).json({ error: err.message, body: err.body });
   }
 });

@@ -777,11 +777,12 @@ function showLoading(label) {
     '<style>@keyframes spin{to{transform:rotate(360deg)}}</style>';
 }
 
-function showError(msg) {
+function showError(msg, detail) {
   resultsBox.style.padding = '0 24px 24px';
+  var extra = detail ? '<div style="margin-top:8px;font-size:0.78rem;color:#7f1d1d;background:rgba(0,0,0,0.04);border-radius:6px;padding:8px 10px;word-break:break-all">' + detail + '</div>' : '';
   resultsBox.innerHTML =
     '<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:20px 24px;color:#991B1B">' +
-    '<strong>Search unavailable</strong><br><span style="font-size:0.85rem">' + msg + '</span></div>';
+    '<strong>Search unavailable</strong><br><span style="font-size:0.85rem">' + msg + '</span>' + extra + '</div>';
 }
 
 function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
@@ -1132,7 +1133,7 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
       var r = await fetch('/api/travel/cars', { method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({ pickupLocation: loc, pickupDate: from, returnDate: to }) });
       var data = await r.json();
-      if (!r.ok) throw new Error(data.error || 'Car search failed');
+      if (!r.ok) { var e = new Error(data.error || 'Car search failed'); e.detail = data.body ? JSON.stringify(data.body) : ''; throw e; }
       renderCars(data);
 
     } else if (tab === 'activities') {
@@ -1174,7 +1175,8 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
       renderDeals(data);
     }
   } catch (err) {
-    showError(err.message || 'Could not connect to travel API. Please try again.');
+    var detail = err.detail || '';
+    showError(err.message || 'Could not connect to travel API. Please try again.', detail);
   }
 });
 </script>
