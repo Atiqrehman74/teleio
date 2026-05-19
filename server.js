@@ -184,6 +184,9 @@ app.get('/api/travel/resort-accessibility', require('./api/travel/resort-accessi
 // Resort facilities (airports, restaurants, activities, etc.)
 app.get('/api/travel/resort-facilities', require('./api/travel/resort-facilities'));
 
+// Resort price verification (token + recommendation_id → sessionId + confirmed rate)
+app.get('/api/travel/resort-price', require('./api/travel/resort-price'));
+
 // Hotel content/discovery (no dates required — browse by location)
 app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
 

@@ -665,7 +665,10 @@
   }
 
   /* ── Resort Availability ── */
-  var selectedSlotToken = '';
+  var selectedSlotToken    = '';
+  var selectedSlotCheckin  = checkin;
+  var selectedSlotCheckout = checkout;
+  var resortSessionId      = '';  // set after price verification, used for booking
 
   function loadAvailability() {
     if (!propId || !checkin || !checkout) {
@@ -743,13 +746,13 @@
         this.textContent = '✓ Selected';
         this.style.background = '#16A34A';
 
-        selectedSlotToken = slot.token || '';
+        selectedSlotToken    = slot.token || '';
+        selectedSlotCheckin  = slot.checkin_date;
+        selectedSlotCheckout = slot.checkout_date;
         updateSummaryRate(slot.total_rate, slot.currency);
-        // Update checkin/checkout in summary to the slot's actual dates
         document.getElementById('sum-checkin').textContent  = fmt(slot.checkin_date);
         document.getElementById('sum-checkout').textContent = fmt(slot.checkout_date);
         document.getElementById('sum-nights').textContent   = slotNights + ' Night' + (slotNights > 1 ? 's' : '');
-
         document.getElementById('form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
       card.setAttribute('data-slot', idx);
@@ -760,7 +763,9 @@
         card.style.boxShadow   = '0 0 0 3px rgba(37,99,235,.1)';
         card.querySelector('.slot-select-btn').textContent = '✓ Selected';
         card.querySelector('.slot-select-btn').style.background = '#16A34A';
-        selectedSlotToken = slot.token || '';
+        selectedSlotToken    = slot.token || '';
+        selectedSlotCheckin  = slot.checkin_date;
+        selectedSlotCheckout = slot.checkout_date;
         updateSummaryRate(slot.total_rate, slot.currency);
         document.getElementById('sum-checkin').textContent  = fmt(slot.checkin_date);
         document.getElementById('sum-checkout').textContent = fmt(slot.checkout_date);
@@ -817,9 +822,30 @@
     document.getElementById('card-errors').textContent = '';
 
     try {
-      // Resort availability already contains confirmed total_rate — no separate price verify step needed
+      // Verify price with Xeni before charging (gets sessionId + confirmed rate + fresh token)
       var verifiedRate = selectedRate;
       var verifiedCur  = selectedCurrency;
+      if (selectedSlotToken && propId) {
+        try {
+          var priceUrl = '/api/travel/resort-price?property_id=' + encodeURIComponent(propId) +
+            '&checkin=' + encodeURIComponent(selectedSlotCheckin) +
+            '&checkout=' + encodeURIComponent(selectedSlotCheckout) +
+            '&currency=' + encodeURIComponent(selectedCurrency) +
+            '&token=' + encodeURIComponent(selectedSlotToken) +
+            (recId ? '&recommendation_id=' + encodeURIComponent(recId) : '');
+          var priceRes  = await fetch(priceUrl);
+          var priceData = await priceRes.json();
+          var avail0 = priceData.data && priceData.data.availability && priceData.data.availability[0];
+          if (avail0 && avail0.totalRate > 0) {
+            verifiedRate = avail0.totalRate;
+            verifiedCur  = avail0.currency || verifiedCur;
+            // Fresh token for booking; sessionId stored for reservation step
+            selectedSlotToken = avail0.token || selectedSlotToken;
+            if (priceData.data.sessionId) resortSessionId = priceData.data.sessionId;
+            updateSummaryRate(verifiedRate, verifiedCur);
+          }
+        } catch (_) { /* use slot rate if price verify fails */ }
+      }
 
       var description = propName + ' — ' + nights + ' night' + (nights > 1 ? 's' : '') + ' (' + checkin + ' → ' + checkout + ')';
       var piRes = await fetch('/create-payment-intent', {
