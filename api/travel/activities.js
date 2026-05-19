@@ -16,12 +16,16 @@ module.exports = async (req, res) => {
         const auto = await xeniReq('GET',
           `/activities/api/v2/autocomplete?${param}=${encodeURIComponent(destination)}&limit=5`
         );
+        // Xeni autocomplete returns: { data: { suggestions: [...] } }
         const places = Array.isArray(auto) ? auto
-          : (auto.data || auto.results || auto.suggestions || auto.items || []);
-        if (places.length) {
+          : (auto.data && auto.data.suggestions ? auto.data.suggestions
+            : (Array.isArray(auto.data) ? auto.data
+              : (auto.results || auto.suggestions || auto.items || [])));
+        if (places && places.length) {
           const p = places[0];
+          // ID field is "id" (e.g. "XN828")
           destinationId = p.destination_id || p.destinationId || p.id || p.code || '';
-          autoDebug = { param, name: p.name, id: destinationId, keys: Object.keys(p) };
+          autoDebug = { param, name: p.text || p.name, id: destinationId, keys: Object.keys(p) };
           console.log('Activities autocomplete OK:', JSON.stringify(autoDebug));
           break;
         }
