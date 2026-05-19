@@ -324,20 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ===== TRAVEL SEARCH ===== */
-  const travelForm = document.getElementById('travelSearchForm');
-  if (travelForm) {
-    travelForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const r = document.getElementById('searchResults');
-      if (r) {
-        r.innerHTML = `<div class="alert alert-info">🔍 Searching for the best deals... <span class="loading">Please wait.</span></div>`;
-        setTimeout(() => {
-          r.innerHTML = `<div class="alert alert-success">✓ Found 24 results. Scroll down to see deals.</div>`;
-        }, 2000);
-      }
-    });
-  }
+  /* Travel search is handled by inline script in travel.html (live Xeni API) */
 
 });
 
