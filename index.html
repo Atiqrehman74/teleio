@@ -1217,10 +1217,33 @@ function switchHeroTab(tab) {
     }
   }
 
+  function extractActs(data) {
+    if (Array.isArray(data)) return data;
+    // Common top-level keys
+    var keys = ['activities','results','items','tours','experiences','packages','products','listings'];
+    for (var i = 0; i < keys.length; i++) {
+      if (data[keys[i]] && Array.isArray(data[keys[i]]) && data[keys[i]].length) return data[keys[i]];
+    }
+    // Nested under data.*
+    if (data.data) {
+      if (Array.isArray(data.data)) return data.data;
+      for (var j = 0; j < keys.length; j++) {
+        if (data.data[keys[j]] && Array.isArray(data.data[keys[j]]) && data.data[keys[j]].length) return data.data[keys[j]];
+      }
+    }
+    return [];
+  }
+
   function renderActivities(data) {
-    var acts = data.activities || data.results || data.items || (data.data && Array.isArray(data.data) ? data.data : []) || [];
+    var acts = extractActs(data);
     if (!acts.length) {
-      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No activities found for this destination. Try another city.</p>';
+      // Show debug info to help fix the structure
+      var debugInfo = data._debug ? ' (dest: ' + data._debug.destinationName + ', id: ' + data._debug.destinationId + ')' : '';
+      var rawKeys = Object.keys(data).filter(function(k){ return k !== '_debug'; }).join(', ');
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">' +
+        '<p>No activities found for this destination. Try another city.</p>' +
+        '<p style="font-size:11px;margin-top:8px;opacity:0.6">API keys: [' + rawKeys + ']' + debugInfo + '</p>' +
+        '</div>';
       return;
     }
     grid.innerHTML = '';
