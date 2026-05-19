@@ -33,24 +33,25 @@ module.exports = async (req, res) => {
     const dropLocs = autoDrop ? (Array.isArray(autoDrop) ? autoDrop : (autoDrop.data || autoDrop.locations || [])) : pickupLocs;
     const dropLoc = dropLocs[0] || pickLoc;
 
-    // Determine pickup type: airport (IATA code) or geo (coordinates)
-    function getLocParams(loc, prefix) {
+    // Determine pickup type and correct parameter name for Xeni cars API:
+    //   geo   → pickup_type=geo   + pickup_geo=lat,lng
+    //   airport → pickup_type=airport + pickup_iata=DXB
+    function getLocParams(loc, prefix, fallbackStr) {
+      if (loc.coordinates && (loc.coordinates.lat || loc.coordinates.lng)) {
+        const geo = loc.coordinates.lat + ',' + loc.coordinates.lng;
+        return `${prefix}_type=geo&${prefix}_geo=${encodeURIComponent(geo)}`;
+      }
       const iata = loc.iata_code || (loc.type === 'airport' && loc.code) || '';
       if (iata) {
-        return `${prefix}_type=airport&${prefix}_code=${encodeURIComponent(iata)}`;
+        return `${prefix}_type=airport&${prefix}_iata=${encodeURIComponent(iata)}`;
       }
-      if (loc.coordinates && loc.coordinates.lat) {
-        return `${prefix}_type=geo&${prefix}_code=${encodeURIComponent(loc.coordinates.lat + ',' + loc.coordinates.lng)}`;
-      }
-      const code = loc.code || loc.id || '';
-      return code
-        ? `${prefix}_type=location&${prefix}_code=${encodeURIComponent(code)}`
-        : `${prefix}_type=geo&${prefix}_code=${encodeURIComponent(pickupLocation)}`;
+      // last resort: pass city name as geo search string
+      return `${prefix}_type=geo&${prefix}_geo=${encodeURIComponent(fallbackStr)}`;
     }
 
     const country = pickLoc.country_code || 'AE';
-    const pickupParams = getLocParams(pickLoc, 'pickup');
-    const returnParams = getLocParams(dropLoc, 'return');
+    const pickupParams = getLocParams(pickLoc, 'pickup', pickupLocation);
+    const returnParams = getLocParams(dropLoc, 'return', dropoff);
     const pd = encodeURIComponent(toDateTime(pickupDate));
     const rd = encodeURIComponent(toDateTime(returnDate));
 

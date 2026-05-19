@@ -214,13 +214,12 @@ app.post('/api/travel/flights', async (req, res) => {
 // Cars search
 app.post('/api/travel/cars', async (req, res) => {
   function toDateTime(d) { return d && !d.includes('T') ? d + 'T10:00:00' : d; }
-  function getLocParams(loc, prefix) {
+  function getLocParams(loc, prefix, fallback) {
+    if (loc.coordinates && (loc.coordinates.lat || loc.coordinates.lng))
+      return `${prefix}_type=geo&${prefix}_geo=${encodeURIComponent(loc.coordinates.lat + ',' + loc.coordinates.lng)}`;
     const iata = loc.iata_code || (loc.type === 'airport' && loc.code) || '';
-    if (iata) return `${prefix}_type=airport&${prefix}_code=${encodeURIComponent(iata)}`;
-    if (loc.coordinates && loc.coordinates.lat)
-      return `${prefix}_type=geo&${prefix}_code=${encodeURIComponent(loc.coordinates.lat + ',' + loc.coordinates.lng)}`;
-    const code = loc.code || loc.id || '';
-    return code ? `${prefix}_type=location&${prefix}_code=${encodeURIComponent(code)}` : `${prefix}_type=geo&${prefix}_code=`;
+    if (iata) return `${prefix}_type=airport&${prefix}_iata=${encodeURIComponent(iata)}`;
+    return `${prefix}_type=geo&${prefix}_geo=${encodeURIComponent(fallback || '')}`;
   }
   try {
     const { pickupLocation, pickupDate, returnDate, dropoffLocation } = req.body;
@@ -231,8 +230,8 @@ app.post('/api/travel/cars', async (req, res) => {
     if (!loc) return res.json({ rentals: [], message: 'Location not found. Try a city or airport code.' });
     const dropLoc = loc;
     const country = loc.country_code || 'AE';
-    const pickupParams = getLocParams(loc, 'pickup');
-    const returnParams = getLocParams(dropLoc, 'return');
+    const pickupParams = getLocParams(loc, 'pickup', pickupLocation);
+    const returnParams = getLocParams(dropLoc, 'return', pickupLocation);
     const pd = encodeURIComponent(toDateTime(pickupDate));
     const rd = encodeURIComponent(toDateTime(returnDate));
     const result = await xeniReq('GET',
