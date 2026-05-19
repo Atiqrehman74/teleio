@@ -187,6 +187,9 @@ app.get('/api/travel/resort-facilities', require('./api/travel/resort-facilities
 // Resort price verification (token + recommendation_id → sessionId + confirmed rate)
 app.get('/api/travel/resort-price', require('./api/travel/resort-price'));
 
+// Resort booking / itinerary creation (after Stripe payment succeeds)
+app.post('/api/travel/resort-book', require('./api/travel/resort-book'));
+
 // Hotel content/discovery (no dates required — browse by location)
 app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
 

@@ -239,7 +239,16 @@
             <div class="fgroup"><label>Last Name *</label><input type="text" id="last-name" placeholder="Smith" required></div>
           </div>
           <div class="fgroup"><label>Email *</label><input type="email" id="email" placeholder="john@example.com" required></div>
-          <div class="fgroup"><label>Phone</label><input type="tel" id="phone" placeholder="+971 50 000 0000"></div>
+          <div class="fgroup"><label>Phone</label><input type="tel" id="phone" placeholder="+1 408 000 0000"></div>
+          <div class="fgroup"><label>Address</label><input type="text" id="address" placeholder="157 Columbus Ave"></div>
+          <div class="frow">
+            <div class="fgroup"><label>City</label><input type="text" id="city" placeholder="New York"></div>
+            <div class="fgroup"><label>State / Province</label><input type="text" id="state" placeholder="NY"></div>
+          </div>
+          <div class="frow">
+            <div class="fgroup"><label>ZIP / Postal Code</label><input type="text" id="zip-code" placeholder="10023"></div>
+            <div class="fgroup"><label>Country</label><input type="text" id="country" placeholder="United States"></div>
+          </div>
           <div class="fgroup">
             <label>Special Requests</label>
             <input type="text" id="special-req" placeholder="Room preference, anniversary, dietary needs...">
@@ -865,47 +874,37 @@
       } else if (result.paymentIntent.status === 'succeeded') {
         var xeniBookingRef = '';
         var bookingStatus  = '';
-        var cancelNote     = '';
 
-        if (bookingToken) {
+        if (selectedSlotToken && propId) {
           try {
             var phone = document.getElementById('phone').value.trim();
-            var bookRes = await fetch('/api/travel/hotel-book', {
+            var bookRes = await fetch('/api/travel/resort-book', {
               method: 'POST', headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                booking_token:   bookingToken,
-                title:           document.getElementById('title').value,
-                first_name:      firstName,
-                last_name:       lastName,
-                email:           email,
-                phone:           phone,
-                special_request: document.getElementById('special-req').value.trim(),
+                token:            selectedSlotToken,
+                recommendation_id: recId,
+                property_id:      propId,
+                checkin:          selectedSlotCheckin,
+                checkout:         selectedSlotCheckout,
+                total_rate:       verifiedRate,
+                currency:         verifiedCur,
+                email:            email,
+                phone:            phone,
+                first_name:       firstName,
+                last_name:        lastName,
+                address:          document.getElementById('address').value.trim(),
+                city:             document.getElementById('city').value.trim(),
+                state:            document.getElementById('state').value.trim(),
+                zip_code:         document.getElementById('zip-code').value.trim(),
+                country:          document.getElementById('country').value.trim(),
               })
             });
             var bookData = await bookRes.json();
-            xeniBookingRef = (bookData.data && (bookData.data.booking_id || bookData.data.reference)) || '';
-
-            if (xeniBookingRef) {
-              try {
-                var detRes  = await fetch('/api/travel/hotel-booking?booking_id=' + encodeURIComponent(xeniBookingRef));
-                var detData = await detRes.json();
-                var bd = detData.data;
-                if (bd) {
-                  bookingStatus = bd.booking_status || '';
-                  var pol = bd.rooms && bd.rooms[0] && bd.rooms[0].rate && bd.rooms[0].rate.cancellation_policy;
-                  if (pol && pol.length) {
-                    var freePol = pol.find(function(cp) { return cp.estimate_amount === 0; });
-                    var penPol  = pol.find(function(cp) { return cp.estimate_amount > 0; });
-                    if (freePol && freePol.end) {
-                      var freeUntil = new Date(freePol.end).toLocaleDateString(undefined, { day:'numeric', month:'short', year:'numeric' });
-                      cancelNote = 'Free cancellation until <strong>' + freeUntil + '</strong>';
-                      if (penPol) cancelNote += ' · after that ' + (bd.currency || verifiedCur) + ' ' + Number(penPol.estimate_amount).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + ' penalty';
-                    }
-                  }
-                }
-              } catch (_) {}
-            }
-          } catch (_) {}
+            // Response fields: itinerary_id, booking_id, id, reference, status
+            var bd = bookData.data || bookData;
+            xeniBookingRef = bd.itinerary_id || bd.booking_id || bd.id || bd.reference || '';
+            bookingStatus  = bd.status || bd.booking_status || (bookData.status === 'Success' ? 'CONFIRMED' : '');
+          } catch (_) { /* non-fatal — Stripe already charged */ }
         }
 
         var statusColor = bookingStatus === 'CONFIRMED' ? '#16A34A' : bookingStatus === 'CANCELLED' ? '#DC2626' : '#64748B';
@@ -914,16 +913,10 @@
           : '';
 
         document.getElementById('booking-form').style.display = 'none';
-        var box = document.getElementById('success-box');
-        box.style.display = 'block';
-        if (xeniBookingRef && bookingStatus !== 'CANCELLED') {
-          document.getElementById('cancel-wrap').style.display = 'block';
-          document.getElementById('cancel-btn').dataset.bookingId = xeniBookingRef;
-        }
+        document.getElementById('success-box').style.display = 'block';
         document.getElementById('success-msg').innerHTML =
           '<strong>' + propName + '</strong> booked for <strong>' + adults + ' guest' + (adults > 1 ? 's' : '') + '</strong>.<br>' +
-          'Check-in: <strong>' + fmt(checkin) + '</strong> · Check-out: <strong>' + fmt(checkout) + '</strong><br><br>' +
-          (cancelNote ? cancelNote + '<br>' : '') +
+          'Check-in: <strong>' + fmt(selectedSlotCheckin) + '</strong> · Check-out: <strong>' + fmt(selectedSlotCheckout) + '</strong><br><br>' +
           'Confirmation sent to <strong>' + email + '</strong><br>' +
           'Payment ref: <code style="font-size:11px;color:#64748B">' + result.paymentIntent.id + '</code>' +
           (xeniBookingRef ? '<br>Booking ref: <code style="font-size:11px;color:#64748B">' + xeniBookingRef + '</code>' + statusBadge : '');
