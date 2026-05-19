@@ -175,6 +175,9 @@ app.get('/api/travel/hotel-detail', require('./api/travel/hotel-detail'));
 // Hotel content/discovery (no dates required — browse by location)
 app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
 
+// Hotel batch content by property IDs
+app.post('/api/travel/hotel-content-ids', require('./api/travel/hotel-content-ids'));
+
 // Hotel room availability
 app.post('/api/travel/hotel-availability', require('./api/travel/hotel-availability'));
 

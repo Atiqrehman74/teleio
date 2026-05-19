@@ -42,9 +42,9 @@ module.exports = async (req, res) => {
       { 'x-correlation-id': correlationId }
     );
 
-    // If the API returned hotels directly (sync or fast async), return them
+    // If the API returned hotels directly (sync or fast async), enrich and return
     if (initial.data && initial.data.hotels) {
-      return res.json(initial);
+      return res.json(await enrichHotels(initial));
     }
 
     // Async flow: poll until data arrives or timeout (25 s)
@@ -70,7 +70,7 @@ module.exports = async (req, res) => {
       }
     }
 
-    if (pollResult) return res.json(pollResult);
+    if (pollResult) return res.json(await enrichHotels(pollResult));
     return res.json(initial);
 
   } catch (err) {
@@ -78,3 +78,44 @@ module.exports = async (req, res) => {
     res.status(err.status || 500).json({ error: err.message, body: err.body });
   }
 };
+
+// Enrich search results with full content (images, descriptions) via content-ids
+async function enrichHotels(searchResult) {
+  try {
+    const hotels = searchResult.data && searchResult.data.hotels;
+    if (!hotels || !hotels.length) return searchResult;
+
+    const ids = hotels.map(h => h.property_id).filter(Boolean).slice(0, 50);
+    if (!ids.length) return searchResult;
+
+    const content = await xeniReq('POST', '/hotels/v2/hotel/content-ids', {
+      property_ids: ids,
+      filters: { ratings: [], name: '' },
+      sort: [],
+    });
+
+    // Build a lookup map from content response
+    const contentMap = {};
+    const contentList = (content.data && Array.isArray(content.data))
+      ? content.data
+      : (content.data && content.data.hotels) || [];
+    contentList.forEach(c => { if (c.property_id) contentMap[c.property_id] = c; });
+
+    // Merge content into each hotel (content fields win for images/descriptions)
+    searchResult.data.hotels = hotels.map(h => {
+      const c = contentMap[h.property_id];
+      if (!c) return h;
+      return Object.assign({}, h, {
+        name:    c.name    || h.name,
+        image:   c.image   || c.images || h.image,
+        images:  c.images  || h.images,
+        ratings: c.ratings || h.ratings,
+        contact: c.contact || h.contact,
+        description: c.description || h.description,
+      });
+    });
+  } catch (_) {
+    // enrichment is best-effort — return original if it fails
+  }
+  return searchResult;
+}
