@@ -806,7 +806,7 @@ function renderHotels(data) {
   }
   var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:8px">' +
     '<h3 style="font-size:1.05rem;font-weight:700;margin:0">' + total.toLocaleString() + ' Hotels Found</h3>' +
-    '<span style="font-size:0.78rem;color:var(--text-muted)">Prices per total stay · USD</span></div>';
+    '<span style="font-size:0.78rem;color:var(--text-muted)">Prices per total stay</span></div>';
   html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">';
   var ciVal = val('ht-checkin'), coVal = val('ht-checkout'), adVal = val('ht-adults') || 2;
   hotels.slice(0, 9).forEach(function(h) {
@@ -816,9 +816,9 @@ function renderHotels(data) {
     var stars  = (h.ratings && h.ratings.star_rating) || 0;
     var rating = (h.ratings && h.ratings.user_rating) || 0;
     var dist   = h.distance ? (h.distance + ' km') : '';
-    var price  = (h.rate && (h.rate.recommended_selling_price || h.rate.total_rate)) || 0;
-    var saved  = (h.rate && h.rate.saved_price) || 0;
-    var cur    = (h.rate && h.rate.currency) || 'USD';
+    var price  = (h.rates && (h.rates.total_rate || h.rates.base_rate)) || 0;
+    var saved  = (h.rates && h.rates.retail_price > h.rates.total_rate ? h.rates.retail_price - h.rates.total_rate : 0);
+    var cur    = (h.rates && h.rates.currency) || 'USD';
     var nights = (ciVal && coVal) ? Math.max(1, Math.round((new Date(coVal)-new Date(ciVal))/86400000)) : 1;
     var ratePerNight = nights > 0 && price > 0 ? Math.round(price / nights) : price;
     var bookUrl = 'hotel-booking.html?id=' + encodeURIComponent(h.property_id || '') +

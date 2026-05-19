@@ -42,8 +42,8 @@ module.exports = async (req, res) => {
       { 'x-correlation-id': correlationId }
     );
 
-    // If the API returned hotels directly (sync fallback), return them
-    if (initial.data && (Array.isArray(initial.data) || initial.data.properties)) {
+    // If the API returned hotels directly (sync or fast async), return them
+    if (initial.data && initial.data.hotels) {
       return res.json(initial);
     }
 
@@ -61,8 +61,7 @@ module.exports = async (req, res) => {
           null,
           { 'x-correlation-id': correlationId }
         );
-        const status = poll.status || (poll.data ? 'completed' : 'processing');
-        if (status === 'completed' || (poll.data && (Array.isArray(poll.data) || poll.data.properties))) {
+        if (poll.data && poll.data.hotels) {
           pollResult = poll;
           break;
         }
@@ -72,7 +71,6 @@ module.exports = async (req, res) => {
     }
 
     if (pollResult) return res.json(pollResult);
-    // Last resort: return whatever the initial response had
     return res.json(initial);
 
   } catch (err) {
