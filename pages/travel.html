@@ -1111,7 +1111,9 @@ function renderResorts(data) {
       '&currency=' + encodeURIComponent(cur) +
       '&checkin=' + encodeURIComponent(ciVal || p.start_date || '') +
       '&checkout=' + encodeURIComponent(coVal || p.end_date || '') +
-      '&adults=' + (val('rs-adults') || 2);
+      '&adults=' + (val('rs-adults') || 2) +
+      (img ? '&img=' + encodeURIComponent(img) : '') +
+      (avail ? '&avail=' + encodeURIComponent(avail) : '');
 
     var ratingBadge = userRating > 0
       ? '<span style="background:#EFF6FF;color:#2563EB;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:4px">' + Number(userRating).toFixed(1) + ' ★</span>' : '';

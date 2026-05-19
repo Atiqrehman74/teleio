@@ -268,6 +268,7 @@
   var children = parseInt(p.get('children')) || 0;
   var rateStr  = parseFloat(p.get('rate'))   || 0;
   var currency = (p.get('currency') || 'USD').toUpperCase();
+  var urlImg   = p.get('img')      || '';  // image URL passed from search card
 
   document.title = propName + ' — Teleio Tourism';
 
@@ -331,34 +332,42 @@
   }
 
   function renderHero(d) {
-    var src = (typeof d.image === 'string' && d.image)
-           || (d.images && (d.images.extra_large && d.images.extra_large[0]) || (d.images.large && d.images.large[0]))
-           || '';
-    if (src) {
-      document.getElementById('hero-img').src = src;
-      document.getElementById('hero-img').onerror = function () {
-        this.src = 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=800&q=80&fit=crop';
-      };
-    } else {
-      document.getElementById('hero-img').src = 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=800&q=80&fit=crop';
+    // Detail response: images is often empty {}; use URL-param img from search card first
+    var src = urlImg || '';
+    if (!src && d.images && typeof d.images === 'object') {
+      var imgKeys = Object.keys(d.images);
+      for (var ki = 0; ki < imgKeys.length && !src; ki++) {
+        var val = d.images[imgKeys[ki]];
+        if (Array.isArray(val) && val[0]) src = val[0];
+        else if (typeof val === 'string' && val) src = val;
+      }
     }
+    if (!src && typeof d.image === 'string') src = d.image;
+    document.getElementById('hero-img').src = src || 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=800&q=80&fit=crop';
+    document.getElementById('hero-img').onerror = function () {
+      this.src = 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=800&q=80&fit=crop';
+    };
     document.getElementById('hero-name').textContent = d.name || propName;
 
+    // Address: actual fields from response are city, state_province_name, country_code
     var addr = d.contact && d.contact.address;
     if (addr) {
-      var parts = [addr.line_1 || addr.address_line_1, addr.city, addr.state, addr.country].filter(Boolean);
-      if (parts.length) document.getElementById('hero-addr').innerHTML = '📍 ' + parts.join(', ');
-    } else if (d.location) {
-      var city = d.location.city || d.location.state || '';
-      if (city) document.getElementById('hero-addr').innerHTML = '📍 ' + city;
+      var addrParts = [
+        addr.city,
+        (addr.state_province_name && addr.state_province_name !== addr.city) ? addr.state_province_name : null,
+        addr.country_code || addr.country,
+      ].filter(Boolean);
+      if (addrParts.length) document.getElementById('hero-addr').innerHTML = '📍 ' + addrParts.join(', ');
     }
 
-    var stars = (d.ratings && d.ratings.star_rating) || 0;
-    var starsEl = document.getElementById('hero-stars');
-    for (var i = 0; i < Math.min(stars, 5); i++) {
-      var s = document.createElement('span');
-      s.className = 'bk-hero-star'; s.textContent = '★';
-      starsEl.appendChild(s);
+    // ratings.type is a string like "Star", not a number — no numeric star rendering
+    // Show supply source as subtle badge instead
+    if (d.supplySource) {
+      var starsEl = document.getElementById('hero-stars');
+      var badge = document.createElement('span');
+      badge.style.cssText = 'font-size:11px;color:rgba(255,255,255,0.7);font-weight:600;letter-spacing:.04em';
+      badge.textContent = d.supplySource.toUpperCase();
+      starsEl.appendChild(badge);
     }
 
     var userRating = (d.ratings && (d.ratings.users_review_rating || d.ratings.user_rating)) || 0;
@@ -368,13 +377,16 @@
       rEl.style.display = 'block';
     }
 
-    // Availability window badge
-    if (d.start_date && d.end_date) {
-      var avail = new Date(d.start_date + 'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}) +
-                  ' – ' + new Date(d.end_date + 'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
-      var badge = document.getElementById('hero-avail-badge');
-      badge.textContent = '📅 Available: ' + avail;
-      badge.style.display = 'block';
+    // Availability window (from search result, passed via URL if present)
+    var availBadge = p.get('avail') || '';
+    if (!availBadge && d.start_date && d.end_date) {
+      availBadge = new Date(d.start_date + 'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}) +
+                   ' – ' + new Date(d.end_date + 'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+    }
+    if (availBadge) {
+      var badge2 = document.getElementById('hero-avail-badge');
+      badge2.textContent = '📅 ' + availBadge;
+      badge2.style.display = 'block';
     }
 
     document.getElementById('hero-skeleton').style.display = 'none';
@@ -383,19 +395,25 @@
 
   function renderHeroFallback() {
     document.getElementById('hero-name').textContent = propName;
-    document.getElementById('hero-img').src = 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=800&q=80&fit=crop';
+    document.getElementById('hero-img').src = urlImg || 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=800&q=80&fit=crop';
     document.getElementById('hero-skeleton').style.display = 'none';
     document.getElementById('bk-hero').style.display = 'block';
   }
 
   function renderAmenities(d) {
     var amenities = d.amenities || d.facilities || [];
+    // May be an object with category keys — flatten values
+    if (!Array.isArray(amenities) && typeof amenities === 'object') {
+      amenities = Object.values(amenities).reduce(function(acc, v) {
+        return acc.concat(Array.isArray(v) ? v : (typeof v === 'string' ? [v] : []));
+      }, []);
+    }
     if (!amenities.length) return;
     var el = document.getElementById('amenities-list');
     amenities.slice(0, 24).forEach(function (a) {
       var chip = document.createElement('span');
       chip.className = 'bk-amenity';
-      chip.textContent = typeof a === 'string' ? a : (a.name || a);
+      chip.textContent = typeof a === 'string' ? a : (a.name || JSON.stringify(a));
       el.appendChild(chip);
     });
     document.getElementById('amenities-card').style.display = 'block';
@@ -404,11 +422,12 @@
   var inclusionLabels = {
     'O': { icon: '🍽️', name: 'All-Inclusive', desc: 'Meals, drinks, and activities included' },
     'M': { icon: '🥣', name: 'Modified All-Inclusive', desc: 'Selected meals and drinks included' },
-    'N': { icon: '🏨', name: 'No Inclusions', desc: 'Room only — dining and activities paid separately' },
+    'N': { icon: '🏨', name: 'Room Only', desc: 'Dining and activities paid separately' },
   };
 
   function renderInclusions(d) {
     var types = d.all_inclusive_types || d.board_types || d.meal_plan || [];
+    if (!Array.isArray(types)) types = [];
     if (!types.length) return;
     var el = document.getElementById('inclusions-list');
     types.forEach(function (t) {
@@ -424,7 +443,17 @@
   }
 
   function renderHighlights(d) {
+    // highlights may be {} (empty object) or an array or an object with keyed descriptions
     var highlights = d.highlights || d.descriptions || [];
+    if (!Array.isArray(highlights)) {
+      highlights = typeof highlights === 'object'
+        ? Object.entries(highlights).map(function(kv) { return { type: kv[0], description: typeof kv[1] === 'string' ? kv[1] : '' }; })
+        : [];
+    }
+    highlights = highlights.filter(function(h) {
+      var text = typeof h === 'string' ? h : (h.description || h.text || '');
+      return text.trim().length > 0;
+    });
     if (!highlights.length) return;
     var el = document.getElementById('highlights-list');
     var typeLabels = { headline:'Overview', location:'Location', dining:'Dining', rooms:'Rooms', amenities:'Amenities', business_amenities:'Business', attractions:'Nearby Attractions' };
@@ -432,7 +461,7 @@
       var div = document.createElement('div');
       div.className = 'bk-highlight';
       var text = (typeof h === 'string' ? h : (h.description || h.text || '')).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-      var type = h.type || 'overview';
+      var type = (h.type || 'overview');
       div.innerHTML = '<div class="bk-hl-type">' + (typeLabels[type] || type.replace(/_/g,' ')) + '</div>' +
                       '<div class="bk-hl-text">' + text + '</div>';
       el.appendChild(div);
@@ -441,20 +470,44 @@
   }
 
   function renderPolicies(d) {
-    var policies = d.policies || [];
-    if (!policies.length) return;
     var el = document.getElementById('policies-list');
-    var show = ['check_in_begin_time','check_in_end_time','check_out_time','check_in_min_age','optional_fee','cancellation'];
-    var labels = { check_in_begin_time:'Check-in From', check_in_end_time:'Check-in Until', check_out_time:'Check-out', check_in_min_age:'Minimum Age', optional_fee:'Optional Fees', cancellation:'Cancellation Policy' };
-    policies.filter(function (pol) { return !show.length || show.indexOf(pol.type) !== -1; }).forEach(function (pol) {
+    var hasAny = false;
+
+    // Check-in/out times from checkin/checkout/rules fields
+    var ciBegin = (d.checkin && d.checkin.begin_time) || (d.rules && d.rules.checkin) || '';
+    var ciEnd   = (d.checkin && d.checkin.end_time)   || '';
+    var coTime  = (d.checkout && d.checkout.time)     || (d.rules && d.rules.checkout) || '';
+    if (ciBegin || coTime) {
+      var timePol = document.createElement('div');
+      timePol.className = 'bk-policy';
+      var timeHtml = '';
+      if (ciBegin) timeHtml += '<div class="bk-policy-type">Check-in</div><div class="bk-policy-desc">From ' + ciBegin + (ciEnd ? ' (last entry ' + ciEnd + ')' : '') + '</div>';
+      if (coTime)  timeHtml += '<div class="bk-policy-type" style="margin-top:8px">Check-out</div><div class="bk-policy-desc">By ' + coTime + '</div>';
+      timePol.innerHTML = timeHtml;
+      el.appendChild(timePol);
+      hasAny = true;
+    }
+
+    // policies may be {} (empty object) or an array
+    var policies = d.policies || d.policy || [];
+    if (!Array.isArray(policies)) {
+      policies = typeof policies === 'object'
+        ? Object.entries(policies).map(function(kv) { return { type: kv[0], description: typeof kv[1] === 'string' ? kv[1] : '' }; })
+        : [];
+    }
+    var labels = { check_in_begin_time:'Check-in From', check_in_end_time:'Check-in Until', check_out_time:'Check-out', check_in_min_age:'Minimum Age', optional_fee:'Optional Fees', cancellation:'Cancellation' };
+    policies.forEach(function (pol) {
+      var text = (pol.description || pol.value || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 400);
+      if (!text) return;
       var div = document.createElement('div');
       div.className = 'bk-policy';
-      var text = (pol.description || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 400);
-      div.innerHTML = '<div class="bk-policy-type">' + (labels[pol.type] || pol.type.replace(/_/g,' ')) + '</div>' +
-                      (text ? '<div class="bk-policy-desc">' + text + '</div>' : '');
+      div.innerHTML = '<div class="bk-policy-type">' + (labels[pol.type] || (pol.type || '').replace(/_/g,' ')) + '</div>' +
+                      '<div class="bk-policy-desc">' + text + '</div>';
       el.appendChild(div);
+      hasAny = true;
     });
-    document.getElementById('policies-card').style.display = 'block';
+
+    if (hasAny) document.getElementById('policies-card').style.display = 'block';
   }
 
   /* ── Stripe ── */
