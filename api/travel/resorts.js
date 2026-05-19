@@ -15,24 +15,35 @@ module.exports = async (req, res) => {
     const places = Array.isArray(auto.data) ? auto.data : [];
     if (!places.length) return res.json({ hotels: [], total: 0 });
 
-    const loc = places[0];
+    // Prefer type=resort for precise coordinates; fall back to first result
+    const loc = places.find(p => p.type === 'resort') || places[0];
     const lat  = loc.location?.lat;
     const long = loc.location?.lon || loc.location?.long;
+    const region = loc.region || '';
     if (!lat || !long) return res.json({ hotels: [], total: 0, message: 'Location not found' });
 
     // Step 2: search properties via Hotels endpoint (Resorts properties/search has server-side issues)
     const ci = checkIn  || new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0];
     const co = checkOut || new Date(Date.now() + 34 * 86400000).toISOString().split('T')[0];
 
+    const searchBody = {
+      lat, long,
+      checkin_date: ci,
+      checkout_date: co,
+      occupancy: [{ adults: Number(adults), childs: Number(children), childages: [] }],
+      country_of_residence: 'US',
+      sort: [{ key: 'price', order: 'asc' }],
+      filters: { ratings: [] },
+      is_async: true,
+    };
+    if (region) searchBody.region = region;
+
     const result = await xeniReq('POST',
-      '/hotels/api/v2/properties?currency=USD&page=1&limit=20', {
-        lat, long,
-        checkin_date: ci,
-        checkout_date: co,
-        occupancy: [{ adults: Number(adults), childs: Number(children), childages: [] }],
-        country_of_residence: 'US',
-      }
+      '/hotels/api/v2/properties?currency=USD&page=1&limit=20', searchBody
     );
+
+    // Attach the matched resort name so the UI can display it
+    if (result.data) result.data._resort_name = loc.full_name || loc.name;
     res.json(result);
   } catch (err) {
     console.error('Resorts:', err.message);
