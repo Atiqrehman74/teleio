@@ -6,45 +6,54 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   try {
     const { destination, date, category } = req.body;
-    if (!destination)
-      return res.status(400).json({ error: 'destination is required' });
+    if (!destination) return res.status(400).json({ error: 'destination is required' });
 
-    // Step 1: autocomplete
+    // Try autocomplete with ?key= first (same pattern as hotels/cars), then ?query=
     let destinationId = '';
-    let destinationName = destination;
-    try {
-      const auto = await xeniReq('GET',
-        `/activities/api/v2/autocomplete?query=${encodeURIComponent(destination)}&limit=5`
-      );
-      const places = Array.isArray(auto) ? auto
-        : (auto.data || auto.results || auto.suggestions || auto.items || []);
-
-      if (places.length) {
-        const p = places[0];
-        destinationId = p.destination_id || p.destinationId || p.id || p.code || '';
-        destinationName = p.name || p.destination_name || destination;
-        console.log('Activities autocomplete hit:', JSON.stringify(p).slice(0, 200));
+    let autoDebug = {};
+    for (const param of ['key', 'query']) {
+      try {
+        const auto = await xeniReq('GET',
+          `/activities/api/v2/autocomplete?${param}=${encodeURIComponent(destination)}&limit=5`
+        );
+        const places = Array.isArray(auto) ? auto
+          : (auto.data || auto.results || auto.suggestions || auto.items || []);
+        if (places.length) {
+          const p = places[0];
+          destinationId = p.destination_id || p.destinationId || p.id || p.code || '';
+          autoDebug = { param, name: p.name, id: destinationId, keys: Object.keys(p) };
+          console.log('Activities autocomplete OK:', JSON.stringify(autoDebug));
+          break;
+        }
+        autoDebug = { param, result: 'empty array', raw: JSON.stringify(auto).slice(0, 150) };
+      } catch (e) {
+        autoDebug = { param, error: e.message, body: e.body };
+        console.log(`Activities autocomplete ?${param} failed:`, e.message);
       }
-    } catch (autoErr) {
-      console.log('Activities autocomplete failed:', autoErr.message);
     }
 
-    // Step 2: search
-    const body = {
-      currency: 'USD',
-      pagination: { page: 1, limit: 20 },
-    };
-    if (destinationId)    body.destination_id = destinationId;
-    if (destinationName)  body.destination    = destinationName;
-    if (category)         body.category       = category;
-    if (date)             body.start_date     = date;
+    // Build search body — try both destination_id and city string
+    const body = { currency: 'USD', pagination: { page: 1, limit: 20 } };
+    if (destinationId) body.destination_id = destinationId;
+    else               body.destination    = destination;
+    if (category)      body.category       = category;
+    if (date)          body.start_date     = date;
 
-    const result = await xeniReq('POST', '/activities/api/v2/search', body);
+    let result;
+    try {
+      result = await xeniReq('POST', '/activities/api/v2/search', body);
+    } catch (searchErr) {
+      // Return structured error so frontend can show it
+      return res.status(searchErr.status || 500).json({
+        error: searchErr.message,
+        body: searchErr.body,
+        _debug: { autoDebug, searchBody: body }
+      });
+    }
 
-    // Pass raw result with debug info so frontend can extract correctly
-    res.json({ ...result, _debug: { destinationId, destinationName } });
+    res.json({ ...result, _debug: { destinationId, destination, autoDebug } });
   } catch (err) {
-    console.error('Activities:', err.message, err.body && JSON.stringify(err.body).slice(0, 300));
+    console.error('Activities outer:', err.message);
     res.status(err.status || 500).json({ error: err.message, body: err.body });
   }
 };

@@ -1298,9 +1298,22 @@ function switchHeroTab(tab) {
       body: JSON.stringify({ destination: destination })
     })
     .then(function(r) { return r.json(); })
-    .then(function(data) { renderActivities(data); })
-    .catch(function() {
-      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Unable to load activities right now. <a href="pages/travel.html#activities" style="color:var(--primary)">Search manually →</a></p>';
+    .then(function(data) {
+      // Show actual API error so we can debug endpoint issues
+      if (data.error) {
+        var dbg = data._debug ? JSON.stringify(data._debug).slice(0,300) : '';
+        var body = data.body ? JSON.stringify(data.body).slice(0,300) : '';
+        grid.innerHTML = '<div style="grid-column:1/-1;background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:20px;font-size:12px;color:#991B1B">' +
+          '<strong>API Error:</strong> ' + data.error +
+          (body ? '<br><br><code style="word-break:break-all;font-size:11px">' + body + '</code>' : '') +
+          (dbg  ? '<br><br><code style="word-break:break-all;font-size:11px;color:#555">' + dbg  + '</code>' : '') +
+          '</div>';
+        return;
+      }
+      renderActivities(data);
+    })
+    .catch(function(e) {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Unable to load activities. <a href="pages/travel.html#activities" style="color:var(--primary)">Search manually →</a></p>';
     });
   }
 
