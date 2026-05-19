@@ -34,18 +34,18 @@ module.exports = async (req, res) => {
     const dropLoc = dropLocs[0] || pickLoc;
 
     // Determine pickup type and correct parameter name for Xeni cars API:
-    //   geo   → pickup_type=geo   + pickup_geo=lat,lng
-    //   airport → pickup_type=airport + pickup_iata=DXB
+    //   airport → pickup_type=airport + pickup_code=DXB
+    //   geo     → pickup_type=geo     + pickup_geo=lat,lon
     function getLocParams(loc, prefix, fallbackStr) {
-      if (loc.coordinates && (loc.coordinates.lat || loc.coordinates.lng)) {
-        const geo = loc.coordinates.lat + ',' + loc.coordinates.lng;
-        return `${prefix}_type=geo&${prefix}_geo=${encodeURIComponent(geo)}`;
-      }
       const iata = loc.iata_code || (loc.type === 'airport' && loc.code) || '';
       if (iata) {
-        return `${prefix}_type=airport&${prefix}_iata=${encodeURIComponent(iata)}`;
+        return `${prefix}_type=airport&${prefix}_code=${encodeURIComponent(iata)}`;
       }
-      // last resort: pass city name as geo search string
+      const lon = (loc.coordinates && (loc.coordinates.lon || loc.coordinates.lng)) || '';
+      const lat = (loc.coordinates && loc.coordinates.lat) || '';
+      if (lat && lon) {
+        return `${prefix}_type=geo&${prefix}_geo=${encodeURIComponent(lat + ',' + lon)}`;
+      }
       return `${prefix}_type=geo&${prefix}_geo=${encodeURIComponent(fallbackStr)}`;
     }
 
