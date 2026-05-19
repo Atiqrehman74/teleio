@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const { pickupLocation, pickupDate, returnDate, dropoffLocation } = req.body;
     if (!pickupLocation || !pickupDate || !returnDate)
       return res.status(400).json({ error: 'pickupLocation, pickupDate and returnDate are required' });
-    const result = await xeniReq('POST', '/api/v2/cars/search', {
+    const result = await xeniReq('POST', '/cars/search', {
       pickupLocation, dropoffLocation: dropoffLocation || pickupLocation,
       pickupDate, returnDate,
     });

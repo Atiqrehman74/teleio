@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const { destination, date, category } = req.body;
     if (!destination)
       return res.status(400).json({ error: 'destination is required' });
-    const result = await xeniReq('POST', '/api/v2/activities/search', {
+    const result = await xeniReq('POST', '/activities/search', {
       destination,
       ...(date ? { date } : {}),
       ...(category ? { category } : {}),

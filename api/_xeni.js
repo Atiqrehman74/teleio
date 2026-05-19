@@ -16,7 +16,7 @@ function xeniReq(method, endpoint, body) {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': `Bearer ${XENI_KEY}`,
+        'Authorization': `Basic ${Buffer.from(`${XENI_KEY}:${XENI_SECRET}`).toString('base64')}`,
         'x-api-key': XENI_KEY,
         'x-api-secret': XENI_SECRET,
         'x-teleio-agent': 'teleio-tourism/1.0',

@@ -112,7 +112,7 @@ function xeniReq(method, endpoint, body) {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': `Bearer ${XENI_KEY}`,
+        'Authorization': `Basic ${Buffer.from(`${XENI_KEY}:${XENI_SECRET}`).toString('base64')}`,
         'x-api-key': XENI_KEY,
         'x-api-secret': XENI_SECRET,
         'x-teleio-agent': 'teleio-tourism/1.0',
@@ -142,7 +142,7 @@ app.post('/api/travel/hotels', async (req, res) => {
   try {
     const { destination, checkIn, checkOut, rooms = 1, adults = 2, children = 0 } = req.body;
     if (!destination || !checkIn || !checkOut) return res.status(400).json({ error: 'destination, checkIn and checkOut are required' });
-    const result = await xeniReq('POST', '/api/v2/hotels/search', {
+    const result = await xeniReq('POST', '/hotels/search', {
       destination, checkIn, checkOut,
       occupancies: [{ rooms: Number(rooms), adults: Number(adults), children: Number(children) }],
     });
@@ -158,7 +158,7 @@ app.post('/api/travel/flights', async (req, res) => {
   try {
     const { origin, destination, departureDate, returnDate, adults = 1, children = 0 } = req.body;
     if (!origin || !destination || !departureDate) return res.status(400).json({ error: 'origin, destination and departureDate are required' });
-    const result = await xeniReq('POST', '/api/v2/flights/search', {
+    const result = await xeniReq('POST', '/flights/search', {
       origin, destination, departureDate,
       ...(returnDate ? { returnDate } : {}),
       passengers: { adults: Number(adults), children: Number(children) },
@@ -175,7 +175,7 @@ app.post('/api/travel/cars', async (req, res) => {
   try {
     const { pickupLocation, pickupDate, returnDate, dropoffLocation } = req.body;
     if (!pickupLocation || !pickupDate || !returnDate) return res.status(400).json({ error: 'pickupLocation, pickupDate and returnDate are required' });
-    const result = await xeniReq('POST', '/api/v2/cars/search', {
+    const result = await xeniReq('POST', '/cars/search', {
       pickupLocation, dropoffLocation: dropoffLocation || pickupLocation,
       pickupDate, returnDate,
     });
@@ -191,7 +191,7 @@ app.post('/api/travel/activities', async (req, res) => {
   try {
     const { destination, date, category } = req.body;
     if (!destination) return res.status(400).json({ error: 'destination is required' });
-    const result = await xeniReq('POST', '/api/v2/activities/search', {
+    const result = await xeniReq('POST', '/activities/search', {
       destination, ...(date ? { date } : {}), ...(category ? { category } : {}),
     });
     res.json(result);
@@ -206,7 +206,7 @@ app.post('/api/travel/packages', async (req, res) => {
   try {
     const { origin, destination, departureDate, adults = 2 } = req.body;
     if (!destination || !departureDate) return res.status(400).json({ error: 'destination and departureDate are required' });
-    const result = await xeniReq('POST', '/api/v2/packages/search', {
+    const result = await xeniReq('POST', '/packages/search', {
       origin, destination, departureDate, passengers: { adults: Number(adults) },
     });
     res.json(result);
@@ -221,7 +221,7 @@ app.get('/api/travel/hotels/:hotelId', async (req, res) => {
   try {
     const { checkIn, checkOut, adults = 2 } = req.query;
     const result = await xeniReq('GET',
-      `/api/v2/hotels/${req.params.hotelId}?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}`
+      `/hotels/${req.params.hotelId}?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}`
     );
     res.json(result);
   } catch (err) {

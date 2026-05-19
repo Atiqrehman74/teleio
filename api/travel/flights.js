@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const { origin, destination, departureDate, returnDate, adults = 1, children = 0 } = req.body;
     if (!origin || !destination || !departureDate)
       return res.status(400).json({ error: 'origin, destination and departureDate are required' });
-    const result = await xeniReq('POST', '/api/v2/flights/search', {
+    const result = await xeniReq('POST', '/flights/search', {
       origin, destination, departureDate,
       ...(returnDate ? { returnDate } : {}),
       passengers: { adults: Number(adults), children: Number(children) },

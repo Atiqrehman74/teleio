@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const { destination, checkIn, checkOut, rooms = 1, adults = 2, children = 0 } = req.body;
     if (!destination || !checkIn || !checkOut)
       return res.status(400).json({ error: 'destination, checkIn and checkOut are required' });
-    const result = await xeniReq('POST', '/api/v2/hotels/search', {
+    const result = await xeniReq('POST', '/hotels/search', {
       destination, checkIn, checkOut,
       occupancies: [{ rooms: Number(rooms), adults: Number(adults), children: Number(children) }],
     });
