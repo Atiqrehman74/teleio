@@ -455,6 +455,7 @@
   var selectedRate = total; // default to search rate until rooms load
   var selectedPricingToken = '';
   var selectedCurrency = currency;
+  var bookingToken = ''; // set after price verification
 
   function loadAvailability() {
     if (!propId || !checkin || !checkout) {
@@ -612,10 +613,13 @@
             '&availability_token=' + encodeURIComponent(selectedPricingToken)
           );
           var priceData = await priceRes.json();
-          var confirmedRate = priceData.data && (priceData.data.total_rate || priceData.data.base_rate);
+          var pd = priceData.data;
+          var confirmedRate = pd && (pd.total_price || pd.total_rate || pd.base_rate);
           if (confirmedRate && confirmedRate > 0) {
             verifiedRate = confirmedRate;
-            verifiedCur  = (priceData.data && priceData.data.currency) || verifiedCur;
+            verifiedCur  = (pd && pd.currency) || verifiedCur;
+            // Store booking_token for the reservation step
+            if (pd && pd.booking_token) bookingToken = pd.booking_token;
             // Update UI to reflect confirmed price
             document.getElementById('sum-total').textContent = verifiedCur + ' ' + Number(verifiedRate).toLocaleString(undefined, {minimumFractionDigits:2,maximumFractionDigits:2});
             document.getElementById('pay-btn-text').textContent = 'Pay Now — ' + verifiedCur + ' ' + Number(verifiedRate).toLocaleString(undefined, {minimumFractionDigits:2,maximumFractionDigits:2});
