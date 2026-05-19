@@ -8,10 +8,27 @@ module.exports = async (req, res) => {
     const { pickupLocation, pickupDate, returnDate, dropoffLocation } = req.body;
     if (!pickupLocation || !pickupDate || !returnDate)
       return res.status(400).json({ error: 'pickupLocation, pickupDate and returnDate are required' });
-    const result = await xeniReq('POST', '/cars/search', {
-      pickupLocation, dropoffLocation: dropoffLocation || pickupLocation,
-      pickupDate, returnDate,
-    });
+
+    // First autocomplete to get location code
+    const auto = await xeniReq('GET',
+      `/cars/api/v2/autocomplete?key=${encodeURIComponent(pickupLocation)}`
+    );
+    const locations = Array.isArray(auto) ? auto : (auto.data || auto.locations || []);
+    const loc = locations[0];
+
+    if (!loc) return res.json({ rentals: [], message: 'Location not found' });
+
+    // Use geo coordinates or location code from autocomplete
+    const pickup = loc.coordinates
+      ? `${loc.coordinates.lat},${loc.coordinates.lng}`
+      : (loc.code || loc.iata_code || pickupLocation);
+
+    const result = await xeniReq('GET',
+      `/cars/api/v2/rentals?country=${loc.country_code || 'US'}&pickup_type=geo&return_type=geo` +
+      `&pickup_code=${encodeURIComponent(pickup)}&return_code=${encodeURIComponent(pickup)}` +
+      `&currency=USD&pickup_date=${encodeURIComponent(pickupDate)}&return_date=${encodeURIComponent(returnDate)}` +
+      `&driver_age=25&page=1&limit=20`
+    );
     res.json(result);
   } catch (err) {
     console.error('Cars:', err.message);

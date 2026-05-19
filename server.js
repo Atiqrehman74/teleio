@@ -100,23 +100,53 @@ const XENI_BASE   = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').rep
 const XENI_KEY    = process.env.XENI_API_KEY    || '';
 const XENI_SECRET = process.env.XENI_SECRET_KEY || '';
 
-function xeniReq(method, endpoint, body) {
+let _xeniTokenCache = null;
+
+function getXeniToken() {
+  const now = Math.floor(Date.now() / 1000);
+  if (_xeniTokenCache && _xeniTokenCache.expiresAt > now + 60) return Promise.resolve(_xeniTokenCache.token);
+  const payload = JSON.stringify({ api_key: XENI_KEY, secret: XENI_SECRET, timestamp: now });
+  return new Promise((resolve, reject) => {
+    const opts = {
+      hostname: new URL(XENI_BASE).hostname, port: 443,
+      path: '/identity/v2/auth/generate', method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
+    };
+    const req = https.request(opts, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        if (res.statusCode !== 200)
+          return reject(Object.assign(new Error(`Xeni auth ${res.statusCode}: ${data.slice(0,150)}`), { status: 401 }));
+        try {
+          const json = JSON.parse(data);
+          const token = json.token || json.access_token || json.signed_token || data.trim();
+          const expiresAt = (typeof json.expires_at === 'number' ? json.expires_at : null) || (now + 3600);
+          _xeniTokenCache = { token, expiresAt };
+          resolve(token);
+        } catch {
+          _xeniTokenCache = { token: data.trim(), expiresAt: now + 3600 };
+          resolve(_xeniTokenCache.token);
+        }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(10000, () => { req.destroy(); reject(new Error('Xeni auth timeout')); });
+    req.write(payload); req.end();
+  });
+}
+
+async function xeniReq(method, endpoint, body) {
+  const token = await getXeniToken();
   return new Promise((resolve, reject) => {
     const urlObj  = new URL(endpoint, XENI_BASE);
     const payload = body ? JSON.stringify(body) : null;
     const opts = {
       hostname: urlObj.hostname,
-      port: urlObj.port || 443,
+      port: 443,
       path: urlObj.pathname + urlObj.search,
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Basic ${Buffer.from(`${XENI_KEY}:${XENI_SECRET}`).toString('base64')}`,
-        'x-api-key': XENI_KEY,
-        'x-api-secret': XENI_SECRET,
-        'x-teleio-agent': 'teleio-tourism/1.0',
-      },
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': token },
     };
     if (payload) opts.headers['Content-Length'] = Buffer.byteLength(payload);
     const req = https.request(opts, res => {
@@ -127,7 +157,7 @@ function xeniReq(method, endpoint, body) {
           const json = JSON.parse(data);
           if (res.statusCode >= 200 && res.statusCode < 300) resolve(json);
           else reject(Object.assign(new Error(`Xeni ${res.statusCode}`), { status: res.statusCode, body: json }));
-        } catch { reject(new Error(`Xeni parse error (status ${res.statusCode}): ${data.slice(0, 300)}`)); }
+        } catch { reject(new Error(`Xeni parse error (${res.statusCode}): ${data.slice(0, 300)}`)); }
       });
     });
     req.on('error', reject);
@@ -137,16 +167,22 @@ function xeniReq(method, endpoint, body) {
   });
 }
 
-// Hotels search
+// Hotels search (autocomplete + availability)
 app.post('/api/travel/hotels', async (req, res) => {
   try {
-    const { destination, checkIn, checkOut, rooms = 1, adults = 2, children = 0 } = req.body;
+    const { destination, checkIn, checkOut, adults = 2, children = 0 } = req.body;
     if (!destination || !checkIn || !checkOut) return res.status(400).json({ error: 'destination, checkIn and checkOut are required' });
-    const result = await xeniReq('POST', '/hotels/search', {
-      destination, checkIn, checkOut,
-      occupancies: [{ rooms: Number(rooms), adults: Number(adults), children: Number(children) }],
+    const autocomplete = await xeniReq('GET', `/hotels/api/v2/autocomplete?key=${encodeURIComponent(destination)}&currency=USD`);
+    const properties = Array.isArray(autocomplete) ? autocomplete : (autocomplete.data || autocomplete.properties || autocomplete.results || []);
+    if (!properties.length) return res.json({ properties: [], message: 'No hotels found' });
+    const topId = properties[0] && (properties[0].property_id || properties[0].id);
+    if (!topId) return res.json({ properties });
+    const availability = await xeniReq('POST', '/hotels/api/v2/properties/availability?currency=USD', {
+      property_id: topId, checkin_date: checkIn, checkout_date: checkOut,
+      occupancy: [{ adults: Number(adults), childs: Number(children), childages: [] }],
+      country_of_residence: 'US',
     });
-    res.json(result);
+    res.json({ properties, availability });
   } catch (err) {
     console.error('Hotels error:', err.message);
     res.status(err.status || 500).json({ error: err.message, body: err.body });
@@ -158,10 +194,14 @@ app.post('/api/travel/flights', async (req, res) => {
   try {
     const { origin, destination, departureDate, returnDate, adults = 1, children = 0 } = req.body;
     if (!origin || !destination || !departureDate) return res.status(400).json({ error: 'origin, destination and departureDate are required' });
-    const result = await xeniReq('POST', '/flights/search', {
-      origin, destination, departureDate,
-      ...(returnDate ? { returnDate } : {}),
-      passengers: { adults: Number(adults), children: Number(children) },
+    const flightInfo = [{ departure_date: departureDate, origin, destination }];
+    if (returnDate) flightInfo.push({ departure_date: returnDate, origin: destination, destination: origin });
+    const result = await xeniReq('POST', '/flights/api/v2/search', {
+      flight_info: flightInfo,
+      route_type: returnDate ? 'return' : 'oneway',
+      cabin_type: 'economy',
+      adults: Number(adults), children: Number(children), infants: 0,
+      pagination: { page: 1, limit: 20 },
     });
     res.json(result);
   } catch (err) {
@@ -173,12 +213,18 @@ app.post('/api/travel/flights', async (req, res) => {
 // Cars search
 app.post('/api/travel/cars', async (req, res) => {
   try {
-    const { pickupLocation, pickupDate, returnDate, dropoffLocation } = req.body;
+    const { pickupLocation, pickupDate, returnDate } = req.body;
     if (!pickupLocation || !pickupDate || !returnDate) return res.status(400).json({ error: 'pickupLocation, pickupDate and returnDate are required' });
-    const result = await xeniReq('POST', '/cars/search', {
-      pickupLocation, dropoffLocation: dropoffLocation || pickupLocation,
-      pickupDate, returnDate,
-    });
+    const auto = await xeniReq('GET', `/cars/api/v2/autocomplete?key=${encodeURIComponent(pickupLocation)}`);
+    const locs = Array.isArray(auto) ? auto : (auto.data || auto.locations || []);
+    const loc = locs[0];
+    if (!loc) return res.json({ rentals: [], message: 'Location not found' });
+    const pickup = loc.coordinates ? `${loc.coordinates.lat},${loc.coordinates.lng}` : (loc.code || loc.iata_code || pickupLocation);
+    const result = await xeniReq('GET',
+      `/cars/api/v2/rentals?country=${loc.country_code || 'US'}&pickup_type=geo&return_type=geo` +
+      `&pickup_code=${encodeURIComponent(pickup)}&return_code=${encodeURIComponent(pickup)}` +
+      `&currency=USD&pickup_date=${encodeURIComponent(pickupDate)}&return_date=${encodeURIComponent(returnDate)}&driver_age=25&page=1&limit=20`
+    );
     res.json(result);
   } catch (err) {
     console.error('Cars error:', err.message);
@@ -186,14 +232,18 @@ app.post('/api/travel/cars', async (req, res) => {
   }
 });
 
-// Activities / tours search (UAE tourism + packages)
+// Activities search
 app.post('/api/travel/activities', async (req, res) => {
   try {
-    const { destination, date, category } = req.body;
+    const { destination, category } = req.body;
     if (!destination) return res.status(400).json({ error: 'destination is required' });
-    const result = await xeniReq('POST', '/activities/search', {
-      destination, ...(date ? { date } : {}), ...(category ? { category } : {}),
-    });
+    const auto = await xeniReq('GET', `/activities/api/v2/autocomplete?query=${encodeURIComponent(destination)}&limit=1`);
+    const places = Array.isArray(auto) ? auto : (auto.data || auto.results || []);
+    const destinationId = places[0] ? (places[0].destination_id || places[0].id || '') : '';
+    const body = { currency: 'USD', pagination: { page: 1, limit: 20 } };
+    if (destinationId) body.destination_id = destinationId;
+    if (category) body.category = category;
+    const result = await xeniReq('POST', '/activities/api/v2/search', body);
     res.json(result);
   } catch (err) {
     console.error('Activities error:', err.message);
@@ -201,31 +251,16 @@ app.post('/api/travel/activities', async (req, res) => {
   }
 });
 
-// Packages search
+// Packages (vacation resorts) search
 app.post('/api/travel/packages', async (req, res) => {
   try {
-    const { origin, destination, departureDate, adults = 2 } = req.body;
+    const { destination, departureDate } = req.body;
     if (!destination || !departureDate) return res.status(400).json({ error: 'destination and departureDate are required' });
-    const result = await xeniReq('POST', '/packages/search', {
-      origin, destination, departureDate, passengers: { adults: Number(adults) },
-    });
+    const result = await xeniReq('GET', `/resorts/api/v2/search?key=${encodeURIComponent(destination)}&currency=USD`);
     res.json(result);
   } catch (err) {
     console.error('Packages error:', err.message);
     res.status(err.status || 500).json({ error: err.message, body: err.body });
-  }
-});
-
-// Hotel detail / rooms
-app.get('/api/travel/hotels/:hotelId', async (req, res) => {
-  try {
-    const { checkIn, checkOut, adults = 2 } = req.query;
-    const result = await xeniReq('GET',
-      `/hotels/${req.params.hotelId}?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}`
-    );
-    res.json(result);
-  } catch (err) {
-    res.status(err.status || 500).json({ error: err.message });
   }
 });
 

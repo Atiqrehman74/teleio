@@ -8,11 +8,22 @@ module.exports = async (req, res) => {
     const { destination, date, category } = req.body;
     if (!destination)
       return res.status(400).json({ error: 'destination is required' });
-    const result = await xeniReq('POST', '/activities/search', {
-      destination,
-      ...(date ? { date } : {}),
-      ...(category ? { category } : {}),
-    });
+
+    // Autocomplete to get destination_id
+    const auto = await xeniReq('GET',
+      `/activities/api/v2/autocomplete?query=${encodeURIComponent(destination)}&limit=1`
+    );
+    const places = Array.isArray(auto) ? auto : (auto.data || auto.results || []);
+    const destinationId = places[0] ? (places[0].destination_id || places[0].id || '') : '';
+
+    const body = {
+      currency: 'USD',
+      pagination: { page: 1, limit: 20 },
+    };
+    if (destinationId) body.destination_id = destinationId;
+    if (category) body.category = category;
+
+    const result = await xeniReq('POST', '/activities/api/v2/search', body);
     res.json(result);
   } catch (err) {
     console.error('Activities:', err.message);

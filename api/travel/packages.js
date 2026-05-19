@@ -5,13 +5,14 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   try {
-    const { origin, destination, departureDate, adults = 2 } = req.body;
+    const { destination, departureDate, adults = 2 } = req.body;
     if (!destination || !departureDate)
       return res.status(400).json({ error: 'destination and departureDate are required' });
-    const result = await xeniReq('POST', '/packages/search', {
-      origin, destination, departureDate,
-      passengers: { adults: Number(adults) },
-    });
+
+    // Search resorts (vacation packages) by destination
+    const result = await xeniReq('GET',
+      `/resorts/api/v2/search?key=${encodeURIComponent(destination)}&currency=USD`
+    );
     res.json(result);
   } catch (err) {
     console.error('Packages:', err.message);
