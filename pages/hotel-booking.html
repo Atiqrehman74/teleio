@@ -453,6 +453,8 @@
 
   /* ── Room Availability ── */
   var selectedRate = total; // default to search rate until rooms load
+  var selectedPricingToken = '';
+  var selectedCurrency = currency;
 
   function loadAvailability() {
     if (!propId || !checkin || !checkout) {
@@ -495,13 +497,17 @@
       var allImgs = (imgs.large || imgs.small || imgs.thumbnail || []).slice(0, 4);
       var desc = (room.descriptions || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200);
 
+      var pricingToken = (rate.beds && rate.beds[0] && rate.beds[0].pricing_token) || '';
+      var bedName      = (rate.beds && rate.beds[0] && rate.beds[0].name) || '';
+      var boardBasis   = (rate.board_basis && rate.board_basis[0]) || '';
+
       var card = document.createElement('div');
       card.className = 'room-card';
       card.innerHTML =
         (allImgs.length ? '<div class="room-imgs">' + allImgs.map(function(u){ return '<div class="room-img"><img src="'+u+'" loading="lazy"></div>'; }).join('') + '</div>' : '') +
         '<div class="room-body">' +
           '<div class="room-name">' + (room.name || 'Room') + '</div>' +
-          '<div class="room-sleeps">👤 Sleeps ' + (room.sleeps || adults) + '</div>' +
+          '<div class="room-sleeps">' + (bedName ? '🛏 ' + bedName : '👤 Sleeps ' + (room.sleeps || adults)) + (boardBasis ? ' · ' + boardBasis : '') + '</div>' +
           (desc ? '<div class="room-desc">' + desc + '…</div>' : '') +
           (room.amenities && room.amenities.length
             ? '<div class="room-amenities">' + room.amenities.slice(0, 8).map(function(a){ return '<span class="room-amenity">'+a+'</span>'; }).join('') + '</div>'
@@ -513,7 +519,7 @@
               (rate.tax_and_fees ? '<div class="room-rate-tax">Incl. taxes & fees</div>' : '') +
               (rate.refundable ? '<div class="room-rate-refund">✓ Free cancellation</div>' : '') +
             '</div>' +
-            '<button class="room-select-btn" data-rate="' + totalRate + '" data-cur="' + baseCur + '" data-name="' + (room.name||'Room') + '">Select Room</button>' +
+            '<button class="room-select-btn" data-rate="' + totalRate + '" data-cur="' + baseCur + '" data-name="' + (room.name||'Room') + '" data-token="' + pricingToken + '">Select Room</button>' +
           '</div>' +
         '</div>';
 
@@ -526,9 +532,10 @@
         this.textContent = '✓ Selected';
         this.classList.add('selected-btn');
         // Update summary
-        selectedRate = parseFloat(this.dataset.rate);
-        var selCur   = this.dataset.cur;
-        var selName  = this.dataset.name;
+        selectedRate         = parseFloat(this.dataset.rate);
+        selectedPricingToken = this.dataset.token || '';
+        selectedCurrency     = this.dataset.cur;
+        var selCur           = selectedCurrency;
         document.getElementById('sum-rate').textContent  = selCur + ' ' + Number(selectedRate/nights).toLocaleString(undefined,{maximumFractionDigits:2}) + ' / night';
         document.getElementById('sum-total').textContent = selCur + ' ' + Number(selectedRate).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
         document.getElementById('pay-btn-text').textContent = 'Pay Now — ' + selCur + ' ' + Number(selectedRate).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -541,7 +548,9 @@
         card.classList.add('selected');
         card.querySelector('.room-select-btn').textContent = '✓ Selected';
         card.querySelector('.room-select-btn').classList.add('selected-btn');
-        selectedRate = totalRate;
+        selectedRate         = totalRate;
+        selectedPricingToken = pricingToken;
+        selectedCurrency     = baseCur;
         document.getElementById('sum-rate').textContent  = baseCur + ' ' + Number(totalRate/nights).toLocaleString(undefined,{maximumFractionDigits:2}) + ' / night';
         document.getElementById('sum-total').textContent = baseCur + ' ' + Number(totalRate).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
         document.getElementById('pay-btn-text').textContent = 'Pay Now — ' + baseCur + ' ' + Number(totalRate).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -593,10 +602,31 @@
     document.getElementById('card-errors').textContent = '';
 
     try {
+      // Verify price with Xeni before charging
+      var verifiedRate = selectedRate;
+      var verifiedCur  = selectedCurrency;
+      if (selectedPricingToken) {
+        try {
+          var priceRes = await fetch(
+            '/api/travel/hotel-price?currency=' + encodeURIComponent(verifiedCur) +
+            '&availability_token=' + encodeURIComponent(selectedPricingToken)
+          );
+          var priceData = await priceRes.json();
+          var confirmedRate = priceData.data && (priceData.data.total_rate || priceData.data.base_rate);
+          if (confirmedRate && confirmedRate > 0) {
+            verifiedRate = confirmedRate;
+            verifiedCur  = (priceData.data && priceData.data.currency) || verifiedCur;
+            // Update UI to reflect confirmed price
+            document.getElementById('sum-total').textContent = verifiedCur + ' ' + Number(verifiedRate).toLocaleString(undefined, {minimumFractionDigits:2,maximumFractionDigits:2});
+            document.getElementById('pay-btn-text').textContent = 'Pay Now — ' + verifiedCur + ' ' + Number(verifiedRate).toLocaleString(undefined, {minimumFractionDigits:2,maximumFractionDigits:2});
+          }
+        } catch (_) { /* use selectedRate if price check fails */ }
+      }
+
       var description = propName + ' — ' + nights + ' night' + (nights > 1 ? 's' : '') + ' (' + checkin + ' → ' + checkout + ')';
       var piRes = await fetch('/create-payment-intent', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: selectedRate, currency: currency.toLowerCase(), description: description })
+        body: JSON.stringify({ amount: verifiedRate, currency: verifiedCur.toLowerCase(), description: description })
       });
       var piData = await piRes.json();
       if (piData.error) throw new Error(piData.error);
