@@ -942,8 +942,9 @@ function renderCars(data) {
 }
 
 function renderActivities(data) {
-  var keys = ['activities','results','items','tours','experiences','packages','products','listings'];
+  var keys = ['products','activities','results','items','tours','experiences','packages','listings'];
   var acts = [];
+  var FALLBACK = 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=400&q=70&fit=crop';
   if (Array.isArray(data)) { acts = data; }
   else {
     for (var _k = 0; _k < keys.length; _k++) {
@@ -962,19 +963,43 @@ function renderActivities(data) {
     return;
   }
   var html = '<h3 style="font-size:1.05rem;font-weight:700;margin-bottom:16px;padding-top:8px">' + acts.length + ' Activities Found</h3>' +
-    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px">';
-  acts.slice(0, 9).forEach(function(a) {
-    var img  = a.image || a.photo || a.imageUrl || 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=400&q=70&fit=crop';
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">';
+  acts.slice(0, 12).forEach(function(a) {
+    var imgRaw = a.image_url || a.imageUrl || a.img_url
+              || (a.image && typeof a.image === 'string' && a.image)
+              || (a.image && (a.image.url || a.image.large || a.image.medium))
+              || (Array.isArray(a.images) && a.images[0] && (typeof a.images[0]==='string' ? a.images[0] : a.images[0].url))
+              || a.cover_image || a.photo || a.thumbnail;
+    var img  = (typeof imgRaw === 'string' && imgRaw)
+              ? imgRaw.replace(/attractions-splice-spp-\d+x\d+/, 'attractions-splice-spp-720x480')
+              : FALLBACK;
     var name = a.name || a.title || 'Activity';
-    var loc  = a.location || a.city || '';
-    html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow 0.2s" onmouseover="this.style.boxShadow=\'0 8px 24px rgba(0,0,0,0.1)\'" onmouseout="this.style.boxShadow=\'none\'">' +
-      '<div style="height:150px;overflow:hidden"><img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover"></div>' +
+    var loc  = a.location || a.city || a.destination || '';
+    var rat  = a.rating || 0;
+    var price = (a.pricing && (parseFloat(a.pricing.from_price) || parseFloat(a.pricing.total)))
+              || (a.price && (a.price.amount || a.price.from)) || a.amount || 0;
+    var cur  = (a.pricing && a.pricing.currency) || (a.price && a.price.currency) || 'USD';
+    var bookUrl = 'activity-booking.html?id=' + encodeURIComponent(a.id || '') +
+      '&name=' + encodeURIComponent(name) +
+      '&price=' + (price || 0) +
+      '&currency=' + encodeURIComponent(cur) +
+      '&img=' + encodeURIComponent(img !== FALLBACK ? img : '') +
+      '&rating=' + (rat || 0);
+    html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow 0.2s,transform 0.2s" onmouseover="this.style.boxShadow=\'0 8px 24px rgba(0,0,0,0.1)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.boxShadow=\'none\';this.style.transform=\'none\'">' +
+      '<div style="height:160px;overflow:hidden;position:relative"><img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'' + FALLBACK + '\'">' +
+      (rat > 0 ? '<div style="position:absolute;top:8px;right:8px;background:#F59E0B;color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:100px">★ ' + Number(rat).toFixed(1) + '</div>' : '') +
+      '</div>' +
       '<div style="padding:14px">' +
-        '<div style="font-weight:700;font-size:0.88rem;margin-bottom:3px">' + name + '</div>' +
-        '<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:10px">📍 ' + loc + '</div>' +
-        '<div style="display:flex;align-items:center;justify-content:space-between">' +
-          '<div>' + priceTag(a) + '</div>' +
-          '<a href="#" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:34px;font-size:0.78rem;border-radius:8px">Book</a>' +
+        '<div style="font-weight:700;font-size:0.88rem;margin-bottom:4px;line-height:1.35">' + name + '</div>' +
+        (loc ? '<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:10px">📍 ' + loc + '</div>' : '<div style="margin-bottom:10px"></div>') +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
+          '<div style="line-height:1">' +
+            '<div style="font-size:9px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em">from</div>' +
+            (price > 0
+              ? '<div style="font-size:16px;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</div>'
+              : '<div style="font-size:12px;color:var(--text-muted)">Contact for price</div>') +
+          '</div>' +
+          '<a href="' + bookUrl + '" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:34px;font-size:0.78rem;border-radius:8px;white-space:nowrap">Book Now</a>' +
         '</div>' +
       '</div></div>';
   });

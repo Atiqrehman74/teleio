@@ -1266,12 +1266,19 @@ function switchHeroTab(tab) {
                 || a.amount || a.cost || 0;
       var cur  = (a.pricing && a.pricing.currency) || (a.price && a.price.currency) || 'USD';
 
-      var card = document.createElement('a');
-      card.href = 'pages/travel.html#activities';
+      var bookUrl = 'pages/activity-booking.html?id=' + encodeURIComponent(a.id || '') +
+        '&name=' + encodeURIComponent(name) +
+        '&price=' + (price || 0) +
+        '&currency=' + encodeURIComponent(cur) +
+        '&img=' + encodeURIComponent(img !== FALLBACK_IMG ? img : '') +
+        '&cat=' + encodeURIComponent(cat) +
+        '&rating=' + (rat || 0);
+
+      var card = document.createElement('div');
       card.className = 'hp-act-card';
       card.innerHTML =
         '<div class="hp-act-img">' +
-          '<img src="' + (typeof img === 'string' ? img : FALLBACK_IMG) + '" alt="' + name + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'">' +
+          '<img src="' + img + '" alt="' + name + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'">' +
           (cat ? '<div class="hp-act-cat">' + cat + '</div>' : '') +
           (rat > 0 ? '<div class="hp-act-rating">★ ' + Number(rat).toFixed(1) + '</div>' : '') +
         '</div>' +
@@ -1288,7 +1295,7 @@ function switchHeroTab(tab) {
                 ? '<div class="hp-act-amount">' + cur + ' ' + Number(price).toLocaleString(undefined, {maximumFractionDigits:0}) + '</div><div class="hp-act-per">per person</div>'
                 : '<div style="font-size:13px;color:var(--text-muted);font-weight:500">Contact for price</div>') +
             '</div>' +
-            '<a href="pages/travel.html#activities" class="hp-act-btn">Book Now</a>' +
+            '<a href="' + bookUrl + '" class="hp-act-btn">Book Now</a>' +
           '</div>' +
         '</div>';
       grid.appendChild(card);

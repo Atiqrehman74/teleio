@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Book Activity — Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="../js/nav.js"></script>
+  <style>
+    body { background: #F1F5F9; font-family: 'Inter', sans-serif; }
+    .bk-wrapper {
+      max-width: 1020px; margin: 100px auto 60px; padding: 0 20px;
+      display: grid; grid-template-columns: 380px 1fr; gap: 28px; align-items: start;
+    }
+    @media(max-width: 820px) { .bk-wrapper { grid-template-columns: 1fr; margin-top: 80px; } }
+
+    /* ── LEFT: Summary ── */
+    .bk-summary { position: sticky; top: 86px; }
+    .bk-img {
+      width: 100%; height: 220px; border-radius: 16px; overflow: hidden;
+      position: relative; background: #1A3C6E; margin-bottom: 18px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    }
+    .bk-img img { width: 100%; height: 100%; object-fit: cover; }
+    .bk-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%); }
+    .bk-img-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+      color: #fff; font-size: 10px; font-weight: 700;
+      padding: 4px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .bk-img-rating {
+      position: absolute; top: 12px; right: 12px;
+      background: #F59E0B; color: #fff; font-size: 11px; font-weight: 800;
+      padding: 4px 10px; border-radius: 100px;
+    }
+    .bk-img-name {
+      position: absolute; bottom: 14px; left: 14px; right: 14px;
+      font-size: 16px; font-weight: 800; color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8); line-height: 1.3;
+    }
+
+    .bk-card {
+      background: #fff; border-radius: 16px; padding: 22px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin-bottom: 14px;
+    }
+    .bk-card-title {
+      font-size: 11px; font-weight: 700; color: #64748B;
+      text-transform: uppercase; letter-spacing: .07em; margin-bottom: 14px;
+    }
+    .bk-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 9px 0; border-bottom: 1px solid #F1F5F9; font-size: 13px;
+    }
+    .bk-row:last-child { border-bottom: none; }
+    .bk-row-label { color: #64748B; }
+    .bk-row-val { font-weight: 600; color: #1E293B; }
+    .bk-total {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 14px; margin-top: 4px; border-top: 2px dashed #E2E8F0;
+      font-size: 17px; font-weight: 800; color: #1E293B;
+    }
+    .bk-total-amt { color: var(--primary); }
+
+    .bk-trust { display: flex; flex-direction: column; gap: 8px; }
+    .trust-row { display: flex; align-items: center; gap: 9px; font-size: 12px; color: #475569; }
+    .trust-dot { width: 18px; height: 18px; min-width: 18px; background: #DCFCE7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+
+    /* ── RIGHT: Form ── */
+    .bk-form-col {
+      background: #fff; border-radius: 16px; padding: 32px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    }
+    .bk-form-title { font-size: 22px; font-weight: 800; color: #1E293B; margin-bottom: 4px; }
+    .bk-form-sub { font-size: 13px; color: #64748B; margin-bottom: 28px; }
+
+    .fgroup { margin-bottom: 16px; }
+    .fgroup label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+    .fgroup input, .fgroup select {
+      width: 100%; padding: 12px 14px; border: 1.5px solid #E2E8F0;
+      border-radius: 10px; font-size: 15px; color: #1E293B; background: #fff;
+      transition: border-color .2s, box-shadow .2s; box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    .fgroup input:focus, .fgroup select:focus {
+      outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+    }
+    .fgroup input.err { border-color: #EF4444; }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media(max-width: 480px) { .frow { grid-template-columns: 1fr; } }
+
+    .bk-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 22px 0; font-size: 12px; color: #94A3B8;
+    }
+    .bk-divider::before, .bk-divider::after { content: ''; flex: 1; height: 1px; background: #E2E8F0; }
+
+    .stripe-card-wrap {
+      padding: 12px 14px; border: 1.5px solid #E2E8F0;
+      border-radius: 10px; background: #fff; transition: border-color .2s, box-shadow .2s;
+    }
+    .stripe-card-wrap.focused { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    .stripe-card-wrap.err { border-color: #EF4444; }
+    #card-errors { font-size: 12px; color: #EF4444; margin-top: 6px; min-height: 16px; }
+
+    .pay-btn {
+      width: 100%; padding: 16px;
+      background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+      color: #fff; border: none; border-radius: 12px;
+      font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+    .pay-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(37,99,235,.35); }
+    .pay-btn:disabled { opacity: .65; cursor: not-allowed; transform: none; box-shadow: none; }
+    .pay-btn.loading .btn-spinner { display: block; }
+    .pay-btn.loading .btn-text { display: none; }
+    .btn-spinner {
+      width: 18px; height: 18px; display: none;
+      border: 2.5px solid rgba(255,255,255,.4); border-top-color: #fff;
+      border-radius: 50%; animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .stripe-badge {
+      display: flex; align-items: center; justify-content: center;
+      gap: 5px; font-size: 11px; color: #94A3B8; margin-top: 12px;
+    }
+    .success-box {
+      text-align: center; padding: 40px 20px; display: none;
+    }
+    .success-icon {
+      width: 72px; height: 72px; background: #DCFCE7; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin: 0 auto 18px;
+    }
+    .success-title { font-size: 24px; font-weight: 800; color: #1E293B; margin-bottom: 8px; }
+    .success-sub { font-size: 14px; color: #64748B; line-height: 1.6; }
+    .success-back {
+      display: inline-block; margin-top: 24px; padding: 12px 28px;
+      background: var(--primary); color: #fff; border-radius: 10px;
+      font-weight: 700; font-size: 14px; text-decoration: none;
+      transition: background .15s;
+    }
+    .success-back:hover { background: #1d4ed8; }
+  </style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="bk-wrapper">
+  <!-- Left: Activity Summary -->
+  <div class="bk-summary">
+    <div class="bk-img">
+      <img id="bk-act-img" src="" alt="Activity" onerror="this.style.display='none'">
+      <div class="bk-img-overlay"></div>
+      <div class="bk-img-badge" id="bk-act-cat">Activity</div>
+      <div class="bk-img-rating" id="bk-act-rating" style="display:none"></div>
+      <div class="bk-img-name" id="bk-act-name">Loading...</div>
+    </div>
+
+    <div class="bk-card">
+      <div class="bk-card-title">Booking Summary</div>
+      <div class="bk-row"><span class="bk-row-label">Price per person</span><span class="bk-row-val" id="bk-price-per">—</span></div>
+      <div class="bk-row"><span class="bk-row-label">Travelers</span><span class="bk-row-val" id="bk-travelers-display">1</span></div>
+      <div class="bk-row"><span class="bk-row-label">Processing fee</span><span class="bk-row-val">Included</span></div>
+      <div class="bk-total">
+        <span>Total</span>
+        <span class="bk-total-amt" id="bk-total-amt">—</span>
+      </div>
+    </div>
+
+    <div class="bk-card bk-trust">
+      <div class="trust-row"><div class="trust-dot">✓</div> Free cancellation on most activities</div>
+      <div class="trust-row"><div class="trust-dot">✓</div> Instant confirmation</div>
+      <div class="trust-row"><div class="trust-dot">✓</div> Secure payment via Stripe</div>
+      <div class="trust-row"><div class="trust-dot">✓</div> 24/7 customer support</div>
+    </div>
+  </div>
+
+  <!-- Right: Payment Form -->
+  <div class="bk-form-col" id="form-col">
+    <div class="bk-form-title">Complete Your Booking</div>
+    <div class="bk-form-sub">Fill in your details and pay securely to confirm your spot.</div>
+
+    <form id="booking-form" novalidate>
+      <div class="frow">
+        <div class="fgroup">
+          <label>First Name *</label>
+          <input type="text" id="first-name" placeholder="John" required>
+        </div>
+        <div class="fgroup">
+          <label>Last Name *</label>
+          <input type="text" id="last-name" placeholder="Smith" required>
+        </div>
+      </div>
+      <div class="fgroup">
+        <label>Email Address *</label>
+        <input type="email" id="email" placeholder="john@example.com" required>
+      </div>
+      <div class="fgroup">
+        <label>Phone Number</label>
+        <input type="tel" id="phone" placeholder="+971 50 000 0000">
+      </div>
+      <div class="frow">
+        <div class="fgroup">
+          <label>Activity Date *</label>
+          <input type="date" id="act-date" required>
+        </div>
+        <div class="fgroup">
+          <label>Number of Travelers *</label>
+          <select id="travelers">
+            <option value="1">1 Traveler</option>
+            <option value="2">2 Travelers</option>
+            <option value="3">3 Travelers</option>
+            <option value="4">4 Travelers</option>
+            <option value="5">5 Travelers</option>
+            <option value="6">6 Travelers</option>
+            <option value="7">7 Travelers</option>
+            <option value="8">8 Travelers</option>
+          </select>
+        </div>
+      </div>
+      <div class="fgroup">
+        <label>Special Requests (optional)</label>
+        <input type="text" id="special-req" placeholder="Any dietary requirements or accessibility needs?">
+      </div>
+
+      <div class="bk-divider">Secure Payment</div>
+
+      <div class="fgroup">
+        <label>Card Details *</label>
+        <div class="stripe-card-wrap" id="card-element-wrap">
+          <div id="card-element"></div>
+        </div>
+        <div id="card-errors"></div>
+      </div>
+
+      <button type="submit" class="pay-btn" id="pay-btn">
+        <span class="btn-spinner"></span>
+        <span class="btn-text" id="pay-btn-text">Pay Now — Loading...</span>
+      </button>
+
+      <div class="stripe-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#94A3B8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        Secured by
+        <svg width="38" height="14" viewBox="0 0 60 25" fill="#94A3B8"><text y="18" font-size="16" font-family="Arial" font-weight="700">stripe</text></svg>
+      </div>
+    </form>
+
+    <!-- Success State -->
+    <div class="success-box" id="success-box">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Booking Confirmed!</div>
+      <div class="success-sub" id="success-msg">
+        Your activity has been booked successfully.<br>
+        A confirmation email will be sent to you shortly.
+      </div>
+      <a href="../index.html" class="success-back">Back to Home</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* ── Read URL params ── */
+  var p = new URLSearchParams(location.search);
+  var actId   = p.get('id')       || '';
+  var actName = p.get('name')     || 'Activity Booking';
+  var actPrice = parseFloat(p.get('price')) || 0;
+  var actCur  = (p.get('currency') || 'USD').toUpperCase();
+  var actImg  = p.get('img')      || '';
+  var actCat  = p.get('cat')      || 'Activity';
+  var actRat  = parseFloat(p.get('rating')) || 0;
+
+  /* ── Populate summary ── */
+  document.title = actName + ' — Teleio Tourism';
+  document.getElementById('bk-act-name').textContent = actName;
+  document.getElementById('bk-act-cat').textContent  = actCat;
+  if (actImg) document.getElementById('bk-act-img').src = actImg;
+  if (actRat > 0) {
+    var rEl = document.getElementById('bk-act-rating');
+    rEl.textContent = '★ ' + actRat.toFixed(1);
+    rEl.style.display = 'block';
+  }
+
+  /* ── Price calculation ── */
+  var travelersSelect = document.getElementById('travelers');
+  var pricePerEl      = document.getElementById('bk-price-per');
+  var totalEl         = document.getElementById('bk-total-amt');
+  var travDisplayEl   = document.getElementById('bk-travelers-display');
+  var btnText         = document.getElementById('pay-btn-text');
+
+  function formatMoney(n) {
+    return actCur + ' ' + Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function updateTotal() {
+    var t = parseInt(travelersSelect.value) || 1;
+    var total = actPrice * t;
+    pricePerEl.textContent   = actPrice > 0 ? formatMoney(actPrice) : 'Contact for price';
+    travDisplayEl.textContent = t + (t === 1 ? ' Traveler' : ' Travelers');
+    totalEl.textContent      = total > 0 ? formatMoney(total) : '—';
+    btnText.textContent      = total > 0 ? 'Pay Now — ' + formatMoney(total) : 'Confirm Booking';
+  }
+
+  travelersSelect.addEventListener('change', updateTotal);
+  updateTotal();
+
+  /* Set min date for activity date picker */
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('act-date').min = today;
+  document.getElementById('act-date').value = today;
+
+  /* ── Stripe setup ── */
+  var stripe, cardElement;
+
+  fetch('/config')
+    .then(function (r) { return r.json(); })
+    .then(function (cfg) {
+      stripe = Stripe(cfg.publishableKey);
+      var elements = stripe.elements({ fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap' }] });
+      cardElement = elements.create('card', {
+        style: {
+          base: { fontFamily: 'Inter, sans-serif', fontSize: '15px', color: '#1E293B', '::placeholder': { color: '#94A3B8' } },
+          invalid: { color: '#EF4444' }
+        }
+      });
+      cardElement.mount('#card-element');
+      cardElement.on('focus',  function () { document.getElementById('card-element-wrap').classList.add('focused'); });
+      cardElement.on('blur',   function () { document.getElementById('card-element-wrap').classList.remove('focused'); });
+      cardElement.on('change', function (e) {
+        var wrap = document.getElementById('card-element-wrap');
+        var errEl = document.getElementById('card-errors');
+        if (e.error) {
+          wrap.classList.add('err');
+          errEl.textContent = e.error.message;
+        } else {
+          wrap.classList.remove('err');
+          errEl.textContent = '';
+        }
+      });
+    })
+    .catch(function () {
+      document.getElementById('card-errors').textContent = 'Unable to load payment form. Please refresh.';
+    });
+
+  /* ── Form submit ── */
+  document.getElementById('booking-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    var firstName = document.getElementById('first-name').value.trim();
+    var lastName  = document.getElementById('last-name').value.trim();
+    var email     = document.getElementById('email').value.trim();
+    var actDate   = document.getElementById('act-date').value;
+    var travelers = parseInt(travelersSelect.value) || 1;
+
+    /* Basic validation */
+    var valid = true;
+    [['first-name', firstName], ['last-name', lastName], ['email', email], ['act-date', actDate]].forEach(function (pair) {
+      var el = document.getElementById(pair[0]);
+      if (!pair[1]) { el.classList.add('err'); valid = false; }
+      else el.classList.remove('err');
+    });
+    if (!valid) return;
+
+    if (!stripe || !cardElement) {
+      document.getElementById('card-errors').textContent = 'Payment form not ready. Please wait a moment and try again.';
+      return;
+    }
+
+    var btn = document.getElementById('pay-btn');
+    btn.disabled = true;
+    btn.classList.add('loading');
+    document.getElementById('card-errors').textContent = '';
+
+    try {
+      var total = actPrice * travelers;
+      var description = actName + ' x' + travelers + ' (' + actDate + ')';
+
+      /* 1. Create PaymentIntent on server */
+      var piRes = await fetch('/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: total, currency: actCur.toLowerCase(), description: description })
+      });
+      var piData = await piRes.json();
+      if (piData.error) throw new Error(piData.error);
+
+      /* 2. Confirm card payment in browser */
+      var result = await stripe.confirmCardPayment(piData.clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: firstName + ' ' + lastName,
+            email: email
+          }
+        }
+      });
+
+      if (result.error) {
+        document.getElementById('card-errors').textContent = result.error.message;
+        btn.disabled = false;
+        btn.classList.remove('loading');
+      } else if (result.paymentIntent.status === 'succeeded') {
+        /* Show success */
+        document.getElementById('booking-form').style.display = 'none';
+        var successBox = document.getElementById('success-box');
+        successBox.style.display = 'block';
+        document.getElementById('success-msg').innerHTML =
+          '<strong>' + actName + '</strong> has been booked for <strong>' + travelers + '</strong> traveler' + (travelers > 1 ? 's' : '') + ' on <strong>' + actDate + '</strong>.<br><br>' +
+          'A confirmation email will be sent to <strong>' + email + '</strong>.<br>' +
+          'Payment ref: <code style="font-size:11px;color:#64748B">' + result.paymentIntent.id + '</code>';
+      }
+    } catch (err) {
+      document.getElementById('card-errors').textContent = err.message || 'Payment failed. Please try again.';
+      btn.disabled = false;
+      btn.classList.remove('loading');
+    }
+  });
+})();
+</script>
+</body>
+</html>
