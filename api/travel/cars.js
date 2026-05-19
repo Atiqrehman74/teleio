@@ -18,11 +18,21 @@ module.exports = async (req, res) => {
 
     const dropoff = dropoffLocation || pickupLocation;
 
+    // Xeni cars autocomplete fails with "airport" as a suffix (returns wrong city).
+    // Strip the word "airport" and common variants before querying.
+    function cleanQuery(str) {
+      const cleaned = str
+        .replace(/\b(international|domestic|regional|municipal|executive)?\s*airport\b/gi, '')
+        .replace(/\b(intl|int'l)\b/gi, '')
+        .trim();
+      return cleaned || str;
+    }
+
     // Step 1: autocomplete for pickup
     const [autoPickup, autoDrop] = await Promise.all([
-      xeniReq('GET', `/cars/api/v2/autocomplete?key=${encodeURIComponent(pickupLocation)}`),
+      xeniReq('GET', `/cars/api/v2/autocomplete?key=${encodeURIComponent(cleanQuery(pickupLocation))}`),
       dropoffLocation && dropoffLocation !== pickupLocation
-        ? xeniReq('GET', `/cars/api/v2/autocomplete?key=${encodeURIComponent(dropoffLocation)}`)
+        ? xeniReq('GET', `/cars/api/v2/autocomplete?key=${encodeURIComponent(cleanQuery(dropoffLocation))}`)
         : Promise.resolve(null),
     ]);
 
