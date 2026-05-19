@@ -190,6 +190,9 @@ app.get('/api/travel/resort-price', require('./api/travel/resort-price'));
 // Resort booking / itinerary creation (after Stripe payment succeeds)
 app.post('/api/travel/resort-book', require('./api/travel/resort-book'));
 
+// Resort booking cancellation (RELEASE)
+app.post('/api/travel/resort-cancel', require('./api/travel/resort-cancel'));
+
 // Hotel content/discovery (no dates required — browse by location)
 app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
 

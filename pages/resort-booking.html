@@ -280,7 +280,7 @@
           <div class="success-sub" id="success-msg"></div>
           <a href="../index.html" class="success-back">Back to Home</a>
           <div id="cancel-wrap" style="margin-top:16px;display:none">
-            <button id="cancel-btn" onclick="cancelBooking()" style="background:none;border:1.5px solid #EF4444;color:#EF4444;padding:10px 22px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">Cancel Booking</button>
+            <button id="cancel-btn" onclick="cancelResortBooking()" style="background:none;border:1.5px solid #EF4444;color:#EF4444;padding:10px 22px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif">Cancel Booking</button>
             <div id="cancel-msg" style="margin-top:10px;font-size:13px"></div>
           </div>
         </div>
@@ -902,7 +902,7 @@
             var bookData = await bookRes.json();
             // Response fields: itinerary_id, booking_id, id, reference, status
             var bd = bookData.data || bookData;
-            xeniBookingRef = bd.itinerary_id || bd.booking_id || bd.id || bd.reference || '';
+            xeniBookingRef = bd.reference_number || bd.itinerary_id || bd.booking_id || bd.id || bd.reference || '';
             bookingStatus  = bd.status || bd.booking_status || (bookData.status === 'Success' ? 'CONFIRMED' : '');
           } catch (_) { /* non-fatal — Stripe already charged */ }
         }
@@ -914,6 +914,10 @@
 
         document.getElementById('booking-form').style.display = 'none';
         document.getElementById('success-box').style.display = 'block';
+        if (xeniBookingRef && bookingStatus !== 'RELEASED') {
+          document.getElementById('cancel-wrap').style.display = 'block';
+          document.getElementById('cancel-btn').dataset.ref = xeniBookingRef;
+        }
         document.getElementById('success-msg').innerHTML =
           '<strong>' + propName + '</strong> booked for <strong>' + adults + ' guest' + (adults > 1 ? 's' : '') + '</strong>.<br>' +
           'Check-in: <strong>' + fmt(selectedSlotCheckin) + '</strong> · Check-out: <strong>' + fmt(selectedSlotCheckout) + '</strong><br><br>' +
@@ -927,12 +931,12 @@
     }
   });
 
-  /* ── Cancel Booking ── */
-  window.cancelBooking = async function () {
+  /* ── Cancel Resort Booking ── */
+  window.cancelResortBooking = async function () {
     var btn = document.getElementById('cancel-btn');
     var msg = document.getElementById('cancel-msg');
-    var bid = btn.dataset.bookingId;
-    if (!bid) return;
+    var ref = btn.dataset.ref;
+    if (!ref) return;
     if (!confirm('Are you sure you want to cancel this booking? This cannot be undone.')) return;
 
     btn.disabled = true;
@@ -940,9 +944,9 @@
     msg.textContent = '';
 
     try {
-      var r = await fetch('/api/travel/hotel-cancel', {
+      var r = await fetch('/api/travel/resort-cancel', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ booking_id: bid })
+        body: JSON.stringify({ reference_number: ref })
       });
       var d = await r.json();
       if (!r.ok || d.error) throw new Error(d.error || 'Cancellation failed');
@@ -952,7 +956,7 @@
       document.querySelector('.success-icon').style.background = '#FEE2E2';
       document.querySelector('.success-title').textContent = 'Booking Cancelled';
       msg.style.color = '#16A34A';
-      msg.textContent = 'Your booking has been cancelled successfully.';
+      msg.textContent = 'Your booking has been released successfully.';
     } catch (err) {
       btn.disabled = false;
       btn.textContent = 'Cancel Booking';
