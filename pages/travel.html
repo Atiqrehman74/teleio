@@ -255,21 +255,26 @@ function priceTag(item) {
 }
 
 function renderHotels(data) {
-  var hotels = data.hotels || data.results || data.items || data.data || [];
+  var d = (data.data && data.data.hotels) ? data.data : data;
+  var hotels = d.hotels || data.hotels || data.results || [];
+  var total = d.total || hotels.length;
   if (!hotels.length) { resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No hotels found. Try a different destination or dates.</p>'; return; }
-  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + hotels.length + ' Hotel' + (hotels.length > 1 ? 's' : '') + ' Found</h3><div class="grid-3">';
+  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + total + ' Hotel' + (total > 1 ? 's' : '') + ' Found</h3><div class="grid-3">';
   hotels.slice(0, 9).forEach(function(h) {
-    var img  = h.image || h.thumbnail || h.photo || h.imageUrl || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop';
-    var name = h.name || h.hotelName || 'Hotel';
-    var loc  = h.city || h.location || h.address || '';
-    var stars = h.stars || h.rating || h.starRating || 0;
+    var img   = h.image || h.thumbnail || h.photo || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop';
+    var name  = h.name || h.hotelName || 'Hotel';
+    var addr  = (h.contact && h.contact.address) ? (h.contact.address.city || h.contact.address.line_1 || '') : (h.city || '');
+    var stars = (h.ratings && h.ratings.star_rating) || h.stars || h.starRating || 0;
+    var price = (h.rate && (h.rate.recommended_selling_price || h.rate.total_rate)) || h.price || 0;
+    var cur   = (h.rate && h.rate.currency) || 'USD';
     var starsHtml = stars ? '<span style="color:#F59E0B;font-size:0.85rem">' + '★'.repeat(Math.min(5, Math.round(stars))) + '</span> ' : '';
+    var priceHtml = price ? '<span style="font-size:1.1rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' : '';
     html += '<div class="deal-card">' +
       '<div class="deal-thumb" style="background:url(\'' + img + '\') center/cover;height:160px"></div>' +
       '<div class="deal-body">' +
         '<div class="deal-name">' + starsHtml + name + '</div>' +
-        '<div class="deal-from" style="font-size:0.8rem;color:var(--text-muted)">' + loc + '</div>' +
-        '<div class="deal-price" style="margin:8px 0">' + priceTag(h) + ' <span style="font-size:0.75rem;color:var(--text-muted)">/ night</span></div>' +
+        '<div class="deal-from" style="font-size:0.8rem;color:var(--text-muted)">' + addr + '</div>' +
+        '<div class="deal-price" style="margin:8px 0">' + priceHtml + ' <span style="font-size:0.75rem;color:var(--text-muted)">' + (price ? '/ stay' : '') + '</span></div>' +
         '<a href="#" class="btn btn-primary btn-full" style="margin-top:8px;font-size:0.83rem">Book Hotel</a>' +
       '</div></div>';
   });
@@ -278,25 +283,32 @@ function renderHotels(data) {
 }
 
 function renderFlights(data) {
-  var flights = data.flights || data.results || data.items || data.data || data.offers || [];
+  var d = (data.data && data.data.flights) ? data.data : data;
+  var flights = d.flights || data.flights || data.results || [];
+  var total = d.total || flights.length;
   if (!flights.length) { resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No flights found. Try different dates or airports.</p>'; return; }
-  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + flights.length + ' Flight' + (flights.length > 1 ? 's' : '') + ' Found</h3>';
+  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + total + ' Flight' + (total > 1 ? 's' : '') + ' Found</h3>';
   html += '<div style="display:flex;flex-direction:column;gap:12px">';
-  flights.slice(0, 8).forEach(function(f) {
-    var airline   = f.airline || f.carrier || f.airlineName || '✈ Airline';
-    var origin    = f.origin || f.departure || f.from || '—';
-    var dest      = f.destination || f.arrival || f.to || '—';
-    var dep       = f.departureTime || f.departAt || '';
-    var arr       = f.arrivalTime || f.arriveAt || '';
-    var duration  = f.duration || f.flightDuration || '';
+  flights.slice(0, 10).forEach(function(f) {
+    var seg      = (f.segments && f.segments[0]) || f;
+    var airline  = seg.airline_name || seg.airline || f.carrier || '✈';
+    var origin   = seg.departure_airport || seg.origin || f.origin || '—';
+    var dest     = seg.arrival_airport   || seg.destination || f.destination || '—';
+    var dep      = seg.departure_time    || seg.departureTime || '';
+    var arr      = seg.arrival_time      || seg.arrivalTime   || '';
+    var duration = seg.duration          || f.duration        || '';
+    var stops    = seg.stops && seg.stops.length ? seg.stops.length + ' stop' + (seg.stops.length > 1 ? 's' : '') : 'Direct';
+    var price    = f.price || (f.rate && f.rate.total) || 0;
+    var cur      = f.currency || 'USD';
+    var priceHtml = price ? '<span style="font-size:1.05rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' : '';
     html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">' +
-      '<div style="font-weight:700;font-size:0.95rem;min-width:120px">' + airline + '</div>' +
+      '<div style="font-weight:700;font-size:0.9rem;min-width:110px">' + airline + '</div>' +
       '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:200px">' +
-        '<div style="text-align:center"><div style="font-weight:700">' + origin + '</div><div style="font-size:0.75rem;color:var(--text-muted)">' + dep + '</div></div>' +
-        '<div style="flex:1;text-align:center;color:var(--text-muted);font-size:0.75rem">──✈──<br>' + duration + '</div>' +
-        '<div style="text-align:center"><div style="font-weight:700">' + dest + '</div><div style="font-size:0.75rem;color:var(--text-muted)">' + arr + '</div></div>' +
+        '<div style="text-align:center"><div style="font-weight:700;font-size:1rem">' + origin + '</div><div style="font-size:0.75rem;color:var(--text-muted)">' + dep + '</div></div>' +
+        '<div style="flex:1;text-align:center;color:var(--text-muted);font-size:0.72rem">──✈──<br>' + duration + '<br>' + stops + '</div>' +
+        '<div style="text-align:center"><div style="font-weight:700;font-size:1rem">' + dest + '</div><div style="font-size:0.75rem;color:var(--text-muted)">' + arr + '</div></div>' +
       '</div>' +
-      '<div style="margin-left:auto;text-align:right">' + priceTag(f) + '<br><a href="#" class="btn btn-primary" style="margin-top:6px;padding:6px 16px;font-size:0.8rem">Select</a></div>' +
+      '<div style="margin-left:auto;text-align:right">' + priceHtml + '<br><a href="#" class="btn btn-primary" style="margin-top:6px;padding:6px 16px;font-size:0.8rem">Select</a></div>' +
     '</div>';
   });
   html += '</div>';
