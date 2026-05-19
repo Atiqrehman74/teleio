@@ -1,4 +1,4 @@
-const { xeniReq, cors } = require('../_xeni');
+const { xeniReq, xeniV1Req, cors } = require('../_xeni');
 
 module.exports = async (req, res) => {
   cors(res);
@@ -8,9 +8,9 @@ module.exports = async (req, res) => {
     const { destination, checkIn, checkOut, adults = 2, children = 0 } = req.body;
     if (!destination) return res.status(400).json({ error: 'destination is required' });
 
-    // Step 1: get lat/long via resort location lookup
-    const auto = await xeniReq('GET',
-      `/resorts/api/v2/search?key=${encodeURIComponent(destination)}&currency=USD`
+    // Step 1: get lat/long via resort location lookup (V1 API — uses x-api-key)
+    const auto = await xeniV1Req('GET',
+      `/resorts/api/v2/search?key=${encodeURIComponent(destination)}`
     );
     const places = Array.isArray(auto.data) ? auto.data : [];
     if (!places.length) return res.json({ hotels: [], total: 0 });
