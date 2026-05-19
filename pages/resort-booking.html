@@ -922,7 +922,44 @@
             var confirmData = await confirmRes.json();
             var cd = confirmData.data || confirmData;
             bookingStatus = cd.status || (confirmData.status === 'Success' ? 'CONFIRMED' : '');
-          } catch (_) { bookingStatus = 'CONFIRMED'; /* Stripe charged — assume confirmed */ }
+          } catch (_) { bookingStatus = 'CONFIRMED'; }
+        }
+
+        // Step 4: Retrieve full booking details for enriched success screen
+        var fareNote = '', checkinNote = '', roomNote = '', urgentMsgs = [], feeNotes = [];
+        if (xeniBookingRef) {
+          try {
+            var detRes  = await fetch('/api/travel/resort-booking?reference_number=' + encodeURIComponent(xeniBookingRef));
+            var detData = await detRes.json();
+            var bd = detData.data;
+            if (bd) {
+              if (bd.booking_status) bookingStatus = bd.booking_status;
+
+              // Fare breakdown
+              var fb = bd.fare_breakup;
+              if (fb && fb.total_price) {
+                fareNote = (fb.currency || verifiedCur) + ' ' + Number(fb.base_rate).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + ' base' +
+                  (fb.taxes_and_fees ? ' + ' + Number(fb.taxes_and_fees).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + ' taxes & fees' : '') +
+                  ' = <strong>' + (fb.currency || verifiedCur) + ' ' + Number(fb.total_price).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) + '</strong>';
+              }
+
+              // Check-in time
+              if (bd.checkin_time) checkinNote = 'Check-in from <strong>' + bd.checkin_time + '</strong>' + (bd.checkout_time ? ' · Check-out by <strong>' + bd.checkout_time + '</strong>' : '');
+
+              // Room info
+              var ri = bd.property_details && bd.property_details.room_info;
+              if (ri && ri.roomName) roomNote = ri.roomName + (ri.kitchenType ? ' · ' + ri.kitchenType : '') + (ri.maxOccupancy ? ' · Sleeps ' + ri.maxOccupancy : '');
+
+              // Resort / housekeeping fees
+              var ui = bd.property_details && bd.property_details.urgent_info;
+              if (ui) {
+                (ui.resort_fees || []).forEach(function(f) { if (f.resort_fee_info_msg) feeNotes.push(f.resort_fee_info_msg); });
+                (ui.housekeeping_fees || []).forEach(function(f) { if (f.housekeeping_info_msg) feeNotes.push(f.housekeeping_info_msg.replace(/^"|"$/g,'')); });
+                var gi = ui.general_urgent_info;
+                if (gi && Array.isArray(gi.message)) urgentMsgs = gi.message.slice(0, 4);
+              }
+            }
+          } catch (_) {}
         }
 
         var statusColor = bookingStatus === 'CONFIRMED' ? '#16A34A' : bookingStatus === 'RELEASED' ? '#DC2626' : '#64748B';
@@ -936,9 +973,26 @@
           document.getElementById('cancel-wrap').style.display = 'block';
           document.getElementById('cancel-btn').dataset.ref = xeniBookingRef;
         }
+
+        var extraHtml = '';
+        if (roomNote)    extraHtml += '<div style="margin-top:10px;font-size:12px;color:#475569">🛏 ' + roomNote + '</div>';
+        if (checkinNote) extraHtml += '<div style="margin-top:4px;font-size:12px;color:#475569">⏰ ' + checkinNote + '</div>';
+        if (fareNote)    extraHtml += '<div style="margin-top:8px;font-size:12px;color:#475569;background:#F8FAFC;border-radius:8px;padding:8px 10px">💰 ' + fareNote + '</div>';
+        if (feeNotes.length) extraHtml +=
+          '<div style="margin-top:8px;text-align:left;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 12px">' +
+            '<div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Resort Fees at Check-in</div>' +
+            feeNotes.map(function(f){ return '<div style="font-size:11px;color:#78350F;margin-top:3px">• ' + f + '</div>'; }).join('') +
+          '</div>';
+        if (urgentMsgs.length) extraHtml +=
+          '<div style="margin-top:8px;text-align:left;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:10px 12px">' +
+            '<div style="font-size:11px;font-weight:700;color:#1E40AF;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em">Important Information</div>' +
+            urgentMsgs.map(function(m){ return '<div style="font-size:11px;color:#1E3A8A;margin-top:3px">• ' + m + '</div>'; }).join('') +
+          '</div>';
+
         document.getElementById('success-msg').innerHTML =
           '<strong>' + propName + '</strong> booked for <strong>' + adults + ' guest' + (adults > 1 ? 's' : '') + '</strong>.<br>' +
-          'Check-in: <strong>' + fmt(selectedSlotCheckin) + '</strong> · Check-out: <strong>' + fmt(selectedSlotCheckout) + '</strong><br><br>' +
+          'Check-in: <strong>' + fmt(selectedSlotCheckin) + '</strong> · Check-out: <strong>' + fmt(selectedSlotCheckout) + '</strong>' +
+          extraHtml + '<br><br>' +
           'Confirmation sent to <strong>' + email + '</strong><br>' +
           'Payment ref: <code style="font-size:11px;color:#64748B">' + result.paymentIntent.id + '</code>' +
           (xeniBookingRef ? '<br>Booking ref: <code style="font-size:11px;color:#64748B">' + xeniBookingRef + '</code>' + statusBadge : '');
