@@ -808,6 +808,7 @@ function renderHotels(data) {
     '<h3 style="font-size:1.05rem;font-weight:700;margin:0">' + total.toLocaleString() + ' Hotels Found</h3>' +
     '<span style="font-size:0.78rem;color:var(--text-muted)">Prices per total stay · USD</span></div>';
   html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">';
+  var ciVal = val('ht-checkin'), coVal = val('ht-checkout'), adVal = val('ht-adults') || 2;
   hotels.slice(0, 9).forEach(function(h) {
     var img    = (h.image && (h.image.large || h.image.thumbnail)) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop';
     var name   = h.name || 'Hotel';
@@ -818,6 +819,15 @@ function renderHotels(data) {
     var price  = (h.rate && (h.rate.recommended_selling_price || h.rate.total_rate)) || 0;
     var saved  = (h.rate && h.rate.saved_price) || 0;
     var cur    = (h.rate && h.rate.currency) || 'USD';
+    var nights = (ciVal && coVal) ? Math.max(1, Math.round((new Date(coVal)-new Date(ciVal))/86400000)) : 1;
+    var ratePerNight = nights > 0 && price > 0 ? Math.round(price / nights) : price;
+    var bookUrl = 'hotel-booking.html?id=' + encodeURIComponent(h.property_id || '') +
+      '&name=' + encodeURIComponent(name) +
+      '&rate=' + ratePerNight +
+      '&currency=' + encodeURIComponent(cur) +
+      '&checkin=' + encodeURIComponent(ciVal) +
+      '&checkout=' + encodeURIComponent(coVal) +
+      '&adults=' + adVal;
     var starsHtml = stars > 0 ? '<span style="color:#F59E0B;font-size:11px;letter-spacing:1px">' + '★'.repeat(Math.min(5,Math.round(stars))) + '</span>' : '';
     var ratingBadge = rating > 0 ? '<span style="background:#EFF6FF;color:#2563EB;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:20px">' + Number(rating).toFixed(1) + ' ★</span>' : '';
     var saveBadge = saved > 0 ? '<span style="background:#DCFCE7;color:#16A34A;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:20px">Save ' + cur + ' ' + Math.round(saved) + '</span>' : '';
@@ -836,7 +846,7 @@ function renderHotels(data) {
           '<div><div style="font-size:0.65rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em">from</div>' +
           '<span style="font-size:1.15rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' +
           '<span style="font-size:0.68rem;color:var(--text-muted)"> / stay</span></div>' +
-          '<a href="#" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:36px;font-size:0.78rem;border-radius:8px">Book</a>' +
+          '<a href="' + bookUrl + '" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:36px;font-size:0.78rem;border-radius:8px">Book Now</a>' +
         '</div>' +
       '</div></div>';
   });

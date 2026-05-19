@@ -169,6 +169,9 @@ async function xeniReq(method, endpoint, body) {
   });
 }
 
+// Hotel property detail
+app.get('/api/travel/hotel-detail', require('./api/travel/hotel-detail'));
+
 // Hotels search (autocomplete → lat/long → properties with rates)
 app.post('/api/travel/hotels', async (req, res) => {
   try {
