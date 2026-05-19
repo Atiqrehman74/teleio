@@ -1051,46 +1051,92 @@ function renderPackages(data) {
 }
 
 function renderResorts(data) {
-  // Supports native resort response (data.data.properties[]) and
-  // Hotels-fallback response (data.data.hotels[])
+  // Native resort response: { status, data: [] } — flat array at data.data
+  // Hotels-fallback response: { data: { hotels: [], _resort_name } }
   var d = data.data || data;
-  var items = d.properties || d.hotels || data.resorts || data.results || data.items || [];
-  var resort_name = d._resort_name || data._resort_name || '';
+  var items = Array.isArray(d)
+    ? d                                             // native: data.data is the array
+    : (d.hotels || d.properties || data.resorts || data.results || data.items || []);
+  var resort_name = (data.data && data.data._resort_name) || data._resort_name || '';
+
   resultsBox.style.padding = '0 24px 24px';
   if (!items.length) {
     resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No resorts found. Try a different destination.</p>';
     return;
   }
   var header = resort_name
-    ? items.length + ' Propert' + (items.length > 1 ? 'ies' : 'y') + ' near <em>' + resort_name + '</em>'
+    ? items.length + ' Resort' + (items.length > 1 ? 's' : '') + ' near <em>' + resort_name + '</em>'
     : items.length + ' Resort' + (items.length > 1 ? 's' : '') + ' Found';
   var html = '<h3 style="font-size:1.05rem;font-weight:700;margin-bottom:16px;padding-top:8px">' + header + '</h3>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">';
   var ciVal = val('rs-checkin'), coVal = val('rs-checkout');
-  items.slice(0, 9).forEach(function(p) {
-    var img  = (p.image && (p.image.large || p.image.thumbnail)) || p.imageUrl || p.photo || 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=400&q=70&fit=crop';
-    var name = p.name || p.title || p.destination || 'Resort';
-    var loc  = (p.contact && p.contact.address && p.contact.address.city) || (p.location && p.location.city) || p.country || '';
-    var price = (p.rates && (p.rates.total_rate || p.rates.base_rate)) || (p.rate && p.rate.total_rate) || 0;
-    var cur  = (p.rates && p.rates.currency) || (p.rate && p.rate.currency) || 'USD';
-    var stars = (p.ratings && p.ratings.star_rating) || 0;
-    var bookUrl = 'hotel-booking.html?id=' + encodeURIComponent(p.property_id || '') +
+  items.slice(0, 12).forEach(function(p) {
+    // Native resort: image is a string; Hotels fallback: image is an object
+    var img = (typeof p.image === 'string' && p.image)
+      || (p.image && (p.image.large || p.image.thumbnail))
+      || p.imageUrl || p.photo
+      || 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=400&q=70&fit=crop';
+
+    var name  = p.name || p.title || 'Resort';
+    var city  = (p.contact && p.contact.address && (p.contact.address.city || p.contact.address.state))
+              || (p.location && p.location.city) || '';
+
+    // Native resort: top-level total_rate/currency; Hotels fallback: p.rates.*
+    var price = p.total_rate || p.base_rate
+              || (p.rates && (p.rates.total_rate || p.rates.base_rate))
+              || 0;
+    var cur   = p.currency || (p.rates && p.rates.currency) || 'USD';
+
+    // Native resort: ratings.users_review_rating; Hotels: ratings.user_rating
+    var userRating = (p.ratings && (p.ratings.users_review_rating || p.ratings.user_rating)) || 0;
+    var stars      = (p.ratings && p.ratings.star_rating) || 0;
+
+    // Availability window shown on card (native resort only)
+    var avail = (p.start_date && p.end_date)
+      ? new Date(p.start_date + 'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'}) +
+        ' – ' + new Date(p.end_date + 'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})
+      : '';
+
+    // Savings vs published_price
+    var saved = (p.published_price && p.total_rate && p.published_price > p.total_rate)
+      ? p.published_price - p.total_rate : 0;
+
+    var pid = p.property_id || p.id || '';
+    // Native resort IDs use resort-booking.html; hotels-fallback IDs (property_id) use hotel-booking.html
+    var isNativeResort = !p.property_id && !!p.id;
+    var bookBase = isNativeResort ? 'resort-booking.html' : 'hotel-booking.html';
+    var bookUrl = bookBase + '?id=' + encodeURIComponent(pid) +
       '&name=' + encodeURIComponent(name) +
       '&rate=' + (price || 0) +
       '&currency=' + encodeURIComponent(cur) +
-      '&checkin=' + encodeURIComponent(ciVal || '') +
-      '&checkout=' + encodeURIComponent(coVal || '') +
+      '&checkin=' + encodeURIComponent(ciVal || p.start_date || '') +
+      '&checkout=' + encodeURIComponent(coVal || p.end_date || '') +
       '&adults=' + (val('rs-adults') || 2);
-    var starsHtml = stars > 0 ? '<span style="color:#F59E0B;font-size:11px;letter-spacing:1px;margin-bottom:4px;display:block">' + '★'.repeat(Math.min(5,Math.round(stars))) + '</span>' : '';
+
+    var ratingBadge = userRating > 0
+      ? '<span style="background:#EFF6FF;color:#2563EB;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:4px">' + Number(userRating).toFixed(1) + ' ★</span>' : '';
+    var saveBadge = saved > 0
+      ? '<div style="position:absolute;top:10px;right:10px;background:#DCFCE7;color:#16A34A;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:20px">Save ' + cur + ' ' + Math.round(saved) + '</div>' : '';
+    var starsHtml = stars > 0
+      ? '<span style="color:#F59E0B;font-size:11px;letter-spacing:1px">' + '★'.repeat(Math.min(5,Math.round(stars))) + '</span>' : '';
+
     html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow 0.2s,transform 0.2s" onmouseover="this.style.boxShadow=\'0 8px 30px rgba(0,0,0,0.12)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.boxShadow=\'none\';this.style.transform=\'none\'">' +
-      '<div style="height:170px;overflow:hidden"><img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=400&q=70&fit=crop\'"></div>' +
+      '<div style="position:relative;height:170px;overflow:hidden">' +
+        '<img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=400&q=70&fit=crop\'">' +
+        saveBadge +
+      '</div>' +
       '<div style="padding:14px">' +
-        starsHtml +
-        '<div style="font-weight:700;font-size:0.9rem;margin-bottom:4px">' + name + '</div>' +
-        (loc ? '<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:10px">📍 ' + loc + '</div>' : '') +
-        '<div style="display:flex;align-items:center;justify-content:space-between">' +
-          '<div><div style="font-size:0.65rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em">from</div>' +
-          (price > 0 ? '<span style="font-size:1.1rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' : '<span style="font-size:0.85rem;color:var(--text-muted)">Add dates for pricing</span>') + '</div>' +
+        '<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px">' + (starsHtml || '') + ratingBadge + '</div>' +
+        '<div style="font-weight:700;font-size:0.9rem;margin-bottom:3px;line-height:1.3">' + name + '</div>' +
+        (city ? '<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:4px">📍 ' + city + '</div>' : '') +
+        (avail ? '<div style="font-size:0.68rem;color:#64748B;margin-bottom:8px">📅 ' + avail + '</div>' : '') +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">' +
+          '<div>' +
+            '<div style="font-size:0.65rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em">from</div>' +
+            (price > 0
+              ? '<span style="font-size:1.1rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span><span style="font-size:0.68rem;color:var(--text-muted)"> / stay</span>'
+              : '<span style="font-size:0.85rem;color:var(--text-muted)">Add dates for pricing</span>') +
+          '</div>' +
           '<a href="' + bookUrl + '" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:36px;font-size:0.78rem;border-radius:8px">' + (price > 0 ? 'Book Now' : 'View') + '</a>' +
         '</div>' +
       '</div></div>';
