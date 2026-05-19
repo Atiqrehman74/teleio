@@ -1219,12 +1219,10 @@ function switchHeroTab(tab) {
 
   function extractActs(data) {
     if (Array.isArray(data)) return data;
-    // Common top-level keys
-    var keys = ['activities','results','items','tours','experiences','packages','products','listings'];
+    var keys = ['products','activities','results','items','tours','experiences','packages','listings'];
     for (var i = 0; i < keys.length; i++) {
       if (data[keys[i]] && Array.isArray(data[keys[i]]) && data[keys[i]].length) return data[keys[i]];
     }
-    // Nested under data.*
     if (data.data) {
       if (Array.isArray(data.data)) return data.data;
       for (var j = 0; j < keys.length; j++) {
@@ -1248,23 +1246,25 @@ function switchHeroTab(tab) {
     }
     grid.innerHTML = '';
     acts.slice(0, 9).forEach(function(a) {
-      // Try images array first (Xeni common format), then object, then flat string fields
-      var imgRaw = (Array.isArray(a.images) && a.images[0] && (a.images[0].url || a.images[0].src || a.images[0].href || a.images[0]))
+      // Xeni returns image_url as 100x100 thumbnail — upsize to 720x480
+      var imgRaw = a.image_url || a.imageUrl || a.img_url
                || (a.image && typeof a.image === 'string' && a.image)
                || (a.image && (a.image.url || a.image.large || a.image.medium || a.image.thumbnail))
-               || (Array.isArray(a.gallery) && a.gallery[0] && (a.gallery[0].url || a.gallery[0]))
-               || (Array.isArray(a.media) && a.media[0] && (a.media[0].url || a.media[0].src || a.media[0]))
-               || a.cover_image || a.banner_image || a.hero_image || a.img_url || a.imageUrl || a.photo || a.thumbnail;
-      var img = (typeof imgRaw === 'string' && imgRaw) ? imgRaw : FALLBACK_IMG;
+               || (Array.isArray(a.images) && a.images[0] && (typeof a.images[0] === 'string' ? a.images[0] : (a.images[0].url || a.images[0].src)))
+               || a.cover_image || a.photo || a.thumbnail;
+      var img = (typeof imgRaw === 'string' && imgRaw)
+        ? imgRaw.replace(/attractions-splice-spp-\d+x\d+/, 'attractions-splice-spp-720x480')
+        : FALLBACK_IMG;
       var name = a.name || a.title || 'Activity';
       var cat  = a.category || a.type || a.sub_category || '';
       var loc  = a.location || a.city || a.destination || '';
       var dur  = a.duration || a.duration_text || '';
       var rat  = a.rating || (a.reviews && a.reviews.rating) || 0;
-      var price = (a.price && (a.price.amount || a.price.value || a.price.from))
+      var price = (a.pricing && (parseFloat(a.pricing.from_price) || parseFloat(a.pricing.total)))
+                || (a.price && (a.price.amount || a.price.value || a.price.from))
                 || (a.rate && (a.rate.amount || a.rate.value))
                 || a.amount || a.cost || 0;
-      var cur  = (a.price && a.price.currency) || (a.rate && a.rate.currency) || 'USD';
+      var cur  = (a.pricing && a.pricing.currency) || (a.price && a.price.currency) || 'USD';
 
       var card = document.createElement('a');
       card.href = 'pages/travel.html#activities';
