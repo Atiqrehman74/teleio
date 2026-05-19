@@ -806,7 +806,10 @@ function renderHotels(data) {
   }
   var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:8px">' +
     '<h3 style="font-size:1.05rem;font-weight:700;margin:0">' + total.toLocaleString() + ' Hotels Found</h3>' +
-    '<span style="font-size:0.78rem;color:var(--text-muted)">Prices per total stay</span></div>';
+    (hotels.some(function(h){ return h.rates && h.rates.total_rate > 0; })
+      ? '<span style="font-size:0.78rem;color:var(--text-muted)">Prices per total stay</span>'
+      : '<span style="font-size:0.78rem;color:var(--text-muted)">Add dates to see rates</span>') +
+    '</div>';
   html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">';
   var ciVal = val('ht-checkin'), coVal = val('ht-checkout'), adVal = val('ht-adults') || 2;
   hotels.slice(0, 9).forEach(function(h) {
@@ -843,10 +846,12 @@ function renderHotels(data) {
         '</div>' +
         '<div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:12px">📍 ' + (city || 'Hotel') + (dist ? ' · ' + dist : '') + '</div>' +
         '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
-          '<div><div style="font-size:0.65rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em">from</div>' +
-          '<span style="font-size:1.15rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' +
-          '<span style="font-size:0.68rem;color:var(--text-muted)"> / stay</span></div>' +
-          '<a href="' + bookUrl + '" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:36px;font-size:0.78rem;border-radius:8px">Book Now</a>' +
+          (price > 0
+            ? '<div><div style="font-size:0.65rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em">from</div>' +
+              '<span style="font-size:1.15rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' +
+              '<span style="font-size:0.68rem;color:var(--text-muted)"> / stay</span></div>'
+            : '<div style="font-size:0.78rem;color:var(--text-muted)">Add dates for pricing</div>') +
+          '<a href="' + bookUrl + '" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:36px;font-size:0.78rem;border-radius:8px">' + (price > 0 ? 'Book Now' : 'View Hotel') + '</a>' +
         '</div>' +
       '</div></div>';
   });
@@ -1177,10 +1182,18 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
 
     } else if (tab === 'hotels') {
       var dest = val('ht-dest'), ci = val('ht-checkin'), co = val('ht-checkout');
-      if (!dest || !ci || !co) { showError('Please fill in destination, check-in and check-out dates.'); return; }
+      if (!dest) { showError('Please enter a destination.'); return; }
       showLoading('hotels');
-      var r = await fetch('/api/travel/hotels', { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ destination: dest, checkIn: ci, checkOut: co, rooms: val('ht-rooms') || 1, adults: val('ht-adults') || 2 }) });
+      var endpoint, payload;
+      if (ci && co) {
+        endpoint = '/api/travel/hotels';
+        payload = { destination: dest, checkIn: ci, checkOut: co, rooms: val('ht-rooms') || 1, adults: val('ht-adults') || 2 };
+      } else {
+        endpoint = '/api/travel/hotel-content';
+        payload = { destination: dest };
+      }
+      var r = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload) });
       var data = await r.json();
       if (!r.ok) throw new Error(data.error || 'Hotel search failed');
       renderHotels(data);

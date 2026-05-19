@@ -172,6 +172,9 @@ async function xeniReq(method, endpoint, body) {
 // Hotel property detail
 app.get('/api/travel/hotel-detail', require('./api/travel/hotel-detail'));
 
+// Hotel content/discovery (no dates required — browse by location)
+app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
+
 // Hotel room availability
 app.post('/api/travel/hotel-availability', require('./api/travel/hotel-availability'));
 
