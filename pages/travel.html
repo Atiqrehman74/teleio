@@ -360,6 +360,24 @@
       .t-fg.sm { flex: 1; min-width: 80px; }
       .t-search-btn { width: 100%; justify-content: center; }
     }
+  /* Airport autocomplete dropdown */
+  .ac-wrap { position: relative; }
+  .ac-dropdown {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 200;
+    background: #fff; border: 1.5px solid #E2E8F0; border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12); overflow: hidden; display: none;
+  }
+  .ac-dropdown.open { display: block; }
+  .ac-item {
+    display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+    cursor: pointer; transition: background .12s; border-bottom: 1px solid #F1F5F9;
+  }
+  .ac-item:last-child { border-bottom: none; }
+  .ac-item:hover, .ac-item.focused { background: #EFF6FF; }
+  .ac-code { font-size: 13px; font-weight: 800; color: var(--primary); min-width: 36px; }
+  .ac-info { flex: 1; }
+  .ac-airport { font-size: 12px; font-weight: 600; color: #1E293B; }
+  .ac-city { font-size: 11px; color: #64748B; }
   </style>
 </head>
 <body>
@@ -419,8 +437,8 @@
         <!-- Flights -->
         <div id="flights" class="t-panel active">
           <div class="t-form-row">
-            <div class="t-fg wide"><label>From</label><input id="fl-origin" type="text" placeholder="e.g. Dubai (DXB)"></div>
-            <div class="t-fg wide"><label>To</label><input id="fl-dest" type="text" placeholder="e.g. London (LHR)"></div>
+            <div class="t-fg wide"><label>From</label><div class="ac-wrap"><input id="fl-origin" type="text" placeholder="e.g. Dubai (DXB)" autocomplete="off"><div class="ac-dropdown" id="ac-origin"></div></div></div>
+            <div class="t-fg wide"><label>To</label><div class="ac-wrap"><input id="fl-dest" type="text" placeholder="e.g. London (LHR)" autocomplete="off"><div class="ac-dropdown" id="ac-dest"></div></div></div>
             <div class="t-fg"><label>Depart</label><input id="fl-depart" type="date"></div>
             <div class="t-fg"><label>Return</label><input id="fl-return" type="date"></div>
             <div class="t-fg sm"><label>Adults</label>
@@ -1309,6 +1327,74 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
     showError(err.message || 'Could not connect to travel API. Please try again.', detail);
   }
 });
+
+/* ── Flight airport autocomplete ── */
+(function () {
+  var timers = {};
+
+  function setupAirportAC(inputId, dropdownId) {
+    var input = document.getElementById(inputId);
+    var drop  = document.getElementById(dropdownId);
+    if (!input || !drop) return;
+
+    function closeAll() {
+      document.querySelectorAll('.ac-dropdown').forEach(function (d) { d.classList.remove('open'); d.innerHTML = ''; });
+    }
+
+    function selectItem(code, label) {
+      input.value = label;
+      closeAll();
+    }
+
+    function renderResults(items) {
+      drop.innerHTML = '';
+      if (!items.length) { drop.classList.remove('open'); return; }
+      items.slice(0, 6).forEach(function (a, i) {
+        var label = a.airport_code + ' — ' + a.airport_name + ', ' + a.city_name;
+        var div = document.createElement('div');
+        div.className = 'ac-item';
+        div.innerHTML =
+          '<span class="ac-code">' + a.airport_code + '</span>' +
+          '<span class="ac-info">' +
+            '<div class="ac-airport">' + a.airport_name + '</div>' +
+            '<div class="ac-city">' + a.city_name + ', ' + a.country_name + '</div>' +
+          '</span>';
+        div.addEventListener('mousedown', function (e) {
+          e.preventDefault(); // prevent blur firing before click
+          selectItem(a.airport_code, a.airport_code);
+        });
+        drop.appendChild(div);
+      });
+      drop.classList.add('open');
+    }
+
+    input.addEventListener('input', function () {
+      var q = input.value.trim();
+      clearTimeout(timers[inputId]);
+      if (q.length < 2) { drop.classList.remove('open'); drop.innerHTML = ''; return; }
+      timers[inputId] = setTimeout(function () {
+        fetch('/api/travel/flight-autocomplete?key=' + encodeURIComponent(q))
+          .then(function (r) { return r.json(); })
+          .then(function (res) { renderResults(Array.isArray(res.data) ? res.data : []); })
+          .catch(function () {});
+      }, 280);
+    });
+
+    input.addEventListener('blur', function () {
+      setTimeout(function () { drop.classList.remove('open'); drop.innerHTML = ''; }, 150);
+    });
+
+    // Close on outside click
+    document.addEventListener('click', function (e) {
+      if (!input.contains(e.target) && !drop.contains(e.target)) {
+        drop.classList.remove('open');
+      }
+    });
+  }
+
+  setupAirportAC('fl-origin', 'ac-origin');
+  setupAirportAC('fl-dest',   'ac-dest');
+})();
 </script>
 </body>
 </html>

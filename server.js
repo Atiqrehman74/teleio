@@ -199,6 +199,9 @@ app.post('/api/travel/resort-confirm', require('./api/travel/resort-confirm'));
 // Resort booking retrieval by reference_number
 app.get('/api/travel/resort-booking', require('./api/travel/resort-booking-get'));
 
+// Flight airport autocomplete
+app.get('/api/travel/flight-autocomplete', require('./api/travel/flight-autocomplete'));
+
 // Hotel content/discovery (no dates required — browse by location)
 app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
 
