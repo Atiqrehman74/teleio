@@ -138,9 +138,11 @@
           <div class="dropdown-col-title">Book Travel</div>
           <a href="${base}pages/travel.html" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#1a6ec7,#48cae4)">✈️</div><div class="di-text"><strong>Flights</strong><span>Search &amp; compare flights</span></div></a>
           <a href="${base}pages/travel.html#hotels" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#6d28d9,#8b5cf6)">🏨</div><div class="di-text"><strong>Hotels</strong><span>Find perfect stays</span></div></a>
+          <a href="${base}pages/travel.html#activities" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#d97706,#f59e0b)">🎯</div><div class="di-text"><strong>Activities</strong><span>Tours, adventures &amp; more</span></div></a>
           <a href="${base}pages/travel.html#cars" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#065f46,#10b981)">🚗</div><div class="di-text"><strong>Cars</strong><span>Rent vehicles worldwide</span></div></a>
-          <a href="${base}pages/travel.html#packages" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#c2410c,#f97316)">📦</div><div class="di-text"><strong>Packages</strong><span>All-inclusive deals</span></div></a>
-          <a href="${base}pages/travel.html#yachts" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">⛵</div><div class="di-text"><strong>Yachts</strong><span>Luxury yacht rentals</span></div></a>
+          <a href="${base}pages/travel.html#resorts" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#0369a1,#0ea5e9)">🏝️</div><div class="di-text"><strong>Resorts</strong><span>Resorts &amp; villa search</span></div></a>
+          <a href="${base}pages/travel.html#vacation-rentals" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#7c3aed,#a78bfa)">🏠</div><div class="di-text"><strong>Vacation Rentals</strong><span>Homes &amp; apartments</span></div></a>
+          <a href="${base}pages/travel.html#deals" class="dropdown-item"><div class="di-icon" style="background:linear-gradient(135deg,#b91c1c,#ef4444)">🏷️</div><div class="di-text"><strong>Deals</strong><span>Curated travel deals</span></div></a>
         </div>
       </div>
 
@@ -276,9 +278,11 @@
     <div class="mobile-nav-title">Book Travel</div>
     <a href="${base}pages/travel.html" class="mobile-nav-link">✈️ Flights</a>
     <a href="${base}pages/travel.html#hotels" class="mobile-nav-link">🏨 Hotels</a>
+    <a href="${base}pages/travel.html#activities" class="mobile-nav-link">🎯 Activities</a>
     <a href="${base}pages/travel.html#cars" class="mobile-nav-link">🚗 Cars</a>
-    <a href="${base}pages/travel.html#packages" class="mobile-nav-link">📦 Packages</a>
-    <a href="${base}pages/travel.html#yachts" class="mobile-nav-link">⛵ Yachts</a>
+    <a href="${base}pages/travel.html#resorts" class="mobile-nav-link">🏝️ Resorts</a>
+    <a href="${base}pages/travel.html#vacation-rentals" class="mobile-nav-link">🏠 Vacation Rentals</a>
+    <a href="${base}pages/travel.html#deals" class="mobile-nav-link">🏷️ Deals</a>
   </div>
   <div class="mobile-nav-section">
     <div class="mobile-nav-title">Visa Services</div>

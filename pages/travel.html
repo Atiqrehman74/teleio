@@ -721,6 +721,13 @@ document.querySelectorAll('.t-tab').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
 
+/* ── Activate tab from URL hash (e.g. travel.html#activities) ── */
+(function() {
+  var validTabs = ['flights','hotels','activities','cars','resorts','vacation-rentals','deals'];
+  var hash = (location.hash || '').replace('#','');
+  if (validTabs.indexOf(hash) !== -1) switchTab(hash);
+})();
+
 /* ── Quick search from destination tiles / deal buttons ── */
 function quickSearch(type, dest, dest2) {
   switchTab(type);
