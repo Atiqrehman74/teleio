@@ -120,8 +120,10 @@ function getXeniToken() {
           return reject(Object.assign(new Error(`Xeni auth ${res.statusCode}: ${data.slice(0,150)}`), { status: 401 }));
         try {
           const json = JSON.parse(data);
-          const token = json.token || json.access_token || json.signed_token || data.trim();
-          const expiresAt = (typeof json.expires_at === 'number' ? json.expires_at : null) || (now + 3600);
+          const token = json.signature || json.token || json.access_token || data.trim();
+          const expiresAt = (typeof json.expiry === 'number' ? json.expiry : null)
+                         || (typeof json.expires_at === 'number' ? json.expires_at : null)
+                         || (now + 3600);
           _xeniTokenCache = { token, expiresAt };
           resolve(token);
         } catch {

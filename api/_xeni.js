@@ -36,9 +36,9 @@ function getToken() {
         }
         try {
           const json = JSON.parse(data);
-          const token = json.token || json.access_token || json.signed_token || data.trim();
-          const expiresAt = (typeof json.expires_at === 'number' ? json.expires_at : null)
-                         || (typeof json.expiry     === 'number' ? json.expiry     : null)
+          const token = json.signature || json.token || json.access_token || data.trim();
+          const expiresAt = (typeof json.expiry     === 'number' ? json.expiry     : null)
+                         || (typeof json.expires_at === 'number' ? json.expires_at : null)
                          || (now + 3600);
           _tokenCache = { token, expiresAt };
           resolve(token);
