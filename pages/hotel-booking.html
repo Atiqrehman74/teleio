@@ -163,6 +163,12 @@
         <div class="bk-section-title">Policies</div>
         <div id="policies-list"></div>
       </div>
+
+      <!-- Accessibilities -->
+      <div class="bk-card" id="access-card" style="display:none">
+        <div class="bk-section-title">Accessibility</div>
+        <div class="bk-amenities" id="access-list"></div>
+      </div>
     </div>
 
     <!-- RIGHT: Booking -->
@@ -279,6 +285,7 @@
         renderHero(d);
         renderThumbs(d);
         renderAmenities(d);
+        renderAccessibilities(d);
         renderHighlights(d);
         renderPolicies(d);
       })
@@ -357,6 +364,18 @@
       el.appendChild(chip);
     });
     document.getElementById('amenities-card').style.display = 'block';
+  }
+
+  function renderAccessibilities(d) {
+    if (!d.accessibilities || !d.accessibilities.length) return;
+    var el = document.getElementById('access-list');
+    d.accessibilities.forEach(function (a) {
+      var chip = document.createElement('span');
+      chip.className = 'bk-amenity';
+      chip.textContent = a;
+      el.appendChild(chip);
+    });
+    document.getElementById('access-card').style.display = 'block';
   }
 
   function renderHighlights(d) {
