@@ -3,5 +3,10 @@
   "framework": null,
   "outputDirectory": ".",
   "installCommand": "npm install",
-  "buildCommand": ""
+  "buildCommand": "",
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 30
+    }
+  }
 }
