@@ -856,7 +856,39 @@
         } catch (_) { /* use slot rate if price verify fails */ }
       }
 
-      var description = propName + ' — ' + nights + ' night' + (nights > 1 ? 's' : '') + ' (' + checkin + ' → ' + checkout + ')';
+      // Step 1: HOLD — reserve the slot before charging card
+      var xeniBookingRef = '';
+      var phone = document.getElementById('phone').value.trim();
+      if (selectedSlotToken && propId) {
+        var holdRes = await fetch('/api/travel/resort-book', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            token:             selectedSlotToken,
+            recommendation_id: recId,
+            property_id:       propId,
+            checkin:           selectedSlotCheckin,
+            checkout:          selectedSlotCheckout,
+            total_rate:        verifiedRate,
+            currency:          verifiedCur,
+            email:             email,
+            phone:             phone,
+            first_name:        firstName,
+            last_name:         lastName,
+            address:           document.getElementById('address').value.trim(),
+            city:              document.getElementById('city').value.trim(),
+            state:             document.getElementById('state').value.trim(),
+            zip_code:          document.getElementById('zip-code').value.trim(),
+            country:           document.getElementById('country').value.trim(),
+          })
+        });
+        var holdData = await holdRes.json();
+        if (!holdRes.ok || holdData.error) throw new Error(holdData.error || 'Failed to hold reservation. Please try again.');
+        var hd = holdData.data || holdData;
+        xeniBookingRef = hd.reference_number || hd.itinerary_id || hd.booking_id || hd.id || hd.reference || '';
+      }
+
+      // Step 2: Stripe payment
+      var description = propName + ' — ' + nights + ' night' + (nights > 1 ? 's' : '') + ' (' + selectedSlotCheckin + ' → ' + selectedSlotCheckout + ')';
       var piRes = await fetch('/create-payment-intent', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: verifiedRate, currency: verifiedCur.toLowerCase(), description: description })
@@ -869,45 +901,31 @@
       });
 
       if (result.error) {
+        // Stripe failed — release the hold
+        if (xeniBookingRef) {
+          fetch('/api/travel/resort-cancel', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ reference_number: xeniBookingRef })
+          }).catch(function () {});
+        }
         document.getElementById('card-errors').textContent = result.error.message;
         btn.disabled = false; btn.classList.remove('loading');
       } else if (result.paymentIntent.status === 'succeeded') {
-        var xeniBookingRef = '';
-        var bookingStatus  = '';
-
-        if (selectedSlotToken && propId) {
+        // Step 3: CONFIRM the hold
+        var bookingStatus = '';
+        if (xeniBookingRef) {
           try {
-            var phone = document.getElementById('phone').value.trim();
-            var bookRes = await fetch('/api/travel/resort-book', {
+            var confirmRes  = await fetch('/api/travel/resort-confirm', {
               method: 'POST', headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                token:            selectedSlotToken,
-                recommendation_id: recId,
-                property_id:      propId,
-                checkin:          selectedSlotCheckin,
-                checkout:         selectedSlotCheckout,
-                total_rate:       verifiedRate,
-                currency:         verifiedCur,
-                email:            email,
-                phone:            phone,
-                first_name:       firstName,
-                last_name:        lastName,
-                address:          document.getElementById('address').value.trim(),
-                city:             document.getElementById('city').value.trim(),
-                state:            document.getElementById('state').value.trim(),
-                zip_code:         document.getElementById('zip-code').value.trim(),
-                country:          document.getElementById('country').value.trim(),
-              })
+              body: JSON.stringify({ reference_number: xeniBookingRef })
             });
-            var bookData = await bookRes.json();
-            // Response fields: itinerary_id, booking_id, id, reference, status
-            var bd = bookData.data || bookData;
-            xeniBookingRef = bd.reference_number || bd.itinerary_id || bd.booking_id || bd.id || bd.reference || '';
-            bookingStatus  = bd.status || bd.booking_status || (bookData.status === 'Success' ? 'CONFIRMED' : '');
-          } catch (_) { /* non-fatal — Stripe already charged */ }
+            var confirmData = await confirmRes.json();
+            var cd = confirmData.data || confirmData;
+            bookingStatus = cd.status || (confirmData.status === 'Success' ? 'CONFIRMED' : '');
+          } catch (_) { bookingStatus = 'CONFIRMED'; /* Stripe charged — assume confirmed */ }
         }
 
-        var statusColor = bookingStatus === 'CONFIRMED' ? '#16A34A' : bookingStatus === 'CANCELLED' ? '#DC2626' : '#64748B';
+        var statusColor = bookingStatus === 'CONFIRMED' ? '#16A34A' : bookingStatus === 'RELEASED' ? '#DC2626' : '#64748B';
         var statusBadge = bookingStatus
           ? '<span style="display:inline-block;margin-left:8px;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;background:' + (bookingStatus === 'CONFIRMED' ? '#DCFCE7' : '#FEE2E2') + ';color:' + statusColor + '">' + bookingStatus + '</span>'
           : '';

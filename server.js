@@ -193,6 +193,9 @@ app.post('/api/travel/resort-book', require('./api/travel/resort-book'));
 // Resort booking cancellation (RELEASE)
 app.post('/api/travel/resort-cancel', require('./api/travel/resort-cancel'));
 
+// Resort booking confirmation (CONFIRM after HOLD + Stripe payment)
+app.post('/api/travel/resort-confirm', require('./api/travel/resort-confirm'));
+
 // Hotel content/discovery (no dates required — browse by location)
 app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
 
