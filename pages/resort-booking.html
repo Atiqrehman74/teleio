@@ -155,7 +155,7 @@
       <!-- Amenities -->
       <div class="bk-card" id="amenities-card" style="display:none">
         <div class="bk-section-title">Amenities & Features</div>
-        <div class="bk-amenities" id="amenities-list"></div>
+        <div id="amenities-list"></div>
       </div>
 
       <!-- All-Inclusive Info -->
@@ -360,6 +360,11 @@
       .then(function (r) { return r.json(); })
       .then(function (res) { renderAirports((res.data && res.data.airports) || []); })
       .catch(function () { /* non-critical, skip */ });
+
+    fetch('/api/travel/resort-facilities?id=' + encodeURIComponent(propId) + '&facility=amenities')
+      .then(function (r) { return r.json(); })
+      .then(function (res) { renderFacilityAmenities(res.data || {}); })
+      .catch(function () { /* non-critical, skip */ });
   } else {
     renderHeroFallback();
   }
@@ -541,6 +546,67 @@
     });
 
     if (hasAny) document.getElementById('policies-card').style.display = 'block';
+  }
+
+  function renderFacilityAmenities(d) {
+    // Collect all items across categories
+    var all = [];
+    ['others', 'golf_courses', 'tours', 'restaurants'].forEach(function (key) {
+      if (Array.isArray(d[key])) d[key].forEach(function (item) { all.push(item); });
+    });
+    if (!all.length) return;
+
+    // Group by group_type, preserving insertion order
+    var groups = {};
+    var groupOrder = [];
+    all.forEach(function (item) {
+      var g = item.group_type || 'Other';
+      if (!groups[g]) { groups[g] = []; groupOrder.push(g); }
+      groups[g].push(item);
+    });
+
+    var el = document.getElementById('amenities-list');
+    el.innerHTML = ''; // clear any chips from detail renderAmenities
+
+    groupOrder.forEach(function (groupName, gi) {
+      if (gi > 0) {
+        var sep = document.createElement('div');
+        sep.style.cssText = 'height:1px;background:#F1F5F9;margin:12px 0';
+        el.appendChild(sep);
+      }
+      var label = document.createElement('div');
+      label.style.cssText = 'font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px';
+      label.textContent = groupName;
+      el.appendChild(label);
+
+      var grid = document.createElement('div');
+      grid.style.cssText = 'display:flex;flex-direction:column;gap:6px';
+      groups[groupName].forEach(function (item) {
+        var isOffsite = item.proximity && item.proximity.toLowerCase() === 'offsite';
+        var dist = '';
+        if (isOffsite && (item.distance_in_miles || item.distance_in_kms)) {
+          dist = (item.distance_in_miles ? item.distance_in_miles + ' mi' : '') +
+                 (item.distance_in_miles && item.distance_in_kms ? ' / ' : '') +
+                 (item.distance_in_kms ? item.distance_in_kms + ' km' : '');
+        }
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;font-size:12px';
+        row.innerHTML =
+          '<span style="color:#374151">' + (item.name || '') + '</span>' +
+          '<span style="display:flex;align-items:center;gap:6px">' +
+            (dist ? '<span style="font-size:11px;color:#94A3B8">' + dist + '</span>' : '') +
+            (item.proximity
+              ? '<span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:' +
+                (isOffsite ? '#F1F5F9' : '#DCFCE7') + ';color:' + (isOffsite ? '#64748B' : '#16A34A') + '">' +
+                item.proximity + '</span>'
+              : '') +
+          '</span>';
+        grid.appendChild(row);
+      });
+      el.appendChild(grid);
+    });
+
+    document.getElementById('amenities-card').style.display = 'block';
   }
 
   function renderAirports(airports) {
