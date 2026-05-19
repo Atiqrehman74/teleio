@@ -181,6 +181,9 @@ app.get('/api/travel/resort-availability', require('./api/travel/resort-availabi
 // Resort accessibility features
 app.get('/api/travel/resort-accessibility', require('./api/travel/resort-accessibility'));
 
+// Resort facilities (airports, restaurants, activities, etc.)
+app.get('/api/travel/resort-facilities', require('./api/travel/resort-facilities'));
+
 // Hotel content/discovery (no dates required — browse by location)
 app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
 
