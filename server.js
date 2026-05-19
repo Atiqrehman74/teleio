@@ -184,6 +184,9 @@ app.get('/api/travel/hotel-price', require('./api/travel/hotel-price'));
 // Hotel booking / reservation (after Stripe payment succeeds)
 app.post('/api/travel/hotel-book', require('./api/travel/hotel-book'));
 
+// Hotel booking retrieval by booking_id
+app.get('/api/travel/hotel-booking', require('./api/travel/hotel-booking-get'));
+
 // Hotel room availability
 app.post('/api/travel/hotel-availability', require('./api/travel/hotel-availability'));
 
