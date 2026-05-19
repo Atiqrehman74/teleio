@@ -237,7 +237,16 @@
       <div class="bk-card" id="form-card">
         <div class="bk-section-title" style="margin-bottom:16px">Complete Booking</div>
         <form id="booking-form" novalidate>
-          <div class="frow">
+          <div class="frow" style="grid-template-columns:120px 1fr 1fr">
+            <div class="fgroup">
+              <label>Title</label>
+              <select id="title">
+                <option value="Mr">Mr</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Ms">Ms</option>
+                <option value="Dr">Dr</option>
+              </select>
+            </div>
             <div class="fgroup"><label>First Name *</label><input type="text" id="first-name" placeholder="John" required></div>
             <div class="fgroup"><label>Last Name *</label><input type="text" id="last-name" placeholder="Smith" required></div>
           </div>
@@ -643,6 +652,28 @@
         document.getElementById('card-errors').textContent = result.error.message;
         btn.disabled = false; btn.classList.remove('loading');
       } else if (result.paymentIntent.status === 'succeeded') {
+        // Payment succeeded — create Xeni hotel reservation
+        var xeniBookingRef = '';
+        if (bookingToken) {
+          try {
+            var phone = document.getElementById('phone').value.trim();
+            var bookRes = await fetch('/api/travel/hotel-book', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                booking_token:   bookingToken,
+                title:           document.getElementById('title').value,
+                first_name:      firstName,
+                last_name:       lastName,
+                email:           email,
+                phone:           phone,
+                special_request: document.getElementById('special-req').value.trim(),
+              })
+            });
+            var bookData = await bookRes.json();
+            xeniBookingRef = (bookData.data && (bookData.data.booking_id || bookData.data.reference)) || '';
+          } catch (_) { /* non-fatal — Stripe already charged */ }
+        }
+
         document.getElementById('booking-form').style.display = 'none';
         var box = document.getElementById('success-box');
         box.style.display = 'block';
@@ -650,7 +681,8 @@
           '<strong>' + propName + '</strong> booked for <strong>' + adults + ' guest' + (adults > 1 ? 's' : '') + '</strong>.<br>' +
           'Check-in: <strong>' + fmt(checkin) + '</strong> · Check-out: <strong>' + fmt(checkout) + '</strong><br><br>' +
           'Confirmation sent to <strong>' + email + '</strong><br>' +
-          'Payment ref: <code style="font-size:11px;color:#64748B">' + result.paymentIntent.id + '</code>';
+          'Payment ref: <code style="font-size:11px;color:#64748B">' + result.paymentIntent.id + '</code>' +
+          (xeniBookingRef ? '<br>Booking ref: <code style="font-size:11px;color:#64748B">' + xeniBookingRef + '</code>' : '');
       }
     } catch (err) {
       document.getElementById('card-errors').textContent = err.message || 'Payment failed. Please try again.';
