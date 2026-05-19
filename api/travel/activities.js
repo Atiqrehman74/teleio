@@ -55,7 +55,17 @@ module.exports = async (req, res) => {
       });
     }
 
-    res.json({ ...result, _debug: { destinationId, destination, autoDebug } });
+    // Extract first activity for key inspection
+    const sampleKeys = (() => {
+      const lists = ['activities','results','items','tours','experiences'];
+      for (const k of lists) {
+        const arr = result[k] || (result.data && result.data[k]);
+        if (Array.isArray(arr) && arr[0]) return { key: k, fields: Object.keys(arr[0]), sample: arr[0] };
+      }
+      if (Array.isArray(result.data) && result.data[0]) return { key:'data', fields: Object.keys(result.data[0]), sample: result.data[0] };
+      return { topKeys: Object.keys(result) };
+    })();
+    res.json({ ...result, _debug: { destinationId, destination, autoDebug, sampleKeys } });
   } catch (err) {
     console.error('Activities outer:', err.message);
     res.status(err.status || 500).json({ error: err.message, body: err.body });

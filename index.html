@@ -1248,8 +1248,14 @@ function switchHeroTab(tab) {
     }
     grid.innerHTML = '';
     acts.slice(0, 9).forEach(function(a) {
-      var img  = (a.image && (a.image.large || a.image.medium || a.image.thumbnail || a.image))
-               || a.imageUrl || a.photo || a.thumbnail || FALLBACK_IMG;
+      // Try images array first (Xeni common format), then object, then flat string fields
+      var imgRaw = (Array.isArray(a.images) && a.images[0] && (a.images[0].url || a.images[0].src || a.images[0].href || a.images[0]))
+               || (a.image && typeof a.image === 'string' && a.image)
+               || (a.image && (a.image.url || a.image.large || a.image.medium || a.image.thumbnail))
+               || (Array.isArray(a.gallery) && a.gallery[0] && (a.gallery[0].url || a.gallery[0]))
+               || (Array.isArray(a.media) && a.media[0] && (a.media[0].url || a.media[0].src || a.media[0]))
+               || a.cover_image || a.banner_image || a.hero_image || a.img_url || a.imageUrl || a.photo || a.thumbnail;
+      var img = (typeof imgRaw === 'string' && imgRaw) ? imgRaw : FALLBACK_IMG;
       var name = a.name || a.title || 'Activity';
       var cat  = a.category || a.type || a.sub_category || '';
       var loc  = a.location || a.city || a.destination || '';
@@ -1301,7 +1307,7 @@ function switchHeroTab(tab) {
     .then(function(data) {
       // Show actual API error so we can debug endpoint issues
       if (data.error) {
-        var dbg = data._debug ? JSON.stringify(data._debug).slice(0,300) : '';
+        var dbg = data._debug ? JSON.stringify(data._debug).slice(0,400) : '';
         var body = data.body ? JSON.stringify(data.body).slice(0,300) : '';
         grid.innerHTML = '<div style="grid-column:1/-1;background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:20px;font-size:12px;color:#991B1B">' +
           '<strong>API Error:</strong> ' + data.error +
@@ -1309,6 +1315,10 @@ function switchHeroTab(tab) {
           (dbg  ? '<br><br><code style="word-break:break-all;font-size:11px;color:#555">' + dbg  + '</code>' : '') +
           '</div>';
         return;
+      }
+      // Show image field debug if still using fallback (temporary — helps identify correct key)
+      if (data._debug && data._debug.sampleKeys) {
+        console.log('[Activities] First activity fields:', JSON.stringify(data._debug.sampleKeys));
       }
       renderActivities(data);
     })
