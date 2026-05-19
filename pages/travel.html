@@ -259,23 +259,40 @@ function renderHotels(data) {
   var hotels = d.hotels || data.hotels || data.results || [];
   var total = d.total || hotels.length;
   if (!hotels.length) { resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No hotels found. Try a different destination or dates.</p>'; return; }
-  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + total + ' Hotel' + (total > 1 ? 's' : '') + ' Found</h3><div class="grid-3">';
+  var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">' +
+    '<h3 style="font-size:1.15rem;font-weight:700;margin:0">' + total.toLocaleString() + ' Hotels Found</h3>' +
+    '<span style="font-size:0.8rem;color:var(--text-muted)">Prices per total stay · USD</span></div>';
+  html += '<div class="grid-3">';
   hotels.slice(0, 9).forEach(function(h) {
-    var img   = h.image || h.thumbnail || h.photo || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop';
-    var name  = h.name || h.hotelName || 'Hotel';
-    var addr  = (h.contact && h.contact.address) ? (h.contact.address.city || h.contact.address.line_1 || '') : (h.city || '');
-    var stars = (h.ratings && h.ratings.star_rating) || h.stars || h.starRating || 0;
-    var price = (h.rate && (h.rate.recommended_selling_price || h.rate.total_rate)) || h.price || 0;
-    var cur   = (h.rate && h.rate.currency) || 'USD';
-    var starsHtml = stars ? '<span style="color:#F59E0B;font-size:0.85rem">' + '★'.repeat(Math.min(5, Math.round(stars))) + '</span> ' : '';
-    var priceHtml = price ? '<span style="font-size:1.1rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' : '';
-    html += '<div class="deal-card">' +
-      '<div class="deal-thumb" style="background:url(\'' + img + '\') center/cover;height:160px"></div>' +
-      '<div class="deal-body">' +
-        '<div class="deal-name">' + starsHtml + name + '</div>' +
-        '<div class="deal-from" style="font-size:0.8rem;color:var(--text-muted)">' + addr + '</div>' +
-        '<div class="deal-price" style="margin:8px 0">' + priceHtml + ' <span style="font-size:0.75rem;color:var(--text-muted)">' + (price ? '/ stay' : '') + '</span></div>' +
-        '<a href="#" class="btn btn-primary btn-full" style="margin-top:8px;font-size:0.83rem">Book Hotel</a>' +
+    var img    = (h.image && (h.image.large || h.image.thumbnail)) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop';
+    var name   = h.name || 'Hotel';
+    var city   = (h.contact && h.contact.address && h.contact.address.city) || '';
+    var stars  = (h.ratings && h.ratings.star_rating) || 0;
+    var rating = (h.ratings && h.ratings.user_rating) || 0;
+    var dist   = h.distance ? (h.distance + ' km') : '';
+    var price  = (h.rate && (h.rate.recommended_selling_price || h.rate.total_rate)) || 0;
+    var saved  = (h.rate && h.rate.saved_price) || 0;
+    var cur    = (h.rate && h.rate.currency) || 'USD';
+    var starsHtml = stars > 0 ? '<span style="color:#F59E0B;letter-spacing:1px">' + '★'.repeat(Math.min(5,Math.round(stars))) + '</span>' : '';
+    var ratingBadge = rating > 0 ? '<span style="background:#EFF6FF;color:#2563EB;font-size:0.7rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:6px">' + Number(rating).toFixed(1) + ' ★</span>' : '';
+    var saveBadge = saved > 0 ? '<span style="background:#DCFCE7;color:#16A34A;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:20px">Save ' + cur + ' ' + Math.round(saved) + '</span>' : '';
+    var distBadge = dist ? '<span style="background:#F3F4F6;color:#6B7280;font-size:0.7rem;padding:2px 7px;border-radius:20px">' + dist + '</span>' : '';
+    html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow 0.2s" onmouseover="this.style.boxShadow=\'0 8px 30px rgba(0,0,0,0.1)\'" onmouseout="this.style.boxShadow=\'none\'">' +
+      '<div style="position:relative;height:180px;overflow:hidden">' +
+        '<img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop\'">' +
+        (saveBadge ? '<div style="position:absolute;top:10px;right:10px">' + saveBadge + '</div>' : '') +
+      '</div>' +
+      '<div style="padding:14px 16px">' +
+        '<div style="font-weight:700;font-size:0.95rem;margin-bottom:3px;line-height:1.3">' + name + '</div>' +
+        '<div style="display:flex;align-items:center;gap:4px;margin-bottom:8px">' +
+          (starsHtml || '<span style="color:#9CA3AF;font-size:0.75rem">Unrated</span>') + ratingBadge +
+          (distBadge ? '<span style="margin-left:auto">' + distBadge + '</span>' : '') +
+        '</div>' +
+        '<div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px">📍 ' + (city || 'Hotel') + '</div>' +
+        '<div style="display:flex;align-items:center;justify-content:space-between">' +
+          '<div><span style="font-size:1.2rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span><span style="font-size:0.72rem;color:var(--text-muted)"> / stay</span></div>' +
+          '<a href="#" class="btn btn-primary" style="padding:7px 16px;font-size:0.8rem;border-radius:8px">Book</a>' +
+        '</div>' +
       '</div></div>';
   });
   html += '</div>';
@@ -287,28 +304,55 @@ function renderFlights(data) {
   var flights = d.flights || data.flights || data.results || [];
   var total = d.total || flights.length;
   if (!flights.length) { resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No flights found. Try different dates or airports.</p>'; return; }
-  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + total + ' Flight' + (total > 1 ? 's' : '') + ' Found</h3>';
-  html += '<div style="display:flex;flex-direction:column;gap:12px">';
-  flights.slice(0, 10).forEach(function(f) {
+  var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">' +
+    '<h3 style="font-size:1.15rem;font-weight:700;margin:0">' + total.toLocaleString() + ' Flights Found</h3>' +
+    '<span style="font-size:0.8rem;color:var(--text-muted)">Economy · All airlines</span></div>';
+  html += '<div style="display:flex;flex-direction:column;gap:10px">';
+  flights.slice(0, 12).forEach(function(f) {
     var seg      = (f.segments && f.segments[0]) || f;
-    var airline  = seg.airline_name || seg.airline || f.carrier || '✈';
-    var origin   = seg.departure_airport || seg.origin || f.origin || '—';
-    var dest     = seg.arrival_airport   || seg.destination || f.destination || '—';
-    var dep      = seg.departure_time    || seg.departureTime || '';
-    var arr      = seg.arrival_time      || seg.arrivalTime   || '';
-    var duration = seg.duration          || f.duration        || '';
-    var stops    = seg.stops && seg.stops.length ? seg.stops.length + ' stop' + (seg.stops.length > 1 ? 's' : '') : 'Direct';
-    var price    = f.price || (f.rate && f.rate.total) || 0;
-    var cur      = f.currency || 'USD';
-    var priceHtml = price ? '<span style="font-size:1.05rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' : '';
-    html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">' +
-      '<div style="font-weight:700;font-size:0.9rem;min-width:110px">' + airline + '</div>' +
-      '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:200px">' +
-        '<div style="text-align:center"><div style="font-weight:700;font-size:1rem">' + origin + '</div><div style="font-size:0.75rem;color:var(--text-muted)">' + dep + '</div></div>' +
-        '<div style="flex:1;text-align:center;color:var(--text-muted);font-size:0.72rem">──✈──<br>' + duration + '<br>' + stops + '</div>' +
-        '<div style="text-align:center"><div style="font-weight:700;font-size:1rem">' + dest + '</div><div style="font-size:0.75rem;color:var(--text-muted)">' + arr + '</div></div>' +
+    var cabin    = (f.cabins && f.cabins[0]) || {};
+    var airline  = seg.airline_name  || '✈ Airline';
+    var logo     = seg.airline_logo  || '';
+    var code     = seg.airline_code  || '';
+    var origin   = seg.departure_airport || '—';
+    var dest     = seg.arrival_airport   || '—';
+    var dep      = seg.departure_time    || '';
+    var arr      = seg.arrival_time      || '';
+    var dur      = (seg.duration || '').replace('h:','h ').replace('m','m');
+    var stopArr  = seg.stops || [];
+    var stopsLbl = stopArr.length === 0 ? '<span style="color:#16A34A;font-weight:600">Direct</span>' : '<span style="color:#D97706;font-weight:600">' + stopArr.length + ' stop' + (stopArr.length > 1 ? 's' : '') + '</span>';
+    var price    = cabin.total_rate || f.price || 0;
+    var cur      = cabin.currency_code || f.currency || 'USD';
+    var refund   = (cabin.penalties_info && cabin.penalties_info[0] && cabin.penalties_info[0].refund_allowed) ? '<span style="color:#16A34A;font-size:0.7rem">✓ Refundable</span>' : '';
+    var logoHtml = logo ? '<img src="' + logo + '" alt="' + code + '" style="height:28px;width:28px;object-fit:contain" onerror="this.style.display=\'none\'">' : '<span style="font-size:1.3rem">✈</span>';
+    html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;transition:box-shadow 0.2s" onmouseover="this.style.boxShadow=\'0 4px 20px rgba(0,0,0,0.08)\'" onmouseout="this.style.boxShadow=\'none\'">' +
+      '<div style="display:flex;flex-direction:column;align-items:center;min-width:80px;gap:3px">' +
+        logoHtml +
+        '<div style="font-size:0.72rem;font-weight:600;color:var(--text-dark);text-align:center;line-height:1.2">' + airline + '</div>' +
+        (refund ? '<div>' + refund + '</div>' : '') +
       '</div>' +
-      '<div style="margin-left:auto;text-align:right">' + priceHtml + '<br><a href="#" class="btn btn-primary" style="margin-top:6px;padding:6px 16px;font-size:0.8rem">Select</a></div>' +
+      '<div style="flex:1;display:flex;align-items:center;gap:10px;min-width:220px">' +
+        '<div style="text-align:center">' +
+          '<div style="font-size:1.3rem;font-weight:800;letter-spacing:-0.5px">' + origin + '</div>' +
+          '<div style="font-size:0.72rem;color:var(--text-muted)">' + dep + '</div>' +
+        '</div>' +
+        '<div style="flex:1;text-align:center">' +
+          '<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:3px">' + dur + '</div>' +
+          '<div style="height:2px;background:linear-gradient(to right,var(--primary),#818CF8);border-radius:2px;position:relative">' +
+            '<span style="position:absolute;top:-6px;right:-4px;font-size:10px">✈</span>' +
+          '</div>' +
+          '<div style="margin-top:4px">' + stopsLbl + '</div>' +
+        '</div>' +
+        '<div style="text-align:center">' +
+          '<div style="font-size:1.3rem;font-weight:800;letter-spacing:-0.5px">' + dest + '</div>' +
+          '<div style="font-size:0.72rem;color:var(--text-muted)">' + arr + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="text-align:right;min-width:110px">' +
+        '<div style="font-size:0.72rem;color:var(--text-muted)">from</div>' +
+        '<div style="font-size:1.3rem;font-weight:800;color:var(--primary)">' + (price ? cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) : '—') + '</div>' +
+        '<a href="#" class="btn btn-primary" style="margin-top:6px;padding:7px 18px;font-size:0.8rem;display:inline-block;border-radius:8px">Select</a>' +
+      '</div>' +
     '</div>';
   });
   html += '</div>';
