@@ -549,6 +549,124 @@
     </div>
   </section>
 
+  <!-- ACTIVITIES & TOURS -->
+  <section class="section" style="background:var(--bg-light);padding-top:64px;padding-bottom:64px">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:36px">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#d97706,#f59e0b);color:#fff;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 12px;border-radius:100px;margin-bottom:10px">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+            Xeni Activities API
+          </div>
+          <h2 style="font-size:30px;font-weight:800;margin:0 0 6px;letter-spacing:-0.02em">Top Activities &amp; Tours</h2>
+          <p style="color:var(--text-muted);font-size:15px;margin:0">Unforgettable experiences in <strong id="hp-acts-dest">Dubai</strong> — live availability &amp; instant booking</p>
+        </div>
+        <a href="pages/travel.html#activities" class="btn btn-primary" style="white-space:nowrap;flex-shrink:0">Browse All Activities →</a>
+      </div>
+
+      <!-- Activities Grid -->
+      <div id="hp-acts-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+        <!-- Skeleton placeholders while loading -->
+        <div class="hp-act-skeleton"></div>
+        <div class="hp-act-skeleton"></div>
+        <div class="hp-act-skeleton"></div>
+        <div class="hp-act-skeleton"></div>
+        <div class="hp-act-skeleton"></div>
+        <div class="hp-act-skeleton"></div>
+        <div class="hp-act-skeleton"></div>
+        <div class="hp-act-skeleton"></div>
+        <div class="hp-act-skeleton"></div>
+      </div>
+
+      <!-- Destination Switcher -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;flex-wrap:wrap">
+        <span style="font-size:12px;color:var(--text-muted);font-weight:600">Browse by city:</span>
+        <button class="hp-acts-dest-btn active" data-dest="Dubai">🇦🇪 Dubai</button>
+        <button class="hp-acts-dest-btn" data-dest="London">🇬🇧 London</button>
+        <button class="hp-acts-dest-btn" data-dest="Paris">🇫🇷 Paris</button>
+        <button class="hp-acts-dest-btn" data-dest="Bali">🇮🇩 Bali</button>
+        <button class="hp-acts-dest-btn" data-dest="New York">🇺🇸 New York</button>
+        <button class="hp-acts-dest-btn" data-dest="Istanbul">🇹🇷 Istanbul</button>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .hp-act-skeleton {
+      height: 310px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, var(--border) 25%, #f0f0f0 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: hpSkeleton 1.4s infinite;
+    }
+    @keyframes hpSkeleton { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    body.dark-mode .hp-act-skeleton { background: linear-gradient(90deg,#334155 25%,#1e293b 50%,#334155 75%); background-size:200% 100%; animation: hpSkeleton 1.4s infinite; }
+    .hp-acts-dest-btn {
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-medium);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .hp-acts-dest-btn:hover, .hp-acts-dest-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .hp-act-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+    }
+    .hp-act-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.13); transform: translateY(-3px); }
+    .hp-act-img { position: relative; height: 190px; overflow: hidden; }
+    .hp-act-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .hp-act-card:hover .hp-act-img img { transform: scale(1.06); }
+    .hp-act-cat {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+      color: #fff; font-size: 10px; font-weight: 700;
+      padding: 3px 9px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .hp-act-rating {
+      position: absolute; top: 10px; right: 10px;
+      background: #F59E0B; color: #fff; font-size: 10px; font-weight: 800;
+      padding: 3px 8px; border-radius: 100px; display: flex; align-items: center; gap: 3px;
+    }
+    .hp-act-body { padding: 14px 16px 16px; }
+    .hp-act-name { font-size: 14px; font-weight: 700; line-height: 1.35; margin-bottom: 5px; color: var(--text-dark); }
+    .hp-act-meta { font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .hp-act-price-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .hp-act-price { line-height: 1; }
+    .hp-act-from { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .hp-act-amount { font-size: 18px; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; }
+    .hp-act-per { font-size: 10px; color: var(--text-muted); }
+    .hp-act-btn {
+      padding: 7px 16px; background: var(--primary); color: #fff;
+      border-radius: 8px; font-size: 12px; font-weight: 700; font-family: inherit;
+      border: none; cursor: pointer; white-space: nowrap; flex-shrink: 0;
+      transition: background 0.15s, transform 0.12s; text-decoration: none;
+      display: inline-flex; align-items: center;
+    }
+    .hp-act-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    @media (max-width: 900px) {
+      #hp-acts-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (max-width: 540px) {
+      #hp-acts-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+
   <!-- VISA SERVICES -->
   <section class="section" style="background:white">
     <div class="container">
@@ -1079,6 +1197,102 @@ function switchHeroTab(tab) {
     btn.classList.toggle('active', (i === 0 && tab === 'cv') || (i === 1 && tab === 'iv'));
   });
 }
+</script>
+
+<script>
+/* ── Homepage Activities Section ── */
+(function() {
+  var grid = document.getElementById('hp-acts-grid');
+  var destLabel = document.getElementById('hp-acts-dest');
+  if (!grid) return;
+
+  var FALLBACK_IMG = 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=600&q=70&fit=crop&h=400';
+
+  function showSkeletons() {
+    grid.innerHTML = '';
+    for (var i = 0; i < 9; i++) {
+      var d = document.createElement('div');
+      d.className = 'hp-act-skeleton';
+      grid.appendChild(d);
+    }
+  }
+
+  function renderActivities(data) {
+    var acts = data.activities || data.results || data.items || (data.data && Array.isArray(data.data) ? data.data : []) || [];
+    if (!acts.length) {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No activities found for this destination. Try another city.</p>';
+      return;
+    }
+    grid.innerHTML = '';
+    acts.slice(0, 9).forEach(function(a) {
+      var img  = (a.image && (a.image.large || a.image.medium || a.image.thumbnail || a.image))
+               || a.imageUrl || a.photo || a.thumbnail || FALLBACK_IMG;
+      var name = a.name || a.title || 'Activity';
+      var cat  = a.category || a.type || a.sub_category || '';
+      var loc  = a.location || a.city || a.destination || '';
+      var dur  = a.duration || a.duration_text || '';
+      var rat  = a.rating || (a.reviews && a.reviews.rating) || 0;
+      var price = (a.price && (a.price.amount || a.price.value || a.price.from))
+                || (a.rate && (a.rate.amount || a.rate.value))
+                || a.amount || a.cost || 0;
+      var cur  = (a.price && a.price.currency) || (a.rate && a.rate.currency) || 'USD';
+
+      var card = document.createElement('a');
+      card.href = 'pages/travel.html#activities';
+      card.className = 'hp-act-card';
+      card.innerHTML =
+        '<div class="hp-act-img">' +
+          '<img src="' + (typeof img === 'string' ? img : FALLBACK_IMG) + '" alt="' + name + '" loading="lazy" onerror="this.src=\'' + FALLBACK_IMG + '\'">' +
+          (cat ? '<div class="hp-act-cat">' + cat + '</div>' : '') +
+          (rat > 0 ? '<div class="hp-act-rating">★ ' + Number(rat).toFixed(1) + '</div>' : '') +
+        '</div>' +
+        '<div class="hp-act-body">' +
+          '<div class="hp-act-name">' + name + '</div>' +
+          '<div class="hp-act-meta">' +
+            (loc ? '<span>📍 ' + loc + '</span>' : '') +
+            (dur ? '<span>⏱ ' + dur + '</span>' : '') +
+          '</div>' +
+          '<div class="hp-act-price-row">' +
+            '<div class="hp-act-price">' +
+              '<div class="hp-act-from">from</div>' +
+              (price > 0
+                ? '<div class="hp-act-amount">' + cur + ' ' + Number(price).toLocaleString(undefined, {maximumFractionDigits:0}) + '</div><div class="hp-act-per">per person</div>'
+                : '<div style="font-size:13px;color:var(--text-muted);font-weight:500">Contact for price</div>') +
+            '</div>' +
+            '<a href="pages/travel.html#activities" class="hp-act-btn">Book Now</a>' +
+          '</div>' +
+        '</div>';
+      grid.appendChild(card);
+    });
+  }
+
+  function loadActivities(destination) {
+    if (destLabel) destLabel.textContent = destination;
+    showSkeletons();
+    fetch('/api/travel/activities', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ destination: destination })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) { renderActivities(data); })
+    .catch(function() {
+      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Unable to load activities right now. <a href="pages/travel.html#activities" style="color:var(--primary)">Search manually →</a></p>';
+    });
+  }
+
+  /* Destination switcher buttons */
+  document.querySelectorAll('.hp-acts-dest-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.hp-acts-dest-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      loadActivities(btn.getAttribute('data-dest'));
+    });
+  });
+
+  /* Load Dubai on page load */
+  loadActivities('Dubai');
+})();
 </script>
 </body>
 </html>
