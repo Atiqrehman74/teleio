@@ -1105,6 +1105,7 @@ function renderResorts(data) {
     // Native resort IDs use resort-booking.html; hotels-fallback IDs (property_id) use hotel-booking.html
     var isNativeResort = !p.property_id && !!p.id;
     var bookBase = isNativeResort ? 'resort-booking.html' : 'hotel-booking.html';
+    var recId = p.recommendation_id || '';
     var bookUrl = bookBase + '?id=' + encodeURIComponent(pid) +
       '&name=' + encodeURIComponent(name) +
       '&rate=' + (price || 0) +
@@ -1112,6 +1113,7 @@ function renderResorts(data) {
       '&checkin=' + encodeURIComponent(ciVal || p.start_date || '') +
       '&checkout=' + encodeURIComponent(coVal || p.end_date || '') +
       '&adults=' + (val('rs-adults') || 2) +
+      (recId ? '&rec=' + encodeURIComponent(recId) : '') +
       (img ? '&img=' + encodeURIComponent(img) : '') +
       (avail ? '&avail=' + encodeURIComponent(avail) : '');
 
