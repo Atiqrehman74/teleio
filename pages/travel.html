@@ -51,69 +51,93 @@
         </div>
 
         <form id="travelSearchForm">
+          <!-- Flights -->
           <div id="flights" class="tab-panel active">
             <div class="search-form-grid">
-              <div class="form-group sfg-wide"><label>From</label><input type="text" class="form-control" placeholder="City or airport"></div>
-              <div class="form-group sfg-wide"><label>To</label><input type="text" class="form-control" placeholder="City or airport"></div>
-              <div class="form-group"><label>Depart</label><input type="date" class="form-control"></div>
-              <div class="form-group"><label>Return</label><input type="date" class="form-control"></div>
+              <div class="form-group sfg-wide"><label>From</label><input id="fl-origin" type="text" class="form-control" placeholder="e.g. Dubai (DXB)"></div>
+              <div class="form-group sfg-wide"><label>To</label><input id="fl-dest" type="text" class="form-control" placeholder="e.g. London (LHR)"></div>
+              <div class="form-group"><label>Depart</label><input id="fl-depart" type="date" class="form-control"></div>
+              <div class="form-group"><label>Return</label><input id="fl-return" type="date" class="form-control"></div>
+              <div class="form-group" style="min-width:80px"><label>Adults</label>
+                <select id="fl-adults" class="form-control"><option>1</option><option selected>2</option><option>3</option><option>4</option></select>
+              </div>
               <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                Search
+                Search Flights
               </button></div>
             </div>
           </div>
 
+          <!-- Hotels -->
           <div id="hotels" class="tab-panel">
             <div class="search-form-grid">
-              <div class="form-group sfg-full"><label>Destination</label><input type="text" class="form-control" placeholder="City or hotel name"></div>
-              <div class="form-group"><label>Check-in</label><input type="date" class="form-control"></div>
-              <div class="form-group"><label>Check-out</label><input type="date" class="form-control"></div>
+              <div class="form-group sfg-full"><label>Destination</label><input id="ht-dest" type="text" class="form-control" placeholder="e.g. Dubai, Paris, New York"></div>
+              <div class="form-group"><label>Check-in</label><input id="ht-checkin" type="date" class="form-control"></div>
+              <div class="form-group"><label>Check-out</label><input id="ht-checkout" type="date" class="form-control"></div>
+              <div class="form-group" style="min-width:80px"><label>Rooms</label>
+                <select id="ht-rooms" class="form-control"><option selected>1</option><option>2</option><option>3</option></select>
+              </div>
+              <div class="form-group" style="min-width:80px"><label>Adults</label>
+                <select id="ht-adults" class="form-control"><option>1</option><option selected>2</option><option>3</option><option>4</option></select>
+              </div>
               <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                Search
+                Search Hotels
               </button></div>
             </div>
           </div>
 
+          <!-- Cars -->
           <div id="cars" class="tab-panel">
             <div class="search-form-grid">
-              <div class="form-group sfg-full"><label>Pick-up Location</label><input type="text" class="form-control" placeholder="City or airport"></div>
-              <div class="form-group"><label>Pick-up Date</label><input type="date" class="form-control"></div>
-              <div class="form-group"><label>Return Date</label><input type="date" class="form-control"></div>
+              <div class="form-group sfg-full"><label>Pick-up Location</label><input id="cr-pickup" type="text" class="form-control" placeholder="City or airport code"></div>
+              <div class="form-group"><label>Pick-up Date</label><input id="cr-from" type="date" class="form-control"></div>
+              <div class="form-group"><label>Return Date</label><input id="cr-to" type="date" class="form-control"></div>
               <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                Search
+                Search Cars
               </button></div>
             </div>
           </div>
 
+          <!-- Yachts -->
           <div id="yachts" class="tab-panel">
             <div class="search-form-grid">
-              <div class="form-group sfg-full"><label>Marina / Destination</label><input type="text" class="form-control" placeholder="e.g., Monaco, Dubai"></div>
-              <div class="form-group"><label>From Date</label><input type="date" class="form-control"></div>
-              <div class="form-group"><label>To Date</label><input type="date" class="form-control"></div>
+              <div class="form-group sfg-full"><label>Marina / Destination</label><input id="yc-dest" type="text" class="form-control" placeholder="e.g., Dubai Marina, Monaco"></div>
+              <div class="form-group"><label>From Date</label><input id="yc-from" type="date" class="form-control"></div>
+              <div class="form-group"><label>To Date</label><input id="yc-to" type="date" class="form-control"></div>
               <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                Search
+                Search Yachts
               </button></div>
             </div>
           </div>
 
+          <!-- Packages -->
           <div id="packages" class="tab-panel">
             <div class="search-form-grid">
-              <div class="form-group sfg-wide"><label>From</label><input type="text" class="form-control" placeholder="Your city"></div>
-              <div class="form-group sfg-wide"><label>Destination</label><input type="text" class="form-control" placeholder="Where to?"></div>
-              <div class="form-group"><label>Travel Dates</label><input type="date" class="form-control"></div>
+              <div class="form-group sfg-wide"><label>From</label><input id="pk-origin" type="text" class="form-control" placeholder="Your city"></div>
+              <div class="form-group sfg-wide"><label>Destination</label><input id="pk-dest" type="text" class="form-control" placeholder="Where to?"></div>
+              <div class="form-group"><label>Travel Date</label><input id="pk-date" type="date" class="form-control"></div>
+              <div class="form-group" style="min-width:80px"><label>Adults</label>
+                <select id="pk-adults" class="form-control"><option>1</option><option selected>2</option><option>3</option><option>4</option></select>
+              </div>
               <div class="sfg-btn"><button type="submit" class="btn btn-primary btn-full" style="height:44px">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-                Search
+                Search Packages
               </button></div>
             </div>
           </div>
         </form>
 
-        <div id="searchResults" style="margin-top:16px"></div>
+        <!-- API powered badge -->
+        <div style="display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+          <span style="font-size:11px;color:var(--text-muted)">Powered by</span>
+          <span style="font-size:11px;font-weight:700;color:var(--primary);background:var(--bg-light);padding:2px 8px;border-radius:4px">Xeni Travel API</span>
+          <span style="font-size:11px;color:var(--text-muted)">· Live results · 70+ countries</span>
+        </div>
+
+        <div id="searchResults" style="margin-top:20px"></div>
       </div>
 
       <!-- Category Cards -->
@@ -186,16 +210,224 @@
 
 <script src="../js/main.js"></script>
 <script>
+/* ── Tab switcher ── */
 function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.tab === tab);
-  });
-  document.querySelectorAll('.tab-panel').forEach(p => {
-    p.classList.toggle('active', p.id === tab);
-  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === tab));
   document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
   return false;
 }
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+/* ── Active tab helper ── */
+function activeTab() {
+  var b = document.querySelector('.tab-btn.active');
+  return b ? b.dataset.tab : 'flights';
+}
+
+/* ── Results container ── */
+var resultsBox = document.getElementById('searchResults');
+
+function showLoading(label) {
+  resultsBox.innerHTML =
+    '<div style="text-align:center;padding:40px 0;color:var(--text-muted)">' +
+    '<div style="font-size:2rem;margin-bottom:12px">⏳</div>' +
+    '<div style="font-weight:600;font-size:1rem;margin-bottom:4px">Searching ' + label + '…</div>' +
+    '<div style="font-size:0.85rem">Powered by Xeni Travel API — this may take a few seconds</div></div>';
+}
+
+function showError(msg) {
+  resultsBox.innerHTML =
+    '<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:20px 24px;color:#991B1B">' +
+    '<strong>Search unavailable</strong><br><span style="font-size:0.85rem">' + msg + '</span></div>';
+}
+
+function val(id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+/* ── Render helpers ── */
+function priceTag(item) {
+  var p = item.price || item.rate || item.totalPrice || item.amount || item.pricePerNight;
+  if (!p) return '';
+  var currency = item.currency || 'AED';
+  return '<span style="font-size:1.1rem;font-weight:800;color:var(--primary)">' + currency + ' ' + (Number(p)).toLocaleString() + '</span>';
+}
+
+function renderHotels(data) {
+  var hotels = data.hotels || data.results || data.items || data.data || [];
+  if (!hotels.length) { resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No hotels found. Try a different destination or dates.</p>'; return; }
+  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + hotels.length + ' Hotel' + (hotels.length > 1 ? 's' : '') + ' Found</h3><div class="grid-3">';
+  hotels.slice(0, 9).forEach(function(h) {
+    var img  = h.image || h.thumbnail || h.photo || h.imageUrl || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop';
+    var name = h.name || h.hotelName || 'Hotel';
+    var loc  = h.city || h.location || h.address || '';
+    var stars = h.stars || h.rating || h.starRating || 0;
+    var starsHtml = stars ? '<span style="color:#F59E0B;font-size:0.85rem">' + '★'.repeat(Math.min(5, Math.round(stars))) + '</span> ' : '';
+    html += '<div class="deal-card">' +
+      '<div class="deal-thumb" style="background:url(\'' + img + '\') center/cover;height:160px"></div>' +
+      '<div class="deal-body">' +
+        '<div class="deal-name">' + starsHtml + name + '</div>' +
+        '<div class="deal-from" style="font-size:0.8rem;color:var(--text-muted)">' + loc + '</div>' +
+        '<div class="deal-price" style="margin:8px 0">' + priceTag(h) + ' <span style="font-size:0.75rem;color:var(--text-muted)">/ night</span></div>' +
+        '<a href="#" class="btn btn-primary btn-full" style="margin-top:8px;font-size:0.83rem">Book Hotel</a>' +
+      '</div></div>';
+  });
+  html += '</div>';
+  resultsBox.innerHTML = html;
+}
+
+function renderFlights(data) {
+  var flights = data.flights || data.results || data.items || data.data || data.offers || [];
+  if (!flights.length) { resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No flights found. Try different dates or airports.</p>'; return; }
+  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + flights.length + ' Flight' + (flights.length > 1 ? 's' : '') + ' Found</h3>';
+  html += '<div style="display:flex;flex-direction:column;gap:12px">';
+  flights.slice(0, 8).forEach(function(f) {
+    var airline   = f.airline || f.carrier || f.airlineName || '✈ Airline';
+    var origin    = f.origin || f.departure || f.from || '—';
+    var dest      = f.destination || f.arrival || f.to || '—';
+    var dep       = f.departureTime || f.departAt || '';
+    var arr       = f.arrivalTime || f.arriveAt || '';
+    var duration  = f.duration || f.flightDuration || '';
+    html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap">' +
+      '<div style="font-weight:700;font-size:0.95rem;min-width:120px">' + airline + '</div>' +
+      '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:200px">' +
+        '<div style="text-align:center"><div style="font-weight:700">' + origin + '</div><div style="font-size:0.75rem;color:var(--text-muted)">' + dep + '</div></div>' +
+        '<div style="flex:1;text-align:center;color:var(--text-muted);font-size:0.75rem">──✈──<br>' + duration + '</div>' +
+        '<div style="text-align:center"><div style="font-weight:700">' + dest + '</div><div style="font-size:0.75rem;color:var(--text-muted)">' + arr + '</div></div>' +
+      '</div>' +
+      '<div style="margin-left:auto;text-align:right">' + priceTag(f) + '<br><a href="#" class="btn btn-primary" style="margin-top:6px;padding:6px 16px;font-size:0.8rem">Select</a></div>' +
+    '</div>';
+  });
+  html += '</div>';
+  resultsBox.innerHTML = html;
+}
+
+function renderCars(data) {
+  var cars = data.cars || data.vehicles || data.results || data.items || data.data || [];
+  if (!cars.length) { resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No cars found. Try a different location or dates.</p>'; return; }
+  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + cars.length + ' Car' + (cars.length > 1 ? 's' : '') + ' Available</h3><div class="grid-3">';
+  cars.slice(0, 9).forEach(function(c) {
+    var img   = c.image || c.photo || c.imageUrl || 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&q=70&fit=crop';
+    var name  = c.name || c.vehicleName || c.model || 'Car';
+    var cat   = c.category || c.type || c.class || '';
+    html += '<div class="deal-card">' +
+      '<div class="deal-thumb" style="background:url(\'' + img + '\') center/cover;height:150px"></div>' +
+      '<div class="deal-body">' +
+        '<div class="deal-name">' + name + '</div>' +
+        '<div class="deal-from" style="font-size:0.8rem;color:var(--text-muted)">' + cat + '</div>' +
+        '<div class="deal-price" style="margin:8px 0">' + priceTag(c) + ' <span style="font-size:0.75rem;color:var(--text-muted)">/ day</span></div>' +
+        '<a href="#" class="btn btn-primary btn-full" style="margin-top:8px;font-size:0.83rem">Reserve</a>' +
+      '</div></div>';
+  });
+  html += '</div>';
+  resultsBox.innerHTML = html;
+}
+
+function renderActivities(data) {
+  var acts = data.activities || data.results || data.items || data.data || [];
+  if (!acts.length) { resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No activities found for this destination.</p>'; return; }
+  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + acts.length + ' Activities Found</h3><div class="grid-3">';
+  acts.slice(0, 9).forEach(function(a) {
+    var img  = a.image || a.photo || a.imageUrl || 'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=400&q=70&fit=crop';
+    var name = a.name || a.title || 'Activity';
+    var loc  = a.location || a.city || '';
+    html += '<div class="deal-card">' +
+      '<div class="deal-thumb" style="background:url(\'' + img + '\') center/cover;height:150px"></div>' +
+      '<div class="deal-body">' +
+        '<div class="deal-name">' + name + '</div>' +
+        '<div class="deal-from" style="font-size:0.8rem;color:var(--text-muted)">' + loc + '</div>' +
+        '<div class="deal-price" style="margin:8px 0">' + priceTag(a) + '</div>' +
+        '<a href="#" class="btn btn-primary btn-full" style="margin-top:8px;font-size:0.83rem">Book Now</a>' +
+      '</div></div>';
+  });
+  html += '</div>';
+  resultsBox.innerHTML = html;
+}
+
+function renderPackages(data) {
+  var pkgs = data.packages || data.results || data.items || data.data || [];
+  if (!pkgs.length) { resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No packages found. Try different dates or destination.</p>'; return; }
+  var html = '<h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px">' + pkgs.length + ' Package' + (pkgs.length > 1 ? 's' : '') + ' Found</h3><div class="grid-3">';
+  pkgs.slice(0, 9).forEach(function(p) {
+    var img  = p.image || p.photo || p.imageUrl || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&q=70&fit=crop';
+    var name = p.name || p.title || p.destination || 'Package';
+    var desc = p.description || p.includes || '';
+    html += '<div class="deal-card">' +
+      '<div class="deal-thumb" style="background:url(\'' + img + '\') center/cover;height:160px"></div>' +
+      '<div class="deal-body">' +
+        '<div class="deal-name">' + name + '</div>' +
+        '<div class="deal-from" style="font-size:0.8rem;color:var(--text-muted)">' + (desc + '').slice(0, 60) + '</div>' +
+        '<div class="deal-price" style="margin:8px 0">' + priceTag(p) + ' <span style="font-size:0.75rem;color:var(--text-muted)">/ person</span></div>' +
+        '<a href="#" class="btn btn-primary btn-full" style="margin-top:8px;font-size:0.83rem">View Package</a>' +
+      '</div></div>';
+  });
+  html += '</div>';
+  resultsBox.innerHTML = html;
+}
+
+/* ── Form submit ── */
+document.getElementById('travelSearchForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  var tab = activeTab();
+  var base = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? '' : '';  // same-origin proxy
+
+  try {
+    if (tab === 'flights') {
+      var origin = val('fl-origin'), dest = val('fl-dest'), dep = val('fl-depart');
+      if (!origin || !dest || !dep) { showError('Please fill in From, To and Depart date.'); return; }
+      showLoading('flights');
+      var r = await fetch('/api/travel/flights', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ origin, destination: dest, departureDate: dep, returnDate: val('fl-return'), adults: val('fl-adults') || 2 }) });
+      var data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Flight search failed');
+      renderFlights(data);
+
+    } else if (tab === 'hotels') {
+      var dest = val('ht-dest'), ci = val('ht-checkin'), co = val('ht-checkout');
+      if (!dest || !ci || !co) { showError('Please fill in destination, check-in and check-out dates.'); return; }
+      showLoading('hotels');
+      var r = await fetch('/api/travel/hotels', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ destination: dest, checkIn: ci, checkOut: co, rooms: val('ht-rooms') || 1, adults: val('ht-adults') || 2 }) });
+      var data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Hotel search failed');
+      renderHotels(data);
+
+    } else if (tab === 'cars') {
+      var loc = val('cr-pickup'), from = val('cr-from'), to = val('cr-to');
+      if (!loc || !from || !to) { showError('Please fill in pick-up location and dates.'); return; }
+      showLoading('car rentals');
+      var r = await fetch('/api/travel/cars', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ pickupLocation: loc, pickupDate: from, returnDate: to }) });
+      var data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Car search failed');
+      renderCars(data);
+
+    } else if (tab === 'packages') {
+      var dest = val('pk-dest'), date = val('pk-date');
+      if (!dest || !date) { showError('Please fill in destination and travel date.'); return; }
+      showLoading('packages');
+      var r = await fetch('/api/travel/packages', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ origin: val('pk-origin'), destination: dest, departureDate: date, adults: val('pk-adults') || 2 }) });
+      var data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Package search failed');
+      renderPackages(data);
+
+    } else if (tab === 'yachts') {
+      var dest = val('yc-dest'), from = val('yc-from'), to = val('yc-to');
+      if (!dest) { showError('Please enter a marina or destination.'); return; }
+      showLoading('activities');
+      var r = await fetch('/api/travel/activities', { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ destination: dest, date: from, category: 'yacht' }) });
+      var data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Yacht search failed');
+      renderActivities(data);
+    }
+  } catch (err) {
+    showError(err.message || 'Could not connect to travel API. Please try again.');
+  }
+});
 </script>
 </body>
 </html>

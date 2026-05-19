@@ -95,6 +95,140 @@ app.get('/api/rates', async (req, res) => {
   }
 });
 
+// ── Xeni Travel API proxy ─────────────────────────────────────────────
+const XENI_BASE   = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').replace(/\/$/, '');
+const XENI_KEY    = process.env.XENI_API_KEY    || '';
+const XENI_SECRET = process.env.XENI_SECRET_KEY || '';
+
+function xeniReq(method, endpoint, body) {
+  return new Promise((resolve, reject) => {
+    const urlObj  = new URL(endpoint, XENI_BASE);
+    const payload = body ? JSON.stringify(body) : null;
+    const opts = {
+      hostname: urlObj.hostname,
+      port: urlObj.port || 443,
+      path: urlObj.pathname + urlObj.search,
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${XENI_KEY}`,
+        'x-api-key': XENI_KEY,
+        'x-api-secret': XENI_SECRET,
+        'x-teleio-agent': 'teleio-tourism/1.0',
+      },
+    };
+    if (payload) opts.headers['Content-Length'] = Buffer.byteLength(payload);
+    const req = https.request(opts, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (res.statusCode >= 200 && res.statusCode < 300) resolve(json);
+          else reject(Object.assign(new Error(`Xeni ${res.statusCode}`), { status: res.statusCode, body: json }));
+        } catch { reject(new Error(`Xeni parse error (status ${res.statusCode}): ${data.slice(0, 300)}`)); }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(20000, () => { req.destroy(); reject(new Error('Xeni request timeout')); });
+    if (payload) req.write(payload);
+    req.end();
+  });
+}
+
+// Hotels search
+app.post('/api/travel/hotels', async (req, res) => {
+  try {
+    const { destination, checkIn, checkOut, rooms = 1, adults = 2, children = 0 } = req.body;
+    if (!destination || !checkIn || !checkOut) return res.status(400).json({ error: 'destination, checkIn and checkOut are required' });
+    const result = await xeniReq('POST', '/api/v2/hotels/search', {
+      destination, checkIn, checkOut,
+      occupancies: [{ rooms: Number(rooms), adults: Number(adults), children: Number(children) }],
+    });
+    res.json(result);
+  } catch (err) {
+    console.error('Hotels error:', err.message);
+    res.status(err.status || 500).json({ error: err.message, body: err.body });
+  }
+});
+
+// Flights search
+app.post('/api/travel/flights', async (req, res) => {
+  try {
+    const { origin, destination, departureDate, returnDate, adults = 1, children = 0 } = req.body;
+    if (!origin || !destination || !departureDate) return res.status(400).json({ error: 'origin, destination and departureDate are required' });
+    const result = await xeniReq('POST', '/api/v2/flights/search', {
+      origin, destination, departureDate,
+      ...(returnDate ? { returnDate } : {}),
+      passengers: { adults: Number(adults), children: Number(children) },
+    });
+    res.json(result);
+  } catch (err) {
+    console.error('Flights error:', err.message);
+    res.status(err.status || 500).json({ error: err.message, body: err.body });
+  }
+});
+
+// Cars search
+app.post('/api/travel/cars', async (req, res) => {
+  try {
+    const { pickupLocation, pickupDate, returnDate, dropoffLocation } = req.body;
+    if (!pickupLocation || !pickupDate || !returnDate) return res.status(400).json({ error: 'pickupLocation, pickupDate and returnDate are required' });
+    const result = await xeniReq('POST', '/api/v2/cars/search', {
+      pickupLocation, dropoffLocation: dropoffLocation || pickupLocation,
+      pickupDate, returnDate,
+    });
+    res.json(result);
+  } catch (err) {
+    console.error('Cars error:', err.message);
+    res.status(err.status || 500).json({ error: err.message, body: err.body });
+  }
+});
+
+// Activities / tours search (UAE tourism + packages)
+app.post('/api/travel/activities', async (req, res) => {
+  try {
+    const { destination, date, category } = req.body;
+    if (!destination) return res.status(400).json({ error: 'destination is required' });
+    const result = await xeniReq('POST', '/api/v2/activities/search', {
+      destination, ...(date ? { date } : {}), ...(category ? { category } : {}),
+    });
+    res.json(result);
+  } catch (err) {
+    console.error('Activities error:', err.message);
+    res.status(err.status || 500).json({ error: err.message, body: err.body });
+  }
+});
+
+// Packages search
+app.post('/api/travel/packages', async (req, res) => {
+  try {
+    const { origin, destination, departureDate, adults = 2 } = req.body;
+    if (!destination || !departureDate) return res.status(400).json({ error: 'destination and departureDate are required' });
+    const result = await xeniReq('POST', '/api/v2/packages/search', {
+      origin, destination, departureDate, passengers: { adults: Number(adults) },
+    });
+    res.json(result);
+  } catch (err) {
+    console.error('Packages error:', err.message);
+    res.status(err.status || 500).json({ error: err.message, body: err.body });
+  }
+});
+
+// Hotel detail / rooms
+app.get('/api/travel/hotels/:hotelId', async (req, res) => {
+  try {
+    const { checkIn, checkOut, adults = 2 } = req.query;
+    const result = await xeniReq('GET',
+      `/api/v2/hotels/${req.params.hotelId}?checkIn=${checkIn}&checkOut=${checkOut}&adults=${adults}`
+    );
+    res.json(result);
+  } catch (err) {
+    res.status(err.status || 500).json({ error: err.message });
+  }
+});
+
 // Return publishable key to frontend (safe — it's public)
 app.get('/config', (req, res) => {
   res.json({ publishableKey: process.env.STRIPE_PUBLISHABLE_KEY });
