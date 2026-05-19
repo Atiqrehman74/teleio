@@ -596,7 +596,7 @@
       var description = propName + ' — ' + nights + ' night' + (nights > 1 ? 's' : '') + ' (' + checkin + ' → ' + checkout + ')';
       var piRes = await fetch('/create-payment-intent', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: total, currency: currency.toLowerCase(), description: description })
+        body: JSON.stringify({ amount: selectedRate, currency: currency.toLowerCase(), description: description })
       });
       var piData = await piRes.json();
       if (piData.error) throw new Error(piData.error);
