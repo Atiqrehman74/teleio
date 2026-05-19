@@ -178,6 +178,9 @@ app.get('/api/travel/resort-detail', require('./api/travel/resort-detail'));
 // Resort room availability
 app.get('/api/travel/resort-availability', require('./api/travel/resort-availability'));
 
+// Resort accessibility features
+app.get('/api/travel/resort-accessibility', require('./api/travel/resort-accessibility'));
+
 // Hotel content/discovery (no dates required — browse by location)
 app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
 

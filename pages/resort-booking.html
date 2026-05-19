@@ -176,6 +176,12 @@
         <div id="policies-list"></div>
       </div>
 
+      <!-- Accessibility -->
+      <div class="bk-card" id="access-card" style="display:none">
+        <div class="bk-section-title">Accessibility</div>
+        <div class="bk-amenities" id="access-list"></div>
+      </div>
+
       <!-- Available Slots -->
       <div class="bk-card" id="slots-card">
         <div class="bk-section-title">Available Dates & Rates</div>
@@ -322,7 +328,7 @@
   if (rateStr > 0) updateSummaryRate(rateStr, currency);
   else document.getElementById('pay-btn-text').textContent = 'Confirm Booking';
 
-  /* ── Load resort details ── */
+  /* ── Load resort details + accessibility in parallel ── */
   if (propId) {
     fetch('/api/travel/resort-detail?id=' + encodeURIComponent(propId))
       .then(function (r) { return r.json(); })
@@ -333,12 +339,16 @@
         renderInclusions(d);
         renderHighlights(d);
         renderPolicies(d);
-        // If detail has a rate, prefer it over URL param
         var detailRate = d.total_rate || d.base_rate || 0;
         var detailCur  = d.currency || selectedCurrency;
         if (detailRate > 0) updateSummaryRate(detailRate, detailCur);
       })
       .catch(function () { renderHeroFallback(); });
+
+    fetch('/api/travel/resort-accessibility?id=' + encodeURIComponent(propId))
+      .then(function (r) { return r.json(); })
+      .then(function (res) { renderAccessibility(res.data || res); })
+      .catch(function () { /* non-critical, skip */ });
   } else {
     renderHeroFallback();
   }
@@ -520,6 +530,39 @@
     });
 
     if (hasAny) document.getElementById('policies-card').style.display = 'block';
+  }
+
+  var accessibilityLabels = {
+    elevator:              '♿ Elevator',
+    equipmentForDeaf:      '🦻 Equipment for Deaf Guests',
+    braileOrRaisedSignage: '👁 Braille / Raised Signage',
+  };
+
+  function renderAccessibility(d) {
+    if (!d) return;
+    var chips = [];
+    // Named boolean fields
+    Object.keys(accessibilityLabels).forEach(function (key) {
+      if (d[key] && d[key].toString().toLowerCase() === 'yes') {
+        chips.push(accessibilityLabels[key]);
+      }
+    });
+    // features array
+    if (Array.isArray(d.features)) {
+      d.features.forEach(function (f) {
+        var label = typeof f === 'string' ? f : (f.name || '');
+        if (label) chips.push('♿ ' + label);
+      });
+    }
+    if (!chips.length) return;
+    var el = document.getElementById('access-list');
+    chips.forEach(function (text) {
+      var chip = document.createElement('span');
+      chip.className = 'bk-amenity';
+      chip.textContent = text;
+      el.appendChild(chip);
+    });
+    document.getElementById('access-card').style.display = 'block';
   }
 
   /* ── Resort Availability ── */
