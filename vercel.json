@@ -1,12 +1,14 @@
 {
   "version": 2,
   "framework": null,
-  "outputDirectory": ".",
-  "installCommand": "npm install",
-  "buildCommand": "",
   "functions": {
-    "api/**/*.js": {
+    "server.js": {
       "maxDuration": 30
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/server.js" },
+    { "source": "/config",   "destination": "/server.js" },
+    { "source": "/rates",    "destination": "/server.js" }
+  ]
 }
