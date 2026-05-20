@@ -1,9 +1,7 @@
-const https = require('https');
 const crypto = require('crypto');
-const { cors } = require('../_xeni');
+const { xeniReq, cors } = require('../_xeni');
 
 const DEALS_BASE = (process.env.XENI_DEALS_URL || 'https://travelapi.ai').trim().replace(/\/$/, '');
-const XENI_KEY   = (process.env.XENI_API_KEY || '').trim();
 
 module.exports = async (req, res) => {
   cors(res);
@@ -23,43 +21,17 @@ module.exports = async (req, res) => {
 
     const correlationId = crypto.randomUUID();
     const sessionId     = crypto.randomUUID();
-    const urlObj = new URL(`/hotels/api/v2/deals?${qs.toString()}`, DEALS_BASE);
 
-    const result = await new Promise((resolve, reject) => {
-      const opts = {
-        hostname: urlObj.hostname,
-        port: 443,
-        path: urlObj.pathname + urlObj.search,
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'x-api-key': XENI_KEY,
-          'x-correlation-id': correlationId,
-          'x-session-id':     sessionId,
-          'timezone':         timezone,
-        },
-      };
-      const r = https.request(opts, resp => {
-        let data = '';
-        resp.on('data', c => data += c);
-        resp.on('end', () => {
-          try {
-            const json = JSON.parse(data);
-            if (resp.statusCode >= 200 && resp.statusCode < 300) resolve(json);
-            else reject(Object.assign(new Error(`Xeni ${resp.statusCode}`), { status: resp.statusCode, body: json }));
-          } catch {
-            reject(new Error(`Parse error (${resp.statusCode}): ${data.slice(0, 200)}`));
-          }
-        });
-      });
-      r.on('error', reject);
-      r.setTimeout(12000, () => { r.destroy(); reject(new Error('Request timeout')); });
-      r.end();
+    // Pass full production URL — new URL(fullUrl, base) ignores base when first arg is absolute
+    const fullUrl = `${DEALS_BASE}/hotels/api/v2/deals?${qs.toString()}`;
+    const result = await xeniReq('GET', fullUrl, null, {
+      'x-correlation-id': correlationId,
+      'x-session-id':     sessionId,
+      'timezone':         timezone,
     });
-
     res.json(result);
   } catch (err) {
-    console.error('Hotel deals:', err.message);
-    res.status(err.status || 500).json({ error: err.message, body: err.body });
+    console.error('Hotel deals:', err.message, JSON.stringify(err.body));
+    res.status(err.status || 500).json({ error: err.message, body: err.body, detail: JSON.stringify(err.body) });
   }
 };

@@ -1,9 +1,5 @@
-const https = require('https');
 const crypto = require('crypto');
-const { cors } = require('../_xeni');
-
-const XENI_BASE = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').trim().replace(/\/$/, '');
-const XENI_KEY  = (process.env.XENI_API_KEY || '').trim();
+const { xeniReq, cors } = require('../_xeni');
 
 module.exports = async (req, res) => {
   cors(res);
@@ -14,41 +10,15 @@ module.exports = async (req, res) => {
     if (!query) return res.status(400).json({ error: 'query is required' });
 
     const correlationId = crypto.randomUUID();
-    const urlObj = new URL(`/activities/api/v2/autocomplete?query=${encodeURIComponent(query)}&limit=8`, XENI_BASE);
-
-    const result = await new Promise((resolve, reject) => {
-      const opts = {
-        hostname: urlObj.hostname,
-        port: 443,
-        path: urlObj.pathname + urlObj.search,
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'x-api-key': XENI_KEY,
-          'x-correlation-id': correlationId,
-        },
-      };
-      const r = https.request(opts, resp => {
-        let data = '';
-        resp.on('data', c => data += c);
-        resp.on('end', () => {
-          try {
-            const json = JSON.parse(data);
-            if (resp.statusCode >= 200 && resp.statusCode < 300) resolve(json);
-            else reject(Object.assign(new Error(`Xeni ${resp.statusCode}`), { status: resp.statusCode, body: json }));
-          } catch {
-            reject(new Error(`Parse error (${resp.statusCode}): ${data.slice(0, 200)}`));
-          }
-        });
-      });
-      r.on('error', reject);
-      r.setTimeout(10000, () => { r.destroy(); reject(new Error('Request timeout')); });
-      r.end();
-    });
-
+    const result = await xeniReq(
+      'GET',
+      `/activities/api/v2/autocomplete?query=${encodeURIComponent(query)}&limit=8`,
+      null,
+      { 'x-correlation-id': correlationId }
+    );
     res.json(result);
   } catch (err) {
-    console.error('Activity autocomplete:', err.message);
+    console.error('Activity autocomplete:', err.message, JSON.stringify(err.body));
     res.status(err.status || 500).json({ error: err.message, body: err.body });
   }
 };
