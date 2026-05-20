@@ -1,4 +1,4 @@
-const { xeniV1Req, cors } = require('../_xeni');
+const { xeniReq, cors } = require('../_xeni');
 const crypto = require('crypto');
 
 module.exports = async (req, res) => {
@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
 
     const correlationId = crypto.randomUUID();
     // Note: query param is camelCase referenceNumber (not reference_number)
-    const result = await xeniV1Req(
+    const result = await xeniReq(
       'PUT',
       `/resorts/api/v2/itineraries?referenceNumber=${encodeURIComponent(reference_number)}&status=CONFIRM`,
       null,

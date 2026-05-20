@@ -1,4 +1,4 @@
-const { xeniV1Req, cors } = require('../_xeni');
+const { xeniReq, cors } = require('../_xeni');
 const crypto = require('crypto');
 
 module.exports = async (req, res) => {
@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     if (!cabin_search_session_id) return res.status(400).json({ error: 'cabin_search_session_id is required' });
 
     const correlationId = crypto.randomUUID();
-    const result = await xeniV1Req(
+    const result = await xeniReq(
       'GET',
       `/flights/api/v2/availability/?cabin_search_session_id=${encodeURIComponent(cabin_search_session_id)}`,
       null,

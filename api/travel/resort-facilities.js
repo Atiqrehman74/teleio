@@ -1,4 +1,4 @@
-const { xeniV1Req, cors } = require('../_xeni');
+const { xeniReq, cors } = require('../_xeni');
 const crypto = require('crypto');
 
 module.exports = async (req, res) => {
@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     if (!facility) return res.status(400).json({ error: 'facility is required' });
 
     const correlationId = crypto.randomUUID();
-    const result = await xeniV1Req(
+    const result = await xeniReq(
       'GET',
       `/resorts/api/v2/property/${encodeURIComponent(id)}?facility=${encodeURIComponent(facility)}`,
       null,

@@ -1,4 +1,4 @@
-const { xeniV1Req, cors } = require('../_xeni');
+const { xeniReq, cors } = require('../_xeni');
 const crypto = require('crypto');
 
 module.exports = async (req, res) => {
@@ -61,7 +61,7 @@ module.exports = async (req, res) => {
     };
 
     const correlationId = crypto.randomUUID();
-    const result = await xeniV1Req('POST', '/flights/api/v2/bookings', body, {
+    const result = await xeniReq('POST', '/flights/api/v2/bookings', body, {
       'x-correlation-id': correlationId,
     });
     res.json(result);

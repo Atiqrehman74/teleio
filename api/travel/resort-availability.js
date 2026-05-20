@@ -1,4 +1,4 @@
-const { xeniV1Req, cors } = require('../_xeni');
+const { xeniReq, cors } = require('../_xeni');
 const crypto = require('crypto');
 
 module.exports = async (req, res) => {
@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     if (recommendation_id) path += `&recommendation_id=${encodeURIComponent(recommendation_id)}`;
 
     const correlationId = crypto.randomUUID();
-    const result = await xeniV1Req('GET', path, null, { 'x-correlation-id': correlationId });
+    const result = await xeniReq('GET', path, null, { 'x-correlation-id': correlationId });
     res.json(result);
   } catch (err) {
     console.error('Resort availability:', err.message);
