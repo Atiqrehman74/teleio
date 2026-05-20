@@ -2,7 +2,8 @@ const https = require('https');
 const crypto = require('crypto');
 const { cors } = require('../_xeni');
 
-const XENI_BASE = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').replace(/\/$/, '');
+const XENI_BASE = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').trim().replace(/\/$/, '');
+const XENI_KEY  = (process.env.XENI_API_KEY || '').trim();
 
 module.exports = async (req, res) => {
   cors(res);
@@ -62,6 +63,7 @@ module.exports = async (req, res) => {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          'x-api-key': XENI_KEY,
           'x-correlation-id': correlationId,
           'Content-Length': Buffer.byteLength(payload),
         },
@@ -87,7 +89,7 @@ module.exports = async (req, res) => {
 
     res.json(result);
   } catch (err) {
-    console.error('Hotel search:', err.message);
-    res.status(err.status || 500).json({ error: err.message, body: err.body });
+    console.error('Hotel search error:', err.message, JSON.stringify(err.body));
+    res.status(err.status || 500).json({ error: err.message, body: err.body, detail: JSON.stringify(err.body) });
   }
 };

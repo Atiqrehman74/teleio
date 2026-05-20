@@ -2,7 +2,8 @@ const https = require('https');
 const crypto = require('crypto');
 const { cors } = require('../_xeni');
 
-const XENI_BASE = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').replace(/\/$/, '');
+const XENI_BASE = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').trim().replace(/\/$/, '');
+const XENI_KEY  = (process.env.XENI_API_KEY || '').trim();
 
 function plainReq(method, path, body) {
   return new Promise((resolve, reject) => {
@@ -15,6 +16,7 @@ function plainReq(method, path, body) {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'x-api-key': XENI_KEY,
         'x-correlation-id': crypto.randomUUID(),
       },
     };

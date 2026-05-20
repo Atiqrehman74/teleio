@@ -1475,7 +1475,11 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
       else                      searchBody.place_id = dest;
       var r = await fetch('/api/travel/hotel-search', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(searchBody) });
       var data = await r.json();
-      if (!r.ok) throw new Error(data.error || 'Hotel search failed');
+      if (!r.ok) {
+        var detail = data.detail || (data.body ? JSON.stringify(data.body) : '');
+        showError(data.error || 'Hotel search failed', detail);
+        return;
+      }
       renderHotels(data);
 
     } else if (tab === 'cars') {
