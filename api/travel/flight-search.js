@@ -1,4 +1,4 @@
-const { xeniReq, cors } = require('../_xeni');
+const { xeniV1Req, cors } = require('../_xeni');
 const crypto = require('crypto');
 
 function extractCode(val) {
@@ -35,16 +35,15 @@ module.exports = async (req, res) => {
       adults:   parseInt(adults)   || 1,
       children: parseInt(children) || 0,
       infants:  parseInt(infants)  || 0,
-      pagination: { page: 1, limit: 10 },
     };
 
     const correlationId = crypto.randomUUID();
-    const result = await xeniReq('POST', '/flights/api/v2/search', body, {
+    const result = await xeniV1Req('POST', '/flights/api/v2/search', body, {
       'x-correlation-id': correlationId,
     });
     res.json(result);
   } catch (err) {
-    console.error('Flight search:', err.message);
-    res.status(err.status || 500).json({ error: err.message, body: err.body });
+    console.error('Flight search error:', err.message, JSON.stringify(err.body));
+    res.status(err.status || 500).json({ error: err.message, body: err.body, detail: JSON.stringify(err.body) });
   }
 };

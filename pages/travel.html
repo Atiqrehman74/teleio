@@ -1437,7 +1437,11 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
         body: JSON.stringify({ origin, destination: dest, departureDate: dep, returnDate: val('fl-return') || null,
           adults: val('fl-adults') || 1, children: val('fl-children') || 0, cabinType: val('fl-cabin') || 'Economy' }) });
       var data = await r.json();
-      if (!r.ok) throw new Error(data.error || 'Flight search failed');
+      if (!r.ok) {
+        var detail = data.detail || (data.body ? JSON.stringify(data.body) : '');
+        showError(data.error || 'Flight search failed', detail);
+        return;
+      }
       renderFlights(data);
 
     } else if (tab === 'hotels') {
