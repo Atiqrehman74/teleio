@@ -1312,7 +1312,7 @@ function switchHeroTab(tab) {
         var suggestions = (acData.data && acData.data.suggestions) || acData.suggestions || [];
         var destId = (suggestions[0] && suggestions[0].id) || '';
         // Step 2: search activities with destination_id
-        var body = { currency: 'USD', pagination: { page: 1, limit: 9 } };
+        var body = { currency: 'USD' };
         if (destId) body.destination_id = destId;
         else        body.destination    = destination;
         return fetch('/api/travel/activity-search', {

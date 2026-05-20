@@ -66,7 +66,8 @@ module.exports = async (req, res) => {
     const body = {
       destination_id: destId,
       currency,
-      pagination: { page: 1, limit: 20 },
+      page: 1,
+      limit: 20,
     };
     if (category) body.category = category;
     if (date) body.date = date;
