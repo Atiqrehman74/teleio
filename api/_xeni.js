@@ -1,11 +1,11 @@
 const https = require('https');
 
-const XENI_BASE   = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').replace(/\/$/, '');
-const XENI_KEY    = process.env.XENI_API_KEY    || '';
-const XENI_SECRET = process.env.XENI_SECRET_KEY || '';
+const XENI_BASE   = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').trim().replace(/\/$/, '');
+const XENI_KEY    = (process.env.XENI_API_KEY    || '').trim();
+const XENI_SECRET = (process.env.XENI_SECRET_KEY || '').trim();
 
-const CARS_BASE             = (process.env.XENI_CARS_URL || 'https://uat.travelapi.ai').replace(/\/$/, '');
-const CARS_SECURITY_CONTEXT = process.env.XENI_CARS_SECURITY_CONTEXT || '';
+const CARS_BASE             = (process.env.XENI_CARS_URL || 'https://uat.travelapi.ai').trim().replace(/\/$/, '');
+const CARS_SECURITY_CONTEXT = (process.env.XENI_CARS_SECURITY_CONTEXT || '').trim();
 
 // Token cache { token, expiresAt }
 let _tokenCache = null;

@@ -96,9 +96,9 @@ app.get('/api/rates', async (req, res) => {
 });
 
 // ── Xeni Travel API proxy ─────────────────────────────────────────────
-const XENI_BASE   = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').replace(/\/$/, '');
-const XENI_KEY    = process.env.XENI_API_KEY    || '';
-const XENI_SECRET = process.env.XENI_SECRET_KEY || '';
+const XENI_BASE   = (process.env.XENI_API_URL || 'https://uat.travelapi.ai').trim().replace(/\/$/, '');
+const XENI_KEY    = (process.env.XENI_API_KEY    || '').trim();
+const XENI_SECRET = (process.env.XENI_SECRET_KEY || '').trim();
 
 let _xeniTokenCache = null;
 
