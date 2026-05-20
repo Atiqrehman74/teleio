@@ -1305,33 +1305,33 @@ function switchHeroTab(tab) {
   function loadActivities(destination) {
     if (destLabel) destLabel.textContent = destination;
     showSkeletons();
-    fetch('/api/travel/activities', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ destination: destination })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      // Show actual API error so we can debug endpoint issues
-      if (data.error) {
-        var dbg = data._debug ? JSON.stringify(data._debug).slice(0,400) : '';
-        var body = data.body ? JSON.stringify(data.body).slice(0,300) : '';
-        grid.innerHTML = '<div style="grid-column:1/-1;background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:20px;font-size:12px;color:#991B1B">' +
-          '<strong>API Error:</strong> ' + data.error +
-          (body ? '<br><br><code style="word-break:break-all;font-size:11px">' + body + '</code>' : '') +
-          (dbg  ? '<br><br><code style="word-break:break-all;font-size:11px;color:#555">' + dbg  + '</code>' : '') +
-          '</div>';
-        return;
-      }
-      // Show image field debug if still using fallback (temporary — helps identify correct key)
-      if (data._debug && data._debug.sampleKeys) {
-        console.log('[Activities] First activity fields:', JSON.stringify(data._debug.sampleKeys));
-      }
-      renderActivities(data);
-    })
-    .catch(function(e) {
-      grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Unable to load activities. <a href="pages/travel.html#activities" style="color:var(--primary)">Search manually →</a></p>';
-    });
+    // Step 1: resolve destination name → destination_id via autocomplete
+    fetch('/api/travel/activity-autocomplete?query=' + encodeURIComponent(destination))
+      .then(function(r) { return r.json(); })
+      .then(function(acData) {
+        var suggestions = (acData.data && acData.data.suggestions) || acData.suggestions || [];
+        var destId = (suggestions[0] && suggestions[0].id) || '';
+        // Step 2: search activities with destination_id
+        var body = { currency: 'USD', pagination: { page: 1, limit: 9 } };
+        if (destId) body.destination_id = destId;
+        else        body.destination    = destination;
+        return fetch('/api/travel/activity-search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.error) {
+          grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Unable to load activities. <a href="pages/travel.html#activities" style="color:var(--primary)">Search manually →</a></p>';
+          return;
+        }
+        renderActivities(data);
+      })
+      .catch(function() {
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">Unable to load activities. <a href="pages/travel.html#activities" style="color:var(--primary)">Search manually →</a></p>';
+      });
   }
 
   /* Destination switcher buttons */
