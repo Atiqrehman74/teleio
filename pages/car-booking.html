@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Book Car — Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="../js/nav.js"></script>
+  <style>
+    body { background: #F1F5F9; font-family: 'Inter', sans-serif; }
+
+    .bk-wrapper {
+      max-width: 1040px; margin: 100px auto 60px; padding: 0 20px;
+      display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start;
+    }
+    @media(max-width: 840px) { .bk-wrapper { grid-template-columns: 1fr; margin-top: 80px; } }
+
+    /* ── Left summary ── */
+    .bk-summary { position: sticky; top: 88px; }
+
+    .car-card {
+      background: #fff; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1); margin-bottom: 16px;
+    }
+    .car-img-wrap { position: relative; height: 180px; background: #1E293B; overflow: hidden; }
+    .car-img-wrap img { width: 100%; height: 100%; object-fit: contain; padding: 16px; box-sizing: border-box; }
+    .car-brand-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); color: #fff;
+      font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 100px;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .car-info { padding: 18px 20px; }
+    .car-name { font-size: 17px; font-weight: 800; color: #1E293B; margin-bottom: 6px; }
+    .car-specs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .spec-chip {
+      background: #F1F5F9; border-radius: 8px; padding: 5px 10px;
+      font-size: 11px; font-weight: 600; color: #475569;
+      display: flex; align-items: center; gap: 5px;
+    }
+
+    .bk-card {
+      background: #fff; border-radius: 16px; padding: 20px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin-bottom: 14px;
+    }
+    .bk-card-title {
+      font-size: 10px; font-weight: 700; color: #64748B;
+      text-transform: uppercase; letter-spacing: .07em; margin-bottom: 12px;
+    }
+    .bk-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 8px 0; border-bottom: 1px solid #F1F5F9; font-size: 13px; gap: 8px;
+    }
+    .bk-row:last-child { border-bottom: none; }
+    .bk-row-label { color: #64748B; flex-shrink: 0; }
+    .bk-row-val { font-weight: 600; color: #1E293B; text-align: right; }
+    .bk-total {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 12px; margin-top: 4px; border-top: 2px dashed #E2E8F0;
+      font-size: 17px; font-weight: 800; color: #1E293B;
+    }
+    .bk-total-amt { color: var(--primary); }
+
+    .deposit-notice {
+      background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px;
+      padding: 10px 13px; font-size: 11px; color: #92400E; line-height: 1.5;
+    }
+
+    .trust-row { display: flex; align-items: center; gap: 9px; font-size: 12px; color: #475569; margin-bottom: 8px; }
+    .trust-row:last-child { margin-bottom: 0; }
+    .trust-dot { width: 18px; height: 18px; min-width: 18px; background: #DCFCE7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #16A34A; font-weight: 700; }
+
+    /* ── Right form ── */
+    .bk-form-col { min-width: 0; }
+
+    .bk-panel {
+      background: #fff; border-radius: 16px; padding: 28px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin-bottom: 16px;
+    }
+    .bk-panel-title { font-size: 17px; font-weight: 800; color: #1E293B; margin-bottom: 4px; }
+    .bk-panel-sub { font-size: 13px; color: #64748B; margin-bottom: 22px; }
+
+    .fgroup { margin-bottom: 14px; }
+    .fgroup label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+    .fgroup input, .fgroup select {
+      width: 100%; padding: 11px 13px; border: 1.5px solid #E2E8F0;
+      border-radius: 10px; font-size: 14px; color: #1E293B; background: #fff;
+      transition: border-color .2s, box-shadow .2s; box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    .fgroup input:focus, .fgroup select:focus {
+      outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+    }
+    .fgroup input.err { border-color: #EF4444; }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .frow3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media(max-width: 560px) { .frow, .frow3 { grid-template-columns: 1fr; } }
+
+    .sec-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 18px 0; font-size: 11px; color: #94A3B8; font-weight: 600; letter-spacing: .04em;
+    }
+    .sec-divider::before, .sec-divider::after { content: ''; flex: 1; height: 1px; background: #E2E8F0; }
+
+    /* Coverages */
+    .coverage-list { display: flex; flex-direction: column; gap: 8px; }
+    .coverage-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px; border-radius: 10px; background: #F8FAFC;
+      border: 1px solid #E2E8F0; font-size: 12px;
+    }
+    .cov-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .cov-type { font-weight: 700; color: #1E293B; margin-bottom: 2px; }
+    .cov-desc { color: #64748B; line-height: 1.4; }
+    .cov-free { color: #16A34A; font-weight: 700; font-size: 11px; }
+    .cov-paid { color: #EF4444; font-weight: 700; font-size: 11px; }
+
+    /* Payment rules */
+    .payment-rule-box {
+      background: #EFF6FF; border: 1px solid #BFDBFE;
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 12px; color: #1D4ED8; line-height: 1.6; margin-bottom: 14px;
+    }
+
+    /* Stripe */
+    .stripe-card-wrap {
+      padding: 11px 13px; border: 1.5px solid #E2E8F0;
+      border-radius: 10px; background: #fff; transition: border-color .2s, box-shadow .2s;
+    }
+    .stripe-card-wrap.focused { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+    .stripe-card-wrap.err { border-color: #EF4444; }
+    #card-errors { font-size: 12px; color: #EF4444; margin-top: 6px; min-height: 16px; }
+    .global-err {
+      font-size: 13px; color: #EF4444; background: #FEF2F2;
+      border: 1px solid #FECACA; border-radius: 8px;
+      padding: 10px 14px; margin-top: 10px; display: none;
+    }
+
+    .pay-btn {
+      width: 100%; padding: 15px;
+      background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+      color: #fff; border: none; border-radius: 12px;
+      font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 12px;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+    .pay-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(37,99,235,.35); }
+    .pay-btn:disabled { opacity: .65; cursor: not-allowed; transform: none; box-shadow: none; }
+    .pay-btn.loading .btn-spinner { display: block; }
+    .pay-btn.loading .btn-text { display: none; }
+    .btn-spinner {
+      width: 18px; height: 18px; display: none;
+      border: 2.5px solid rgba(255,255,255,.4); border-top-color: #fff;
+      border-radius: 50%; animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .stripe-badge {
+      display: flex; align-items: center; justify-content: center;
+      gap: 5px; font-size: 11px; color: #94A3B8; margin-top: 10px;
+    }
+
+    /* ── Success screen ── */
+    .success-wrap { display: none; }
+    .success-hero {
+      background: linear-gradient(135deg, #16A34A, #15803D);
+      border-radius: 16px; padding: 32px; text-align: center; color: #fff; margin-bottom: 16px;
+    }
+    .success-icon { font-size: 48px; margin-bottom: 10px; }
+    .success-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+    .ref-row { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
+    .ref-chip {
+      background: rgba(255,255,255,.15); border-radius: 8px; padding: 8px 16px;
+      font-size: 12px; font-weight: 600;
+    }
+    .ref-chip span { display: block; font-size: 10px; opacity: .75; margin-bottom: 2px; }
+
+    .success-detail {
+      background: #fff; border-radius: 16px; padding: 22px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.07); margin-bottom: 14px;
+    }
+    .success-detail-title { font-size: 12px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 12px; }
+    .srow { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #F1F5F9; font-size: 13px; }
+    .srow:last-child { border-bottom: none; }
+    .srow-l { color: #64748B; }
+    .srow-r { font-weight: 600; color: #1E293B; }
+
+    .action-btn {
+      display: block; width: 100%; padding: 13px; border-radius: 10px;
+      font-size: 14px; font-weight: 700; text-align: center;
+      text-decoration: none; transition: background .2s; margin-top: 10px;
+      font-family: 'Inter', sans-serif; border: none; cursor: pointer;
+    }
+    .action-btn.primary { background: #1E293B; color: #fff; }
+    .action-btn.primary:hover { background: #0F172A; }
+    .action-btn.secondary { background: #F1F5F9; color: #1E293B; }
+    .action-btn.secondary:hover { background: #E2E8F0; }
+    .action-btn.danger { background: #DC2626; color: #fff; }
+    .action-btn.danger:hover { background: #B91C1C; }
+
+    .cancel-panel {
+      border: 1px solid #FEE2E2; border-radius: 12px;
+      padding: 18px 20px; background: #FFF5F5; margin-top: 14px;
+    }
+    .cancel-panel-title { font-size: 13px; font-weight: 700; color: #991B1B; margin-bottom: 6px; }
+    .cancel-panel-sub { font-size: 12px; color: #B91C1C; margin-bottom: 12px; line-height: 1.5; }
+    #cancel-err { font-size: 12px; color: #DC2626; margin-top: 8px; display: none; }
+  </style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="bk-wrapper">
+
+  <!-- ─── LEFT: Car Summary ─── -->
+  <div class="bk-summary">
+    <div class="car-card">
+      <div class="car-img-wrap">
+        <img id="bk-car-img" src="" alt="Car" onerror="this.style.display='none'">
+        <span class="car-brand-badge" id="bk-brand">Car Rental</span>
+      </div>
+      <div class="car-info">
+        <div class="car-name" id="bk-car-name">Loading…</div>
+        <div class="car-specs" id="bk-specs"></div>
+      </div>
+    </div>
+
+    <div class="bk-card">
+      <div class="bk-card-title">Trip Details</div>
+      <div class="bk-row"><span class="bk-row-label">Pick-up</span><span class="bk-row-val" id="sum-pickup">—</span></div>
+      <div class="bk-row"><span class="bk-row-label">Return</span><span class="bk-row-val" id="sum-return">—</span></div>
+      <div class="bk-row"><span class="bk-row-label">Duration</span><span class="bk-row-val" id="sum-duration">—</span></div>
+      <div class="bk-row"><span class="bk-row-label">Rental price</span><span class="bk-row-val" id="sum-price">—</span></div>
+      <div class="bk-total">
+        <span>Total</span>
+        <span class="bk-total-amt" id="sum-total">—</span>
+      </div>
+    </div>
+
+    <div id="deposit-notice-wrap" class="deposit-notice" style="display:none; margin-bottom:14px;">
+      <strong>Security Deposit Required</strong><br>
+      <span id="deposit-amount"></span> will be blocked on your credit card at pickup.
+    </div>
+
+    <div class="bk-card">
+      <div class="trust-row"><div class="trust-dot">✓</div> No hidden fees</div>
+      <div class="trust-row"><div class="trust-dot">✓</div> Free cancellation on eligible bookings</div>
+      <div class="trust-row"><div class="trust-dot">✓</div> Secure payment via Stripe</div>
+      <div class="trust-row"><div class="trust-dot">✓</div> 24/7 support</div>
+    </div>
+  </div>
+
+  <!-- ─── RIGHT: Form ─── -->
+  <div class="bk-form-col" id="form-col">
+
+    <!-- Coverage & terms -->
+    <div class="bk-panel" id="coverages-panel" style="display:none;">
+      <div class="bk-panel-title">What's Included</div>
+      <div class="bk-panel-sub">Coverage and policies for this rental.</div>
+      <div class="coverage-list" id="coverages-list"></div>
+    </div>
+
+    <!-- Payment rules notice -->
+    <div class="payment-rule-box" id="payment-rule-box" style="display:none;"></div>
+
+    <!-- Booking form -->
+    <div class="bk-panel">
+      <div class="bk-panel-title">Driver Details</div>
+      <div class="bk-panel-sub">Enter the main driver's information exactly as it appears on their ID.</div>
+
+      <form id="booking-form" novalidate>
+        <div class="frow">
+          <div class="fgroup">
+            <label>First Name *</label>
+            <input type="text" id="f-first" placeholder="John" required>
+          </div>
+          <div class="fgroup">
+            <label>Last Name *</label>
+            <input type="text" id="f-last" placeholder="Doe" required>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Date of Birth *</label>
+            <input type="date" id="f-dob" required>
+          </div>
+          <div class="fgroup">
+            <label>Gender *</label>
+            <select id="f-gender">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fgroup">
+            <label>Email Address *</label>
+            <input type="email" id="f-email" placeholder="john@example.com" required>
+          </div>
+          <div class="fgroup">
+            <label>Phone *</label>
+            <input type="tel" id="f-phone" placeholder="14250001234" required>
+          </div>
+        </div>
+
+        <div class="sec-divider">Address</div>
+
+        <div class="frow">
+          <div class="fgroup">
+            <label>Street *</label>
+            <input type="text" id="f-street" placeholder="1 Market St" required>
+          </div>
+          <div class="fgroup">
+            <label>City *</label>
+            <input type="text" id="f-city" placeholder="San Francisco" required>
+          </div>
+        </div>
+        <div class="frow3">
+          <div class="fgroup">
+            <label>State Code</label>
+            <input type="text" id="f-state" placeholder="CA" maxlength="3">
+          </div>
+          <div class="fgroup">
+            <label>Postal Code *</label>
+            <input type="text" id="f-postal" placeholder="93006" required>
+          </div>
+          <div class="fgroup">
+            <label>Country Code *</label>
+            <select id="f-country">
+              <option value="US">US</option>
+              <option value="GB">GB</option>
+              <option value="AE">AE</option>
+              <option value="AU">AU</option>
+              <option value="CA">CA</option>
+              <option value="DE">DE</option>
+              <option value="FR">FR</option>
+              <option value="IN">IN</option>
+              <option value="PK">PK</option>
+              <option value="SG">SG</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sec-divider">Secure Payment</div>
+
+        <div class="fgroup">
+          <label>Card Details *</label>
+          <div class="stripe-card-wrap" id="card-wrap">
+            <div id="card-element"></div>
+          </div>
+          <div id="card-errors"></div>
+        </div>
+
+        <button type="submit" class="pay-btn" id="pay-btn">
+          <span class="btn-spinner"></span>
+          <span class="btn-text" id="pay-btn-text">Pay Now</span>
+        </button>
+
+        <div id="pay-global-err" class="global-err"></div>
+
+        <div class="stripe-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#94A3B8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+          Secured by Stripe &mdash; We never store card data
+        </div>
+      </form>
+    </div>
+  </div><!-- /form-col -->
+
+  <!-- ─── SUCCESS ─── (full width by overriding grid) -->
+</div><!-- /bk-wrapper -->
+
+<!-- Success screen (outside wrapper so it can be full-width-ish) -->
+<div style="max-width:760px; margin: 0 auto 60px; padding: 0 20px; display:none;" id="success-section">
+  <div class="success-hero">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Car Booked!</div>
+    <div style="font-size:14px;opacity:.85;">Your rental is confirmed. Check your email for details.</div>
+    <div class="ref-row">
+      <div class="ref-chip"><span>Booking ID</span><span id="s-id">—</span></div>
+      <div class="ref-chip"><span>Status</span><span id="s-status">Confirmed</span></div>
+    </div>
+  </div>
+
+  <div class="success-detail">
+    <div class="success-detail-title">Rental Details</div>
+    <div class="srow"><span class="srow-l">Vehicle</span><span class="srow-r" id="s-vehicle">—</span></div>
+    <div class="srow"><span class="srow-l">Pick-up</span><span class="srow-r" id="s-pickup">—</span></div>
+    <div class="srow"><span class="srow-l">Return</span><span class="srow-r" id="s-return">—</span></div>
+    <div class="srow"><span class="srow-l">Driver</span><span class="srow-r" id="s-driver">—</span></div>
+    <div class="srow"><span class="srow-l">Email</span><span class="srow-r" id="s-email">—</span></div>
+  </div>
+
+  <div class="success-detail">
+    <div class="success-detail-title">Price Breakdown</div>
+    <div class="srow"><span class="srow-l">Rental amount</span><span class="srow-r" id="s-rental-amt">—</span></div>
+    <div class="srow" id="s-fee-rows"></div>
+    <div class="srow" style="border-top:2px dashed #E2E8F0;margin-top:4px;font-size:16px;font-weight:800;border-bottom:none;">
+      <span style="color:#64748B;">Total Paid</span>
+      <span style="color:var(--primary);" id="s-total-paid">—</span>
+    </div>
+  </div>
+
+  <div id="s-deposit-notice" class="deposit-notice" style="display:none;margin-bottom:14px;"></div>
+
+  <div id="s-payment-rules" style="display:none;" class="payment-rule-box"></div>
+
+  <a href="#" id="s-product-url" class="action-btn primary" target="_blank" style="display:none;">
+    View Full Rental Terms
+  </a>
+  <a href="travel.html" class="action-btn secondary">← Search More Cars</a>
+
+  <!-- Cancel section -->
+  <div class="cancel-panel" id="cancel-panel" style="display:none; margin-top:14px;">
+    <div class="cancel-panel-title">Cancel This Booking</div>
+    <div class="cancel-panel-sub">Cancellation fees may apply. This action cannot be undone.</div>
+    <button type="button" class="action-btn danger" id="cancel-confirm-btn" style="margin-top:0;">
+      <span id="cancel-spinner" style="display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle;"></span>
+      Cancel Rental Booking
+    </button>
+    <div id="cancel-err"></div>
+  </div>
+
+  <div style="text-align:center;margin-top:12px;">
+    <button type="button" id="toggle-cancel-btn" style="background:none;border:none;color:#94A3B8;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:underline;padding:4px;">
+      Need to cancel this booking?
+    </button>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* ── URL params ── */
+  var sp         = new URLSearchParams(location.search);
+  var offerToken = sp.get('token')    || '';
+  var carName    = sp.get('name')     || 'Car Rental';
+  var carImg     = sp.get('img')      || '';
+  var carBrand   = sp.get('brand')    || 'Car Rental';
+  var carPrice   = parseFloat(sp.get('price'))  || 0;
+  var carCur     = (sp.get('currency') || 'USD').toUpperCase();
+  var pickupDate = sp.get('pickup')   || '';
+  var returnDate = sp.get('return')   || '';
+  var sippCode   = sp.get('sipp')     || '';
+  var country    = sp.get('country')  || 'US';
+
+  document.title = carName + ' — Teleio Tourism';
+
+  /* ── Populate left card from URL params immediately ── */
+  document.getElementById('bk-car-name').textContent = carName;
+  document.getElementById('bk-brand').textContent    = carBrand;
+  if (carImg) document.getElementById('bk-car-img').src = carImg;
+  if (sippCode) addSpec('🏷', sippCode);
+
+  document.getElementById('sum-pickup').textContent  = pickupDate || '—';
+  document.getElementById('sum-return').textContent  = returnDate || '—';
+
+  function fmt(n, cur) {
+    return (cur || carCur) + ' ' + Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function addSpec(icon, text) {
+    var el = document.createElement('span');
+    el.className = 'spec-chip';
+    el.innerHTML = '<span>' + icon + '</span>' + escapeHtml(text);
+    document.getElementById('bk-specs').appendChild(el);
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function daysBetween(a, b) {
+    var ms = new Date(b) - new Date(a);
+    return Math.max(1, Math.round(ms / 86400000));
+  }
+
+  /* ── Load offer details from server ── */
+  async function loadOffer() {
+    if (!offerToken) return;
+    try {
+      var res  = await fetch('/api/travel/cars-offer?token=' + encodeURIComponent(offerToken) + '&country=' + country + '&currency=' + carCur);
+      var json = await res.json();
+      if (!res.ok) return;
+      var d = json.data || {};
+      populateOffer(d);
+    } catch (_) {}
+  }
+
+  function populateOffer(d) {
+    /* Vehicle specs */
+    var veh = d.vehicle || {};
+    if (veh.name) document.getElementById('bk-car-name').textContent = veh.name;
+    if (veh.picture_url) document.getElementById('bk-car-img').src = veh.picture_url;
+    document.getElementById('bk-specs').innerHTML = '';
+    if (veh.transmission_type && veh.transmission_type !== 'Unspecified') addSpec('⚙', veh.transmission_type);
+    if (veh.passenger_quantity) addSpec('👥', veh.passenger_quantity + ' Passengers');
+    if (veh.baggage_quantity)   addSpec('🧳', veh.baggage_quantity + ' Bags');
+    if (veh.air_conditioning)   addSpec('❄', 'A/C');
+    if (veh.vehicle_size)       addSpec('🚗', veh.vehicle_size);
+    if (d.rental_car_brand)     document.getElementById('bk-brand').textContent = d.rental_car_brand;
+
+    /* Trip dates */
+    var pickup = d.pick_up_date_time || pickupDate;
+    var ret    = d.return_date_time  || returnDate;
+    document.getElementById('sum-pickup').textContent = pickup ? pickup.replace('T', ' ') : '—';
+    document.getElementById('sum-return').textContent = ret    ? ret.replace('T', ' ')    : '—';
+
+    if (pickup && ret) {
+      var days = daysBetween(pickup, ret);
+      document.getElementById('sum-duration').textContent = days + (days === 1 ? ' day' : ' days');
+    }
+
+    /* Pricing */
+    var charges = (d.rental_rate && d.rental_rate.vehicle_charges) || [];
+    var preferred = charges.find(function (c) { return c.purpose === 'preferred'; });
+    var deposit   = charges.find(function (c) { return (c.purpose || '').toLowerCase().includes('deposit'); });
+
+    if (preferred) {
+      var price = preferred.base_price;
+      document.getElementById('sum-price').textContent = fmt(price, preferred.currency_code);
+      document.getElementById('sum-total').textContent = fmt(price, preferred.currency_code);
+      document.getElementById('pay-btn-text').textContent = 'Pay Now — ' + fmt(price, preferred.currency_code);
+      carPrice = price;
+      carCur   = preferred.currency_code || carCur;
+    }
+
+    if (deposit && deposit.base_price > 0) {
+      document.getElementById('deposit-amount').textContent = fmt(deposit.base_price, deposit.currency_code);
+      document.getElementById('deposit-notice-wrap').style.display = 'block';
+    }
+
+    /* Coverages */
+    var coverages = d.coverages || [];
+    if (coverages.length) {
+      var icons = { 'Unlimited Mileage': '🛣', 'Fuel Information': '⛽', 'VAT': '🧾', 'Cancellation fee': '❌' };
+      var html = coverages.map(function (cv) {
+        var type = cv.coverage && cv.coverage.coverage_type;
+        var charge = cv.charge || {};
+        var icon = icons[type] || '📋';
+        var priceLabel = charge.amount > 0
+          ? '<span class="cov-paid">' + fmt(charge.amount, charge.currency_code) + '</span>'
+          : '<span class="cov-free">Included</span>';
+
+        /* Cancellation fee: collapse detail windows */
+        var desc = charge.description || '';
+        if (type === 'Cancellation fee' && cv.coverage && cv.coverage.details && cv.coverage.details.length) {
+          var firstDetail = cv.coverage.details[0];
+          desc = (firstDetail.charge && firstDetail.charge.description) || desc;
+        }
+
+        return '<div class="coverage-item">' +
+          '<span class="cov-icon">' + icon + '</span>' +
+          '<div><div class="cov-type">' + escapeHtml(type || '') + ' ' + priceLabel + '</div>' +
+          (desc ? '<div class="cov-desc">' + escapeHtml(desc.slice(0, 220)) + (desc.length > 220 ? '…' : '') + '</div>' : '') +
+          '</div></div>';
+      }).join('');
+      document.getElementById('coverages-list').innerHTML = html;
+      document.getElementById('coverages-panel').style.display = 'block';
+    }
+
+    /* Payment rules */
+    var rules = d.rate_rules && d.rate_rules.payment_rules && d.rate_rules.payment_rules.payment_rule;
+    if (rules && rules.length) {
+      var ruleBox = document.getElementById('payment-rule-box');
+      ruleBox.textContent = rules[0].text || '';
+      ruleBox.style.display = 'block';
+    }
+  }
+
+  loadOffer();
+
+  /* ── Stripe ── */
+  var stripe, cardElement;
+
+  fetch('/config')
+    .then(function (r) { return r.json(); })
+    .then(function (cfg) {
+      stripe = Stripe(cfg.publishableKey);
+      var elements = stripe.elements({
+        fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap' }]
+      });
+      cardElement = elements.create('card', {
+        style: {
+          base: { fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#1E293B', '::placeholder': { color: '#94A3B8' } },
+          invalid: { color: '#EF4444' }
+        }
+      });
+      cardElement.mount('#card-element');
+      cardElement.on('focus',  function () { document.getElementById('card-wrap').classList.add('focused'); });
+      cardElement.on('blur',   function () { document.getElementById('card-wrap').classList.remove('focused'); });
+      cardElement.on('change', function (e) {
+        var wrap  = document.getElementById('card-wrap');
+        var errEl = document.getElementById('card-errors');
+        if (e.error) { wrap.classList.add('err'); errEl.textContent = e.error.message; }
+        else          { wrap.classList.remove('err'); errEl.textContent = ''; }
+      });
+    })
+    .catch(function () {
+      document.getElementById('card-errors').textContent = 'Unable to load payment form. Please refresh.';
+    });
+
+  /* ── Form submit ── */
+  document.getElementById('booking-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    var firstName = document.getElementById('f-first').value.trim();
+    var lastName  = document.getElementById('f-last').value.trim();
+    var dob       = document.getElementById('f-dob').value;
+    var gender    = document.getElementById('f-gender').value;
+    var email     = document.getElementById('f-email').value.trim();
+    var phone     = document.getElementById('f-phone').value.trim();
+    var street    = document.getElementById('f-street').value.trim();
+    var city      = document.getElementById('f-city').value.trim();
+    var stateCode = document.getElementById('f-state').value.trim();
+    var postal    = document.getElementById('f-postal').value.trim();
+    var citizenCC = document.getElementById('f-country').value;
+
+    var valid = true;
+    [['f-first', firstName], ['f-last', lastName], ['f-dob', dob], ['f-email', email],
+     ['f-phone', phone], ['f-street', street], ['f-city', city], ['f-postal', postal]
+    ].forEach(function (pair) {
+      var el = document.getElementById(pair[0]);
+      if (!pair[1]) { el.classList.add('err'); valid = false; }
+      else el.classList.remove('err');
+    });
+
+    if (!valid) { showPayErr('Please fill in all required fields.'); return; }
+
+    if (!stripe || !cardElement) {
+      showPayErr('Payment form not ready. Please wait a moment.');
+      return;
+    }
+
+    if (!offerToken) {
+      showPayErr('No offer token found. Please return to search and select a car again.');
+      return;
+    }
+
+    var btn = document.getElementById('pay-btn');
+    btn.disabled = true;
+    btn.classList.add('loading');
+    document.getElementById('card-errors').textContent = '';
+    document.getElementById('pay-global-err').style.display = 'none';
+
+    try {
+      /* 1. Stripe PaymentIntent */
+      var piRes = await fetch('/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: carPrice,
+          currency: carCur.toLowerCase(),
+          description: carName + ' rental (' + (pickupDate || '') + ' – ' + (returnDate || '') + ')'
+        })
+      });
+      var piData = await piRes.json();
+      if (piData.error) throw new Error(piData.error);
+
+      /* 2. Confirm card */
+      var stripeResult = await stripe.confirmCardPayment(piData.clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: { name: firstName + ' ' + lastName, email: email }
+        }
+      });
+
+      if (stripeResult.error) {
+        document.getElementById('card-errors').textContent = stripeResult.error.message;
+        btn.disabled = false;
+        btn.classList.remove('loading');
+        return;
+      }
+
+      /* 3. Book with Xeni */
+      var bookRes = await fetch('/api/travel/cars-book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          availability_details_token: offerToken,
+          currency: carCur,
+          customer: {
+            first_name:          firstName,
+            last_name:           lastName,
+            birth_date:          dob,
+            gender:              gender,
+            language:            'EN',
+            email:               email,
+            phone:               phone,
+            citizen_country_code: citizenCC,
+            address: {
+              street:      street,
+              city:        city,
+              state_code:  stateCode || undefined,
+              postal_code: postal,
+            }
+          }
+        })
+      });
+      var bookData = await bookRes.json();
+      if (!bookRes.ok) throw new Error((bookData.body && bookData.body.message) || bookData.error || 'Booking failed');
+
+      showSuccess(bookData.data || bookData, firstName, lastName, email);
+
+    } catch (err) {
+      showPayErr(err.message || 'Booking failed. Please try again.');
+      btn.disabled = false;
+      btn.classList.remove('loading');
+    }
+  });
+
+  function showPayErr(msg) {
+    var el = document.getElementById('pay-global-err');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  /* ── Success screen ── */
+  var currentBookingId = null;
+
+  function showSuccess(data, firstName, lastName, email) {
+    document.getElementById('bk-wrapper') && (document.querySelector('.bk-wrapper').style.display = 'none');
+    document.querySelector('.bk-wrapper').style.display = 'none';
+    var successEl = document.getElementById('success-section');
+    successEl.style.display = 'block';
+    successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    currentBookingId = data.id || null;
+
+    /* Reference */
+    document.getElementById('s-id').textContent     = data.id     || '—';
+    document.getElementById('s-status').textContent = data.status || 'Confirmed';
+
+    /* Vehicle & dates */
+    var veh = data.vehicle || {};
+    document.getElementById('s-vehicle').textContent = veh.name || carName;
+    var core = data.veh_rental_core || {};
+    document.getElementById('s-pickup').textContent = (core.pick_up_date_time || '').replace('T', ' ') || '—';
+    document.getElementById('s-return').textContent = (core.return_date_time  || '').replace('T', ' ') || '—';
+    document.getElementById('s-driver').textContent = firstName + ' ' + lastName;
+    document.getElementById('s-email').textContent  = email;
+
+    /* Pricing */
+    var charges = (data.rental_rate && data.rental_rate.vehicle_charges) || [];
+    var preferred = charges.find(function (c) { return c.purpose === 'preferred'; });
+    var deposit   = charges.find(function (c) { return (c.purpose || '').toLowerCase().includes('deposit'); });
+
+    if (preferred) {
+      document.getElementById('s-rental-amt').textContent = fmt(preferred.base_price, preferred.currency_code);
+    }
+
+    /* Fees */
+    var fees = data.fees || [];
+    var feeHtml = fees.filter(function (f) { return f.amount > 0; }).map(function (f) {
+      return '<span style="color:#64748B">' + escapeHtml(f.description || 'Fee') + '</span>' +
+             '<span style="font-weight:600;color:#1E293B">' + fmt(f.amount, f.currency_code) + '</span>';
+    }).join('');
+    if (feeHtml) {
+      var feeRow = document.getElementById('s-fee-rows');
+      feeRow.style.display = 'flex';
+      feeRow.innerHTML = feeHtml;
+    }
+
+    if (preferred) {
+      document.getElementById('s-total-paid').textContent = fmt(preferred.base_price, preferred.currency_code);
+    }
+
+    /* Deposit notice */
+    if (deposit && deposit.base_price > 0) {
+      var dn = document.getElementById('s-deposit-notice');
+      dn.innerHTML = '<strong>Security Deposit:</strong> ' + fmt(deposit.base_price, deposit.currency_code) +
+        ' will be blocked on your credit card at pickup.';
+      dn.style.display = 'block';
+    }
+
+    /* Payment rules */
+    var rules = data.payment_rules || [];
+    if (rules.length) {
+      var pr = document.getElementById('s-payment-rules');
+      pr.textContent = rules[0].text || '';
+      pr.style.display = 'block';
+    }
+
+    /* Product URL */
+    var productUrl = data.tpa_extensions && data.tpa_extensions.product_information && data.tpa_extensions.product_information.url;
+    if (productUrl) {
+      var urlBtn = document.getElementById('s-product-url');
+      urlBtn.href = productUrl;
+      urlBtn.style.display = 'block';
+    }
+  }
+
+  /* ── Cancel ── */
+  document.getElementById('toggle-cancel-btn').addEventListener('click', function () {
+    var panel = document.getElementById('cancel-panel');
+    var isOpen = panel.style.display !== 'none';
+    panel.style.display = isOpen ? 'none' : 'block';
+    this.textContent = isOpen ? 'Need to cancel this booking?' : 'Hide cancellation';
+  });
+
+  document.getElementById('cancel-confirm-btn').addEventListener('click', async function () {
+    if (!currentBookingId) return;
+    var btn     = this;
+    var spinner = document.getElementById('cancel-spinner');
+    var errEl   = document.getElementById('cancel-err');
+    btn.disabled = true;
+    spinner.style.display = 'inline-block';
+    errEl.style.display = 'none';
+
+    try {
+      var res  = await fetch('/api/travel/cars-cancel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ booking_id: currentBookingId })
+      });
+      var json = await res.json();
+      if (!res.ok) throw new Error((json.body && json.body.message) || json.error || 'Cancellation failed');
+
+      document.getElementById('s-status').textContent = 'Cancelled';
+      document.getElementById('cancel-panel').innerHTML =
+        '<div style="color:#991B1B;font-weight:700;font-size:13px;">Booking cancelled successfully.</div>' +
+        '<div style="color:#B91C1C;font-size:12px;margin-top:4px;">' +
+        (json.data && json.data.info && json.data.info.veh_reservation && json.data.info.veh_reservation.reservation_status
+          ? escapeHtml(json.data.info.veh_reservation.reservation_status)
+          : 'Your booking has been cancelled.') +
+        '</div>';
+      document.getElementById('toggle-cancel-btn').style.display = 'none';
+
+    } catch (err) {
+      errEl.textContent   = err.message || 'Cancellation failed. Please contact support.';
+      errEl.style.display = 'block';
+      btn.disabled        = false;
+      spinner.style.display = 'none';
+    }
+  });
+
+})();
+</script>
+</body>
+</html>

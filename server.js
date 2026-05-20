@@ -202,6 +202,83 @@ app.get('/api/travel/resort-booking', require('./api/travel/resort-booking-get')
 // Flight airport autocomplete
 app.get('/api/travel/flight-autocomplete', require('./api/travel/flight-autocomplete'));
 
+// Activities destination autocomplete
+app.get('/api/travel/activity-autocomplete', require('./api/travel/activity-autocomplete'));
+
+// Activities category filters
+app.get('/api/travel/activity-filters', require('./api/travel/activity-filters'));
+
+// Activities full category tree (with parent/child hierarchy)
+app.get('/api/travel/activity-categories', require('./api/travel/activity-categories'));
+
+// Activity product detail (HMAC auth)
+app.get('/api/travel/activity-detail', require('./api/travel/activity-detail'));
+
+// Activity product availability calendar (HMAC auth)
+app.get('/api/travel/activity-calendar', require('./api/travel/activity-calendar'));
+
+// Activity slot availability (no auth — returns bookable_items with availability_token)
+app.post('/api/travel/activity-availability', require('./api/travel/activity-availability'));
+
+// Activity booking questions (no auth — dynamic form fields per product + token)
+app.get('/api/travel/activity-questions', require('./api/travel/activity-questions'));
+
+// Activity booking (no auth — availability_token in query param)
+app.post('/api/travel/activity-book', require('./api/travel/activity-book'));
+
+// Activity booking retrieval (no auth — reference_number path param)
+app.get('/api/travel/activity-booking', require('./api/travel/activity-booking-get'));
+
+// Activity booking cancellation (no auth — PATCH booking_status: CANCELLED)
+app.post('/api/travel/activity-cancel', require('./api/travel/activity-cancel'));
+
+// ── Hotels V2 ────────────────────────────────────────────────────────────────
+// Destination autocomplete — cities, states, multicity, POI, train stations (no auth)
+app.get('/api/travel/hotel-autocomplete', require('./api/travel/hotel-autocomplete'));
+
+// Property search — geo or place_id, occupancy, filters, sort (no auth, is_async)
+app.post('/api/travel/hotel-search', require('./api/travel/hotel-search'));
+
+// Hotel deals — geo-based featured deals, production host (no auth, x-session-id + timezone)
+app.get('/api/travel/hotel-deals', require('./api/travel/hotel-deals'));
+
+// ── Cars V2 ──────────────────────────────────────────────────────────────────
+// Location autocomplete — airports + cities by keyword (x-security-context)
+app.get('/api/travel/cars-location-search', require('./api/travel/cars-location-search'));
+
+// Car rental search (no auth — geo or airport pickup/return codes)
+app.get('/api/travel/cars-search', require('./api/travel/cars-search'));
+
+// Car offer detail (HMAC auth — token from search → full vehicle + coverage + location detail)
+app.get('/api/travel/cars-offer', require('./api/travel/cars-offer'));
+
+// Car booking (V1 x-api-key — availability_details_token from offer detail)
+app.post('/api/travel/cars-book', require('./api/travel/cars-book'));
+
+// Car booking retrieval (V1 x-api-key — booking_id from book response)
+app.get('/api/travel/cars-booking', require('./api/travel/cars-booking-get'));
+
+// Car cancellation (V1 x-api-key — DELETE with booking_status: CANCELLED)
+app.post('/api/travel/cars-cancel', require('./api/travel/cars-cancel'));
+
+// Flight availability / price verify (cabin_search_session_id → full detail + cabin_availability_token)
+app.get('/api/travel/flight-availability', require('./api/travel/flight-availability'));
+
+// Flight fare rules (same token → detailed penalties + baggage per segment)
+app.get('/api/travel/flight-farerules', require('./api/travel/flight-farerules'));
+
+// Flight booking (POST after Stripe payment succeeds)
+app.post('/api/travel/flight-book', require('./api/travel/flight-book'));
+
+// Flight booking retrieval by booking_id
+app.get('/api/travel/flight-booking', require('./api/travel/flight-booking-get'));
+
+// Flight booking confirmation (BOOKED → TICKETED)
+app.post('/api/travel/flight-confirm', require('./api/travel/flight-confirm'));
+
+// Flight booking cancellation
+app.post('/api/travel/flight-cancel', require('./api/travel/flight-cancel'));
+
 // Hotel content/discovery (no dates required — browse by location)
 app.post('/api/travel/hotel-content', require('./api/travel/hotel-content'));
 
@@ -245,25 +322,7 @@ app.post('/api/travel/hotels', async (req, res) => {
 });
 
 // Flights search
-app.post('/api/travel/flights', async (req, res) => {
-  try {
-    const { origin, destination, departureDate, returnDate, adults = 1, children = 0 } = req.body;
-    if (!origin || !destination || !departureDate) return res.status(400).json({ error: 'origin, destination and departureDate are required' });
-    const flightInfo = [{ departure_date: departureDate, origin, destination }];
-    if (returnDate) flightInfo.push({ departure_date: returnDate, origin: destination, destination: origin });
-    const result = await xeniReq('POST', '/flights/api/v2/search', {
-      flight_info: flightInfo,
-      route_type: returnDate ? 'return' : 'oneway',
-      cabin_type: 'economy',
-      adults: Number(adults), children: Number(children), infants: 0,
-      pagination: { page: 1, limit: 20 },
-    });
-    res.json(result);
-  } catch (err) {
-    console.error('Flights error:', err.message);
-    res.status(err.status || 500).json({ error: err.message, body: err.body });
-  }
-});
+app.post('/api/travel/flights', require('./api/travel/flight-search'));
 
 // Cars search
 app.post('/api/travel/cars', async (req, res) => {
@@ -300,23 +359,7 @@ app.post('/api/travel/cars', async (req, res) => {
 });
 
 // Activities search
-app.post('/api/travel/activities', async (req, res) => {
-  try {
-    const { destination, category } = req.body;
-    if (!destination) return res.status(400).json({ error: 'destination is required' });
-    const auto = await xeniReq('GET', `/activities/api/v2/autocomplete?query=${encodeURIComponent(destination)}&limit=1`);
-    const places = Array.isArray(auto) ? auto : (auto.data || auto.results || []);
-    const destinationId = places[0] ? (places[0].destination_id || places[0].id || '') : '';
-    const body = { currency: 'USD', pagination: { page: 1, limit: 20 } };
-    if (destinationId) body.destination_id = destinationId;
-    if (category) body.category = category;
-    const result = await xeniReq('POST', '/activities/api/v2/search', body);
-    res.json(result);
-  } catch (err) {
-    console.error('Activities error:', err.message);
-    res.status(err.status || 500).json({ error: err.message, body: err.body });
-  }
-});
+app.post('/api/travel/activities', require('./api/travel/activity-search'));
 
 // Resorts (vacation packages) search
 app.post('/api/travel/resorts', async (req, res) => {

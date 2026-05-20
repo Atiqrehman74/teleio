@@ -444,6 +444,12 @@
             <div class="t-fg sm"><label>Adults</label>
               <select id="fl-adults"><option>1</option><option selected>2</option><option>3</option><option>4</option></select>
             </div>
+            <div class="t-fg sm"><label>Children</label>
+              <select id="fl-children"><option selected>0</option><option>1</option><option>2</option><option>3</option></select>
+            </div>
+            <div class="t-fg sm"><label>Cabin</label>
+              <select id="fl-cabin"><option value="Economy" selected>Economy</option><option value="Business">Business</option><option value="First">First</option></select>
+            </div>
             <div style="align-self:flex-end;flex-shrink:0">
               <button type="submit" class="t-search-btn">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
@@ -455,8 +461,11 @@
 
         <!-- Hotels -->
         <div id="hotels" class="t-panel">
+          <input type="hidden" id="ht-dest-id">
+          <input type="hidden" id="ht-dest-lat">
+          <input type="hidden" id="ht-dest-lon">
           <div class="t-form-row">
-            <div class="t-fg full"><label>Destination</label><input id="ht-dest" type="text" placeholder="e.g. Dubai, Paris, New York"></div>
+            <div class="t-fg full"><label>Destination</label><div class="ac-wrap"><input id="ht-dest" type="text" placeholder="e.g. Dubai, Paris, New York" autocomplete="off"><div class="ac-dropdown" id="ac-ht-dest"></div></div></div>
             <div class="t-fg"><label>Check-in</label><input id="ht-checkin" type="date"></div>
             <div class="t-fg"><label>Check-out</label><input id="ht-checkout" type="date"></div>
             <div class="t-fg sm"><label>Rooms</label>
@@ -476,8 +485,11 @@
 
         <!-- Cars -->
         <div id="cars" class="t-panel">
+          <input type="hidden" id="cr-pickup-code">
+          <input type="hidden" id="cr-pickup-geo">
+          <input type="hidden" id="cr-pickup-type">
           <div class="t-form-row">
-            <div class="t-fg full"><label>Pick-up Location</label><input id="cr-pickup" type="text" placeholder="City or airport code"></div>
+            <div class="t-fg full"><label>Pick-up Location</label><div class="ac-wrap"><input id="cr-pickup" type="text" placeholder="City or airport name" autocomplete="off"><div class="ac-dropdown" id="ac-cr-pickup"></div></div></div>
             <div class="t-fg"><label>Pick-up Date</label><input id="cr-from" type="date"></div>
             <div class="t-fg"><label>Return Date</label><input id="cr-to" type="date"></div>
             <div style="align-self:flex-end;flex-shrink:0">
@@ -491,18 +503,17 @@
 
         <!-- Activities -->
         <div id="activities" class="t-panel">
+          <input type="hidden" id="act-dest-id">
           <div class="t-form-row">
-            <div class="t-fg full"><label>Destination</label><input id="ac-dest" type="text" placeholder="e.g., Dubai, Paris, Bali"></div>
+            <div class="t-fg full"><label>Destination</label><div class="ac-wrap"><input id="act-dest" type="text" placeholder="e.g. Paris, Dubai, Bali" autocomplete="off"><div class="ac-dropdown" id="ac-act-dest"></div></div></div>
             <div class="t-fg"><label>Date</label><input id="ac-date" type="date"></div>
             <div class="t-fg sm"><label>Category</label>
               <select id="ac-category">
-                <option value="">All</option>
+                <option value="">All Categories</option>
                 <option>Tours</option>
                 <option>Adventure</option>
                 <option>Culture</option>
                 <option>Water Sports</option>
-                <option>Yacht</option>
-                <option>Safari</option>
               </select>
             </div>
             <div style="align-self:flex-end;flex-shrink:0">
@@ -724,6 +735,78 @@
 
   </div>
 
+  <!-- Xeni Quick Builder -->
+  <div style="margin-top:60px">
+    <div style="background:linear-gradient(135deg,#001a6e 0%,#002ad1 50%,#0050ff 100%);border-radius:24px;padding:48px 40px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:rgba(255,255,255,0.04);border-radius:50%"></div>
+      <div style="position:absolute;bottom:-80px;left:60px;width:200px;height:200px;background:rgba(132,204,22,0.08);border-radius:50%"></div>
+      <div style="position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(132,204,22,0.15);border:1px solid rgba(132,204,22,0.3);color:#84CC16;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:20px">
+            <span style="width:6px;height:6px;border-radius:50%;background:#84CC16;display:inline-block"></span>
+            Xeni Quick Builder
+          </div>
+          <h2 style="font-size:clamp(22px,3vw,34px);font-weight:800;color:#fff;line-height:1.2;margin-bottom:16px;letter-spacing:-0.02em">
+            White-Label Travel<br>Search in Minutes
+          </h2>
+          <p style="color:rgba(255,255,255,0.72);font-size:15px;line-height:1.65;margin-bottom:28px">
+            Xeni Quick Builder is a fully embeddable travel search widget — hotels, flights, cars, and activities — all in one iframe. No complex API integration required. Brand it your way, deploy it anywhere.
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px">
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 16px;color:#fff;font-size:13px;font-weight:600">✈ Flights</div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 16px;color:#fff;font-size:13px;font-weight:600">🏨 Hotels</div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 16px;color:#fff;font-size:13px;font-weight:600">🚗 Cars</div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 16px;color:#fff;font-size:13px;font-weight:600">🎯 Activities</div>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a href="/pages/contact.html" class="t-search-btn" style="text-decoration:none;background:#84CC16;color:#1a2e05;height:44px;padding:0 24px">
+              Get Quick Builder Access
+            </a>
+            <a href="https://xeni.com" target="_blank" rel="noopener" class="t-search-btn" style="text-decoration:none;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);height:44px;padding:0 24px">
+              Learn More
+            </a>
+          </div>
+        </div>
+        <div>
+          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:24px;backdrop-filter:blur(8px)">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+              <div style="width:10px;height:10px;border-radius:50%;background:#EF4444"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#F59E0B"></div>
+              <div style="width:10px;height:10px;border-radius:50%;background:#84CC16"></div>
+              <span style="color:rgba(255,255,255,0.4);font-size:11px;margin-left:8px">quick-builder.js</span>
+            </div>
+            <pre style="color:#84CC16;font-size:12px;line-height:1.7;margin:0;overflow-x:auto"><code>&lt;!-- Add to your HTML --&gt;
+&lt;script src="https://cdn.xeni.com/
+  quick-builder.js"&gt;&lt;/script&gt;
+
+&lt;div id="xeni-search"
+  data-api-key="YOUR_KEY"
+  data-theme="light"
+  data-currency="USD"
+  data-tabs="hotels,flights,
+    cars,activities"&gt;
+&lt;/div&gt;</code></pre>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px">
+              <div style="font-size:1.25rem;font-weight:800;color:#fff">5 min</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:2px">Setup time</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px">
+              <div style="font-size:1.25rem;font-weight:800;color:#fff">100%</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:2px">White-label</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @media (max-width: 768px) {
+      #xeni-qb-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
 </div><!-- /.t-main -->
 
 <script src="../js/main.js"></script>
@@ -755,6 +838,8 @@ function quickSearch(type, dest, dest2) {
   if (type === 'hotels') {
     var el = document.getElementById('ht-dest');
     if (el) el.value = dest;
+    // Clear resolved hidden fields so submit will resolve via autocomplete
+    ['ht-dest-id','ht-dest-lat','ht-dest-lon'].forEach(function(id){ var f=document.getElementById(id); if(f) f.value=''; });
     document.getElementById('ht-checkin').value  = fmt(tomorrow);
     document.getElementById('ht-checkout').value = fmt(plus7);
   } else if (type === 'flights') {
@@ -762,7 +847,7 @@ function quickSearch(type, dest, dest2) {
     if (dest2) document.getElementById('fl-dest').value   = dest2;
     document.getElementById('fl-depart').value = fmt(tomorrow);
   } else if (type === 'activities') {
-    var el = document.getElementById('ac-dest');
+    var el = document.getElementById('act-dest');
     if (el) el.value = dest;
     document.getElementById('ac-date').value = fmt(tomorrow);
   } else if (type === 'resorts') {
@@ -878,9 +963,11 @@ function renderHotels(data) {
 }
 
 function renderFlights(data) {
-  var d = (data.data && data.data.flights) ? data.data : data;
-  var flights = d.flights || data.flights || data.results || [];
-  var total   = d.total   || flights.length;
+  var flights = Array.isArray(data.data) ? data.data
+              : (data.data && Array.isArray(data.data.flights)) ? data.data.flights
+              : Array.isArray(data.flights) ? data.flights
+              : data.results || [];
+  var total = data.total || flights.length;
   resultsBox.style.padding = '0 24px 24px';
   if (!flights.length) {
     resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No flights found. Try different dates or airports.</p>';
@@ -891,37 +978,66 @@ function renderFlights(data) {
     '<span style="font-size:0.78rem;color:var(--text-muted)">Economy · All airlines</span></div>';
   html += '<div style="display:flex;flex-direction:column;gap:10px">';
   flights.slice(0, 12).forEach(function(f) {
-    var seg     = (f.segments && f.segments[0]) || f;
-    var cabin   = (f.cabins && f.cabins[0]) || {};
-    var airline = seg.airline_name  || '✈ Airline';
-    var logo    = seg.airline_logo  || '';
-    var code    = seg.airline_code  || '';
-    var origin  = seg.departure_airport || '—';
-    var dest    = seg.arrival_airport   || '—';
-    var dep     = seg.departure_time    || '';
-    var arr     = seg.arrival_time      || '';
-    var dur     = (seg.duration || '').replace('h:','h ').replace('m','m');
-    var stopArr = seg.stops || [];
-    var stopsLbl = stopArr.length === 0
+    var seg      = (f.segments && f.segments[0]) || f;
+    var lastSeg  = (f.segments && f.segments[f.segments.length - 1]) || seg;
+    var cabin    = (f.cabins && f.cabins[0]) || {};
+    var airline  = seg.airline_name || 'Airline';
+    var flightNo = (seg.marketing_carrier && seg.marketing_carrier[0]) ? seg.marketing_carrier[0] : '';
+    var logo     = seg.airline_logo || '';
+    var origin   = seg.departure_airport || '—';
+    var dest     = lastSeg.arrival_airport || '—';
+    var depTime  = seg.departure_time || '';
+    var depDate  = seg.departure_date || '';
+    var arrTime  = lastSeg.arrival_time || '';
+    var arrDate  = lastSeg.arrival_date || '';
+    var dur      = (seg.duration || '').replace('h:', 'h ').replace('m', 'm');
+    var stopArr  = seg.stops || [];
+    var totalStops = f.segments ? f.segments.length - 1 : stopArr.length;
+    var stopsLbl = totalStops === 0
       ? '<span style="color:#16A34A;font-weight:700;font-size:0.72rem">Direct</span>'
-      : '<span style="color:#D97706;font-weight:700;font-size:0.72rem">' + stopArr.length + ' stop' + (stopArr.length > 1 ? 's' : '') + '</span>';
+      : '<span style="color:#D97706;font-weight:700;font-size:0.72rem">' + totalStops + ' stop' + (totalStops > 1 ? 's' : '') + '</span>';
     var price  = cabin.total_rate || f.price || 0;
-    var cur    = cabin.currency_code || f.currency || 'USD';
+    var cur    = cabin.currency_code || 'USD';
     var refund = (cabin.penalties_info && cabin.penalties_info[0] && cabin.penalties_info[0].refund_allowed)
       ? '<span style="color:#16A34A;font-size:0.68rem;font-weight:600">✓ Refundable</span>' : '';
+
+    var baggageParts = [];
+    try {
+      var paxBags = cabin.baggage_details[0].pax_baggages;
+      var adtBags = (paxBags.find(function(p) { return p.pax_type === 'ADT'; }) || paxBags[0]).baggages;
+      adtBags.forEach(function(b) {
+        if (b.type === 'Check-in') {
+          baggageParts.push(b.free_quantity === '0' ? 'No checked bag' : b.free_quantity + ' checked bag ' + b.allowance_unit);
+        } else if (b.type === 'Cabin') {
+          baggageParts.push('Cabin ' + b.free_quantity + b.allowance_unit);
+        }
+      });
+    } catch(e) {}
+    var baggageHtml = baggageParts.length
+      ? '<div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">' +
+          baggageParts.map(function(b) {
+            var isNo = b.startsWith('No');
+            return '<span style="font-size:0.65rem;padding:2px 7px;border-radius:10px;background:' + (isNo ? '#FEF3C7' : '#F0FDF4') + ';color:' + (isNo ? '#92400E' : '#15803D') + ';font-weight:600">' + b + '</span>';
+          }).join('') +
+        '</div>'
+      : '';
+
     var logoHtml = logo
-      ? '<img src="' + logo + '" alt="' + code + '" style="height:30px;width:30px;object-fit:contain;border-radius:4px" onerror="this.style.display=\'none\'">'
+      ? '<img src="' + logo + '" alt="' + airline + '" style="height:30px;width:30px;object-fit:contain;border-radius:4px" onerror="this.style.display=\'none\'">'
       : '<span style="font-size:1.4rem">✈</span>';
+
     html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;transition:box-shadow 0.2s" onmouseover="this.style.boxShadow=\'0 4px 20px rgba(0,0,0,0.09)\'" onmouseout="this.style.boxShadow=\'none\'">' +
       '<div style="display:flex;flex-direction:column;align-items:center;min-width:72px;gap:3px">' +
         logoHtml +
         '<div style="font-size:0.68rem;font-weight:600;color:var(--text-medium);text-align:center;line-height:1.25;max-width:80px">' + airline + '</div>' +
+        (flightNo ? '<div style="font-size:0.62rem;color:var(--text-muted)">' + flightNo + '</div>' : '') +
         (refund ? '<div style="margin-top:2px">' + refund + '</div>' : '') +
       '</div>' +
       '<div style="flex:1;display:flex;align-items:center;gap:12px;min-width:200px">' +
         '<div style="text-align:center">' +
           '<div style="font-size:1.25rem;font-weight:800;letter-spacing:-0.5px">' + origin + '</div>' +
-          '<div style="font-size:0.7rem;color:var(--text-muted);margin-top:2px">' + dep + '</div>' +
+          '<div style="font-size:0.7rem;color:var(--text-muted);margin-top:1px">' + depTime + '</div>' +
+          (depDate ? '<div style="font-size:0.65rem;color:var(--text-muted)">' + depDate + '</div>' : '') +
         '</div>' +
         '<div style="flex:1;text-align:center">' +
           '<div style="font-size:0.68rem;color:var(--text-muted);margin-bottom:4px">' + dur + '</div>' +
@@ -932,13 +1048,15 @@ function renderFlights(data) {
         '</div>' +
         '<div style="text-align:center">' +
           '<div style="font-size:1.25rem;font-weight:800;letter-spacing:-0.5px">' + dest + '</div>' +
-          '<div style="font-size:0.7rem;color:var(--text-muted);margin-top:2px">' + arr + '</div>' +
+          '<div style="font-size:0.7rem;color:var(--text-muted);margin-top:1px">' + arrTime + '</div>' +
+          (arrDate ? '<div style="font-size:0.65rem;color:var(--text-muted)">' + arrDate + '</div>' : '') +
         '</div>' +
       '</div>' +
-      '<div style="text-align:right;min-width:100px">' +
+      '<div style="text-align:right;min-width:110px">' +
         '<div style="font-size:0.68rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em">from</div>' +
-        '<div style="font-size:1.25rem;font-weight:800;color:var(--primary)">' + (price ? cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) : '—') + '</div>' +
-        '<a href="#" class="t-search-btn" style="text-decoration:none;margin-top:8px;padding:0 16px;height:36px;font-size:0.78rem;display:inline-flex;align-items:center;border-radius:8px">Select</a>' +
+        '<div style="font-size:1.25rem;font-weight:800;color:var(--primary)">' + (price ? cur + ' ' + Number(price).toLocaleString(undefined, {maximumFractionDigits:0}) : '—') + '</div>' +
+        baggageHtml +
+        '<a href="flight-booking.html?session=' + encodeURIComponent(cabin.cabin_search_session_id || '') + '&airline=' + encodeURIComponent(airline) + '&origin=' + encodeURIComponent(origin) + '&dest=' + encodeURIComponent(dest) + '&dep=' + encodeURIComponent(depDate + ' ' + depTime) + '&arr=' + encodeURIComponent(arrDate + ' ' + arrTime) + '&dur=' + encodeURIComponent(dur) + '&stops=' + totalStops + '&price=' + price + '&cur=' + encodeURIComponent(cur) + '" class="t-search-btn" style="text-decoration:none;margin-top:8px;padding:0 16px;height:36px;font-size:0.78rem;display:inline-flex;align-items:center;border-radius:8px">Select</a>' +
       '</div>' +
     '</div>';
   });
@@ -947,7 +1065,12 @@ function renderFlights(data) {
 }
 
 function renderCars(data) {
-  var cars = data.cars || data.vehicles || data.results || data.items || data.data || [];
+  // Xeni cars search: data.data is array of rental offers
+  var cars = (data.data && Array.isArray(data.data)) ? data.data
+           : (data.data && Array.isArray(data.data.rentals)) ? data.data.rentals
+           : data.cars || data.vehicles || data.results || [];
+  var CAR_FALLBACK = 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&q=70&fit=crop';
+  var pickupVal = val('cr-from'), returnVal = val('cr-to');
   resultsBox.style.padding = '0 24px 24px';
   if (!cars.length) {
     resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No cars found. Try a different location or dates.</p>';
@@ -956,17 +1079,46 @@ function renderCars(data) {
   var html = '<h3 style="font-size:1.05rem;font-weight:700;margin-bottom:16px;padding-top:8px">' + cars.length + ' Car' + (cars.length > 1 ? 's' : '') + ' Available</h3>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px">';
   cars.slice(0, 9).forEach(function(c) {
-    var img  = c.image || c.photo || c.imageUrl || 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&q=70&fit=crop';
-    var name = c.name || c.vehicleName || c.model || 'Car';
-    var cat  = c.category || c.type || c.class || '';
-    html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow 0.2s" onmouseover="this.style.boxShadow=\'0 8px 24px rgba(0,0,0,0.1)\'" onmouseout="this.style.boxShadow=\'none\'">' +
-      '<div style="height:150px;overflow:hidden"><img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover"></div>' +
+    var v      = c.vehicle || {};
+    var img    = v.picture_url || c.image || c.photo || CAR_FALLBACK;
+    var name   = v.name || c.name || 'Car';
+    var brand  = c.rental_car_brand || '';
+    var sipp   = v.sipp_code || '';
+    var trans  = v.transmission_type || '';
+    var pax    = v.passenger_quantity ? (v.passenger_quantity + ' pax') : '';
+    var size   = v.vehicle_size || '';
+    var charges = (c.rental_rate && c.rental_rate.vehicle_charges) || [];
+    var preferred = charges.find(function(ch) { return ch.purpose === 'preferred'; }) || charges[0] || {};
+    var price  = preferred.base_price || c.price || 0;
+    var cur    = (c.rental_rate && c.rental_rate.currency) || 'USD';
+    var token  = c.token || '';
+    var bookUrl = 'car-booking.html?token=' + encodeURIComponent(token) +
+      '&name='     + encodeURIComponent(name) +
+      '&img='      + encodeURIComponent(img !== CAR_FALLBACK ? img : '') +
+      '&brand='    + encodeURIComponent(brand) +
+      '&price='    + (price || 0) +
+      '&currency=' + encodeURIComponent(cur) +
+      '&pickup='   + encodeURIComponent(pickupVal) +
+      '&return='   + encodeURIComponent(returnVal) +
+      '&sipp='     + encodeURIComponent(sipp) +
+      '&country=US';
+    var chips = [trans, pax, size].filter(Boolean).slice(0, 3).map(function(t) {
+      return '<span style="background:#F1F5F9;color:#475569;font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px">' + t + '</span>';
+    }).join('');
+    html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow 0.2s,transform 0.2s" onmouseover="this.style.boxShadow=\'0 8px 24px rgba(0,0,0,0.1)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.boxShadow=\'none\';this.style.transform=\'none\'">' +
+      '<div style="height:150px;overflow:hidden;position:relative"><img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'' + CAR_FALLBACK + '\'">' +
+      (brand ? '<div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.65);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px">' + brand + '</div>' : '') +
+      '</div>' +
       '<div style="padding:14px">' +
-        '<div style="font-weight:700;font-size:0.88rem;margin-bottom:3px">' + name + '</div>' +
-        '<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:10px">' + cat + '</div>' +
+        '<div style="font-weight:700;font-size:0.88rem;margin-bottom:6px">' + name + '</div>' +
+        (chips ? '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">' + chips + '</div>' : '<div style="margin-bottom:10px"></div>') +
         '<div style="display:flex;align-items:center;justify-content:space-between">' +
-          '<div>' + priceTag(c) + '<span style="font-size:0.7rem;color:var(--text-muted)"> / day</span></div>' +
-          '<a href="#" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:34px;font-size:0.78rem;border-radius:8px">Reserve</a>' +
+          '<div>' +
+            '<div style="font-size:9px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em">from</div>' +
+            (price > 0 ? '<div style="font-size:1.1rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</div>' : '<div style="font-size:0.82rem;color:var(--text-muted)">Contact for price</div>') +
+          '</div>' +
+          (token ? '<a href="' + bookUrl + '" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:34px;font-size:0.78rem;border-radius:8px">Reserve</a>'
+                 : '<a href="car-booking.html" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:34px;font-size:0.78rem;border-radius:8px">Reserve</a>') +
         '</div>' +
       '</div></div>';
   });
@@ -1012,12 +1164,15 @@ function renderActivities(data) {
     var price = (a.pricing && (parseFloat(a.pricing.from_price) || parseFloat(a.pricing.total)))
               || (a.price && (a.price.amount || a.price.from)) || a.amount || 0;
     var cur  = (a.pricing && a.pricing.currency) || (a.price && a.price.currency) || 'USD';
+    var optCode = (a.option_codes && a.option_codes[0]) || a.product_code || a.id || '';
     var bookUrl = 'activity-booking.html?id=' + encodeURIComponent(a.id || '') +
+      '&code=' + encodeURIComponent(optCode) +
       '&name=' + encodeURIComponent(name) +
       '&price=' + (price || 0) +
       '&currency=' + encodeURIComponent(cur) +
       '&img=' + encodeURIComponent(img !== FALLBACK ? img : '') +
-      '&rating=' + (rat || 0);
+      '&rating=' + (rat || 0) +
+      '&cat=' + encodeURIComponent(a.category || a.category_name || '');
     html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow 0.2s,transform 0.2s" onmouseover="this.style.boxShadow=\'0 8px 24px rgba(0,0,0,0.1)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.boxShadow=\'none\';this.style.transform=\'none\'">' +
       '<div style="height:160px;overflow:hidden;position:relative"><img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'' + FALLBACK + '\'">' +
       (rat > 0 ? '<div style="position:absolute;top:8px;right:8px;background:#F59E0B;color:#fff;font-size:10px;font-weight:800;padding:3px 8px;border-radius:100px">★ ' + Number(rat).toFixed(1) + '</div>' : '') +
@@ -1213,37 +1368,55 @@ function showComingSoon(title, message, icon) {
 }
 
 function renderDeals(data) {
-  var items = data.deals || data.results || data.items || data.data || [];
+  // Xeni hotel deals: data.data is array; also handle generic formats
+  var rawData = data.data || data;
+  var items = Array.isArray(rawData) ? rawData
+            : rawData.hotels || data.deals || data.results || data.items || [];
+  var DEALS_FALLBACK = 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&q=70&fit=crop';
   resultsBox.style.padding = '0 24px 24px';
   if (!items.length) {
-    resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No deals found for this location. Try another destination.</p>';
+    resultsBox.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:32px 0">No deals found for this location. Try another destination or leave blank for nearby deals.</p>';
     return;
   }
-  var html = '<h3 style="font-size:1.05rem;font-weight:700;margin-bottom:16px;padding-top:8px">' + items.length + ' Deal' + (items.length > 1 ? 's' : '') + ' Found</h3>' +
+  var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-top:8px">' +
+    '<h3 style="font-size:1.05rem;font-weight:700;margin:0">' + items.length + ' Deal' + (items.length > 1 ? 's' : '') + ' Found</h3>' +
+    '<span style="font-size:0.78rem;color:var(--text-muted)">Hotel deals · Best available rates</span></div>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">';
   items.slice(0, 12).forEach(function(d) {
-    var img  = (d.image && (d.image.large || d.image.thumbnail)) || d.imageUrl || d.photo || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&q=70&fit=crop';
-    var name = d.name || d.title || d.destination || 'Travel Deal';
-    var type = d.type || d.category || '';
-    var desc = d.description || d.includes || '';
-    var price = (d.price && (d.price.amount || d.price.value)) || d.amount || d.total || 0;
-    var orig  = (d.price && d.price.original) || d.originalPrice || 0;
-    var cur   = (d.price && d.price.currency) || d.currency || 'USD';
+    // Handle both Xeni hotel deals format and generic format
+    var img = (d.image && (d.image.large || d.image.extra_large || d.image.thumbnail))
+            || d.imageUrl || d.photo || DEALS_FALLBACK;
+    var name  = d.name || d.title || d.destination || 'Hotel Deal';
+    var stars = (d.ratings && d.ratings.star_rating) || 0;
+    var rating = (d.ratings && d.ratings.user_rating) || 0;
+    var city  = (d.contact && d.contact.address && d.contact.address.city) || (d.location && d.location.city) || '';
+    // Price from Xeni deals (rates object) or generic
+    var rateObj = d.rates || d.price || {};
+    var price   = rateObj.total_rate || rateObj.base_rate || rateObj.amount || rateObj.value || d.amount || d.total || 0;
+    var orig    = rateObj.retail_price || rateObj.original || d.originalPrice || 0;
+    var cur     = rateObj.currency || d.currency || 'USD';
     var discount = (orig && price && orig > price) ? Math.round((1 - price/orig)*100) + '% off' : '';
+    var saved    = (orig && price && orig > price) ? Math.round(orig - price) : 0;
+    var starsHtml = stars > 0 ? '<span style="color:#F59E0B;font-size:10px;letter-spacing:1px">' + '★'.repeat(Math.min(5,Math.round(stars))) + '</span>' : '';
+    var ratingBadge = rating > 0 ? '<span style="background:#EFF6FF;color:#2563EB;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:4px">' + Number(rating).toFixed(1) + ' ★</span>' : '';
+    var bookUrl = 'hotel-booking.html?id=' + encodeURIComponent(d.property_id || d.id || '') +
+      '&name=' + encodeURIComponent(name) +
+      '&rate=' + (price || 0) + '&currency=' + encodeURIComponent(cur);
     html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow 0.2s,transform 0.2s" onmouseover="this.style.boxShadow=\'0 8px 30px rgba(0,0,0,0.12)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.boxShadow=\'none\';this.style.transform=\'none\'">' +
-      '<div style="position:relative;height:170px;overflow:hidden"><img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&q=70&fit=crop\'">' +
+      '<div style="position:relative;height:170px;overflow:hidden"><img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'' + DEALS_FALLBACK + '\'">' +
         (discount ? '<div style="position:absolute;top:10px;right:10px;background:#EF4444;color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:100px">' + discount + '</div>' : '') +
-        (type ? '<div style="position:absolute;top:10px;left:10px;background:var(--accent);color:#1a2e05;font-size:10px;font-weight:800;padding:3px 9px;border-radius:100px">' + type + '</div>' : '') +
+        (saved > 0 ? '<div style="position:absolute;top:10px;left:10px;background:#DCFCE7;color:#16A34A;font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px">Save ' + cur + ' ' + saved + '</div>' : '') +
       '</div>' +
       '<div style="padding:14px">' +
+        (starsHtml || ratingBadge ? '<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px">' + (starsHtml||'') + ratingBadge + '</div>' : '') +
         '<div style="font-weight:700;font-size:0.9rem;margin-bottom:4px">' + name + '</div>' +
-        (desc ? '<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:10px">' + (desc+'').slice(0,60) + '…</div>' : '<div style="margin-bottom:10px"></div>') +
+        (city ? '<div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:10px">📍 ' + city + '</div>' : '<div style="margin-bottom:10px"></div>') +
         '<div style="display:flex;align-items:center;justify-content:space-between">' +
           '<div>' +
-            (orig && orig > price ? '<span style="font-size:0.78rem;color:var(--text-muted);text-decoration:line-through;margin-right:6px">' + cur + ' ' + Number(orig).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' : '') +
-            (price ? '<span style="font-size:1.1rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' : '<span style="font-size:0.85rem;color:var(--text-muted)">See offer</span>') +
+            (orig && orig > price ? '<div style="font-size:0.72rem;color:var(--text-muted);text-decoration:line-through">' + cur + ' ' + Number(orig).toLocaleString(undefined,{maximumFractionDigits:0}) + '</div>' : '') +
+            (price > 0 ? '<span style="font-size:1.1rem;font-weight:800;color:var(--primary)">' + cur + ' ' + Number(price).toLocaleString(undefined,{maximumFractionDigits:0}) + '</span>' : '<span style="font-size:0.85rem;color:var(--text-muted)">See offer</span>') +
           '</div>' +
-          '<a href="#" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:36px;font-size:0.78rem;border-radius:8px">Get Deal</a>' +
+          '<a href="' + bookUrl + '" class="t-search-btn" style="text-decoration:none;padding:0 14px;height:36px;font-size:0.78rem;border-radius:8px">Get Deal</a>' +
         '</div>' +
       '</div></div>';
   });
@@ -1261,45 +1434,82 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
       if (!origin || !dest || !dep) { showError('Please fill in From, To and Depart date.'); return; }
       showLoading('flights');
       var r = await fetch('/api/travel/flights', { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ origin, destination: dest, departureDate: dep, returnDate: val('fl-return'), adults: val('fl-adults') || 2 }) });
+        body: JSON.stringify({ origin, destination: dest, departureDate: dep, returnDate: val('fl-return') || null,
+          adults: val('fl-adults') || 1, children: val('fl-children') || 0, cabinType: val('fl-cabin') || 'Economy' }) });
       var data = await r.json();
       if (!r.ok) throw new Error(data.error || 'Flight search failed');
       renderFlights(data);
 
     } else if (tab === 'hotels') {
-      var dest = val('ht-dest'), ci = val('ht-checkin'), co = val('ht-checkout');
+      var dest   = val('ht-dest');
+      var destId = val('ht-dest-id');
+      var destLat = val('ht-dest-lat'), destLon = val('ht-dest-lon');
+      var ci = val('ht-checkin'), co = val('ht-checkout');
       if (!dest) { showError('Please enter a destination.'); return; }
+      if (!ci || !co) { showError('Please enter check-in and check-out dates.'); return; }
       showLoading('hotels');
-      var endpoint, payload;
-      if (ci && co) {
-        endpoint = '/api/travel/hotels';
-        payload = { destination: dest, checkIn: ci, checkOut: co, rooms: val('ht-rooms') || 1, adults: val('ht-adults') || 2 };
-      } else {
-        endpoint = '/api/travel/hotel-content';
-        payload = { destination: dest };
+      // If user typed without selecting autocomplete, resolve via autocomplete first
+      if (!destId && !destLat) {
+        try {
+          var acR = await fetch('/api/travel/hotel-autocomplete?key=' + encodeURIComponent(dest));
+          var acData = await acR.json();
+          var sug = (acData.data && acData.data[0]) || null;
+          if (sug) {
+            if (sug.id) destId = sug.id;
+            if (sug.location && sug.location.lat) { destLat = String(sug.location.lat); destLon = String(sug.location.long); }
+          }
+        } catch(e) { /* fall through — search will return error from Xeni */ }
       }
-      var r = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload) });
+      var searchBody = {
+        checkin_date:  ci,
+        checkout_date: co,
+        occupancy: [{ adults: parseInt(val('ht-adults')) || 2, childs: 0, childages: [] }],
+        currency: 'USD',
+      };
+      if (destId)               searchBody.place_id = destId;
+      else if (destLat && destLon) { searchBody.lat = parseFloat(destLat); searchBody.long = parseFloat(destLon); }
+      else                      searchBody.place_id = dest;
+      var r = await fetch('/api/travel/hotel-search', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(searchBody) });
       var data = await r.json();
       if (!r.ok) throw new Error(data.error || 'Hotel search failed');
       renderHotels(data);
 
     } else if (tab === 'cars') {
-      var loc = val('cr-pickup'), from = val('cr-from'), to = val('cr-to');
+      var loc      = val('cr-pickup');
+      var code     = val('cr-pickup-code');
+      var geo      = val('cr-pickup-geo');
+      var pickType = val('cr-pickup-type') || 'airport';
+      var from = val('cr-from'), to = val('cr-to');
       if (!loc || !from || !to) { showError('Please fill in pick-up location and dates.'); return; }
+      if (!code && !geo) { showError('Please select a location from the suggestions list.'); return; }
       showLoading('car rentals');
-      var r = await fetch('/api/travel/cars', { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ pickupLocation: loc, pickupDate: from, returnDate: to }) });
+      // Xeni expects datetime format: YYYY-MM-DDTHH:mm:ss
+      var pickupDT = from + 'T10:00:00';
+      var returnDT = to   + 'T18:00:00';
+      var params = new URLSearchParams({
+        pickup_code: code || geo,
+        return_code: code || geo,
+        pickup_type: pickType,
+        return_type: pickType,
+        pickup_date: pickupDT,
+        return_date: returnDT,
+        currency: 'USD',
+        driver_age: '30',
+        country: 'US',
+      });
+      if (geo) params.set('pickup_geo', geo);
+      var r = await fetch('/api/travel/cars-search?' + params.toString());
       var data = await r.json();
       if (!r.ok) { var e = new Error(data.error || 'Car search failed'); e.detail = data.body ? JSON.stringify(data.body) : ''; throw e; }
       renderCars(data);
 
     } else if (tab === 'activities') {
-      var dest = val('ac-dest');
+      var dest   = val('act-dest');
+      var destId = (document.getElementById('act-dest-id') || {}).value || '';
       if (!dest) { showError('Please enter a destination.'); return; }
       showLoading('activities');
       var r = await fetch('/api/travel/activities', { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ destination: dest, date: val('ac-date'), category: val('ac-category') }) });
+        body: JSON.stringify({ destination_id: destId || null, destination: dest, date: val('ac-date'), category: val('ac-category') }) });
       var data = await r.json();
       if (!r.ok) throw new Error(data.error || 'Activities search failed');
       renderActivities(data);
@@ -1319,8 +1529,24 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
       return;
 
     } else if (tab === 'deals') {
-      showComingSoon('Exclusive Deals', 'Hand-picked travel deals are coming soon. Check back shortly for special offers on hotels, activities, and more.', '🏷️');
-      return;
+      showLoading('hotel deals');
+      // Try to resolve location to geo coords
+      var dlLoc = val('dl-location');
+      var dealLat, dealLon;
+      if (dlLoc) {
+        try {
+          var dlR = await fetch('/api/travel/hotel-autocomplete?key=' + encodeURIComponent(dlLoc));
+          var dlD = await dlR.json();
+          var dlSug = (dlD.data && dlD.data[0]) || null;
+          if (dlSug && dlSug.location) { dealLat = dlSug.location.lat; dealLon = dlSug.location.long; }
+        } catch(e) { /* use defaults */ }
+      }
+      var dealParams = new URLSearchParams({ currency: 'USD' });
+      if (dealLat != null) { dealParams.set('lat', dealLat); dealParams.set('long', dealLon); }
+      var r = await fetch('/api/travel/hotel-deals?' + dealParams.toString());
+      var data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'Could not load deals');
+      renderDeals(data);
     }
   } catch (err) {
     var detail = err.detail || '';
@@ -1394,6 +1620,231 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
 
   setupAirportAC('fl-origin', 'ac-origin');
   setupAirportAC('fl-dest',   'ac-dest');
+
+  // Load activity categories from API and build grouped select
+  fetch('/api/travel/activity-categories')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var cats = (data.data && data.data.categories) || data.categories || [];
+      if (!cats.length) return;
+      var sel = document.getElementById('ac-category');
+      if (!sel) return;
+
+      // Separate top-level and sub-categories
+      var topLevel = cats.filter(function(c) { return !c.parent_category_id; })
+                         .sort(function(a, b) { return a.sort_order - b.sort_order; });
+      var children = cats.filter(function(c) { return !!c.parent_category_id; });
+
+      // Build child map: parent_id → [children]
+      var childMap = {};
+      children.forEach(function(c) {
+        if (!childMap[c.parent_category_id]) childMap[c.parent_category_id] = [];
+        childMap[c.parent_category_id].push(c);
+      });
+
+      var html = '<option value="">All Categories</option>';
+      topLevel.forEach(function(parent) {
+        var name = (parent.names && parent.names.en) || parent.slug || parent.id;
+        var kids = childMap[parent.id] || [];
+        if (kids.length) {
+          // Parent has children — render as optgroup; children are selectable
+          html += '<optgroup label="' + name + '">';
+          kids.sort(function(a, b) { return a.sort_order - b.sort_order; }).forEach(function(child) {
+            var childName = (child.names && child.names.en) || child.slug || child.id;
+            html += '<option value="' + child.slug + '">' + childName + '</option>';
+          });
+          html += '</optgroup>';
+        } else {
+          // No children — render as a regular selectable option
+          html += '<option value="' + parent.slug + '">' + name + '</option>';
+        }
+      });
+
+      sel.innerHTML = html;
+    })
+    .catch(function() { /* keep static fallback options */ });
+
+  // Hotel destination autocomplete
+  (function() {
+    var input  = document.getElementById('ht-dest');
+    var drop   = document.getElementById('ac-ht-dest');
+    var hidId  = document.getElementById('ht-dest-id');
+    var hidLat = document.getElementById('ht-dest-lat');
+    var hidLon = document.getElementById('ht-dest-lon');
+    if (!input || !drop) return;
+    var timer, lastQ = '';
+
+    function close() { drop.style.display = 'none'; drop.innerHTML = ''; }
+
+    function clearHidden() { if(hidId) hidId.value=''; if(hidLat) hidLat.value=''; if(hidLon) hidLon.value=''; }
+
+    input.addEventListener('input', function() {
+      var q = input.value.trim();
+      clearHidden();
+      if (q === lastQ) return;
+      lastQ = q;
+      clearTimeout(timer);
+      if (q.length < 2) { close(); return; }
+      timer = setTimeout(function() {
+        fetch('/api/travel/hotel-autocomplete?key=' + encodeURIComponent(q))
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var suggestions = (data.data && Array.isArray(data.data)) ? data.data : [];
+            if (!suggestions.length) { close(); return; }
+            drop.innerHTML = suggestions.slice(0, 7).map(function(s) {
+              var typeIcon = s.type === 'city' ? '🏙️' : s.type === 'state' ? '🗺️' : s.type === 'pointofinterest' ? '📍' : s.type === 'trainstation' ? '🚉' : '🌐';
+              return '<div class="ac-item"' +
+                ' data-val="' + (s.full_name || s.name || '').replace(/"/g,'&quot;') + '"' +
+                ' data-id="' + (s.id || '').replace(/"/g,'&quot;') + '"' +
+                ' data-lat="' + ((s.location && s.location.lat) || '').toString() + '"' +
+                ' data-lon="' + ((s.location && s.location.long) || '').toString() + '">' +
+                '<span style="font-size:15px;margin-right:8px">' + typeIcon + '</span>' +
+                '<div>' +
+                  '<div class="ac-airport">' + (s.full_name || s.name || '') + '</div>' +
+                  (s.country ? '<div class="ac-city" style="color:#94A3B8;font-size:11px">' + s.type + ' · ' + s.country + '</div>' : '') +
+                '</div>' +
+              '</div>';
+            }).join('');
+            drop.style.display = '';
+            drop.querySelectorAll('.ac-item').forEach(function(item) {
+              item.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                input.value = item.dataset.val;
+                if (hidId)  hidId.value  = item.dataset.id  || '';
+                if (hidLat) hidLat.value = item.dataset.lat || '';
+                if (hidLon) hidLon.value = item.dataset.lon || '';
+                lastQ = item.dataset.val;
+                close();
+              });
+            });
+          })
+          .catch(function() { close(); });
+      }, 280);
+    });
+
+    input.addEventListener('blur', function() { setTimeout(close, 150); });
+    input.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+  })();
+
+  // Cars location autocomplete
+  (function() {
+    var input    = document.getElementById('cr-pickup');
+    var drop     = document.getElementById('ac-cr-pickup');
+    var hidCode  = document.getElementById('cr-pickup-code');
+    var hidGeo   = document.getElementById('cr-pickup-geo');
+    var hidType  = document.getElementById('cr-pickup-type');
+    if (!input || !drop) return;
+    var timer, lastQ = '';
+
+    function close() { drop.style.display = 'none'; drop.innerHTML = ''; }
+
+    function clearHidden() { if(hidCode) hidCode.value=''; if(hidGeo) hidGeo.value=''; if(hidType) hidType.value=''; }
+
+    input.addEventListener('input', function() {
+      var q = input.value.trim();
+      clearHidden();
+      if (q === lastQ) return;
+      lastQ = q;
+      clearTimeout(timer);
+      if (q.length < 2) { close(); return; }
+      timer = setTimeout(function() {
+        fetch('/api/travel/cars-location-search?key=' + encodeURIComponent(q))
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var suggestions = (data.data && Array.isArray(data.data)) ? data.data : [];
+            if (!suggestions.length) { close(); return; }
+            drop.innerHTML = suggestions.slice(0, 7).map(function(s) {
+              var typeIcon = s.type === 'airport' ? '✈️' : '🏙️';
+              var label = s.name || s.city_name || '';
+              var sub = [s.city_name, s.country_name].filter(Boolean).join(', ');
+              return '<div class="ac-item"' +
+                ' data-val="' + label.replace(/"/g,'&quot;') + '"' +
+                ' data-code="' + (s.iata_code || s.id || '').replace(/"/g,'&quot;') + '"' +
+                ' data-geo="' + ((s.coordinates && s.coordinates.lat && s.coordinates.lon) ? (s.coordinates.lat + ',' + s.coordinates.lon) : '').replace(/"/g,'&quot;') + '"' +
+                ' data-type="' + (s.type === 'airport' ? 'airport' : 'geo') + '">' +
+                '<span style="font-size:15px;margin-right:8px">' + typeIcon + '</span>' +
+                '<div>' +
+                  '<div class="ac-airport">' + label + (s.iata_code ? ' (' + s.iata_code + ')' : '') + '</div>' +
+                  '<div class="ac-city" style="color:#94A3B8;font-size:11px">' + sub + '</div>' +
+                '</div>' +
+              '</div>';
+            }).join('');
+            drop.style.display = '';
+            drop.querySelectorAll('.ac-item').forEach(function(item) {
+              item.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                input.value = item.dataset.val;
+                if (hidCode) hidCode.value = item.dataset.code || '';
+                if (hidGeo)  hidGeo.value  = item.dataset.geo  || '';
+                if (hidType) hidType.value = item.dataset.type || 'airport';
+                lastQ = item.dataset.val;
+                close();
+              });
+            });
+          })
+          .catch(function() { close(); });
+      }, 280);
+    });
+
+    input.addEventListener('blur', function() { setTimeout(close, 150); });
+    input.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+  })();
+
+  // Activities destination autocomplete
+  (function() {
+    var input  = document.getElementById('act-dest');
+    var drop   = document.getElementById('ac-act-dest');
+    var hidden = document.getElementById('act-dest-id');
+    if (!input || !drop) return;
+    var timer, lastQ = '';
+
+    function close() { drop.style.display = 'none'; drop.innerHTML = ''; }
+
+    input.addEventListener('input', function() {
+      var q = input.value.trim();
+      // User typed freely — clear stored id
+      if (hidden) hidden.value = '';
+      if (q === lastQ) return;
+      lastQ = q;
+      clearTimeout(timer);
+      if (q.length < 2) { close(); return; }
+      timer = setTimeout(function() {
+        fetch('/api/travel/activity-autocomplete?query=' + encodeURIComponent(q))
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var suggestions = (data.data && data.data.suggestions) || data.suggestions || [];
+            if (!suggestions.length) { close(); return; }
+            drop.innerHTML = suggestions.map(function(s) {
+              var icon = s.location_type === 'CITY' ? '🏙️' : s.location_type === 'COUNTRY' ? '🌍' : '📍';
+              return '<div class="ac-item"' +
+                ' data-val="' + (s.full_name || s.text || '').replace(/"/g, '&quot;') + '"' +
+                ' data-id="' + (s.id || '').replace(/"/g, '&quot;') + '">' +
+                '<span style="font-size:15px;margin-right:8px">' + icon + '</span>' +
+                '<div>' +
+                  '<div class="ac-airport">' + (s.full_name || s.text || '') + '</div>' +
+                  (s.location_type ? '<div class="ac-city" style="color:#94A3B8;font-size:11px">' + s.location_type + (s.country ? ' · ' + s.country : '') + '</div>' : '') +
+                '</div>' +
+              '</div>';
+            }).join('');
+            drop.style.display = '';
+            drop.querySelectorAll('.ac-item').forEach(function(item) {
+              item.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                input.value = item.dataset.val;
+                if (hidden) hidden.value = item.dataset.id || '';
+                lastQ = item.dataset.val;
+                close();
+              });
+            });
+          })
+          .catch(function() { close(); });
+      }, 280);
+    });
+
+    input.addEventListener('blur', function() { setTimeout(close, 150); });
+    input.addEventListener('keydown', function(e) { if (e.key === 'Escape') close(); });
+  })();
+
 })();
 </script>
 </body>

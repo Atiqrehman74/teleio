@@ -11,26 +11,28 @@
   <script src="../js/nav.js"></script>
   <style>
     body { background: #F1F5F9; font-family: 'Inter', sans-serif; }
-    .bk-wrapper {
-      max-width: 1020px; margin: 100px auto 60px; padding: 0 20px;
-      display: grid; grid-template-columns: 380px 1fr; gap: 28px; align-items: start;
-    }
-    @media(max-width: 820px) { .bk-wrapper { grid-template-columns: 1fr; margin-top: 80px; } }
 
-    /* ── LEFT: Summary ── */
-    .bk-summary { position: sticky; top: 86px; }
+    .bk-wrapper {
+      max-width: 1040px; margin: 100px auto 60px; padding: 0 20px;
+      display: grid; grid-template-columns: 360px 1fr; gap: 28px; align-items: start;
+    }
+    @media(max-width: 840px) { .bk-wrapper { grid-template-columns: 1fr; margin-top: 80px; } }
+
+    /* ── Left: Summary ── */
+    .bk-summary { position: sticky; top: 88px; }
+
     .bk-img {
-      width: 100%; height: 220px; border-radius: 16px; overflow: hidden;
-      position: relative; background: #1A3C6E; margin-bottom: 18px;
+      width: 100%; height: 210px; border-radius: 16px; overflow: hidden;
+      position: relative; background: #1A3C6E; margin-bottom: 16px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.15);
     }
     .bk-img img { width: 100%; height: 100%; object-fit: cover; }
-    .bk-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%); }
+    .bk-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%); }
     .bk-img-badge {
       position: absolute; top: 12px; left: 12px;
-      background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
       color: #fff; font-size: 10px; font-weight: 700;
-      padding: 4px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 4px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: .06em;
     }
     .bk-img-rating {
       position: absolute; top: 12px; right: 12px;
@@ -39,78 +41,149 @@
     }
     .bk-img-name {
       position: absolute; bottom: 14px; left: 14px; right: 14px;
-      font-size: 16px; font-weight: 800; color: #fff;
+      font-size: 15px; font-weight: 800; color: #fff;
       text-shadow: 0 2px 8px rgba(0,0,0,0.8); line-height: 1.3;
     }
 
     .bk-card {
-      background: #fff; border-radius: 16px; padding: 22px;
+      background: #fff; border-radius: 16px; padding: 20px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin-bottom: 14px;
     }
     .bk-card-title {
-      font-size: 11px; font-weight: 700; color: #64748B;
-      text-transform: uppercase; letter-spacing: .07em; margin-bottom: 14px;
+      font-size: 10px; font-weight: 700; color: #64748B;
+      text-transform: uppercase; letter-spacing: .07em; margin-bottom: 12px;
     }
     .bk-row {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 9px 0; border-bottom: 1px solid #F1F5F9; font-size: 13px;
+      padding: 8px 0; border-bottom: 1px solid #F1F5F9; font-size: 13px;
     }
     .bk-row:last-child { border-bottom: none; }
     .bk-row-label { color: #64748B; }
     .bk-row-val { font-weight: 600; color: #1E293B; }
     .bk-total {
       display: flex; justify-content: space-between; align-items: center;
-      padding-top: 14px; margin-top: 4px; border-top: 2px dashed #E2E8F0;
+      padding-top: 12px; margin-top: 4px; border-top: 2px dashed #E2E8F0;
       font-size: 17px; font-weight: 800; color: #1E293B;
     }
     .bk-total-amt { color: var(--primary); }
 
-    .bk-trust { display: flex; flex-direction: column; gap: 8px; }
-    .trust-row { display: flex; align-items: center; gap: 9px; font-size: 12px; color: #475569; }
-    .trust-dot { width: 18px; height: 18px; min-width: 18px; background: #DCFCE7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+    .trust-row { display: flex; align-items: center; gap: 9px; font-size: 12px; color: #475569; margin-bottom: 8px; }
+    .trust-row:last-child { margin-bottom: 0; }
+    .trust-dot { width: 18px; height: 18px; min-width: 18px; background: #DCFCE7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #16A34A; font-weight: 700; }
 
-    /* ── RIGHT: Form ── */
-    .bk-form-col {
-      background: #fff; border-radius: 16px; padding: 32px;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    /* ── Right: Form col ── */
+    .bk-form-col { min-width: 0; }
+
+    .bk-panel {
+      background: #fff; border-radius: 16px; padding: 30px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin-bottom: 16px;
     }
-    .bk-form-title { font-size: 22px; font-weight: 800; color: #1E293B; margin-bottom: 4px; }
-    .bk-form-sub { font-size: 13px; color: #64748B; margin-bottom: 28px; }
+    .bk-panel-title { font-size: 17px; font-weight: 800; color: #1E293B; margin-bottom: 4px; }
+    .bk-panel-sub { font-size: 13px; color: #64748B; margin-bottom: 22px; }
 
-    .fgroup { margin-bottom: 16px; }
-    .fgroup label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
-    .fgroup input, .fgroup select {
-      width: 100%; padding: 12px 14px; border: 1.5px solid #E2E8F0;
-      border-radius: 10px; font-size: 15px; color: #1E293B; background: #fff;
+    /* Steps indicator */
+    .steps {
+      display: flex; align-items: center; gap: 0; margin-bottom: 28px;
+    }
+    .step-item { display: flex; align-items: center; flex: 1; }
+    .step-dot {
+      width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;
+      background: #E2E8F0; color: #94A3B8; transition: all .3s;
+    }
+    .step-dot.active { background: var(--primary); color: #fff; }
+    .step-dot.done { background: #16A34A; color: #fff; }
+    .step-label { font-size: 11px; font-weight: 600; color: #94A3B8; margin-left: 8px; transition: color .3s; }
+    .step-label.active { color: var(--primary); }
+    .step-label.done { color: #16A34A; }
+    .step-line { flex: 1; height: 2px; background: #E2E8F0; margin: 0 8px; transition: background .3s; }
+    .step-line.done { background: #16A34A; }
+
+    /* Form elements */
+    .fgroup { margin-bottom: 14px; }
+    .fgroup label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+    .fgroup input, .fgroup select, .fgroup textarea {
+      width: 100%; padding: 11px 13px; border: 1.5px solid #E2E8F0;
+      border-radius: 10px; font-size: 14px; color: #1E293B; background: #fff;
       transition: border-color .2s, box-shadow .2s; box-sizing: border-box;
       font-family: 'Inter', sans-serif;
     }
-    .fgroup input:focus, .fgroup select:focus {
-      outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+    .fgroup input:focus, .fgroup select:focus, .fgroup textarea:focus {
+      outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.1);
     }
     .fgroup input.err { border-color: #EF4444; }
+    .fgroup textarea { resize: vertical; min-height: 72px; }
     .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    @media(max-width: 480px) { .frow { grid-template-columns: 1fr; } }
+    @media(max-width: 540px) { .frow { grid-template-columns: 1fr; } }
 
-    .bk-divider {
-      display: flex; align-items: center; gap: 12px;
-      margin: 22px 0; font-size: 12px; color: #94A3B8;
+    /* Pax row */
+    .pax-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .pax-item { display: flex; align-items: center; gap: 10px; }
+    .pax-item label { font-size: 13px; font-weight: 600; color: #374151; white-space: nowrap; }
+    .pax-ctrl { display: flex; align-items: center; gap: 0; border: 1.5px solid #E2E8F0; border-radius: 10px; overflow: hidden; }
+    .pax-btn {
+      width: 36px; height: 36px; background: #F8FAFC; border: none; cursor: pointer;
+      font-size: 18px; color: #374151; display: flex; align-items: center; justify-content: center;
+      transition: background .15s; font-family: 'Inter', sans-serif;
     }
-    .bk-divider::before, .bk-divider::after { content: ''; flex: 1; height: 1px; background: #E2E8F0; }
+    .pax-btn:hover { background: #E2E8F0; }
+    .pax-num { min-width: 32px; text-align: center; font-size: 15px; font-weight: 700; color: #1E293B; }
 
+    /* Availability check button */
+    .avail-btn, .action-btn {
+      padding: 12px 24px; border-radius: 10px; border: none; cursor: pointer;
+      font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
+      transition: all .2s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .avail-btn {
+      background: linear-gradient(135deg, var(--primary), #1d4ed8);
+      color: #fff; width: 100%; justify-content: center; margin-top: 16px;
+    }
+    .avail-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,.3); }
+    .avail-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* Time slots */
+    .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; margin-top: 4px; }
+    .slot-btn {
+      padding: 10px 8px; border: 2px solid #E2E8F0; border-radius: 10px;
+      background: #fff; cursor: pointer; text-align: center; transition: all .2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .slot-btn:hover { border-color: var(--primary); background: #EFF6FF; }
+    .slot-btn.selected { border-color: var(--primary); background: #EFF6FF; }
+    .slot-time { font-size: 14px; font-weight: 700; color: #1E293B; }
+    .slot-avail { font-size: 10px; color: #16A34A; font-weight: 600; margin-top: 2px; }
+    .slot-btn.unavail { opacity: .45; cursor: not-allowed; }
+    .slot-btn.unavail:hover { border-color: #E2E8F0; background: #fff; }
+
+    /* Section divider */
+    .sec-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0; font-size: 11px; color: #94A3B8; font-weight: 600; letter-spacing: .04em;
+    }
+    .sec-divider::before, .sec-divider::after { content: ''; flex: 1; height: 1px; background: #E2E8F0; }
+
+    /* Question item */
+    .question-item { margin-bottom: 14px; }
+    .question-item label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+    .question-item .req { color: #EF4444; margin-left: 2px; }
+
+    /* Stripe */
     .stripe-card-wrap {
-      padding: 12px 14px; border: 1.5px solid #E2E8F0;
+      padding: 11px 13px; border: 1.5px solid #E2E8F0;
       border-radius: 10px; background: #fff; transition: border-color .2s, box-shadow .2s;
     }
-    .stripe-card-wrap.focused { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    .stripe-card-wrap.focused { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
     .stripe-card-wrap.err { border-color: #EF4444; }
     #card-errors { font-size: 12px; color: #EF4444; margin-top: 6px; min-height: 16px; }
+    .global-err { font-size: 13px; color: #EF4444; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 10px 14px; margin-top: 10px; display: none; }
 
+    /* Pay button */
     .pay-btn {
-      width: 100%; padding: 16px;
+      width: 100%; padding: 15px;
       background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
       color: #fff; border: none; border-radius: 12px;
-      font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px;
+      font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 12px;
       transition: transform .15s, box-shadow .15s, opacity .15s;
       display: flex; align-items: center; justify-content: center; gap: 8px;
       font-family: 'Inter', sans-serif;
@@ -128,248 +201,664 @@
 
     .stripe-badge {
       display: flex; align-items: center; justify-content: center;
-      gap: 5px; font-size: 11px; color: #94A3B8; margin-top: 12px;
+      gap: 5px; font-size: 11px; color: #94A3B8; margin-top: 10px;
     }
-    .success-box {
-      text-align: center; padding: 40px 20px; display: none;
+
+    /* Alert */
+    .alert-info {
+      background: #EFF6FF; border: 1px solid #BFDBFE; color: #1D4ED8;
+      border-radius: 10px; padding: 12px 14px; font-size: 13px; margin-bottom: 14px;
     }
-    .success-icon {
-      width: 72px; height: 72px; background: #DCFCE7; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 32px; margin: 0 auto 18px;
+    .alert-warn {
+      background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E;
+      border-radius: 10px; padding: 12px 14px; font-size: 13px; margin-bottom: 14px;
     }
-    .success-title { font-size: 24px; font-weight: 800; color: #1E293B; margin-bottom: 8px; }
-    .success-sub { font-size: 14px; color: #64748B; line-height: 1.6; }
-    .success-back {
-      display: inline-block; margin-top: 24px; padding: 12px 28px;
-      background: var(--primary); color: #fff; border-radius: 10px;
-      font-weight: 700; font-size: 14px; text-decoration: none;
-      transition: background .15s;
+
+    /* ── Success screen ── */
+    .success-wrap { display: none; }
+    .success-hero {
+      background: linear-gradient(135deg, #16A34A, #15803D);
+      border-radius: 16px; padding: 32px; text-align: center; color: #fff; margin-bottom: 16px;
     }
-    .success-back:hover { background: #1d4ed8; }
+    .success-icon { font-size: 48px; margin-bottom: 12px; }
+    .success-title { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+    .success-ref { font-size: 13px; opacity: .85; }
+    .success-ref code {
+      font-family: 'Inter', monospace; background: rgba(255,255,255,.2);
+      border-radius: 6px; padding: 2px 8px; font-size: 14px; font-weight: 700;
+    }
+    .ref-row { display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap; justify-content: center; }
+    .ref-chip {
+      background: rgba(255,255,255,.15); border-radius: 8px; padding: 8px 16px;
+      font-size: 12px; font-weight: 600;
+    }
+    .ref-chip span { display: block; font-size: 11px; opacity: .75; margin-bottom: 2px; }
+
+    .success-detail {
+      background: #fff; border-radius: 16px; padding: 24px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.07); margin-bottom: 14px;
+    }
+    .success-detail-title { font-size: 13px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 14px; }
+    .srow { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F1F5F9; font-size: 13px; }
+    .srow:last-child { border-bottom: none; }
+    .srow-l { color: #64748B; }
+    .srow-r { font-weight: 600; color: #1E293B; }
+    .srow.total-row { border-top: 2px dashed #E2E8F0; border-bottom: none; margin-top: 4px; font-size: 16px; font-weight: 800; }
+    .srow.total-row .srow-r { color: var(--primary); }
+
+    .voucher-btn {
+      display: block; width: 100%; padding: 13px; background: #1E293B; color: #fff;
+      border-radius: 10px; font-size: 14px; font-weight: 700; text-align: center;
+      text-decoration: none; transition: background .2s; margin-top: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+    .voucher-btn:hover { background: #0F172A; }
+    .voucher-btn.secondary { background: #F1F5F9; color: #1E293B; }
+    .voucher-btn.secondary:hover { background: #E2E8F0; }
+
+    .cancel-policy {
+      background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px;
+      padding: 12px 14px; font-size: 13px; color: #92400E; margin-top: 14px;
+    }
+
+    /* Loading spinner */
+    .spin-overlay {
+      display: none; text-align: center; padding: 30px;
+      color: #64748B; font-size: 14px;
+    }
+    .spin-overlay.show { display: block; }
+    .spin-circle {
+      width: 32px; height: 32px; border: 3px solid #E2E8F0; border-top-color: var(--primary);
+      border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 12px;
+    }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 24px; color: #94A3B8; font-size: 14px; }
   </style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
 
 <div class="bk-wrapper">
-  <!-- Left: Activity Summary -->
+
+  <!-- ─── LEFT: Summary ─── -->
   <div class="bk-summary">
     <div class="bk-img">
-      <img id="bk-act-img" src="" alt="Activity" onerror="this.style.display='none'">
+      <img id="bk-img" src="" alt="" onerror="this.style.display='none'">
       <div class="bk-img-overlay"></div>
-      <div class="bk-img-badge" id="bk-act-cat">Activity</div>
-      <div class="bk-img-rating" id="bk-act-rating" style="display:none"></div>
-      <div class="bk-img-name" id="bk-act-name">Loading...</div>
+      <span class="bk-img-badge" id="bk-cat">Activity</span>
+      <span class="bk-img-rating" id="bk-rating" style="display:none"></span>
+      <div class="bk-img-name" id="bk-name">Loading…</div>
     </div>
 
     <div class="bk-card">
       <div class="bk-card-title">Booking Summary</div>
-      <div class="bk-row"><span class="bk-row-label">Price per person</span><span class="bk-row-val" id="bk-price-per">—</span></div>
-      <div class="bk-row"><span class="bk-row-label">Travelers</span><span class="bk-row-val" id="bk-travelers-display">1</span></div>
-      <div class="bk-row"><span class="bk-row-label">Processing fee</span><span class="bk-row-val">Included</span></div>
+      <div class="bk-row"><span class="bk-row-label">Activity</span><span class="bk-row-val" id="sum-name" style="max-width:160px;text-align:right;font-size:12px">—</span></div>
+      <div class="bk-row"><span class="bk-row-label">Date</span><span class="bk-row-val" id="sum-date">—</span></div>
+      <div class="bk-row"><span class="bk-row-label">Time</span><span class="bk-row-val" id="sum-time">—</span></div>
+      <div class="bk-row"><span class="bk-row-label">Travelers</span><span class="bk-row-val" id="sum-travelers">—</span></div>
+      <div class="bk-row"><span class="bk-row-label">Price/person</span><span class="bk-row-val" id="sum-price-pp">—</span></div>
       <div class="bk-total">
         <span>Total</span>
-        <span class="bk-total-amt" id="bk-total-amt">—</span>
+        <span class="bk-total-amt" id="sum-total">—</span>
       </div>
     </div>
 
-    <div class="bk-card bk-trust">
+    <div class="bk-card">
       <div class="trust-row"><div class="trust-dot">✓</div> Free cancellation on most activities</div>
       <div class="trust-row"><div class="trust-dot">✓</div> Instant confirmation</div>
       <div class="trust-row"><div class="trust-dot">✓</div> Secure payment via Stripe</div>
-      <div class="trust-row"><div class="trust-dot">✓</div> 24/7 customer support</div>
+      <div class="trust-row"><div class="trust-dot">✓</div> 24/7 support</div>
     </div>
   </div>
 
-  <!-- Right: Payment Form -->
+  <!-- ─── RIGHT: Form col ─── -->
   <div class="bk-form-col" id="form-col">
-    <div class="bk-form-title">Complete Your Booking</div>
-    <div class="bk-form-sub">Fill in your details and pay securely to confirm your spot.</div>
 
-    <form id="booking-form" novalidate>
-      <div class="frow">
-        <div class="fgroup">
-          <label>First Name *</label>
-          <input type="text" id="first-name" placeholder="John" required>
+    <!-- STEP INDICATOR -->
+    <div class="bk-panel" style="padding: 20px 30px;">
+      <div class="steps">
+        <div class="step-item">
+          <div class="step-dot active" id="dot-1">1</div>
+          <span class="step-label active" id="lbl-1">Availability</span>
         </div>
-        <div class="fgroup">
-          <label>Last Name *</label>
-          <input type="text" id="last-name" placeholder="Smith" required>
+        <div class="step-line" id="line-1"></div>
+        <div class="step-item">
+          <div class="step-dot" id="dot-2">2</div>
+          <span class="step-label" id="lbl-2">Details & Pay</span>
+        </div>
+        <div class="step-line" id="line-2"></div>
+        <div class="step-item">
+          <div class="step-dot" id="dot-3">3</div>
+          <span class="step-label" id="lbl-3">Confirmed</span>
         </div>
       </div>
-      <div class="fgroup">
-        <label>Email Address *</label>
-        <input type="email" id="email" placeholder="john@example.com" required>
-      </div>
-      <div class="fgroup">
-        <label>Phone Number</label>
-        <input type="tel" id="phone" placeholder="+971 50 000 0000">
-      </div>
+    </div>
+
+    <!-- ─── PHASE 1: Availability ─── -->
+    <div class="bk-panel" id="phase-avail">
+      <div class="bk-panel-title">Check Availability</div>
+      <div class="bk-panel-sub">Select your date and number of travelers, then check what's available.</div>
+
       <div class="frow">
         <div class="fgroup">
           <label>Activity Date *</label>
           <input type="date" id="act-date" required>
         </div>
-        <div class="fgroup">
-          <label>Number of Travelers *</label>
-          <select id="travelers">
-            <option value="1">1 Traveler</option>
-            <option value="2">2 Travelers</option>
-            <option value="3">3 Travelers</option>
-            <option value="4">4 Travelers</option>
-            <option value="5">5 Travelers</option>
-            <option value="6">6 Travelers</option>
-            <option value="7">7 Travelers</option>
-            <option value="8">8 Travelers</option>
-          </select>
+        <div class="fgroup" style="display:flex;flex-direction:column;justify-content:flex-end">
+          <label>Adults</label>
+          <div class="pax-ctrl">
+            <button type="button" class="pax-btn" id="adults-minus">−</button>
+            <span class="pax-num" id="adults-num">1</span>
+            <button type="button" class="pax-btn" id="adults-plus">+</button>
+          </div>
         </div>
       </div>
-      <div class="fgroup">
-        <label>Special Requests (optional)</label>
-        <input type="text" id="special-req" placeholder="Any dietary requirements or accessibility needs?">
-      </div>
 
-      <div class="bk-divider">Secure Payment</div>
-
-      <div class="fgroup">
-        <label>Card Details *</label>
-        <div class="stripe-card-wrap" id="card-element-wrap">
-          <div id="card-element"></div>
-        </div>
-        <div id="card-errors"></div>
-      </div>
-
-      <button type="submit" class="pay-btn" id="pay-btn">
-        <span class="btn-spinner"></span>
-        <span class="btn-text" id="pay-btn-text">Pay Now — Loading...</span>
+      <button class="avail-btn" id="check-avail-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10H3M16 2v4M8 2v4M3 6h18a2 2 0 012 2v13a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+        Check Availability
       </button>
 
-      <div class="stripe-badge">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="#94A3B8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-        Secured by
-        <svg width="38" height="14" viewBox="0 0 60 25" fill="#94A3B8"><text y="18" font-size="16" font-family="Arial" font-weight="700">stripe</text></svg>
+      <!-- Spinner while loading -->
+      <div class="spin-overlay" id="avail-spin">
+        <div class="spin-circle"></div>
+        Checking available time slots…
       </div>
-    </form>
 
-    <!-- Success State -->
-    <div class="success-box" id="success-box">
-      <div class="success-icon">✓</div>
-      <div class="success-title">Booking Confirmed!</div>
-      <div class="success-sub" id="success-msg">
-        Your activity has been booked successfully.<br>
-        A confirmation email will be sent to you shortly.
+      <!-- Time slots (revealed after check) -->
+      <div id="slots-section" style="display:none; margin-top:22px;">
+        <div class="sec-divider">Select a Time Slot</div>
+        <div class="slot-grid" id="slot-grid"></div>
       </div>
-      <a href="../index.html" class="success-back">Back to Home</a>
+
+      <div id="avail-err" class="global-err"></div>
     </div>
-  </div>
-</div>
+
+    <!-- ─── PHASE 2: Details & Payment ─── -->
+    <div id="phase-details" style="display:none;">
+
+      <!-- Dynamic questions (if any) -->
+      <div class="bk-panel" id="questions-panel" style="display:none;">
+        <div class="bk-panel-title">Booking Questions</div>
+        <div class="bk-panel-sub">Please answer the following questions required by the operator.</div>
+        <div id="questions-container"></div>
+      </div>
+
+      <!-- Contact & payment -->
+      <div class="bk-panel">
+        <div class="bk-panel-title">Traveler & Payment</div>
+        <div class="bk-panel-sub">Lead traveler details and secure payment.</div>
+
+        <form id="booking-form" novalidate>
+          <div class="frow">
+            <div class="fgroup">
+              <label>First Name *</label>
+              <input type="text" id="f-first" placeholder="Jane" required>
+            </div>
+            <div class="fgroup">
+              <label>Last Name *</label>
+              <input type="text" id="f-last" placeholder="Doe" required>
+            </div>
+          </div>
+          <div class="fgroup">
+            <label>Email Address *</label>
+            <input type="email" id="f-email" placeholder="jane@example.com" required>
+          </div>
+          <div class="frow">
+            <div class="fgroup">
+              <label>Country Code</label>
+              <select id="f-country-code">
+                <option value="US">+1 US</option>
+                <option value="GB">+44 GB</option>
+                <option value="AE">+971 AE</option>
+                <option value="AU">+61 AU</option>
+                <option value="CA">+1 CA</option>
+                <option value="DE">+49 DE</option>
+                <option value="FR">+33 FR</option>
+                <option value="IN">+91 IN</option>
+                <option value="PK">+92 PK</option>
+                <option value="SG">+65 SG</option>
+                <option value="JP">+81 JP</option>
+                <option value="CN">+86 CN</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label>Phone Number</label>
+              <input type="tel" id="f-phone" placeholder="50 123 4567">
+            </div>
+          </div>
+
+          <div class="sec-divider">Secure Payment</div>
+
+          <div class="fgroup">
+            <label>Card Details *</label>
+            <div class="stripe-card-wrap" id="card-wrap">
+              <div id="card-element"></div>
+            </div>
+            <div id="card-errors"></div>
+          </div>
+
+          <button type="submit" class="pay-btn" id="pay-btn">
+            <span class="btn-spinner"></span>
+            <span class="btn-text" id="pay-btn-text">Pay Now</span>
+          </button>
+
+          <div id="pay-global-err" class="global-err"></div>
+
+          <div class="stripe-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="#94A3B8"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            Secured by Stripe &mdash; We never store card data
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ─── PHASE 3: Success ─── -->
+    <div id="phase-success" class="success-wrap">
+      <div class="success-hero">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Booking Confirmed!</div>
+        <div class="success-ref">Your activity is booked — check your email for the full confirmation.</div>
+        <div class="ref-row">
+          <div class="ref-chip"><span>Reference</span><span id="s-ref">—</span></div>
+          <div class="ref-chip"><span>Confirmation</span><span id="s-conf">—</span></div>
+          <div class="ref-chip"><span>Status</span><span id="s-status">CONFIRMED</span></div>
+        </div>
+      </div>
+
+      <div class="success-detail">
+        <div class="success-detail-title">Activity Details</div>
+        <div class="srow"><span class="srow-l">Activity</span><span class="srow-r" id="s-act-name">—</span></div>
+        <div class="srow"><span class="srow-l">Date</span><span class="srow-r" id="s-date">—</span></div>
+        <div class="srow"><span class="srow-l">Start Time</span><span class="srow-r" id="s-time">—</span></div>
+        <div class="srow"><span class="srow-l">Timezone</span><span class="srow-r" id="s-tz">—</span></div>
+        <div class="srow"><span class="srow-l">Travelers</span><span class="srow-r" id="s-travelers">—</span></div>
+        <div class="srow"><span class="srow-l">Lead Traveler</span><span class="srow-r" id="s-lead">—</span></div>
+      </div>
+
+      <!-- Itinerary items (populated if returned by GET booking) -->
+      <div class="success-detail" id="s-itinerary-panel" style="display:none;">
+        <div class="success-detail-title">Itinerary</div>
+        <div id="s-itinerary-list"></div>
+      </div>
+
+      <div class="success-detail">
+        <div class="success-detail-title">Fare Breakdown</div>
+        <div class="srow"><span class="srow-l">Subtotal</span><span class="srow-r" id="s-subtotal">—</span></div>
+        <div class="srow"><span class="srow-l">Taxes & Fees</span><span class="srow-r" id="s-tax">—</span></div>
+        <div class="srow total-row"><span class="srow-l">Total Paid</span><span class="srow-r" id="s-total">—</span></div>
+      </div>
+
+      <div id="s-cancel-policy" class="cancel-policy" style="display:none;"></div>
+
+      <a href="#" id="s-voucher-btn" class="voucher-btn" target="_blank" style="display:none;">
+        ↓ Download Voucher (PDF)
+      </a>
+      <a href="travel.html" class="voucher-btn secondary" style="margin-top:8px;">
+        ← Book Another Activity
+      </a>
+
+      <!-- Cancel section -->
+      <div id="s-cancel-section" style="display:none; margin-top:16px;">
+        <div style="border:1px solid #FEE2E2;border-radius:12px;padding:18px 20px;background:#FFF5F5;">
+          <div style="font-size:13px;font-weight:700;color:#991B1B;margin-bottom:6px;">Cancel This Booking</div>
+          <div style="font-size:12px;color:#B91C1C;margin-bottom:14px;">
+            Cancellation is subject to the operator's policy. This action cannot be undone.
+          </div>
+          <div class="fgroup" style="margin-bottom:12px;">
+            <label style="font-size:12px;">Reason for cancellation (optional)</label>
+            <input type="text" id="cancel-reason" placeholder="e.g. Change of plans" style="font-size:13px;padding:9px 12px;">
+          </div>
+          <button type="button" id="cancel-confirm-btn" style="
+            width:100%; padding:11px; background:#DC2626; color:#fff; border:none;
+            border-radius:9px; font-size:14px; font-weight:700; cursor:pointer;
+            font-family:'Inter',sans-serif; transition:background .15s;
+            display:flex;align-items:center;justify-content:center;gap:8px;
+          ">
+            <span id="cancel-btn-spinner" style="display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;"></span>
+            <span id="cancel-btn-text">Cancel Booking</span>
+          </button>
+          <div id="cancel-err" style="font-size:12px;color:#DC2626;margin-top:8px;display:none;"></div>
+        </div>
+      </div>
+
+      <!-- Toggle cancel section link -->
+      <div style="text-align:center;margin-top:12px;">
+        <button type="button" id="s-toggle-cancel" style="
+          background:none;border:none;color:#94A3B8;font-size:12px;cursor:pointer;
+          font-family:'Inter',sans-serif;text-decoration:underline;padding:4px;
+        ">Need to cancel this booking?</button>
+      </div>
+    </div>
+
+  </div><!-- /bk-form-col -->
+</div><!-- /bk-wrapper -->
 
 <script>
 (function () {
-  /* ── Read URL params ── */
-  var p = new URLSearchParams(location.search);
-  var actId   = p.get('id')       || '';
-  var actName = p.get('name')     || 'Activity Booking';
-  var actPrice = parseFloat(p.get('price')) || 0;
-  var actCur  = (p.get('currency') || 'USD').toUpperCase();
-  var actImg  = p.get('img')      || '';
-  var actCat  = p.get('cat')      || 'Activity';
-  var actRat  = parseFloat(p.get('rating')) || 0;
+  /* ── URL params ── */
+  var sp      = new URLSearchParams(location.search);
+  var actId   = sp.get('id')   || '';   /* product_id */
+  var actCode = sp.get('code') || actId; /* product_code / option_code */
+  var actName = sp.get('name')     || 'Activity';
+  var actPrice= parseFloat(sp.get('price')) || 0;
+  var actCur  = (sp.get('currency') || 'USD').toUpperCase();
+  var actImg  = sp.get('img')  || '';
+  var actCat  = sp.get('cat')  || 'Activity';
+  var actRat  = parseFloat(sp.get('rating')) || 0;
 
-  /* ── Populate summary ── */
   document.title = actName + ' — Teleio Tourism';
-  document.getElementById('bk-act-name').textContent = actName;
-  document.getElementById('bk-act-cat').textContent  = actCat;
-  if (actImg) document.getElementById('bk-act-img').src = actImg;
+
+  /* ── Populate hero ── */
+  document.getElementById('bk-name').textContent = actName;
+  document.getElementById('bk-cat').textContent  = actCat;
+  document.getElementById('sum-name').textContent = actName;
+  if (actImg) document.getElementById('bk-img').src = actImg;
   if (actRat > 0) {
-    var rEl = document.getElementById('bk-act-rating');
+    var rEl = document.getElementById('bk-rating');
     rEl.textContent = '★ ' + actRat.toFixed(1);
     rEl.style.display = 'block';
   }
 
-  /* ── Price calculation ── */
-  var travelersSelect = document.getElementById('travelers');
-  var pricePerEl      = document.getElementById('bk-price-per');
-  var totalEl         = document.getElementById('bk-total-amt');
-  var travDisplayEl   = document.getElementById('bk-travelers-display');
-  var btnText         = document.getElementById('pay-btn-text');
+  /* ── State ── */
+  var adults = 1;
+  var selectedToken  = null;
+  var selectedTime   = null;
+  var allQuestions   = [];
 
-  function formatMoney(n) {
-    return actCur + ' ' + Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  /* ── Helpers ── */
+  function fmt(n, cur) {
+    cur = cur || actCur;
+    return cur + ' ' + Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  function updateTotal() {
-    var t = parseInt(travelersSelect.value) || 1;
-    var total = actPrice * t;
-    pricePerEl.textContent   = actPrice > 0 ? formatMoney(actPrice) : 'Contact for price';
-    travDisplayEl.textContent = t + (t === 1 ? ' Traveler' : ' Travelers');
-    totalEl.textContent      = total > 0 ? formatMoney(total) : '—';
-    btnText.textContent      = total > 0 ? 'Pay Now — ' + formatMoney(total) : 'Confirm Booking';
+  function updateSummary() {
+    var total = actPrice * adults;
+    document.getElementById('sum-travelers').textContent = adults + ' Adult' + (adults > 1 ? 's' : '');
+    document.getElementById('sum-price-pp').textContent  = actPrice > 0 ? fmt(actPrice) : '—';
+    document.getElementById('sum-total').textContent     = total > 0 ? fmt(total) : '—';
+    if (document.getElementById('pay-btn-text'))
+      document.getElementById('pay-btn-text').textContent = total > 0 ? 'Pay Now — ' + fmt(total) : 'Confirm Booking';
   }
 
-  travelersSelect.addEventListener('change', updateTotal);
-  updateTotal();
+  /* Set min date */
+  var todayStr = new Date().toISOString().split('T')[0];
+  document.getElementById('act-date').min   = todayStr;
+  document.getElementById('act-date').value = todayStr;
+  document.getElementById('sum-date').textContent = todayStr;
 
-  /* Set min date for activity date picker */
-  var today = new Date().toISOString().split('T')[0];
-  document.getElementById('act-date').min = today;
-  document.getElementById('act-date').value = today;
+  document.getElementById('act-date').addEventListener('change', function () {
+    document.getElementById('sum-date').textContent = this.value || '—';
+    document.getElementById('slots-section').style.display = 'none';
+    selectedToken = null; selectedTime = null;
+    document.getElementById('sum-time').textContent = '—';
+    document.getElementById('phase-details').style.display = 'none';
+    setStep(1);
+  });
 
-  /* ── Stripe setup ── */
-  var stripe, cardElement;
+  updateSummary();
 
-  fetch('/config')
-    .then(function (r) { return r.json(); })
-    .then(function (cfg) {
-      stripe = Stripe(cfg.publishableKey);
-      var elements = stripe.elements({ fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap' }] });
-      cardElement = elements.create('card', {
-        style: {
-          base: { fontFamily: 'Inter, sans-serif', fontSize: '15px', color: '#1E293B', '::placeholder': { color: '#94A3B8' } },
-          invalid: { color: '#EF4444' }
-        }
+  /* ── Pax controls ── */
+  function setPax(n) {
+    adults = Math.max(1, Math.min(20, n));
+    document.getElementById('adults-num').textContent = adults;
+    updateSummary();
+  }
+  document.getElementById('adults-plus').addEventListener('click',  function () { setPax(adults + 1); });
+  document.getElementById('adults-minus').addEventListener('click', function () { setPax(adults - 1); });
+
+  /* ── Step indicator ── */
+  function setStep(n) {
+    [1, 2, 3].forEach(function (i) {
+      var dot = document.getElementById('dot-' + i);
+      var lbl = document.getElementById('lbl-' + i);
+      dot.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+      lbl.className = 'step-label' + (i < n ? ' done' : i === n ? ' active' : '');
+      if (i < 3) {
+        var line = document.getElementById('line-' + i);
+        line.className = 'step-line' + (i < n ? ' done' : '');
+      }
+      dot.textContent = i < n ? '✓' : String(i);
+    });
+  }
+
+  /* ── Check Availability ── */
+  document.getElementById('check-avail-btn').addEventListener('click', async function () {
+    var date = document.getElementById('act-date').value;
+    if (!date) { document.getElementById('act-date').classList.add('err'); return; }
+    document.getElementById('act-date').classList.remove('err');
+
+    if (!actCode) {
+      showAvailErr('No product code found. Please return to search and select again.');
+      return;
+    }
+
+    var btn  = this;
+    var spin = document.getElementById('avail-spin');
+    var errEl = document.getElementById('avail-err');
+    btn.disabled = true;
+    spin.classList.add('show');
+    errEl.style.display = 'none';
+    document.getElementById('slots-section').style.display = 'none';
+
+    try {
+      var paxMix = [{ age_band: 'ADULT', count: adults }];
+      var res = await fetch('/api/travel/activity-availability', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_code: actCode, date: date, pax_mix: paxMix, currency: actCur })
       });
-      cardElement.mount('#card-element');
-      cardElement.on('focus',  function () { document.getElementById('card-element-wrap').classList.add('focused'); });
-      cardElement.on('blur',   function () { document.getElementById('card-element-wrap').classList.remove('focused'); });
-      cardElement.on('change', function (e) {
-        var wrap = document.getElementById('card-element-wrap');
-        var errEl = document.getElementById('card-errors');
-        if (e.error) {
-          wrap.classList.add('err');
-          errEl.textContent = e.error.message;
-        } else {
-          wrap.classList.remove('err');
-          errEl.textContent = '';
-        }
-      });
-    })
-    .catch(function () {
-      document.getElementById('card-errors').textContent = 'Unable to load payment form. Please refresh.';
+      var json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Availability check failed');
+
+      var avData = json.data || json;
+      var items  = avData.bookable_items || [];
+      renderSlots(items);
+    } catch (err) {
+      showAvailErr(err.message || 'Could not check availability. Please try again.');
+    } finally {
+      btn.disabled = false;
+      spin.classList.remove('show');
+    }
+  });
+
+  function showAvailErr(msg) {
+    var el = document.getElementById('avail-err');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function renderSlots(items) {
+    var grid = document.getElementById('slot-grid');
+    grid.innerHTML = '';
+
+    var available = items.filter(function (it) { return it.available !== false; });
+
+    if (items.length === 0) {
+      grid.innerHTML = '<div class="empty-state">No slots available for this date. Try another date.</div>';
+      document.getElementById('slots-section').style.display = 'block';
+      return;
+    }
+
+    items.forEach(function (item) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'slot-btn' + (item.available === false ? ' unavail' : '');
+      btn.innerHTML = '<div class="slot-time">' + (item.start_time || 'All Day') + '</div>' +
+                      '<div class="slot-avail">' + (item.available !== false ? 'Available' : 'Unavailable') + '</div>';
+      if (item.available !== false) {
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('.slot-btn').forEach(function (b) { b.classList.remove('selected'); });
+          btn.classList.add('selected');
+          selectedToken = item.availability_token;
+          selectedTime  = item.start_time || 'All Day';
+          document.getElementById('sum-time').textContent = selectedTime;
+          proceedToDetails();
+        });
+      }
+      grid.appendChild(btn);
     });
 
-  /* ── Form submit ── */
+    document.getElementById('slots-section').style.display = 'block';
+
+    /* Auto-select if only one available slot */
+    if (available.length === 1) {
+      var singleBtn = grid.querySelector('.slot-btn:not(.unavail)');
+      if (singleBtn) singleBtn.click();
+    }
+  }
+
+  /* ── Proceed to details (Step 2) ── */
+  async function proceedToDetails() {
+    document.getElementById('phase-details').style.display = 'block';
+    setStep(2);
+    document.getElementById('phase-details').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (actId && selectedToken) {
+      await loadQuestions();
+    }
+
+    initStripe();
+    updateSummary();
+  }
+
+  /* ── Load Questions ── */
+  async function loadQuestions() {
+    var panel = document.getElementById('questions-panel');
+    var container = document.getElementById('questions-container');
+
+    try {
+      var res = await fetch('/api/travel/activity-questions?product_id=' +
+        encodeURIComponent(actId) + '&availability_token=' + encodeURIComponent(selectedToken));
+      var json = await res.json();
+
+      /* Normalize: questions may be at root, or under data/questions */
+      var qs = json.questions || (json.data && json.data.questions) || json || [];
+      if (!Array.isArray(qs)) qs = [];
+
+      allQuestions = qs.filter(function (q) { return q && q.id; });
+
+      if (allQuestions.length === 0) {
+        panel.style.display = 'none';
+        return;
+      }
+
+      container.innerHTML = '';
+      allQuestions.forEach(function (q) {
+        var div = document.createElement('div');
+        div.className = 'question-item';
+        var label = document.createElement('label');
+        label.innerHTML = escapeHtml(q.question || q.label || q.id) +
+          (q.required ? '<span class="req">*</span>' : '');
+        div.appendChild(label);
+
+        var type = (q.type || '').toUpperCase();
+        var input;
+        if (type === 'SELECT' || type === 'DROPDOWN') {
+          input = document.createElement('select');
+          (q.options || []).forEach(function (opt) {
+            var o = document.createElement('option');
+            o.value = typeof opt === 'string' ? opt : opt.value;
+            o.textContent = typeof opt === 'string' ? opt : (opt.label || opt.value);
+            input.appendChild(o);
+          });
+        } else if (type === 'TEXTAREA' || type === 'LONG_TEXT') {
+          input = document.createElement('textarea');
+          input.placeholder = q.placeholder || '';
+        } else {
+          input = document.createElement('input');
+          input.type = type === 'DATE' ? 'date' : type === 'NUMBER' ? 'number' : 'text';
+          input.placeholder = q.placeholder || '';
+        }
+        input.id = 'q-' + q.id;
+        if (q.required) input.required = true;
+        div.appendChild(input);
+        container.appendChild(div);
+      });
+
+      panel.style.display = 'block';
+    } catch (_) {
+      panel.style.display = 'none';
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  /* ── Stripe ── */
+  var stripe, cardElement;
+  var stripeInited = false;
+
+  function initStripe() {
+    if (stripeInited) return;
+    stripeInited = true;
+
+    fetch('/config')
+      .then(function (r) { return r.json(); })
+      .then(function (cfg) {
+        stripe = Stripe(cfg.publishableKey);
+        var elements = stripe.elements({
+          fonts: [{ cssSrc: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap' }]
+        });
+        cardElement = elements.create('card', {
+          style: {
+            base: { fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#1E293B', '::placeholder': { color: '#94A3B8' } },
+            invalid: { color: '#EF4444' }
+          }
+        });
+        cardElement.mount('#card-element');
+        cardElement.on('focus',  function () { document.getElementById('card-wrap').classList.add('focused'); });
+        cardElement.on('blur',   function () { document.getElementById('card-wrap').classList.remove('focused'); });
+        cardElement.on('change', function (e) {
+          var wrap = document.getElementById('card-wrap');
+          var errEl = document.getElementById('card-errors');
+          if (e.error) { wrap.classList.add('err'); errEl.textContent = e.error.message; }
+          else          { wrap.classList.remove('err'); errEl.textContent = ''; }
+        });
+      })
+      .catch(function () {
+        document.getElementById('card-errors').textContent = 'Unable to load payment form. Please refresh.';
+      });
+  }
+
+  /* ── Form Submit ── */
   document.getElementById('booking-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    var firstName = document.getElementById('first-name').value.trim();
-    var lastName  = document.getElementById('last-name').value.trim();
-    var email     = document.getElementById('email').value.trim();
-    var actDate   = document.getElementById('act-date').value;
-    var travelers = parseInt(travelersSelect.value) || 1;
+    if (!selectedToken) {
+      showPayErr('Please select a time slot first.');
+      return;
+    }
 
-    /* Basic validation */
+    var firstName   = document.getElementById('f-first').value.trim();
+    var lastName    = document.getElementById('f-last').value.trim();
+    var email       = document.getElementById('f-email').value.trim();
+    var countryCode = document.getElementById('f-country-code').value;
+    var phone       = document.getElementById('f-phone').value.trim();
+
+    /* Validate required fields */
     var valid = true;
-    [['first-name', firstName], ['last-name', lastName], ['email', email], ['act-date', actDate]].forEach(function (pair) {
+    [['f-first', firstName], ['f-last', lastName], ['f-email', email]].forEach(function (pair) {
       var el = document.getElementById(pair[0]);
       if (!pair[1]) { el.classList.add('err'); valid = false; }
       else el.classList.remove('err');
     });
-    if (!valid) return;
+
+    /* Validate required questions */
+    allQuestions.forEach(function (q) {
+      if (q.required) {
+        var el = document.getElementById('q-' + q.id);
+        if (el && !el.value.trim()) { el.classList.add('err'); valid = false; }
+        else if (el) el.classList.remove('err');
+      }
+    });
+
+    if (!valid) { showPayErr('Please fill in all required fields.'); return; }
 
     if (!stripe || !cardElement) {
-      document.getElementById('card-errors').textContent = 'Payment form not ready. Please wait a moment and try again.';
+      showPayErr('Payment form not ready. Please wait a moment.');
       return;
     }
 
@@ -377,51 +866,247 @@
     btn.disabled = true;
     btn.classList.add('loading');
     document.getElementById('card-errors').textContent = '';
+    document.getElementById('pay-global-err').style.display = 'none';
 
     try {
-      var total = actPrice * travelers;
-      var description = actName + ' x' + travelers + ' (' + actDate + ')';
+      var total = actPrice * adults;
+      var date  = document.getElementById('act-date').value;
 
-      /* 1. Create PaymentIntent on server */
+      /* 1. Create Stripe PaymentIntent */
       var piRes = await fetch('/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: total, currency: actCur.toLowerCase(), description: description })
+        body: JSON.stringify({
+          amount: total,
+          currency: actCur.toLowerCase(),
+          description: actName + ' x' + adults + ' (' + date + ')'
+        })
       });
       var piData = await piRes.json();
       if (piData.error) throw new Error(piData.error);
 
-      /* 2. Confirm card payment in browser */
-      var result = await stripe.confirmCardPayment(piData.clientSecret, {
+      /* 2. Confirm card in browser */
+      var stripeResult = await stripe.confirmCardPayment(piData.clientSecret, {
         payment_method: {
           card: cardElement,
-          billing_details: {
-            name: firstName + ' ' + lastName,
-            email: email
-          }
+          billing_details: { name: firstName + ' ' + lastName, email: email }
         }
       });
 
-      if (result.error) {
-        document.getElementById('card-errors').textContent = result.error.message;
+      if (stripeResult.error) {
+        document.getElementById('card-errors').textContent = stripeResult.error.message;
         btn.disabled = false;
         btn.classList.remove('loading');
-      } else if (result.paymentIntent.status === 'succeeded') {
-        /* Show success */
-        document.getElementById('booking-form').style.display = 'none';
-        var successBox = document.getElementById('success-box');
-        successBox.style.display = 'block';
-        document.getElementById('success-msg').innerHTML =
-          '<strong>' + actName + '</strong> has been booked for <strong>' + travelers + '</strong> traveler' + (travelers > 1 ? 's' : '') + ' on <strong>' + actDate + '</strong>.<br><br>' +
-          'A confirmation email will be sent to <strong>' + email + '</strong>.<br>' +
-          'Payment ref: <code style="font-size:11px;color:#64748B">' + result.paymentIntent.id + '</code>';
+        return;
       }
+
+      /* 3. Build participants list */
+      var participants = [];
+      for (var i = 0; i < adults; i++) {
+        participants.push({
+          first_name: i === 0 ? firstName : firstName,
+          last_name:  i === 0 ? lastName  : lastName,
+          type: 'ADULT'
+        });
+      }
+
+      /* 4. Collect question answers */
+      var answers = allQuestions.map(function (q) {
+        var el = document.getElementById('q-' + q.id);
+        return { id: q.id, answer: el ? el.value.trim() : '' };
+      }).filter(function (a) { return a.answer; });
+
+      /* 5. POST to Xeni via our backend */
+      var bookRes = await fetch('/api/travel/activity-book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          availability_token: selectedToken,
+          contact: {
+            first_name:   firstName,
+            last_name:    lastName,
+            email:        email,
+            phone:        phone,
+            country_code: countryCode
+          },
+          participants: participants,
+          questions:    answers
+        })
+      });
+      var bookData = await bookRes.json();
+      if (!bookRes.ok) throw new Error(bookData.error || 'Booking failed');
+
+      /* 6. Show success with book response, then enrich from GET booking */
+      var bookResult = bookData.data || bookData;
+      showSuccess(bookResult, date, adults);
+      if (bookResult.reference_number) {
+        enrichFromGetBooking(bookResult.reference_number);
+      }
+
     } catch (err) {
-      document.getElementById('card-errors').textContent = err.message || 'Payment failed. Please try again.';
+      showPayErr(err.message || 'Booking failed. Please try again or contact support.');
       btn.disabled = false;
       btn.classList.remove('loading');
     }
   });
+
+  function showPayErr(msg) {
+    var el = document.getElementById('pay-global-err');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  /* ── Success screen ── */
+  function showSuccess(data, date, travelers) {
+    document.getElementById('phase-avail').style.display   = 'none';
+    document.getElementById('phase-details').style.display = 'none';
+    setStep(3);
+
+    var successEl = document.getElementById('phase-success');
+    successEl.style.display = 'block';
+    successEl.classList.remove('success-wrap');
+    successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    populateSuccess(data, date, travelers);
+  }
+
+  function populateSuccess(data, date, travelers) {
+    /* Reference chips */
+    document.getElementById('s-ref').textContent    = data.reference_number  || '—';
+    document.getElementById('s-conf').textContent   = data.confirmation_code || '—';
+    document.getElementById('s-status').textContent = data.status            || 'CONFIRMED';
+
+    /* Activity details */
+    var productName = (data.product && (data.product.name || data.product.title || data.product.code)) || actName;
+    document.getElementById('s-act-name').textContent = productName;
+    document.getElementById('s-date').textContent     = data.date || date || '—';
+    document.getElementById('s-time').textContent     = data.start_time || selectedTime || '—';
+    document.getElementById('s-tz').textContent       = data.timezone || '—';
+    document.getElementById('s-travelers').textContent = (travelers || adults) + ' Adult' + ((travelers || adults) > 1 ? 's' : '');
+
+    /* Lead traveller */
+    var lead = data.lead_traveller;
+    if (lead && (lead.first_name || lead.last_name)) {
+      document.getElementById('s-lead').textContent = [lead.first_name, lead.last_name].filter(Boolean).join(' ');
+    }
+
+    /* Itinerary */
+    var items = data.itinerary && data.itinerary.items;
+    if (Array.isArray(items) && items.length) {
+      var list = document.getElementById('s-itinerary-list');
+      list.innerHTML = items.map(function (it, idx) {
+        return '<div class="srow" style="flex-direction:column;align-items:flex-start;gap:3px">' +
+          '<span style="font-weight:700;color:#1E293B;font-size:13px">' + escapeHtml(it.name || ('Step ' + (idx + 1))) + '</span>' +
+          (it.description ? '<span style="color:#64748B;font-size:12px">' + escapeHtml(it.description) + '</span>' : '') +
+          '</div>';
+      }).join('');
+      document.getElementById('s-itinerary-panel').style.display = 'block';
+    }
+
+    /* Pricing */
+    var pricing = data.pricing || {};
+    var cur = pricing.currency || actCur;
+    document.getElementById('s-subtotal').textContent = pricing.subtotal     != null ? fmt(pricing.subtotal,     cur) : '—';
+    document.getElementById('s-tax').textContent      = pricing.tax_and_fees != null ? fmt(pricing.tax_and_fees, cur) : '—';
+    document.getElementById('s-total').textContent    = pricing.total        != null ? fmt(pricing.total,        cur) : '—';
+
+    /* Cancellation policy */
+    var policy = data.cancellation_policy;
+    if (policy && policy.summary) {
+      var pEl = document.getElementById('s-cancel-policy');
+      pEl.innerHTML = '<strong>Cancellation Policy:</strong> ' + escapeHtml(policy.summary);
+      pEl.style.display = 'block';
+    }
+
+    /* Update image from booking if available */
+    if (data.image_url) document.getElementById('bk-img').src = data.image_url;
+
+    /* Voucher */
+    var voucherUrl = (data.voucher && data.voucher.url) || data.pdf_url;
+    if (voucherUrl) {
+      var vBtn = document.getElementById('s-voucher-btn');
+      vBtn.href = voucherUrl;
+      vBtn.style.display = 'block';
+    }
+  }
+
+  /* ── Enrich from GET /activity-booking after book response ── */
+  async function enrichFromGetBooking(referenceNumber) {
+    try {
+      var res  = await fetch('/api/travel/activity-booking?reference_number=' + encodeURIComponent(referenceNumber));
+      var json = await res.json();
+      if (!res.ok) return;
+      var detail = json.data || json;
+      if (detail && detail.reference_number) {
+        populateSuccess(detail, null, null);
+      }
+    } catch (_) { /* non-fatal — book response already shown */ }
+  }
+
+  /* ── Cancel booking ── */
+  var currentReferenceNumber = null;
+
+  document.getElementById('s-toggle-cancel').addEventListener('click', function () {
+    var section = document.getElementById('s-cancel-section');
+    var isOpen  = section.style.display !== 'none';
+    section.style.display = isOpen ? 'none' : 'block';
+    this.textContent = isOpen ? 'Need to cancel this booking?' : 'Hide cancellation';
+  });
+
+  document.getElementById('cancel-confirm-btn').addEventListener('click', async function () {
+    if (!currentReferenceNumber) return;
+
+    var reason = document.getElementById('cancel-reason').value.trim();
+    var btn    = this;
+    var spinner = document.getElementById('cancel-btn-spinner');
+    var btnText = document.getElementById('cancel-btn-text');
+    var errEl   = document.getElementById('cancel-err');
+
+    btn.disabled     = true;
+    spinner.style.display = 'inline-block';
+    btnText.textContent   = 'Cancelling…';
+    errEl.style.display   = 'none';
+
+    try {
+      var res = await fetch('/api/travel/activity-cancel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reference_number: currentReferenceNumber,
+          reason: reason || 'Customer requested cancellation',
+        })
+      });
+      var json = await res.json();
+      if (!res.ok) throw new Error((json.body && json.body.message) || json.error || 'Cancellation failed');
+
+      /* Update status badge */
+      document.getElementById('s-status').textContent = 'CANCELLED';
+      document.getElementById('s-status').style.background = '#FEE2E2';
+      document.getElementById('s-status').style.color = '#DC2626';
+
+      /* Replace cancel section with confirmation message */
+      document.getElementById('s-cancel-section').innerHTML =
+        '<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px 18px;font-size:13px;color:#991B1B;font-weight:600;">' +
+        'Your booking has been cancelled successfully.' +
+        '</div>';
+      document.getElementById('s-toggle-cancel').style.display = 'none';
+
+    } catch (err) {
+      errEl.textContent   = err.message || 'Cancellation failed. Please contact support.';
+      errEl.style.display = 'block';
+      btn.disabled        = false;
+      spinner.style.display = 'none';
+      btnText.textContent   = 'Cancel Booking';
+    }
+  });
+
+  /* Wire reference number into cancel flow once success is shown */
+  var _origShowSuccess = showSuccess;
+  showSuccess = function (data, date, travelers) {
+    _origShowSuccess(data, date, travelers);
+    currentReferenceNumber = (data && data.reference_number) || null;
+  };
+
 })();
 </script>
 </body>
