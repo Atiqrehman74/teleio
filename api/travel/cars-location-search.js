@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { carsReq, cors } = require('../_xeni');
+const { xeniReq, cors } = require('../_xeni');
 
 module.exports = async (req, res) => {
   cors(res);
@@ -9,17 +9,16 @@ module.exports = async (req, res) => {
     const { key } = req.query;
     if (!key || key.trim().length < 2) return res.status(400).json({ error: 'key must be at least 2 characters' });
 
-    const correlationId = crypto.randomUUID();
-    const result = await carsReq(
+    const result = await xeniReq(
       'GET',
-      `/search?key=${encodeURIComponent(key.trim())}`,
+      `/cars/api/v2/locations?key=${encodeURIComponent(key.trim())}`,
       null,
-      { 'x-correlation-id': correlationId }
+      { 'x-correlation-id': crypto.randomUUID() }
     );
 
     res.json(result);
   } catch (err) {
-    console.error('Cars location search:', err.message);
-    res.status(err.status || 500).json({ error: err.message, body: err.body });
+    console.error('Cars location search:', err.message, JSON.stringify(err.body));
+    res.status(err.status || 500).json({ error: err.message, body: err.body, detail: JSON.stringify(err.body) });
   }
 };
