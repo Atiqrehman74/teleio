@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
       checkout_date,
       occupancy: occupancy && occupancy.length ? occupancy : [{ adults: 1, childs: 0, childages: [] }],
       country_of_residence,
-      is_async: true,
+      is_async: false,
     };
 
     if (place_id)       body.place_id = place_id;
