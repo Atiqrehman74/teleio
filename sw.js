@@ -1,11 +1,11 @@
-const CACHE = 'teleio-v1';
+const CACHE = 'teleio-v2';
 const PRECACHE = [
   '/',
   '/index.html',
   '/css/style.css',
   '/js/main.js',
   '/images/teleio-logo.png',
-  '/images/favicon.png',
+  '/images/favicon.svg',
   '/manifest.json'
 ];
 

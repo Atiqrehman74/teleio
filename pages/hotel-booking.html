@@ -6,7 +6,7 @@
   <title>Book Hotel — Teleio Tourism</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="icon" type="image/png" href="../images/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
   <script src="https://js.stripe.com/v3/"></script>
   <script src="../js/nav.js"></script>
   <style>
@@ -352,9 +352,15 @@
     renderHeroFallback();
   }
 
+  function proxyImg(url) {
+    if (!url) return '';
+    return url.indexOf('travelapi.ai') > -1 ? '/api/proxy-image?url=' + encodeURIComponent(url) : url;
+  }
+
   function renderHero(d) {
-    var imgs = d.images || {};
-    var src = (imgs.extra_large && imgs.extra_large[0]) || (imgs.large && imgs.large[0]) || (imgs.thumbnail && imgs.thumbnail[0]) || '';
+    var imgs = d.property_images || d.images || {};
+    var rawSrc = (imgs.extra_large && imgs.extra_large[0]) || (imgs.large && imgs.large[0]) || (imgs.thumbnail && imgs.thumbnail[0]) || '';
+    var src = proxyImg(rawSrc);
     document.getElementById('hero-img').src = src;
     document.getElementById('hero-name').textContent = d.name || propName;
 
@@ -390,8 +396,8 @@
   }
 
   function renderThumbs(d) {
-    var imgs = d.images || {};
-    var all = [].concat(imgs.extra_large || [], imgs.large || [], imgs.thumbnail || []).slice(0, 8);
+    var imgs = d.property_images || d.images || {};
+    var all = [].concat(imgs.extra_large || [], imgs.large || [], imgs.thumbnail || []).map(proxyImg).slice(0, 8);
     if (all.length < 2) return;
     var strip = document.getElementById('bk-thumbs');
     strip.style.display = 'flex';
