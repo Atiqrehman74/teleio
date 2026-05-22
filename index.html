@@ -924,7 +924,7 @@ window.teleioInstallIOS = function(e) {
     .isw-row {
       display: flex; gap: 0; align-items: stretch;
       border: 1.5px solid #E5E7EB; border-radius: 10px;
-      overflow: hidden; margin-bottom: 12px; flex-wrap: wrap;
+      overflow: visible; margin-bottom: 12px; flex-wrap: wrap;
     }
     .isw-field {
       position: relative; display: flex; flex-direction: column;
@@ -932,7 +932,9 @@ window.teleioInstallIOS = function(e) {
       border-right: 1px solid #E5E7EB; min-width: 0; flex: 1;
       background: #fff; transition: background .12s;
     }
-    .isw-field:last-child { border-right: none; }
+    .isw-field:first-child { border-radius: 10px 0 0 10px; }
+    .isw-field:last-child { border-right: none; border-radius: 0 10px 10px 0; }
+    .isw-field:only-child { border-radius: 10px; }
     .isw-field:hover { background: #F8FAFF; }
     .isw-fw1 { flex: 1.2; min-width: 120px; }
     .isw-fw2 { flex: 1.8; min-width: 140px; }
