@@ -14,23 +14,26 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   try {
-    const { origin, destination, departureDate, returnDate, adults, children, infants, cabinType } = req.body || {};
+    const { origin, destination, departureDate, returnDate, adults, children, infants, cabinType, routeType } = req.body || {};
     if (!origin || !destination || !departureDate) {
       return res.status(400).json({ error: 'origin, destination and departureDate are required' });
     }
 
     const originCode = extractCode(origin);
     const destCode   = extractCode(destination);
+
+    // Derive route_type: explicit value takes priority, otherwise infer from returnDate
     const isRoundTrip = !!returnDate;
+    const resolvedRouteType = routeType || (isRoundTrip ? 'return' : 'oneway');
 
     const flightInfo = [{ departure_date: departureDate, origin: originCode, destination: destCode }];
-    if (isRoundTrip) {
+    if (resolvedRouteType === 'return' && returnDate) {
       flightInfo.push({ departure_date: returnDate, origin: destCode, destination: originCode });
     }
 
     const body = {
       flight_info: flightInfo,
-      route_type: isRoundTrip ? 'RoundTrip' : 'OneWay',
+      route_type: resolvedRouteType,
       cabin_type: cabinType || 'Economy',
       adults:   parseInt(adults)   || 1,
       children: parseInt(children) || 0,

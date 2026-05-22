@@ -199,6 +199,9 @@ app.post('/api/travel/resort-confirm', require('./api/travel/resort-confirm'));
 // Resort booking retrieval by reference_number
 app.get('/api/travel/resort-booking', require('./api/travel/resort-booking-get'));
 
+// Image proxy (Xeni CDN hotel images blocked in browsers)
+app.get('/api/proxy-image', require('./api/proxy-image'));
+
 // Flight airport autocomplete
 app.get('/api/travel/flight-autocomplete', require('./api/travel/flight-autocomplete'));
 
@@ -359,20 +362,10 @@ app.post('/api/travel/cars', async (req, res) => {
 });
 
 // Activities search
-app.post('/api/travel/activities', require('./api/travel/activity-search'));
+app.post('/api/travel/activity-search', require('./api/travel/activity-search'));
 
 // Resorts (vacation packages) search
-app.post('/api/travel/resorts', async (req, res) => {
-  try {
-    const { destination } = req.body;
-    if (!destination) return res.status(400).json({ error: 'destination is required' });
-    const result = await xeniReq('GET', `/resorts/api/v2/search?key=${encodeURIComponent(destination)}&currency=USD`);
-    res.json(result);
-  } catch (err) {
-    console.error('Resorts error:', err.message);
-    res.status(err.status || 500).json({ error: err.message, body: err.body });
-  }
-});
+app.post('/api/travel/resorts', require('./api/travel/resorts'));
 
 // Keep old packages route for backward compat
 app.post('/api/travel/packages', async (req, res) => {

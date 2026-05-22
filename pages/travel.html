@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -116,6 +116,12 @@
       background: #fff;
     }
     body.dark-mode .t-tab.active { background: #1e293b; }
+
+    /* ── Trip type row ── */
+    .fl-trip-type-row { display: flex; gap: 6px; padding: 16px 24px 0; }
+    .fl-trip-btn { padding: 6px 16px; border-radius: 20px; border: 1.5px solid var(--border); background: none; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+    .fl-trip-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .fl-trip-btn:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
 
     /* ── Form Panels ── */
     .t-panel { display: none; padding: 24px 24px 0; }
@@ -436,11 +442,16 @@
 
         <!-- Flights -->
         <div id="flights" class="t-panel active">
+          <div class="fl-trip-type-row">
+            <button type="button" class="fl-trip-btn active" data-type="oneway">One Way</button>
+            <button type="button" class="fl-trip-btn" data-type="return">Round Trip</button>
+            <button type="button" class="fl-trip-btn" data-type="multicity">Multi-City</button>
+          </div>
           <div class="t-form-row">
             <div class="t-fg wide"><label>From</label><div class="ac-wrap"><input id="fl-origin" type="text" placeholder="e.g. Dubai (DXB)" autocomplete="off"><div class="ac-dropdown" id="ac-origin"></div></div></div>
             <div class="t-fg wide"><label>To</label><div class="ac-wrap"><input id="fl-dest" type="text" placeholder="e.g. London (LHR)" autocomplete="off"><div class="ac-dropdown" id="ac-dest"></div></div></div>
             <div class="t-fg"><label>Depart</label><input id="fl-depart" type="date"></div>
-            <div class="t-fg"><label>Return</label><input id="fl-return" type="date"></div>
+            <div class="t-fg" id="fl-return-wrap"><label>Return</label><input id="fl-return" type="date"></div>
             <div class="t-fg sm"><label>Adults</label>
               <select id="fl-adults"><option>1</option><option selected>2</option><option>3</option><option>4</option></select>
             </div>
@@ -448,7 +459,7 @@
               <select id="fl-children"><option selected>0</option><option>1</option><option>2</option><option>3</option></select>
             </div>
             <div class="t-fg sm"><label>Cabin</label>
-              <select id="fl-cabin"><option value="Economy" selected>Economy</option><option value="Business">Business</option><option value="First">First</option></select>
+              <select id="fl-cabin"><option value="Economy" selected>Economy</option><option value="PremiumEconomy">Prem. Economy</option><option value="Business">Business</option><option value="First">First</option></select>
             </div>
             <div style="align-self:flex-end;flex-shrink:0">
               <button type="submit" class="t-search-btn">
@@ -488,6 +499,7 @@
           <input type="hidden" id="cr-pickup-code">
           <input type="hidden" id="cr-pickup-geo">
           <input type="hidden" id="cr-pickup-type">
+          <input type="hidden" id="cr-pickup-country">
           <div class="t-form-row">
             <div class="t-fg full"><label>Pick-up Location</label><div class="ac-wrap"><input id="cr-pickup" type="text" placeholder="City or airport name" autocomplete="off"><div class="ac-dropdown" id="ac-cr-pickup"></div></div></div>
             <div class="t-fg"><label>Pick-up Date</label><input id="cr-from" type="date"></div>
@@ -735,82 +747,25 @@
 
   </div>
 
-  <!-- Xeni Quick Builder -->
-  <div style="margin-top:60px">
-    <div style="background:linear-gradient(135deg,#001a6e 0%,#002ad1 50%,#0050ff 100%);border-radius:24px;padding:48px 40px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:rgba(255,255,255,0.04);border-radius:50%"></div>
-      <div style="position:absolute;bottom:-80px;left:60px;width:200px;height:200px;background:rgba(132,204,22,0.08);border-radius:50%"></div>
-      <div style="position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center">
-        <div>
-          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(132,204,22,0.15);border:1px solid rgba(132,204,22,0.3);color:#84CC16;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:20px">
-            <span style="width:6px;height:6px;border-radius:50%;background:#84CC16;display:inline-block"></span>
-            Xeni Quick Builder
-          </div>
-          <h2 style="font-size:clamp(22px,3vw,34px);font-weight:800;color:#fff;line-height:1.2;margin-bottom:16px;letter-spacing:-0.02em">
-            White-Label Travel<br>Search in Minutes
-          </h2>
-          <p style="color:rgba(255,255,255,0.72);font-size:15px;line-height:1.65;margin-bottom:28px">
-            Xeni Quick Builder is a fully embeddable travel search widget — hotels, flights, cars, and activities — all in one iframe. No complex API integration required. Brand it your way, deploy it anywhere.
-          </p>
-          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px">
-            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 16px;color:#fff;font-size:13px;font-weight:600">✈ Flights</div>
-            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 16px;color:#fff;font-size:13px;font-weight:600">🏨 Hotels</div>
-            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 16px;color:#fff;font-size:13px;font-weight:600">🚗 Cars</div>
-            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px 16px;color:#fff;font-size:13px;font-weight:600">🎯 Activities</div>
-          </div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap">
-            <a href="/pages/contact.html" class="t-search-btn" style="text-decoration:none;background:#84CC16;color:#1a2e05;height:44px;padding:0 24px">
-              Get Quick Builder Access
-            </a>
-            <a href="https://xeni.com" target="_blank" rel="noopener" class="t-search-btn" style="text-decoration:none;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);height:44px;padding:0 24px">
-              Learn More
-            </a>
-          </div>
-        </div>
-        <div>
-          <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:24px;backdrop-filter:blur(8px)">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-              <div style="width:10px;height:10px;border-radius:50%;background:#EF4444"></div>
-              <div style="width:10px;height:10px;border-radius:50%;background:#F59E0B"></div>
-              <div style="width:10px;height:10px;border-radius:50%;background:#84CC16"></div>
-              <span style="color:rgba(255,255,255,0.4);font-size:11px;margin-left:8px">quick-builder.js</span>
-            </div>
-            <pre style="color:#84CC16;font-size:12px;line-height:1.7;margin:0;overflow-x:auto"><code>&lt;!-- Add to your HTML --&gt;
-&lt;script src="https://cdn.xeni.com/
-  quick-builder.js"&gt;&lt;/script&gt;
-
-&lt;div id="xeni-search"
-  data-api-key="YOUR_KEY"
-  data-theme="light"
-  data-currency="USD"
-  data-tabs="hotels,flights,
-    cars,activities"&gt;
-&lt;/div&gt;</code></pre>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px">
-            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px">
-              <div style="font-size:1.25rem;font-weight:800;color:#fff">5 min</div>
-              <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:2px">Setup time</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px">
-              <div style="font-size:1.25rem;font-weight:800;color:#fff">100%</div>
-              <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:2px">White-label</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <style>
-    @media (max-width: 768px) {
-      #xeni-qb-grid { grid-template-columns: 1fr !important; }
-    }
-  </style>
 </div><!-- /.t-main -->
 
 <script src="../js/main.js"></script>
 <script>
+/* Country name → ISO2 code (shared by autocomplete and search submit) */
+var COUNTRY_ISO = {
+  'United Arab Emirates':'AE','United States':'US','United Kingdom':'GB','Australia':'AU',
+  'France':'FR','Germany':'DE','Italy':'IT','Spain':'ES','Japan':'JP','China':'CN',
+  'India':'IN','Canada':'CA','Brazil':'BR','Mexico':'MX','Singapore':'SG',
+  'Thailand':'TH','Malaysia':'MY','Indonesia':'ID','Saudi Arabia':'SA','Qatar':'QA',
+  'Kuwait':'KW','Bahrain':'BH','Oman':'OM','Turkey':'TR','Egypt':'EG',
+  'South Africa':'ZA','Kenya':'KE','Nigeria':'NG','Netherlands':'NL','Belgium':'BE',
+  'Switzerland':'CH','Austria':'AT','Portugal':'PT','Greece':'GR','Sweden':'SE',
+  'Norway':'NO','Denmark':'DK','Finland':'FI','Poland':'PL','Ireland':'IE',
+  'New Zealand':'NZ','Philippines':'PH','Vietnam':'VN','South Korea':'KR',
+  'Jordan':'JO','Lebanon':'LB','Pakistan':'PK','Bangladesh':'BD','Sri Lanka':'LK',
+};
+function countryToIso(name) { return COUNTRY_ISO[name] || 'US'; }
+
 /* ── Tab switcher ── */
 function switchTab(tab) {
   document.querySelectorAll('.t-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
@@ -827,6 +782,51 @@ document.querySelectorAll('.t-tab').forEach(btn => {
   var validTabs = ['flights','hotels','activities','cars','resorts','vacation-rentals','deals'];
   var hash = (location.hash || '').replace('#','');
   if (validTabs.indexOf(hash) !== -1) switchTab(hash);
+})();
+
+/* ── Auto-search from index page widget (via sessionStorage) ── */
+(function() {
+  var raw;
+  try { raw = sessionStorage.getItem('teleio_search'); sessionStorage.removeItem('teleio_search'); } catch(e){}
+  if (!raw) return;
+  var p; try { p = JSON.parse(raw); } catch(e) { return; }
+  if (!p || !p.tab) return;
+
+  var setV = function(id, v) { var el = document.getElementById(id); if (el && v) el.value = v; };
+  var tab = p.tab;
+  switchTab(tab);
+
+  if (tab === 'hotels') {
+    setV('ht-dest',     p.dest);
+    setV('ht-checkin',  p.checkin);
+    setV('ht-checkout', p.checkout);
+    if (p.adults) setV('ht-adults', p.adults);
+  } else if (tab === 'flights') {
+    setV('fl-origin', p.origin);
+    setV('fl-dest',   p.dest);
+    setV('fl-depart', p.dep);
+    if (p.adults) setV('fl-adults', p.adults);
+  } else if (tab === 'activities') {
+    setV('act-dest', p.dest);
+    setV('ac-date',  p.date);
+  } else if (tab === 'cars') {
+    setV('cr-pickup', p.loc);
+    setV('cr-from',   p.from);
+    setV('cr-to',     p.to);
+  } else if (tab === 'resorts') {
+    setV('rs-dest',   p.dest);
+    setV('rs-date',   p.date);
+    if (p.adults) setV('rs-adults', p.adults);
+  }
+
+  // Auto-submit once fields are set (only if destination/origin filled)
+  var hasInput = p.dest || p.origin || p.loc;
+  if (hasInput) {
+    setTimeout(function() {
+      var form = document.getElementById('travelSearchForm');
+      if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+    }, 300);
+  }
 })();
 
 /* ── Quick search from destination tiles / deal buttons ── */
@@ -915,8 +915,17 @@ function renderHotels(data) {
     '</div>';
   html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">';
   var ciVal = val('ht-checkin'), coVal = val('ht-checkout'), adVal = val('ht-adults') || 2;
+  var HOTEL_FALLBACK = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop';
+  function proxyImg(url) {
+    if (!url) return HOTEL_FALLBACK;
+    if (url.indexOf('travelapi.ai') > -1) return '/api/proxy-image?url=' + encodeURIComponent(url);
+    return url;
+  }
   hotels.slice(0, 9).forEach(function(h) {
-    var img    = (h.image && (h.image.large || h.image.thumbnail)) || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop';
+    var rawImg  = (h.image && (h.image.large || h.image.thumbnail)) ||
+                  (h.property_images && (h.property_images.large && h.property_images.large[0]) ||
+                   (h.property_images.thumbnail && h.property_images.thumbnail[0])) || '';
+    var img     = proxyImg(rawImg) || HOTEL_FALLBACK;
     var name   = h.name || 'Hotel';
     var city   = (h.contact && h.contact.address && h.contact.address.city) || '';
     var stars  = (h.ratings && h.ratings.star_rating) || 0;
@@ -939,7 +948,7 @@ function renderHotels(data) {
     var saveBadge = saved > 0 ? '<span style="background:#DCFCE7;color:#16A34A;font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:20px">Save ' + cur + ' ' + Math.round(saved) + '</span>' : '';
     html += '<div style="background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:box-shadow 0.2s,transform 0.2s" onmouseover="this.style.boxShadow=\'0 8px 30px rgba(0,0,0,0.12)\';this.style.transform=\'translateY(-2px)\'" onmouseout="this.style.boxShadow=\'none\';this.style.transform=\'none\'">' +
       '<div style="position:relative;height:170px;overflow:hidden">' +
-        '<img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop\'">' +
+        '<img src="' + img + '" alt="' + name + '" style="width:100%;height:100%;object-fit:cover" onerror="this.onerror=null;this.src=\'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=70&fit=crop\'">' +
         (saveBadge ? '<div style="position:absolute;top:10px;right:10px">' + saveBadge + '</div>' : '') +
       '</div>' +
       '<div style="padding:14px">' +
@@ -1066,8 +1075,9 @@ function renderFlights(data) {
 
 function renderCars(data) {
   // Xeni cars search: data.data is array of rental offers
-  var cars = (data.data && Array.isArray(data.data)) ? data.data
-           : (data.data && Array.isArray(data.data.rentals)) ? data.data.rentals
+  var cars = (data.data && Array.isArray(data.data.available_cars)) ? data.data.available_cars
+           : (data.data && Array.isArray(data.data.rentals))       ? data.data.rentals
+           : Array.isArray(data.data)                              ? data.data
            : data.cars || data.vehicles || data.results || [];
   var CAR_FALLBACK = 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&q=70&fit=crop';
   var pickupVal = val('cr-from'), returnVal = val('cr-to');
@@ -1078,9 +1088,14 @@ function renderCars(data) {
   }
   var html = '<h3 style="font-size:1.05rem;font-weight:700;margin-bottom:16px;padding-top:8px">' + cars.length + ' Car' + (cars.length > 1 ? 's' : '') + ' Available</h3>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px">';
+  function proxyCarImg(url) {
+    if (!url) return CAR_FALLBACK;
+    if (url.indexOf('travelapi.ai') > -1) return '/api/proxy-image?url=' + encodeURIComponent(url);
+    return url;
+  }
   cars.slice(0, 9).forEach(function(c) {
     var v      = c.vehicle || {};
-    var img    = v.picture_url || c.image || c.photo || CAR_FALLBACK;
+    var img    = proxyCarImg(v.picture_url || c.image || c.photo || '');
     var name   = v.name || c.name || 'Car';
     var brand  = c.rental_car_brand || '';
     var sipp   = v.sipp_code || '';
@@ -1090,8 +1105,8 @@ function renderCars(data) {
     var charges = (c.rental_rate && c.rental_rate.vehicle_charges) || [];
     var preferred = charges.find(function(ch) { return ch.purpose === 'preferred'; }) || charges[0] || {};
     var price  = preferred.base_price || c.price || 0;
-    var cur    = (c.rental_rate && c.rental_rate.currency) || 'USD';
-    var token  = c.token || '';
+    var cur    = preferred.currency_code || (c.rental_rate && c.rental_rate.currency) || 'USD';
+    var token  = c.availability_token || c.token || '';
     var bookUrl = 'car-booking.html?token=' + encodeURIComponent(token) +
       '&name='     + encodeURIComponent(name) +
       '&img='      + encodeURIComponent(img !== CAR_FALLBACK ? img : '') +
@@ -1243,12 +1258,17 @@ function renderResorts(data) {
   var html = '<h3 style="font-size:1.05rem;font-weight:700;margin-bottom:16px;padding-top:8px">' + header + '</h3>' +
     '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">';
   var ciVal = val('rs-checkin'), coVal = val('rs-checkout');
+  var RESORT_FALLBACK = 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=400&q=70&fit=crop';
+  function proxyResortImg(url) {
+    if (!url) return RESORT_FALLBACK;
+    if (url.indexOf('travelapi.ai') > -1) return '/api/proxy-image?url=' + encodeURIComponent(url);
+    return url;
+  }
   items.slice(0, 12).forEach(function(p) {
-    // Native resort: image is a string; Hotels fallback: image is an object
-    var img = (typeof p.image === 'string' && p.image)
+    var rawImg = (typeof p.image === 'string' && p.image)
       || (p.image && (p.image.large || p.image.thumbnail))
-      || p.imageUrl || p.photo
-      || 'https://images.unsplash.com/photo-1439130490301-25e322d88054?w=400&q=70&fit=crop';
+      || p.imageUrl || p.photo || '';
+    var img = proxyResortImg(rawImg);
 
     var name  = p.name || p.title || 'Resort';
     var city  = (p.contact && p.contact.address && (p.contact.address.city || p.contact.address.state))
@@ -1287,7 +1307,7 @@ function renderResorts(data) {
       '&checkout=' + encodeURIComponent(coVal || p.end_date || '') +
       '&adults=' + (val('rs-adults') || 2) +
       (recId ? '&rec=' + encodeURIComponent(recId) : '') +
-      (img ? '&img=' + encodeURIComponent(img) : '') +
+      (rawImg ? '&img=' + encodeURIComponent(rawImg) : '') +
       (avail ? '&avail=' + encodeURIComponent(avail) : '');
 
     var ratingBadge = userRating > 0
@@ -1424,6 +1444,39 @@ function renderDeals(data) {
   resultsBox.innerHTML = html;
 }
 
+/* ── Trip type toggle ── */
+(function() {
+  var btns = document.querySelectorAll('.fl-trip-btn');
+  var returnWrap = document.getElementById('fl-return-wrap');
+  function setTrip(type) {
+    btns.forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-type') === type); });
+    if (returnWrap) returnWrap.style.display = (type === 'return') ? '' : 'none';
+  }
+  btns.forEach(function(b) {
+    b.addEventListener('click', function() { setTrip(b.getAttribute('data-type')); });
+  });
+  setTrip('oneway'); // default: hide return date
+})();
+
+/* ── Cars date defaults (Xeni requires pickup ≥ 14 days out) ── */
+(function() {
+  var fmt = function(d) { return d.toISOString().slice(0, 10); };
+  var pickup = new Date(); pickup.setDate(pickup.getDate() + 14);
+  var ret    = new Date(); ret.setDate(ret.getDate() + 21);
+  var minStr = fmt(pickup);
+  var fromEl = document.getElementById('cr-from');
+  var toEl   = document.getElementById('cr-to');
+  if (fromEl) { fromEl.min = minStr; fromEl.value = fmt(pickup); }
+  if (toEl)   { toEl.min   = minStr; toEl.value   = fmt(ret); }
+  // Keep return ≥ pickup when either changes
+  if (fromEl && toEl) {
+    fromEl.addEventListener('change', function() {
+      toEl.min = fromEl.value;
+      if (toEl.value && toEl.value < fromEl.value) toEl.value = fromEl.value;
+    });
+  }
+})();
+
 /* ── Form submit ── */
 document.getElementById('travelSearchForm').addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -1431,11 +1484,16 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
   try {
     if (tab === 'flights') {
       var origin = val('fl-origin'), dest = val('fl-dest'), dep = val('fl-depart');
+      var activeTrip = document.querySelector('.fl-trip-btn.active');
+      var routeType = activeTrip ? activeTrip.getAttribute('data-type') : 'oneway';
+      var returnDate = (routeType === 'return') ? (val('fl-return') || null) : null;
       if (!origin || !dest || !dep) { showError('Please fill in From, To and Depart date.'); return; }
+      if (routeType === 'return' && !returnDate) { showError('Please select a return date.'); return; }
       showLoading('flights');
       var r = await fetch('/api/travel/flights', { method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ origin, destination: dest, departureDate: dep, returnDate: val('fl-return') || null,
-          adults: val('fl-adults') || 1, children: val('fl-children') || 0, cabinType: val('fl-cabin') || 'Economy' }) });
+        body: JSON.stringify({ origin, destination: dest, departureDate: dep, returnDate,
+          adults: val('fl-adults') || 1, children: val('fl-children') || 0, cabinType: val('fl-cabin') || 'Economy',
+          routeType }) });
       var data = await r.json();
       if (!r.ok) {
         var detail = data.detail || (data.body ? JSON.stringify(data.body) : '');
@@ -1486,14 +1544,33 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
       var loc      = val('cr-pickup');
       var code     = val('cr-pickup-code');
       var geo      = val('cr-pickup-geo');
-      var pickType = val('cr-pickup-type') || 'airport';
+      var pickType = val('cr-pickup-type') || 'iata';
       var from = val('cr-from'), to = val('cr-to');
       if (!loc || !from || !to) { showError('Please fill in pick-up location and dates.'); return; }
-      if (!code && !geo) { showError('Please select a location from the suggestions list.'); return; }
+      var minPickup = new Date(); minPickup.setDate(minPickup.getDate() + 14);
+      if (new Date(from) < minPickup) { showError('Pick-up date must be at least 14 days from today (Xeni Cars requirement).'); return; }
+      // If hidden fields are empty (user typed without selecting dropdown), auto-resolve first suggestion
+      if (!code && !geo) {
+        showLoading('resolving location…');
+        try {
+          var acRes = await fetch('/api/travel/cars-location-search?key=' + encodeURIComponent(loc));
+          var acData = await acRes.json();
+          var first = (acData.data && acData.data[0]) || null;
+          if (!first) { showError('Location not found. Please select from the dropdown list.'); return; }
+          code    = first.iata_code || first.id || '';
+          geo     = (first.coordinates && first.coordinates.lat && first.coordinates.lon)
+                      ? (first.coordinates.lat + ',' + first.coordinates.lon) : '';
+          pickType = first.type === 'airport' ? 'iata' : 'geo';
+          // store country ISO in hidden field so the block below can read it uniformly
+          var countryEl = document.getElementById('cr-pickup-country');
+          if (countryEl) countryEl.value = countryToIso(first.country_name || '');
+        } catch(e) { showError('Could not resolve location. Please select from the dropdown.'); return; }
+      }
       showLoading('car rentals');
       // Xeni expects datetime format: YYYY-MM-DDTHH:mm:ss
       var pickupDT = from + 'T10:00:00';
       var returnDT = to   + 'T18:00:00';
+      var country = val('cr-pickup-country') || 'US';
       var params = new URLSearchParams({
         pickup_code: code || geo,
         return_code: code || geo,
@@ -1503,9 +1580,9 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
         return_date: returnDT,
         currency: 'USD',
         driver_age: '30',
-        country: 'US',
+        country: country,
       });
-      if (geo) params.set('pickup_geo', geo);
+      if (geo) { params.set('pickup_geo', geo); params.set('return_geo', geo); }
       var r = await fetch('/api/travel/cars-search?' + params.toString());
       var data = await r.json();
       if (!r.ok) { var e = new Error(data.error || 'Car search failed'); e.detail = data.body ? JSON.stringify(data.body) : ''; throw e; }
@@ -1682,7 +1759,7 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
     if (!input || !drop) return;
     var timer, lastQ = '';
 
-    function close() { drop.style.display = 'none'; drop.innerHTML = ''; }
+    function close() { drop.classList.remove('open'); drop.innerHTML = ''; }
 
     function clearHidden() { if(hidId) hidId.value=''; if(hidLat) hidLat.value=''; if(hidLon) hidLon.value=''; }
 
@@ -1713,7 +1790,7 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
                 '</div>' +
               '</div>';
             }).join('');
-            drop.style.display = '';
+            drop.classList.add('open');
             drop.querySelectorAll('.ac-item').forEach(function(item) {
               item.addEventListener('mousedown', function(e) {
                 e.preventDefault();
@@ -1741,12 +1818,16 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
     var hidCode  = document.getElementById('cr-pickup-code');
     var hidGeo   = document.getElementById('cr-pickup-geo');
     var hidType  = document.getElementById('cr-pickup-type');
+    var hidCountry = document.getElementById('cr-pickup-country');
     if (!input || !drop) return;
     var timer, lastQ = '';
 
-    function close() { drop.style.display = 'none'; drop.innerHTML = ''; }
+    function close() { drop.classList.remove('open'); drop.innerHTML = ''; }
 
-    function clearHidden() { if(hidCode) hidCode.value=''; if(hidGeo) hidGeo.value=''; if(hidType) hidType.value=''; }
+    function clearHidden() {
+      if(hidCode) hidCode.value=''; if(hidGeo) hidGeo.value='';
+      if(hidType) hidType.value=''; if(hidCountry) hidCountry.value='';
+    }
 
     input.addEventListener('input', function() {
       var q = input.value.trim();
@@ -1769,7 +1850,8 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
                 ' data-val="' + label.replace(/"/g,'&quot;') + '"' +
                 ' data-code="' + (s.iata_code || s.id || '').replace(/"/g,'&quot;') + '"' +
                 ' data-geo="' + ((s.coordinates && s.coordinates.lat && s.coordinates.lon) ? (s.coordinates.lat + ',' + s.coordinates.lon) : '').replace(/"/g,'&quot;') + '"' +
-                ' data-type="' + (s.type === 'airport' ? 'airport' : 'geo') + '">' +
+                ' data-type="' + (s.type === 'airport' ? 'iata' : 'geo') + '"' +
+                ' data-country="' + countryToIso(s.country_name || '') + '">' +
                 '<span style="font-size:15px;margin-right:8px">' + typeIcon + '</span>' +
                 '<div>' +
                   '<div class="ac-airport">' + label + (s.iata_code ? ' (' + s.iata_code + ')' : '') + '</div>' +
@@ -1777,14 +1859,15 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
                 '</div>' +
               '</div>';
             }).join('');
-            drop.style.display = '';
+            drop.classList.add('open');
             drop.querySelectorAll('.ac-item').forEach(function(item) {
               item.addEventListener('mousedown', function(e) {
                 e.preventDefault();
                 input.value = item.dataset.val;
-                if (hidCode) hidCode.value = item.dataset.code || '';
-                if (hidGeo)  hidGeo.value  = item.dataset.geo  || '';
-                if (hidType) hidType.value = item.dataset.type || 'airport';
+                if (hidCode)    hidCode.value    = item.dataset.code    || '';
+                if (hidGeo)     hidGeo.value     = item.dataset.geo     || '';
+                if (hidType)    hidType.value    = item.dataset.type    || 'iata';
+                if (hidCountry) hidCountry.value = item.dataset.country || '';
                 lastQ = item.dataset.val;
                 close();
               });
@@ -1806,7 +1889,7 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
     if (!input || !drop) return;
     var timer, lastQ = '';
 
-    function close() { drop.style.display = 'none'; drop.innerHTML = ''; }
+    function close() { drop.classList.remove('open'); drop.innerHTML = ''; }
 
     input.addEventListener('input', function() {
       var q = input.value.trim();
@@ -1834,7 +1917,7 @@ document.getElementById('travelSearchForm').addEventListener('submit', async fun
                 '</div>' +
               '</div>';
             }).join('');
-            drop.style.display = '';
+            drop.classList.add('open');
             drop.querySelectorAll('.ac-item').forEach(function(item) {
               item.addEventListener('mousedown', function(e) {
                 e.preventDefault();

@@ -7,14 +7,15 @@ module.exports = async (req, res) => {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' });
   try {
     const {
-      country = 'US',
-      pickup_type = 'geo',
-      return_type = 'geo',
+      country,
+      pickup_type: rawPickupType = 'iata',
+      return_type: rawReturnType = 'iata',
       pickup_code,
       return_code,
       pickup_geo,
+      return_geo,
       currency = 'USD',
-      driver_age = 25,
+      driver_age = 30,
       pickup_date,
       return_date,
       filter,
@@ -28,12 +29,17 @@ module.exports = async (req, res) => {
     if (!pickup_date) return res.status(400).json({ error: 'pickup_date is required' });
     if (!return_date) return res.status(400).json({ error: 'return_date is required' });
 
+    // Normalise legacy 'airport' type to Xeni's expected 'iata'
+    const typeMap = { airport: 'iata' };
+    const pickup_type = typeMap[rawPickupType] || rawPickupType;
+    const return_type = typeMap[rawReturnType] || rawReturnType;
+
     function geoEncode(val) {
       return val.replace(/,/g, '%2C');
     }
 
     const qs = new URLSearchParams();
-    qs.set('country',      country);
+    if (country) qs.set('country', country);
     qs.set('pickup_type',  pickup_type);
     qs.set('return_type',  return_type);
     qs.set('currency',     currency);
@@ -45,12 +51,14 @@ module.exports = async (req, res) => {
     if (filter) qs.set('filter', filter);
     if (sort)   qs.set('sort',   sort);
 
+    const effectivePickupGeo = pickup_geo || (pickup_type === 'geo' ? pickup_code : null);
+    const effectiveReturnGeo = return_geo || pickup_geo || (return_type === 'geo' ? return_code : null);
+
     let queryStr = qs.toString();
     queryStr += '&pickup_code=' + geoEncode(pickup_code);
     queryStr += '&return_code=' + geoEncode(return_code);
-    if (pickup_geo || pickup_type === 'geo') {
-      queryStr += '&pickup_geo=' + geoEncode(pickup_geo || pickup_code);
-    }
+    if (effectivePickupGeo) queryStr += '&pickup_geo=' + geoEncode(effectivePickupGeo);
+    if (effectiveReturnGeo) queryStr += '&return_geo=' + geoEncode(effectiveReturnGeo);
 
     const correlationId = crypto.randomUUID();
     const result = await xeniReq('GET', `/cars/api/v2/rentals?${queryStr}`, null, {

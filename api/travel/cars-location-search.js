@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
 
     const result = await xeniReq(
       'GET',
-      `/cars/api/v2/locations?key=${encodeURIComponent(key.trim())}`,
+      `/cars/api/v2/autocomplete?key=${encodeURIComponent(key.trim())}`,
       null,
       { 'x-correlation-id': crypto.randomUUID() }
     );
