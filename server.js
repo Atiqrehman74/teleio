@@ -6,18 +6,21 @@ const https   = require('https');
 
 const app = express();
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
 
-// PWA files with correct MIME types
+// PWA files — must be BEFORE express.static so MIME types are correct
 app.get('/manifest.json', (req, res) => {
   res.setHeader('Content-Type', 'application/manifest+json');
+  res.setHeader('Cache-Control', 'public, max-age=86400');
   res.sendFile(path.join(__dirname, 'manifest.json'));
 });
 app.get('/sw.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.setHeader('Service-Worker-Allowed', '/');
+  res.setHeader('Cache-Control', 'no-cache');
   res.sendFile(path.join(__dirname, 'sw.js'));
 });
+
+app.use(express.static(path.join(__dirname)));
 
 // ── Currency rates proxy ──────────────────────────────────────────────
 // Cache: refreshed every 10 minutes

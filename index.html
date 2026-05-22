@@ -77,6 +77,70 @@
 </head>
 <body>
 
+<!-- PWA Install Banner -->
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#002AD1;color:#fff;padding:14px 16px;box-shadow:0 -4px 20px rgba(0,0,0,0.25);font-family:Inter,sans-serif">
+  <div style="max-width:600px;margin:0 auto;display:flex;align-items:center;gap:12px">
+    <img src="/images/favicon.png" style="width:44px;height:44px;border-radius:10px;flex-shrink:0" alt="Teleio">
+    <div style="flex:1;min-width:0">
+      <div style="font-weight:700;font-size:14px">Install Teleio App</div>
+      <div id="pwa-banner-msg" style="font-size:12px;opacity:0.85;margin-top:2px">Add to your home screen for the best experience</div>
+    </div>
+    <button id="pwa-install-btn" style="background:#fff;color:#002AD1;border:none;border-radius:8px;padding:8px 16px;font-weight:700;font-size:13px;cursor:pointer;flex-shrink:0;font-family:inherit">Install</button>
+    <button onclick="document.getElementById('pwa-banner').style.display='none';localStorage.setItem('pwa_dismissed','1')" style="background:none;border:none;color:rgba(255,255,255,0.7);font-size:20px;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0">&times;</button>
+  </div>
+  <!-- iOS step guide (hidden by default) -->
+  <div id="pwa-ios-steps" style="display:none;max-width:600px;margin:10px auto 0;background:rgba(255,255,255,0.12);border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.7">
+    <strong>How to install on iPhone/iPad:</strong><br>
+    1. Tap the <strong>Share</strong> button <span style="font-size:16px">⎙</span> at the bottom of Safari<br>
+    2. Scroll down and tap <strong>"Add to Home Screen"</strong><br>
+    3. Tap <strong>"Add"</strong> — the Teleio icon will appear on your home screen
+  </div>
+</div>
+
+<script>
+(function() {
+  if (localStorage.getItem('pwa_dismissed')) return;
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  var isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+  if (isStandalone) return; /* already installed */
+
+  var banner = document.getElementById('pwa-banner');
+  var installBtn = document.getElementById('pwa-install-btn');
+  var iosSteps = document.getElementById('pwa-ios-steps');
+  var msg = document.getElementById('pwa-banner-msg');
+
+  if (isIOS) {
+    /* iOS: show steps guide */
+    banner.style.display = 'block';
+    msg.textContent = 'Tap Share ⎙ then "Add to Home Screen"';
+    installBtn.textContent = 'How?';
+    installBtn.onclick = function() {
+      iosSteps.style.display = iosSteps.style.display === 'none' ? 'block' : 'none';
+    };
+  } else {
+    /* Android/Desktop: use beforeinstallprompt */
+    var deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      banner.style.display = 'block';
+    });
+    installBtn.onclick = function() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(r) {
+          if (r.outcome === 'accepted') banner.style.display = 'none';
+          deferredPrompt = null;
+        });
+      }
+    };
+    window.addEventListener('appinstalled', function() {
+      banner.style.display = 'none';
+    });
+  }
+})();
+</script>
+
 <div id="google_translate_element" style="display:none"></div>
 
 <div class="top-accent"></div>
