@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { xeniReq, cors } = require('../_xeni');
+const { carsReq, cors } = require('../_xeni');
 
 module.exports = async (req, res) => {
   cors(res);
@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     if (!booking_id) return res.status(400).json({ error: 'booking_id is required' });
 
     const correlationId = crypto.randomUUID();
-    const result = await xeniReq(
+    const result = await carsReq(
       'DELETE',
       `/cars/api/v2/bookings/${encodeURIComponent(booking_id)}`,
       { booking_status: 'CANCELLED' },

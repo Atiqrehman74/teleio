@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { xeniReq, cors } = require('../_xeni');
+const { carsReq, cors } = require('../_xeni');
 
 module.exports = async (req, res) => {
   cors(res);
@@ -61,7 +61,7 @@ module.exports = async (req, res) => {
     if (effectiveReturnGeo) queryStr += '&return_geo=' + geoEncode(effectiveReturnGeo);
 
     const correlationId = crypto.randomUUID();
-    const result = await xeniReq('GET', `/cars/api/v2/rentals?${queryStr}`, null, {
+    const result = await carsReq('GET', `/cars/api/v2/rentals?${queryStr}`, null, {
       'x-correlation-id': correlationId,
     });
     res.json(result);

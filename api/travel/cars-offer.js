@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { xeniReq, cors } = require('../_xeni');
+const { carsReq, cors } = require('../_xeni');
 
 module.exports = async (req, res) => {
   cors(res);
@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
 
     const correlationId = crypto.randomUUID();
     const qs = new URLSearchParams({ country, currency, token });
-    const result = await xeniReq(
+    const result = await carsReq(
       'GET',
       `/cars/api/v2/rentals/?${qs.toString()}`,
       null,

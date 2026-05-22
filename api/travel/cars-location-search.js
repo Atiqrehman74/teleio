@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { xeniReq, cors } = require('../_xeni');
+const { carsReq, cors } = require('../_xeni');
 
 module.exports = async (req, res) => {
   cors(res);
@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
     const { key } = req.query;
     if (!key || key.trim().length < 2) return res.status(400).json({ error: 'key must be at least 2 characters' });
 
-    const result = await xeniReq(
+    const result = await carsReq(
       'GET',
       `/cars/api/v2/autocomplete?key=${encodeURIComponent(key.trim())}`,
       null,

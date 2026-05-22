@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const { xeniReq, cors } = require('../_xeni');
+const { carsReq, cors } = require('../_xeni');
 
 module.exports = async (req, res) => {
   cors(res);
@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
     const body = { availability_details_token, customer };
     if (equipments && equipments.length) body.equipments = equipments;
 
-    const result = await xeniReq(
+    const result = await carsReq(
       'POST',
       `/cars/api/v2/bookings?currency=${encodeURIComponent(currency)}`,
       body,
