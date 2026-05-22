@@ -1,0 +1,43 @@
+{
+  "name": "Teleio Tourism",
+  "short_name": "Teleio",
+  "description": "AI-Powered Travel & Visa Platform — Flights, Hotels, Visas & More",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#002AD1",
+  "icons": [
+    {
+      "src": "/images/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/teleio-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Search Flights",
+      "url": "/pages/travel.html#flights",
+      "description": "Search and book flights"
+    },
+    {
+      "name": "Check Visa",
+      "url": "/pages/eligibility-checker.html",
+      "description": "Instant visa eligibility check"
+    },
+    {
+      "name": "Book Hotels",
+      "url": "/pages/travel.html#hotels",
+      "description": "Find and book hotels"
+    }
+  ]
+}

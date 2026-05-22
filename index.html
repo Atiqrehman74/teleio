@@ -2,8 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Teleio Tourism - Travel & Visa Services</title>
+
+  <!-- PWA / iOS App -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#002AD1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <!-- iOS Safari standalone mode -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Teleio">
+  <!-- Home screen icons (iOS) -->
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.png">
+  <!-- iOS Splash screens -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- SEO / Share -->
+  <meta name="description" content="AI-Powered Travel & Visa Platform — Flights, Hotels, Cars, Activities & Instant Visa for 70+ countries.">
+  <meta property="og:title" content="Teleio Tourism">
+  <meta property="og:description" content="AI-Powered Travel & Visa Platform">
+  <meta property="og:image" content="https://www.teleiotourism.com/images/teleio-logo.png">
+  <meta property="og:url" content="https://www.teleiotourism.com/">
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
@@ -1297,6 +1320,13 @@
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
 <script src="js/bot.js" defer></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+  });
+}
+</script>
 <script>
 /* Update nav-right if user is signed in */
 (function() {

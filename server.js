@@ -8,6 +8,17 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
+// PWA files with correct MIME types
+app.get('/manifest.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/manifest+json');
+  res.sendFile(path.join(__dirname, 'manifest.json'));
+});
+app.get('/sw.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.setHeader('Service-Worker-Allowed', '/');
+  res.sendFile(path.join(__dirname, 'sw.js'));
+});
+
 // ── Currency rates proxy ──────────────────────────────────────────────
 // Cache: refreshed every 10 minutes
 const rateCache = {};

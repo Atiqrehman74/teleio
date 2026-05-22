@@ -7,6 +7,8 @@
       "config": {
         "includeFiles": [
           "index.html",
+          "manifest.json",
+          "sw.js",
           "pages/**",
           "css/**",
           "js/**",
