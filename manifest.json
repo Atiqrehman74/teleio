@@ -6,9 +6,15 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#ffffff",
+  "background_color": "#002AD1",
   "theme_color": "#002AD1",
   "icons": [
+    {
+      "src": "/images/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
     {
       "src": "/images/favicon.png",
       "sizes": "192x192",
@@ -16,7 +22,7 @@
       "purpose": "any maskable"
     },
     {
-      "src": "/images/teleio-logo.png",
+      "src": "/images/favicon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

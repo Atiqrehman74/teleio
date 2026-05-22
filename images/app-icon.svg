@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="115" fill="#002AD1"/>
+  <!-- T horizontal bar -->
+  <rect x="100" y="118" width="312" height="88" rx="44" fill="white"/>
+  <!-- T vertical stem -->
+  <rect x="212" y="118" width="88" height="282" rx="44" fill="white"/>
+  <!-- diagonal cut on top-right of T bar -->
+  <polygon points="300,118 412,118 412,160 350,206" fill="#002AD1"/>
+</svg>
