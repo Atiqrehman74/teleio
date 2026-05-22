@@ -765,24 +765,26 @@
     /* Tab bar */
     .isw-tabs {
       display: flex; align-items: stretch; gap: 0;
-      border-bottom: 2px solid #E5E7EB;
+      background: #002AD1;
+      border-bottom: none;
       overflow-x: auto; padding: 0 6px;
       scrollbar-width: none;
     }
     .isw-tabs::-webkit-scrollbar { display: none; }
     .isw-tab {
-      display: flex; align-items: center; gap: 6px;
-      padding: 13px 16px; font-size: 13px; font-weight: 600;
-      color: #6B7280; background: transparent;
+      display: flex; align-items: center; gap: 8px;
+      padding: 15px 20px; font-size: 15px; font-weight: 600;
+      color: rgba(255,255,255,0.72); background: transparent;
       border: none; cursor: pointer; white-space: nowrap;
-      border-bottom: 3px solid transparent; margin-bottom: -2px;
-      transition: color .15s, border-color .15s; font-family: inherit;
+      border-bottom: 3px solid transparent; margin-bottom: 0;
+      transition: color .15s, background .15s; font-family: inherit;
     }
-    .isw-tab:hover { color: #374151; }
-    .isw-tab-active { color: #002AD1 !important; border-bottom-color: #002AD1 !important; }
+    .isw-tab svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .isw-tab:hover { color: #fff; background: rgba(255,255,255,0.1); }
+    .isw-tab-active { color: #fff !important; border-bottom-color: #fff !important; }
     .isw-tab-active svg {
-      background: #002AD1; padding: 4px; border-radius: 6px;
-      color: white; flex-shrink: 0; display: inline-block;
+      background: rgba(255,255,255,0.18); padding: 4px; border-radius: 6px;
+      color: #fff; flex-shrink: 0; display: inline-block; width: 22px; height: 22px;
     }
 
     /* Panel container */
@@ -1704,3 +1706,4 @@ function switchHeroTab(tab) {
 </script>
 </body>
 </html>
+V
