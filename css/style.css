@@ -565,7 +565,7 @@ font[face] { font-family: inherit !important; }  /* GT wraps text in <font> tags
   margin-bottom: 20px;
 }
 
-.hero h1 .highlight { color: #002AD1; }
+.hero h1 .highlight { color: #fff; }
 
 /* ── Hero Travel Bar ── */
 .hero-travel-bar {
