@@ -99,13 +99,16 @@
 </div>
 
 <script>
-/* Global PWA install state */
+try { localStorage.removeItem('pwa_dismissed'); } catch(e){} /* reset so banner shows */
 window._pwaDeferred = null;
 var _pwaIsIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-var _pwaStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+var _pwaIsAndroid = /Android/.test(navigator.userAgent);
+var _pwaStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+var _pwaDismissed = false;
+try { _pwaDismissed = !!localStorage.getItem('pwa_dismissed'); } catch(e){}
 
 window.teleioInstallAndroid = function(e) {
-  e.preventDefault();
+  if (e && e.preventDefault) e.preventDefault();
   if (window._pwaDeferred) {
     window._pwaDeferred.prompt();
     window._pwaDeferred.userChoice.then(function(r) {
@@ -113,16 +116,17 @@ window.teleioInstallAndroid = function(e) {
       window._pwaDeferred = null;
     });
   } else {
-    /* fallback: show banner with instructions */
     var b = document.getElementById('pwa-banner');
-    if (b) b.style.display = 'block';
+    var s = document.getElementById('pwa-ios-steps');
     var m = document.getElementById('pwa-banner-msg');
-    if (m) m.textContent = 'Open this page in Chrome then tap "Install"';
+    if (b) b.style.display = 'block';
+    if (m) m.textContent = 'Tap Chrome menu ⋮ → "Add to Home Screen"';
+    if (s) { s.innerHTML = '<strong>Install on Android:</strong> Open in Chrome → tap <strong>⋮</strong> menu (top right) → <strong>"Add to Home screen"</strong>'; s.style.display = 'block'; }
   }
 };
 
 window.teleioInstallIOS = function(e) {
-  e.preventDefault();
+  if (e && e.preventDefault) e.preventDefault();
   var b = document.getElementById('pwa-banner');
   var s = document.getElementById('pwa-ios-steps');
   if (b) b.style.display = 'block';
@@ -130,26 +134,33 @@ window.teleioInstallIOS = function(e) {
 };
 
 (function() {
-  if (_pwaStandalone) return;
+  if (_pwaStandalone || _pwaDismissed) return;
   var banner = document.getElementById('pwa-banner');
   var installBtn = document.getElementById('pwa-install-btn');
   var iosSteps = document.getElementById('pwa-ios-steps');
   var msg = document.getElementById('pwa-banner-msg');
+  if (!banner) return;
+
+  /* Always show on mobile (iOS or Android) — no waiting for beforeinstallprompt */
+  if (_pwaIsIOS || _pwaIsAndroid) {
+    banner.style.display = 'block';
+  }
 
   if (_pwaIsIOS) {
-    if (!localStorage.getItem('pwa_dismissed')) banner.style.display = 'block';
-    msg.textContent = 'Tap Share ⎙ then "Add to Home Screen"';
+    msg.textContent = 'Tap Share ⎙ → "Add to Home Screen" to install';
     installBtn.textContent = 'How?';
     installBtn.onclick = function() {
       iosSteps.style.display = iosSteps.style.display === 'none' ? 'block' : 'none';
     };
-  } else {
+  } else if (_pwaIsAndroid) {
+    msg.textContent = 'Install Teleio as an app on your phone';
+    installBtn.textContent = 'Install';
+    installBtn.onclick = function() { window.teleioInstallAndroid({}); };
+    /* Capture prompt if Chrome offers it */
     window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
       window._pwaDeferred = e;
-      if (!localStorage.getItem('pwa_dismissed')) banner.style.display = 'block';
     });
-    installBtn.onclick = function() { window.teleioInstallAndroid({ preventDefault: function(){} }); };
     window.addEventListener('appinstalled', function() { banner.style.display = 'none'; });
   }
 })();
