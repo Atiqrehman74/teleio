@@ -467,8 +467,16 @@ window.teleioInstallIOS = function(e) {
 
             <!-- Cars -->
             <div class="isw-panel" id="isw-cars">
+              <input type="hidden" id="isw-cr-code">
+              <input type="hidden" id="isw-cr-geo">
+              <input type="hidden" id="isw-cr-type">
+              <input type="hidden" id="isw-cr-country">
               <div class="isw-row">
-                <div class="isw-field isw-fw3"><label class="isw-lbl">PICK-UP LOCATION</label><input id="isw-cr-loc" class="isw-inp" type="text" placeholder="City or airport name" autocomplete="off"></div>
+                <div class="isw-field isw-fw3" style="position:relative">
+                  <label class="isw-lbl">PICK-UP LOCATION</label>
+                  <input id="isw-cr-loc" class="isw-inp" type="text" placeholder="City or airport name" autocomplete="off">
+                  <div id="isw-cr-drop" class="isw-ac-drop"></div>
+                </div>
                 <div class="isw-field isw-fw1"><label class="isw-lbl">PICK-UP DATE</label><input id="isw-cr-from" class="isw-inp" type="date"></div>
                 <div class="isw-field isw-fw1"><label class="isw-lbl">RETURN DATE</label><input id="isw-cr-to" class="isw-inp" type="date"></div>
               </div>
@@ -943,6 +951,21 @@ window.teleioInstallIOS = function(e) {
     }
     .isw-inp::placeholder { color: #9CA3AF; font-weight: 400; font-size: 13px; }
     select.isw-inp { -webkit-appearance: none; appearance: none; }
+
+    /* Cars autocomplete dropdown */
+    .isw-ac-drop {
+      display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: #fff; border: 1.5px solid #E5E7EB; border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.13); z-index: 200; max-height: 240px; overflow-y: auto;
+    }
+    .isw-ac-drop.open { display: block; }
+    .isw-ac-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; cursor: pointer; transition: background .1s;
+    }
+    .isw-ac-item:hover { background: #F0F4FF; }
+    .isw-ac-name { font-size: 13px; font-weight: 600; color: #111827; }
+    .isw-ac-sub  { font-size: 11px; color: #94A3B8; margin-top: 1px; }
 
     /* Search button */
     .isw-btn {
@@ -1657,6 +1680,75 @@ startTypewriter();
   function rst(){ clearInterval(t); t = setInterval(function(){ goTo(cur+1); }, 5200); }
 })();
 
+/* ── ISW Cars location autocomplete ── */
+(function() {
+  var input   = document.getElementById('isw-cr-loc');
+  var drop    = document.getElementById('isw-cr-drop');
+  var hidCode = document.getElementById('isw-cr-code');
+  var hidGeo  = document.getElementById('isw-cr-geo');
+  var hidType = document.getElementById('isw-cr-type');
+  var hidCtr  = document.getElementById('isw-cr-country');
+  if (!input || !drop) return;
+  var timer, lastQ = '';
+
+  function closeD() { drop.classList.remove('open'); drop.innerHTML = ''; }
+  function clearH() {
+    [hidCode,hidGeo,hidType,hidCtr].forEach(function(h){ if(h) h.value=''; });
+  }
+
+  input.addEventListener('input', function() {
+    var q = input.value.trim();
+    clearH();
+    if (q === lastQ) return; lastQ = q;
+    clearTimeout(timer);
+    if (q.length < 2) { closeD(); return; }
+    timer = setTimeout(function() {
+      fetch('/api/travel/cars-location-search?key=' + encodeURIComponent(q))
+        .then(function(r){ return r.json(); })
+        .then(function(data) {
+          var sugg = (data.data && Array.isArray(data.data)) ? data.data : [];
+          if (!sugg.length) { closeD(); return; }
+          drop.innerHTML = sugg.slice(0,8).map(function(s) {
+            var icon  = s.type === 'airport' ? '✈️' : '🏙️';
+            var label = s.name || s.city_name || '';
+            var sub   = [s.city_name, s.country_name].filter(Boolean).join(', ');
+            var code  = s.iata_code || s.id || '';
+            var geo   = (s.coordinates && s.coordinates.lat && s.coordinates.lon)
+                        ? s.coordinates.lat + ',' + s.coordinates.lon : '';
+            var type  = s.type === 'airport' ? 'iata' : 'geo';
+            var ctr   = s.country_code || s.country_iso || '';
+            return '<div class="isw-ac-item"' +
+              ' data-val="'  + label.replace(/"/g,'&quot;') + '"' +
+              ' data-code="' + code.replace(/"/g,'&quot;')  + '"' +
+              ' data-geo="'  + geo.replace(/"/g,'&quot;')   + '"' +
+              ' data-type="' + type + '"' +
+              ' data-ctr="'  + ctr  + '">' +
+              '<span style="font-size:15px">' + icon + '</span>' +
+              '<div><div class="isw-ac-name">' + label + (code && s.type==='airport' ? ' (' + code + ')' : '') + '</div>' +
+              '<div class="isw-ac-sub">' + sub + '</div></div></div>';
+          }).join('');
+          drop.classList.add('open');
+          drop.querySelectorAll('.isw-ac-item').forEach(function(item) {
+            item.addEventListener('mousedown', function(e) {
+              e.preventDefault();
+              input.value = item.dataset.val;
+              if (hidCode) hidCode.value = item.dataset.code || '';
+              if (hidGeo)  hidGeo.value  = item.dataset.geo  || '';
+              if (hidType) hidType.value = item.dataset.type || 'iata';
+              if (hidCtr)  hidCtr.value  = item.dataset.ctr  || '';
+              lastQ = item.dataset.val;
+              closeD();
+            });
+          });
+        })
+        .catch(function(){ closeD(); });
+    }, 280);
+  });
+
+  input.addEventListener('blur',    function() { setTimeout(closeD, 160); });
+  input.addEventListener('keydown', function(e){ if(e.key==='Escape') closeD(); });
+})();
+
 /* ── ISW date defaults ── */
 (function() {
   var fmt = function(d) { return d.toISOString().slice(0,10); };
@@ -1714,6 +1806,10 @@ window.tswGo = function(tab) {
     params.loc     = gv('isw-cr-loc');
     params.from    = gv('isw-cr-from');
     params.to      = gv('isw-cr-to');
+    params.cr_code = gv('isw-cr-code');
+    params.cr_geo  = gv('isw-cr-geo');
+    params.cr_type = gv('isw-cr-type');
+    params.cr_ctr  = gv('isw-cr-country');
   } else if (tab === 'resorts') {
     params.dest    = gv('isw-rs-dest');
     params.date    = gv('isw-rs-date');

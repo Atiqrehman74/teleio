@@ -813,6 +813,10 @@ document.querySelectorAll('.t-tab').forEach(btn => {
     setV('cr-pickup', p.loc);
     setV('cr-from',   p.from);
     setV('cr-to',     p.to);
+    if (p.cr_code) setV('cr-pickup-code',    p.cr_code);
+    if (p.cr_geo)  setV('cr-pickup-geo',     p.cr_geo);
+    if (p.cr_type) setV('cr-pickup-type',    p.cr_type);
+    if (p.cr_ctr)  setV('cr-pickup-country', p.cr_ctr);
   } else if (tab === 'resorts') {
     setV('rs-dest',   p.dest);
     setV('rs-date',   p.date);
