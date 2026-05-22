@@ -99,45 +99,58 @@
 </div>
 
 <script>
-(function() {
-  if (localStorage.getItem('pwa_dismissed')) return;
-  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  var isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-  if (isStandalone) return; /* already installed */
+/* Global PWA install state */
+window._pwaDeferred = null;
+var _pwaIsIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+var _pwaStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
 
+window.teleioInstallAndroid = function(e) {
+  e.preventDefault();
+  if (window._pwaDeferred) {
+    window._pwaDeferred.prompt();
+    window._pwaDeferred.userChoice.then(function(r) {
+      if (r.outcome === 'accepted') document.getElementById('pwa-banner').style.display = 'none';
+      window._pwaDeferred = null;
+    });
+  } else {
+    /* fallback: show banner with instructions */
+    var b = document.getElementById('pwa-banner');
+    if (b) b.style.display = 'block';
+    var m = document.getElementById('pwa-banner-msg');
+    if (m) m.textContent = 'Open this page in Chrome then tap "Install"';
+  }
+};
+
+window.teleioInstallIOS = function(e) {
+  e.preventDefault();
+  var b = document.getElementById('pwa-banner');
+  var s = document.getElementById('pwa-ios-steps');
+  if (b) b.style.display = 'block';
+  if (s) s.style.display = 'block';
+};
+
+(function() {
+  if (_pwaStandalone) return;
   var banner = document.getElementById('pwa-banner');
   var installBtn = document.getElementById('pwa-install-btn');
   var iosSteps = document.getElementById('pwa-ios-steps');
   var msg = document.getElementById('pwa-banner-msg');
 
-  if (isIOS) {
-    /* iOS: show steps guide */
-    banner.style.display = 'block';
+  if (_pwaIsIOS) {
+    if (!localStorage.getItem('pwa_dismissed')) banner.style.display = 'block';
     msg.textContent = 'Tap Share ⎙ then "Add to Home Screen"';
     installBtn.textContent = 'How?';
     installBtn.onclick = function() {
       iosSteps.style.display = iosSteps.style.display === 'none' ? 'block' : 'none';
     };
   } else {
-    /* Android/Desktop: use beforeinstallprompt */
-    var deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
-      deferredPrompt = e;
-      banner.style.display = 'block';
+      window._pwaDeferred = e;
+      if (!localStorage.getItem('pwa_dismissed')) banner.style.display = 'block';
     });
-    installBtn.onclick = function() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function(r) {
-          if (r.outcome === 'accepted') banner.style.display = 'none';
-          deferredPrompt = null;
-        });
-      }
-    };
-    window.addEventListener('appinstalled', function() {
-      banner.style.display = 'none';
-    });
+    installBtn.onclick = function() { window.teleioInstallAndroid({ preventDefault: function(){} }); };
+    window.addEventListener('appinstalled', function() { banner.style.display = 'none'; });
   }
 })();
 </script>
@@ -1278,8 +1291,8 @@
           </a>
         </div>
         <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-          <a href="#" class="app-store-btn"><img src="images/Google-Play_button.png" alt="Get it on Google Play" style="height:40px;border-radius:8px"></a>
-          <a href="#" class="app-store-btn"><img src="images/App-Store_button.png" alt="Download on the App Store" style="height:40px;border-radius:8px"></a>
+          <a href="#" class="app-store-btn" id="gplay-btn" onclick="teleioInstallAndroid(event)"><img src="images/Google-Play_button.png" alt="Get it on Google Play" style="height:40px;border-radius:8px"></a>
+          <a href="#" class="app-store-btn" id="appstore-btn" onclick="teleioInstallIOS(event)"><img src="images/App-Store_button.png" alt="Download on the App Store" style="height:40px;border-radius:8px"></a>
         </div>
       </div>
       <div class="footer-col">
