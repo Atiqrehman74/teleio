@@ -477,51 +477,89 @@
 
   /* ── Google Translate auto-translation ── */
   (function() {
-    /* Map our lang codes → Google Translate language codes */
     var GT_CODES = { ar:'ar', ur:'ur', hi:'hi', fr:'fr', de:'de', zh:'zh-CN', ru:'ru' };
 
-    /* Inject hidden container Google Translate needs */
+    /* Set googtrans cookie on every path/domain variant GT might read */
+    function _setCookies(code) {
+      var val = code ? '/en/' + code : '';
+      var exp = code ? '' : '; expires=' + new Date(0).toGMTString();
+      var paths = [
+        'googtrans=' + val + '; path=/' + exp,
+        'googtrans=' + val + '; path=/; domain=' + location.hostname + exp,
+        'googtrans=' + val + '; path=/; domain=.' + location.hostname + exp,
+      ];
+      paths.forEach(function(c) { document.cookie = c; });
+    }
+
+    /* Trigger GT via its combo select — returns true if successful */
+    function _triggerSelect(code) {
+      var s = document.querySelector('.goog-te-combo');
+      if (!s) return false;
+      s.value = code;
+      try {
+        s.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+      } catch(e) {
+        var ev = document.createEvent('HTMLEvents');
+        ev.initEvent('change', true, true);
+        s.dispatchEvent(ev);
+      }
+      return true;
+    }
+
+    /* Poll for the GT select, apply once found — time-limited (no reload loop) */
+    function _waitAndApply(code) {
+      var deadline = Date.now() + 9000; /* 9 s window */
+      var done = false;
+      (function tick() {
+        if (done) return;
+        if (_triggerSelect(code)) { done = true; return; }
+        if (Date.now() < deadline) setTimeout(tick, 350);
+      })();
+    }
+
+    /* GT container — must NOT be display:none or GT fails to fully init the select */
     if (!document.getElementById('google_translate_element')) {
       var gtDiv = document.createElement('div');
       gtDiv.id = 'google_translate_element';
-      gtDiv.style.display = 'none';
+      /* Visually hidden but rendered — display:none breaks GT select creation */
+      gtDiv.style.cssText = 'position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden;';
       document.body.appendChild(gtDiv);
     }
 
-    /* Init callback Google Translate calls after loading */
+    /* Called by Google Translate script once loaded */
     window.googleTranslateElementInit = function() {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
         includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru',
         autoDisplay: false
       }, 'google_translate_element');
-      /* Do NOT trigger here — the googtrans cookie handles auto-translation on load.
-         Calling _doGoogleTranslate on every page load causes infinite reload loops. */
+
+      var savedLang = localStorage.getItem('teleio_lang');
+      if (!savedLang || savedLang === 'en') return;
+      var code = GT_CODES[savedLang];
+      if (!code) return;
+
+      /* Re-assert cookie (GT sometimes clears it) and apply via select */
+      _setCookies(code);
+      setTimeout(function() { _waitAndApply(code); }, 400);
     };
 
-    /* Trigger Google Translate programmatically */
+    /* Called when user picks a language in the UI */
     window._doGoogleTranslate = function(lang) {
       var code = GT_CODES[lang];
-      if (!code) {
-        /* Reset to English */
-        _resetGoogleTranslate();
-        return;
-      }
-      var select = document.querySelector('.goog-te-combo');
-      if (select) {
-        select.value = code;
-        var ev = document.createEvent('HTMLEvents');
-        ev.initEvent('change', true, true);
-        select.dispatchEvent(ev);
-      } else {
-        /* Widget not ready — use cookie fallback */
-        document.cookie = 'googtrans=/en/' + code + '; path=/';
+      if (!code) { _resetGoogleTranslate(); return; }
+
+      /* Persist across pages via cookie before anything else */
+      _setCookies(code);
+
+      if (!_triggerSelect(code)) {
+        /* Select not ready — cookie is set, reload will auto-translate */
         location.reload();
       }
     };
 
     function _resetGoogleTranslate() {
-      /* Try the iframe "Show original" button first */
+      _setCookies(null); /* clear all cookie variants */
       try {
         var frame = document.querySelector('iframe.goog-te-banner-frame');
         if (frame) {
@@ -530,14 +568,10 @@
           if (btn) { btn.click(); return; }
         }
       } catch(e) {}
-      /* Cookie fallback */
-      var exp = new Date(0).toGMTString();
-      document.cookie = 'googtrans=; path=/; expires=' + exp;
-      document.cookie = 'googtrans=; path=/; domain=.' + location.hostname + '; expires=' + exp;
       location.reload();
     }
 
-    /* Load Google Translate script */
+    /* Load Google Translate widget script */
     if (!document.getElementById('gt-script')) {
       var s = document.createElement('script');
       s.id = 'gt-script';
