@@ -535,9 +535,13 @@
       }, 'google_translate_element');
 
       var savedLang = localStorage.getItem('teleio_lang');
-      if (!savedLang || savedLang === 'en') return;
+      if (!savedLang || savedLang === 'en') {
+        /* Clear any stale googtrans cookie so GT does not auto-translate */
+        _setCookies(null);
+        return;
+      }
       var code = GT_CODES[savedLang];
-      if (!code) return;
+      if (!code) { _setCookies(null); return; }
 
       /* Re-assert cookie (GT sometimes clears it) and apply via select */
       _setCookies(code);
