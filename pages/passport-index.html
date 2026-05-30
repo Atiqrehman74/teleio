@@ -84,52 +84,66 @@
     @media(max-width:900px) { .pi-dash-body { grid-template-columns:1fr; } }
 
     /* Left sidebar */
-    .pi-dash-left { padding:24px 20px; border-right:1px solid #1e1e1e; display:flex; flex-direction:column; align-items:center; gap:16px; }
-    .pi-dash-book { width:130px; aspect-ratio:0.68; border-radius:3px 8px 8px 3px; overflow:hidden; box-shadow:-6px 6px 20px rgba(0,0,0,.8); }
+    .pi-dash-left { padding:20px 16px; border-right:1px solid #1e1e1e; display:flex; flex-direction:column; align-items:center; gap:14px; }
+    .pi-dash-book { width:140px; aspect-ratio:0.68; border-radius:3px 8px 8px 3px; overflow:hidden; box-shadow:-6px 6px 20px rgba(0,0,0,.8); }
     .pi-dash-book img { width:100%; height:100%; object-fit:cover; display:block; }
     .pi-dash-scores { width:100%; }
-    .pi-dash-score-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #1e1e1e; font-size:12px; }
+    .pi-dash-score-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #1e1e1e; font-size:12px; }
     .pi-dash-score-row:last-child { border-bottom:none; }
-    .pi-dash-score-label { color:#666; text-transform:uppercase; font-size:10px; letter-spacing:.5px; }
-    .pi-dash-score-val { color:#fff; font-weight:700; }
+    .pi-dash-score-label { color:#555; text-transform:uppercase; font-size:10px; letter-spacing:.5px; }
+    .pi-dash-score-val { color:#fff; font-weight:700; font-size:13px; }
     .pi-dash-compare { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
     .pi-dash-compare button { background:#1a1a1a; border:1px solid #2a2a2a; color:#c9a84c; padding:10px; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer; transition:all .2s; }
     .pi-dash-compare button:hover { background:#c9a84c; color:#000; border-color:#c9a84c; }
+    .pi-dash-social { display:flex; gap:10px; padding-top:8px; }
+    .pi-dash-social a { width:30px; height:30px; border-radius:50%; background:#1a1a1a; border:1px solid #2a2a2a; display:flex; align-items:center; justify-content:center; color:#666; text-decoration:none; transition:all .2s; font-size:13px; }
+    .pi-dash-social a:hover { background:#c9a84c; color:#000; border-color:#c9a84c; }
 
     /* Center map */
-    .pi-dash-center { display:flex; flex-direction:column; padding:16px; }
-    #pi-worldmap { flex:1; min-height:340px; }
-    .pi-mobility-bar { display:flex; gap:0; border-radius:6px; overflow:hidden; margin-top:12px; font-size:12px; font-weight:700; }
-    .pi-bar-seg { display:flex; align-items:center; justify-content:center; padding:8px 4px; color:#000; gap:4px; min-width:28px; }
-    .pi-bar-vf  { background:#4caf50; }
+    .pi-dash-center { display:flex; flex-direction:column; padding:12px 16px; overflow:hidden; }
+    #pi-worldmap { height:280px; min-height:200px; }
+    .pi-mobility-bar { display:flex; gap:0; border-radius:0; overflow:hidden; margin-top:10px; font-size:13px; font-weight:700; }
+    .pi-bar-seg { display:flex; align-items:center; justify-content:center; padding:10px 6px; gap:4px; min-width:24px; }
+    .pi-bar-vf  { background:#4caf50; color:#fff; }
     .pi-bar-voa { background:#2196f3; color:#fff; }
-    .pi-bar-eta { background:#ff9800; }
-    .pi-bar-vr  { background:#f44336; color:#fff; }
-    .pi-legend { display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
-    .pi-legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:#888; }
-    .pi-legend-dot { width:10px; height:10px; border-radius:2px; }
+    .pi-bar-eta { background:#ff9800; color:#fff; }
+    .pi-bar-vr  { background:#c62828; color:#fff; }
+    .pi-chart-wrap { margin-top:10px; position:relative; }
+    .pi-chart-caption { font-size:11px; color:#555; margin-top:6px; text-align:center; }
 
     /* Right visa list */
-    .pi-dash-right { border-left:1px solid #1e1e1e; display:flex; flex-direction:column; }
-    .pi-dash-right-header { padding:16px 18px 10px; }
+    .pi-dash-right { border-left:1px solid #1e1e1e; display:flex; flex-direction:column; min-width:0; }
+    .pi-dash-right-header { padding:14px 16px 8px; }
     .pi-dash-right-header h3 { font-size:11px; color:#c9a84c; letter-spacing:1px; font-weight:700; margin:0 0 10px; text-transform:uppercase; }
-    .pi-visa-search { width:100%; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:5px; padding:8px 12px; color:#fff; font-size:13px; outline:none; box-sizing:border-box; }
+    .pi-visa-search-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .pi-visa-search { flex:1; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:5px; padding:8px 12px; color:#fff; font-size:13px; outline:none; }
     .pi-visa-search::placeholder { color:#444; }
     .pi-visa-search:focus { border-color:#c9a84c; }
-    .pi-visa-filters { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
-    .pi-vf-tab { background:transparent; border:1px solid #2a2a2a; color:#555; padding:4px 10px; border-radius:20px; font-size:11px; cursor:pointer; transition:all .15s; font-weight:600; }
-    .pi-vf-tab.active { background:#c9a84c; border-color:#c9a84c; color:#000; }
+    .pi-dot-filters { display:flex; gap:6px; align-items:center; }
+    .pi-dot { width:14px; height:14px; border-radius:50%; cursor:pointer; transition:transform .15s; border:2px solid transparent; }
+    .pi-dot:hover,.pi-dot.active { transform:scale(1.3); border-color:#fff; }
+    .pi-dot-all { background:#888; }
+    .pi-dot-vf  { background:#4caf50; }
+    .pi-dot-voa { background:#2196f3; }
+    .pi-dot-eta { background:#ff9800; }
+    .pi-dot-vr  { background:#c62828; }
+    .pi-visa-table-head { display:flex; justify-content:space-between; padding:8px 16px; background:#1a1a1a; font-size:10px; color:#888; font-weight:700; letter-spacing:.5px; text-transform:uppercase; border-bottom:1px solid #222; }
     .pi-visa-list { flex:1; overflow-y:auto; }
-    .pi-visa-row { display:flex; align-items:center; justify-content:space-between; padding:10px 18px; border-bottom:1px solid #161616; transition:background .1s; }
+    .pi-visa-row { display:flex; align-items:center; justify-content:space-between; padding:9px 16px; border-bottom:1px solid #161616; transition:background .1s; gap:8px; }
     .pi-visa-row:hover { background:#161616; }
-    .pi-visa-country { display:flex; align-items:center; gap:10px; font-size:13px; color:#ddd; }
-    .pi-visa-country img { width:28px; height:19px; object-fit:cover; border-radius:2px; }
-    .pi-visa-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; }
-    .badge-vf  { background:rgba(76,175,80,.2);  color:#4caf50; border:1px solid rgba(76,175,80,.3); }
-    .badge-voa { background:rgba(33,150,243,.2);  color:#64b5f6; border:1px solid rgba(33,150,243,.3); }
-    .badge-eta { background:rgba(255,152,0,.2);   color:#ffb74d; border:1px solid rgba(255,152,0,.3); }
-    .badge-vr  { background:rgba(244,67,54,.2);   color:#ef9a9a; border:1px solid rgba(244,67,54,.3); }
-    .badge-days { background:#1e1e1e; color:#888; border:1px solid #2a2a2a; font-size:9px; padding:2px 7px; border-radius:10px; margin-left:4px; }
+    .pi-visa-country { display:flex; align-items:center; gap:9px; font-size:13px; color:#ddd; min-width:0; flex:1; }
+    .pi-visa-country img { width:26px; height:17px; object-fit:cover; border-radius:2px; flex-shrink:0; }
+    .pi-visa-country span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .pi-visa-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+    .pi-visa-badge { font-size:10px; font-weight:700; padding:4px 10px; border-radius:20px; white-space:nowrap; color:#fff; }
+    .badge-vf  { background:#388e3c; }
+    .badge-voa { background:#1565c0; }
+    .badge-eta { background:#e65100; }
+    .badge-vr  { background:#b71c1c; }
+    .badge-days { background:#1e1e1e; color:#888; border:1px solid #2a2a2a; font-size:10px; font-weight:600; padding:3px 8px; border-radius:12px; }
+    .pi-visa-arrow { width:24px; height:24px; background:#1e1e1e; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#555; font-size:11px; flex-shrink:0; }
+    .pi-visa-arrow.has-link { color:#c9a84c; cursor:pointer; }
+    .pi-visa-arrow.has-link:hover { background:#c9a84c; color:#000; }
 
     /* jsvectormap override */
     .jvectormap-container { background:#0d0d0d !important; }
@@ -208,6 +222,10 @@
   <div class="pi-dash-header">
     <img class="flag-sm" id="pd-flag" src="" alt="">
     <h2 id="pd-title"></h2>
+    <span style="display:flex;gap:6px;margin-right:auto">
+      <button onclick="pdNavigate(-1)" style="background:#1a1a1a;border:1px solid #2a2a2a;color:#888;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">&#9664;</button>
+      <button onclick="pdNavigate(1)"  style="background:#1a1a1a;border:1px solid #2a2a2a;color:#888;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">&#9654;</button>
+    </span>
     <button class="pi-dash-back" onclick="piCloseDash()">&#8592; Back</button>
   </div>
   <div class="pi-dash-body">
@@ -216,36 +234,43 @@
       <div class="pi-dash-book" id="pd-book">
         <img id="pd-book-img" src="" alt="">
       </div>
-      <div class="pi-dash-scores" id="pd-scores"></div>
       <div class="pi-dash-compare">
         <button>COMPARE</button>
         <button>IMPROVE</button>
       </div>
+      <div class="pi-dash-scores" id="pd-scores"></div>
+      <div class="pi-dash-social">
+        <a href="#" title="Share on X">&#120143;</a>
+        <a href="#" title="Share on Facebook"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="#" title="Share on LinkedIn"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zm2-3a2 2 0 110-4 2 2 0 010 4z"/></svg></a>
+        <a href="#" title="Share by Email"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg></a>
+      </div>
     </div>
-    <!-- Center: map -->
+    <!-- Center: map + chart -->
     <div class="pi-dash-center">
       <div id="pi-worldmap"></div>
       <div class="pi-mobility-bar" id="pd-bar"></div>
-      <div class="pi-legend">
-        <div class="pi-legend-item"><div class="pi-legend-dot" style="background:#4caf50"></div>Visa-Free</div>
-        <div class="pi-legend-item"><div class="pi-legend-dot" style="background:#2196f3"></div>Visa on Arrival</div>
-        <div class="pi-legend-item"><div class="pi-legend-dot" style="background:#ff9800"></div>ETA</div>
-        <div class="pi-legend-item"><div class="pi-legend-dot" style="background:#f44336"></div>Visa Required</div>
+      <div class="pi-chart-wrap">
+        <canvas id="pd-chart" height="130"></canvas>
+        <div class="pi-chart-caption" id="pd-chart-caption"></div>
       </div>
     </div>
     <!-- Right: visa list -->
     <div class="pi-dash-right">
       <div class="pi-dash-right-header">
         <h3 id="pd-visa-title">VISA REQUIREMENTS</h3>
-        <input class="pi-visa-search" id="pd-visa-search" type="text" placeholder="Find a country…" oninput="pdFilterVisa()">
-        <div class="pi-visa-filters">
-          <button class="pi-vf-tab active" data-tab="all" onclick="pdTabClick(this)">All</button>
-          <button class="pi-vf-tab" data-tab="vf"  onclick="pdTabClick(this)">Visa-Free</button>
-          <button class="pi-vf-tab" data-tab="voa" onclick="pdTabClick(this)">On Arrival</button>
-          <button class="pi-vf-tab" data-tab="eta" onclick="pdTabClick(this)">ETA</button>
-          <button class="pi-vf-tab" data-tab="vr"  onclick="pdTabClick(this)">Visa Required</button>
+        <div class="pi-visa-search-row">
+          <input class="pi-visa-search" id="pd-visa-search" type="text" placeholder="Find a country…" oninput="pdFilterVisa()">
+          <div class="pi-dot-filters">
+            <div class="pi-dot pi-dot-all active" title="All" onclick="pdDotClick(this,'all')"></div>
+            <div class="pi-dot pi-dot-vf"  title="Visa-Free"   onclick="pdDotClick(this,'vf')"></div>
+            <div class="pi-dot pi-dot-voa" title="On Arrival"  onclick="pdDotClick(this,'voa')"></div>
+            <div class="pi-dot pi-dot-eta" title="ETA"         onclick="pdDotClick(this,'eta')"></div>
+            <div class="pi-dot pi-dot-vr"  title="Visa Required" onclick="pdDotClick(this,'vr')"></div>
+          </div>
         </div>
       </div>
+      <div class="pi-visa-table-head"><span>Country</span><span>Visa requirements</span></div>
       <div class="pi-visa-list" id="pd-visa-list"></div>
     </div>
   </div>
@@ -253,6 +278,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
 /* ── Passport Data ──────────────────────────────────────────────────────────
    [name, iso2, passportColor, globalRank, mobilityScore, visaFree, visaOnArrival, eta, visaRequired, region]
@@ -503,6 +529,8 @@ function visaStatus(srcIso, destIso) {
 let _selected = null;
 let _pdVisaTab = 'all';
 let _jvMap = null;
+let _pdChart = null;
+const SORTED_BY_RANK = [...ALL].sort((a,b) => a.rank - b.rank || a.name.localeCompare(b.name));
 
 /* ── Render Grid ─────────────────────────────────────────────────────────── */
 function renderGrid(list) {
@@ -566,9 +594,16 @@ function piOpenDash() {
   piCloseDetail();
   document.getElementById('pi-dash-overlay').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+  pdPopulate(p);
+}
+
+function pdPopulate(p) {
+  _selected = p;
 
   // Header
-  document.getElementById('pd-flag').src = passportImg(p.iso);
+  const pdFlagEl = document.getElementById('pd-flag');
+  pdFlagEl.src = passportImg(p.iso);
+  pdFlagEl.onerror = function(){ this.src = F(p.iso); };
   document.getElementById('pd-title').textContent = p.name.toUpperCase() + ' PASSPORT DASHBOARD';
 
   // Left sidebar book
@@ -577,17 +612,21 @@ function piOpenDash() {
   pdImg.alt = p.name;
   pdImg.onerror = function(){ this.src = F(p.iso); this.style.objectFit='contain'; this.parentElement.style.background = p.color; };
 
+  // World reach %
+  const reach = Math.round((p.vf + p.voa + p.eta) / 196 * 100);
+
   // Scores
   document.getElementById('pd-scores').innerHTML = [
     ['MOBILITY SCORE', p.score],
-    ['VISA-FREE', p.vf],
-    ['VISA ON ARRIVAL', p.voa],
-    ['ETA', p.eta],
-    ['VISA REQUIRED', p.vr],
-    ['GLOBAL RANK', '#' + p.rank],
+    ['VISA-FREE',      p.vf],
+    ['VISA ON ARRIVAL',p.voa],
+    ['ETA',            p.eta],
+    ['VISA REQUIRED',  p.vr],
+    ['PASSPORT RANK',  '#' + p.rank],
+    ['WORLD REACH',    reach + '%'],
   ].map(([l,v]) => `<div class="pi-dash-score-row"><span class="pi-dash-score-label">${l}</span><span class="pi-dash-score-val">${v}</span></div>`).join('');
 
-  // Bar
+  // Mobility bar
   const total = p.vf + p.voa + p.eta + p.vr;
   const pct = (n) => Math.max(2, Math.round(n/total*100));
   document.getElementById('pd-bar').innerHTML = `
@@ -596,23 +635,79 @@ function piOpenDash() {
     <div class="pi-bar-seg pi-bar-eta" style="flex:${pct(p.eta)}">${p.eta}</div>
     <div class="pi-bar-seg pi-bar-vr"  style="flex:${pct(p.vr)}">${p.vr}</div>`;
 
-  // Visa title
+  // Visa title + list
   document.getElementById('pd-visa-title').textContent = p.name.toUpperCase() + ' PASSPORT VISA REQUIREMENTS';
-
-  // Visa list
   _pdVisaTab = 'all';
-  document.querySelectorAll('.pi-vf-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'all'));
+  document.querySelectorAll('.pi-dot').forEach(d => d.classList.toggle('active', d.title === 'All'));
   renderVisaList(p);
 
   // Map
-  setTimeout(() => renderMap(p), 80);
+  setTimeout(() => { renderMap(p); renderChart(p); }, 80);
+}
+
+/* Navigate prev/next passport by rank */
+function pdNavigate(dir) {
+  const idx = SORTED_BY_RANK.findIndex(p => p.iso === _selected.iso);
+  const next = SORTED_BY_RANK[idx + dir];
+  if (next) pdPopulate(next);
 }
 
 function piCloseDash() {
   document.getElementById('pi-dash-overlay').classList.add('hidden');
   document.body.style.overflow = '';
   if (_jvMap) { try { _jvMap.destroy(); } catch(e){} _jvMap = null; }
+  if (_pdChart) { _pdChart.destroy(); _pdChart = null; }
   document.getElementById('pi-worldmap').innerHTML = '';
+}
+
+/* ── Mobility History Chart ────────────────────────────────────────────────── */
+function renderChart(p) {
+  const canvas = document.getElementById('pd-chart');
+  if (!window.Chart || !canvas) return;
+  if (_pdChart) { _pdChart.destroy(); _pdChart = null; }
+
+  /* Generate plausible historical data based on current score */
+  const base = p.score;
+  const years = [2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+  const jitter = () => Math.round((Math.random() - 0.5) * 6);
+  const dip = p.score * 0.55; /* COVID dip */
+  const scores = years.map((y,i) => {
+    if (y === 2020) return Math.round(dip + jitter());
+    if (y === 2021) return Math.round(dip * 1.15 + jitter());
+    const trend = base - 12 + i * (12/10);
+    return Math.max(20, Math.round(trend + jitter()));
+  });
+  scores[scores.length - 1] = base;
+
+  _pdChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: years,
+      datasets: [{
+        data: scores,
+        borderColor: '#c9a84c',
+        backgroundColor: 'rgba(201,168,76,.08)',
+        borderWidth: 2,
+        pointBackgroundColor: '#c9a84c',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        fill: true,
+        tension: 0.3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: { legend:{ display:false }, tooltip:{ callbacks:{ label: ctx => ' Score: ' + ctx.raw } } },
+      scales: {
+        x: { grid:{ color:'#1a1a1a' }, ticks:{ color:'#555', font:{ size:10 } } },
+        y: { grid:{ color:'#1a1a1a' }, ticks:{ color:'#555', font:{ size:10 } }, min: Math.max(0, Math.min(...scores) - 10) }
+      }
+    }
+  });
+
+  document.getElementById('pd-chart-caption').textContent =
+    p.name + ' passport Mobility Score over time';
 }
 
 /* ── World Map ────────────────────────────────────────────────────────────── */
@@ -652,10 +747,10 @@ function renderMap(p) {
 /* ── Visa List ────────────────────────────────────────────────────────────── */
 const VISA_DAYS = { vf:90, voa:30, eta:90 };
 const BADGE = {
-  vf:  ['badge-vf', 'VISA-FREE'],
-  voa: ['badge-voa','VISA ON ARRIVAL'],
-  eta: ['badge-eta','ETA'],
-  vr:  ['badge-vr', 'VISA REQUIRED'],
+  vf:  ['badge-vf',  'VISA-FREE'],
+  voa: ['badge-voa', 'VISA ON ARRIVAL'],
+  eta: ['badge-eta', 'ETA'],
+  vr:  ['badge-vr',  'VISA REQUIRED'],
 };
 
 function renderVisaList(p) {
@@ -671,24 +766,28 @@ function renderVisaList(p) {
   rows.sort((a,b) => a.dest.name.localeCompare(b.dest.name));
   document.getElementById('pd-visa-list').innerHTML = rows.map(({dest,st}) => {
     const [cls, label] = BADGE[st] || ['badge-vr','VISA REQUIRED'];
-    const days = VISA_DAYS[st] ? `<span class="badge-days">${VISA_DAYS[st]} days</span>` : '';
+    const days = VISA_DAYS[st] ? `<span class="badge-days">${VISA_DAYS[st]}</span>` : '';
+    const hasLink = st !== 'vr';
     return `<div class="pi-visa-row">
       <div class="pi-visa-country">
         <img src="${F(dest.iso)}" alt="${dest.name}" onerror="this.style.opacity=.3">
-        ${dest.name}
+        <span>${dest.name}</span>
       </div>
-      <div style="display:flex;align-items:center;gap:4px">
-        <span class="pi-visa-badge ${cls}">${label}</span>${days}
+      <div class="pi-visa-right">
+        <span class="pi-visa-badge ${cls}">${label}</span>
+        ${days}
+        <div class="pi-visa-arrow${hasLink?' has-link':''}">&#10132;</div>
       </div>
     </div>`;
   }).join('');
 }
 
 function pdFilterVisa() { renderVisaList(_selected); }
-function pdTabClick(btn) {
-  _pdVisaTab = btn.dataset.tab;
-  document.querySelectorAll('.pi-vf-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
+
+function pdDotClick(el, tab) {
+  _pdVisaTab = tab;
+  document.querySelectorAll('.pi-dot').forEach(d => d.classList.remove('active'));
+  el.classList.add('active');
   renderVisaList(_selected);
 }
 
