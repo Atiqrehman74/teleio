@@ -523,10 +523,15 @@
 
     window._doGoogleTranslate = function(lang) {
       var code = GT_CODES[lang] || null;
-      _gtSetCookie(code); /* set /en/en for English, /en/xx for others */
+      _gtSetCookie(code); /* /en/en for English, /en/xx for others */
+      if (!code) {
+        /* English: reload so GT re-reads the /en/en cookie and skips translation */
+        location.reload();
+        return;
+      }
       var s = document.querySelector('.goog-te-combo');
       if (s) {
-        s.value = code || ''; /* '' = restore original in GT */
+        s.value = code;
         try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
       } else {
         location.reload();
