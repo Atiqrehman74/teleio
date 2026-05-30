@@ -481,14 +481,29 @@
     var _savedCode = GT_CODES[localStorage.getItem('teleio_lang') || 'en'] || null;
 
     function _gtSetCookie(code) {
-      /* /en/en = no-op (English); /en/xx = translate to xx */
-      var val = (code && code !== 'en') ? '/en/' + code : '/en/en';
+      var val = '/en/' + code;
       ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
         document.cookie = 'googtrans=' + val + '; path=/' + d;
       });
     }
 
-    /* Always set cookie before GT loads — overwrites any stale cookie from previous language */
+    /* English: no GT loaded, reload brings clean English page */
+    window._doGoogleTranslate = function(lang) {
+      var code = GT_CODES[lang] || null;
+      if (!code) { location.reload(); return; }
+      _gtSetCookie(code);
+      var s = document.querySelector('.goog-te-combo');
+      if (s) {
+        s.value = code;
+        try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
+      } else {
+        location.reload();
+      }
+    };
+
+    /* Only load GT when a non-English language is active */
+    if (!_savedCode) return;
+
     _gtSetCookie(_savedCode);
 
     if (!document.getElementById('google_translate_element')) {
@@ -504,38 +519,17 @@
         includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru',
         autoDisplay: false
       }, 'google_translate_element');
-      /* Fallback: also trigger via combo select */
-      if (_savedCode) {
-        var _c = _savedCode, _end = Date.now() + 6000, _done = false;
-        (function poll() {
-          if (_done) return;
-          var s = document.querySelector('.goog-te-combo');
-          if (s) {
-            _done = true;
-            s.value = _c;
-            try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
-            return;
-          }
-          if (Date.now() < _end) { setTimeout(poll, 300); }
-        })();
-      }
-    };
-
-    window._doGoogleTranslate = function(lang) {
-      var code = GT_CODES[lang] || null;
-      _gtSetCookie(code); /* /en/en for English, /en/xx for others */
-      if (!code) {
-        /* English: reload so GT re-reads the /en/en cookie and skips translation */
-        location.reload();
-        return;
-      }
-      var s = document.querySelector('.goog-te-combo');
-      if (s) {
-        s.value = code;
-        try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
-      } else {
-        location.reload();
-      }
+      var _c = _savedCode, _end = Date.now() + 6000, _done = false;
+      (function poll() {
+        if (_done) return;
+        var s = document.querySelector('.goog-te-combo');
+        if (s) {
+          _done = true; s.value = _c;
+          try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
+          return;
+        }
+        if (Date.now() < _end) { setTimeout(poll, 300); }
+      })();
     };
 
     if (!document.getElementById('gt-script')) {
