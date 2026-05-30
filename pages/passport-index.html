@@ -36,15 +36,11 @@
     .pi-card:hover { transform:scale(1.06); z-index:2; position:relative; }
     .pi-book-thumb {
       position:relative; width:100%; aspect-ratio:0.7; border-radius:3px 6px 6px 3px;
-      overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center;
-      box-shadow:-3px 3px 10px rgba(0,0,0,.7);
+      overflow:hidden; box-shadow:-3px 3px 10px rgba(0,0,0,.7);
     }
-    .pi-book-thumb::before {
-      content:''; position:absolute; left:0; top:0; bottom:0; width:10%;
-      background:rgba(0,0,0,.35); border-radius:3px 0 0 3px;
+    .pi-book-thumb img.pi-passport-thumb {
+      width:100%; height:100%; object-fit:cover; display:block;
     }
-    .pi-book-thumb img.pi-flag { width:65%; aspect-ratio:3/2; object-fit:cover; border-radius:2px; box-shadow:0 2px 8px rgba(0,0,0,.5); }
-    .pi-book-thumb .pi-country-label { font-size:8px; text-transform:uppercase; letter-spacing:.5px; color:rgba(255,255,255,.75); margin-top:5px; font-weight:600; padding:0 6px; line-height:1.3; }
     .pi-card-name { font-size:10px; color:#777; margin-top:5px; line-height:1.3; }
     .pi-rank-badge { position:absolute; top:4px; right:5px; background:rgba(201,168,76,.9); color:#000; font-size:7px; font-weight:800; padding:1px 4px; border-radius:3px; }
 
@@ -57,17 +53,12 @@
     .pi-modal-label { font-size:11px; letter-spacing:2px; color:#c9a84c; font-weight:600; margin-bottom:6px; }
     .pi-modal-country { font-size:clamp(24px,5vw,36px); font-weight:900; color:#fff; margin-bottom:24px; line-height:1.1; }
 
-    /* Large passport book in modal */
+    /* Large passport image in modal */
     .pi-book-large {
       width:200px; aspect-ratio:0.68; border-radius:4px 10px 10px 4px; margin:0 auto 24px;
-      display:flex; flex-direction:column; align-items:center; justify-content:space-between;
-      padding:20px 16px 16px; box-shadow:-8px 8px 28px rgba(0,0,0,.8); position:relative; overflow:hidden;
+      overflow:hidden; box-shadow:-8px 8px 28px rgba(0,0,0,.8);
     }
-    .pi-book-large::before { content:''; position:absolute; left:0; top:0; bottom:0; width:14%; background:rgba(0,0,0,.4); border-radius:4px 0 0 4px; }
-    .pi-book-large .pi-book-text { font-size:9px; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,.7); font-weight:600; }
-    .pi-book-large .pi-book-emblem { font-size:52px; margin:4px 0; }
-    .pi-book-large img.pi-flag-lg { width:80%; aspect-ratio:3/2; object-fit:cover; border-radius:4px; box-shadow:0 4px 16px rgba(0,0,0,.5); }
-    .pi-book-large .pi-book-passport { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.6); font-weight:700; border-top:1px solid rgba(255,255,255,.15); padding-top:10px; width:100%; text-align:center; }
+    .pi-book-large img.pi-passport-large { width:100%; height:100%; object-fit:cover; display:block; }
 
     /* Stats row */
     .pi-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid #2a2a2a; border-radius:8px; overflow:hidden; margin-bottom:20px; }
@@ -84,7 +75,7 @@
     .pi-dash-overlay { position:fixed; inset:0; background:#0d0d0d; z-index:1100; overflow-y:auto; }
     .pi-dash-overlay.hidden { display:none; }
     .pi-dash-header { display:flex; align-items:center; gap:14px; padding:20px 28px; border-bottom:1px solid #1e1e1e; background:#111; }
-    .pi-dash-header img.flag-sm { width:40px; height:27px; object-fit:cover; border-radius:3px; }
+    .pi-dash-header img.flag-sm { width:34px; height:50px; object-fit:cover; border-radius:3px; box-shadow:-2px 2px 6px rgba(0,0,0,.5); }
     .pi-dash-header h2 { font-size:clamp(14px,2.5vw,20px); font-weight:800; color:#fff; margin:0; flex:1; }
     .pi-dash-back { background:none; border:1px solid #333; color:#aaa; padding:8px 18px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:600; transition:all .2s; }
     .pi-dash-back:hover { border-color:#c9a84c; color:#c9a84c; }
@@ -94,10 +85,8 @@
 
     /* Left sidebar */
     .pi-dash-left { padding:24px 20px; border-right:1px solid #1e1e1e; display:flex; flex-direction:column; align-items:center; gap:16px; }
-    .pi-dash-book { width:130px; aspect-ratio:0.68; border-radius:3px 8px 8px 3px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:14px 10px 10px; box-shadow:-6px 6px 20px rgba(0,0,0,.8); position:relative; overflow:hidden; }
-    .pi-dash-book::before { content:''; position:absolute; left:0; top:0; bottom:0; width:14%; background:rgba(0,0,0,.4); border-radius:3px 0 0 3px; }
-    .pi-dash-book img { width:78%; aspect-ratio:3/2; object-fit:cover; border-radius:3px; box-shadow:0 3px 12px rgba(0,0,0,.5); }
-    .pi-dash-book .db-passport-label { font-size:7px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.55); border-top:1px solid rgba(255,255,255,.12); padding-top:7px; width:100%; text-align:center; font-weight:700; }
+    .pi-dash-book { width:130px; aspect-ratio:0.68; border-radius:3px 8px 8px 3px; overflow:hidden; box-shadow:-6px 6px 20px rgba(0,0,0,.8); }
+    .pi-dash-book img { width:100%; height:100%; object-fit:cover; display:block; }
     .pi-dash-scores { width:100%; }
     .pi-dash-score-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #1e1e1e; font-size:12px; }
     .pi-dash-score-row:last-child { border-bottom:none; }
@@ -203,9 +192,7 @@
     <div class="pi-modal-label">PASSPORT OF</div>
     <div class="pi-modal-country" id="pm-country"></div>
     <div class="pi-book-large" id="pm-book">
-      <span class="pi-book-text" id="pm-book-text"></span>
-      <img class="pi-flag-lg" id="pm-flag" src="" alt="">
-      <div class="pi-book-passport">PASSPORT</div>
+      <img class="pi-passport-large" id="pm-passport-img" src="" alt="">
     </div>
     <div class="pi-stats">
       <div class="pi-stat"><span class="val" id="pm-score"></span><span class="lbl">MOBILITY SCORE</span></div>
@@ -227,8 +214,7 @@
     <!-- Left -->
     <div class="pi-dash-left">
       <div class="pi-dash-book" id="pd-book">
-        <img id="pd-book-flag" src="" alt="">
-        <div class="db-passport-label">PASSPORT</div>
+        <img id="pd-book-img" src="" alt="">
       </div>
       <div class="pi-dash-scores" id="pd-scores"></div>
       <div class="pi-dash-compare">
@@ -467,7 +453,8 @@ const PI = [
 ];
 
 /* ── Helpers ──────────────────────────────────────────────────────────────── */
-const F = (iso) => `https://flagcdn.com/w80/${iso}.png`;
+const passportImg = (iso) => `../images/all%20paspport/${iso}.png`;
+const F = (iso) => `https://flagcdn.com/w80/${iso}.png`; /* flags for visa list */
 
 function passportData(row) {
   return { name:row[0], iso:row[1], color:row[2], rank:row[3], score:row[4],
@@ -523,9 +510,9 @@ function renderGrid(list) {
   document.getElementById('pi-count').textContent = list.length + ' passports';
   grid.innerHTML = list.map(p => `
     <div class="pi-card" onclick="piOpenDetail('${p.iso}')">
-      <div class="pi-book-thumb" style="background:${p.color}">
-        <img class="pi-flag" src="${F(p.iso)}" alt="${p.name}" onerror="this.style.opacity=.3">
-        <div class="pi-country-label">${p.name}</div>
+      <div class="pi-book-thumb">
+        <img class="pi-passport-thumb" src="${passportImg(p.iso)}" alt="${p.name}"
+             onerror="this.src='${F(p.iso)}';this.style.objectFit='contain';this.parentElement.style.background='${p.color}'">
         <div class="pi-rank-badge">#${p.rank}</div>
       </div>
       <div class="pi-card-name">${p.name}</div>
@@ -556,10 +543,10 @@ function piOpenDetail(iso) {
   if (!p) return;
   _selected = p;
   document.getElementById('pm-country').textContent = p.name;
-  document.getElementById('pm-book').style.background = `linear-gradient(145deg, ${p.color}, ${p.color}cc, ${p.color})`;
-  document.getElementById('pm-book-text').textContent = p.name.toUpperCase();
-  document.getElementById('pm-flag').src = F(p.iso);
-  document.getElementById('pm-flag').alt = p.name;
+  const pmImg = document.getElementById('pm-passport-img');
+  pmImg.src = passportImg(p.iso);
+  pmImg.alt = p.name;
+  pmImg.onerror = function(){ this.src = F(p.iso); this.style.objectFit='contain'; this.parentElement.style.background = p.color; };
   document.getElementById('pm-score').textContent = p.score;
   document.getElementById('pm-rank').textContent = '#' + p.rank;
   document.getElementById('pm-vf').textContent = p.vf;
@@ -581,12 +568,14 @@ function piOpenDash() {
   document.body.style.overflow = 'hidden';
 
   // Header
-  document.getElementById('pd-flag').src = F(p.iso);
+  document.getElementById('pd-flag').src = passportImg(p.iso);
   document.getElementById('pd-title').textContent = p.name.toUpperCase() + ' PASSPORT DASHBOARD';
 
   // Left sidebar book
-  document.getElementById('pd-book').style.background = `linear-gradient(145deg, ${p.color}, ${p.color}cc)`;
-  document.getElementById('pd-book-flag').src = F(p.iso);
+  const pdImg = document.getElementById('pd-book-img');
+  pdImg.src = passportImg(p.iso);
+  pdImg.alt = p.name;
+  pdImg.onerror = function(){ this.src = F(p.iso); this.style.objectFit='contain'; this.parentElement.style.background = p.color; };
 
   // Scores
   document.getElementById('pd-scores').innerHTML = [
