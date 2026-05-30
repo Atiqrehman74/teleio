@@ -80,6 +80,8 @@
     /* Non-English: set cookie so GT auto-translates, hide page to prevent EN flash */
     _gtSet(_GT_INIT_CODE);
     document.documentElement.style.opacity = '0';
+    /* UNCONDITIONAL fallback — fires even if GT script is blocked or never loads */
+    setTimeout(function() { document.documentElement.style.opacity = '1'; }, 3000);
   } else {
     /* English: if stale cookie present, redirect NOW before GT even loads — no blink */
     var _stale = /googtrans=\/en\/[a-z]/.test(document.cookie);
@@ -98,12 +100,12 @@
     }, 'google_translate_element');
 
     if (_GT_INIT_CODE) {
-      /* Wait for select, trigger it, then reveal page once GT has applied translation */
+      /* Trigger select then reveal — sooner than the 3s unconditional fallback */
       setTimeout(function() {
         _gtWait(_GT_INIT_CODE);
-        setTimeout(_gtReveal, 700); /* GT needs ~500-700ms to apply after select fires */
+        setTimeout(_gtReveal, 700);
       }, 300);
-      setTimeout(_gtReveal, 2500); /* hard cap: always reveal within 2.5s */
+      setTimeout(_gtReveal, 2000); /* secondary cap inside GT callback
     }
   }
 

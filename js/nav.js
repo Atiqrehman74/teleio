@@ -518,6 +518,8 @@
       /* Non-English: set cookie, hide page to prevent EN flash */
       _gtSet(_savedCode);
       document.documentElement.style.opacity = '0';
+      /* UNCONDITIONAL fallback — fires even if GT script is blocked or never loads */
+      setTimeout(function() { document.documentElement.style.opacity = '1'; }, 3000);
     } else {
       /* English: redirect NOW if stale cookie present — eliminates blink entirely */
       if (/googtrans=\/en\/[a-z]/.test(document.cookie)) {
