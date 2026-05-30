@@ -534,12 +534,12 @@
       if (_savedCode) {
         setTimeout(function() { _gtWait(_savedCode); }, 400);
       } else {
-        /* English: if cookie clearing raced with GT's own write, force reset via select */
+        /* English: if a stale googtrans cookie survived JS clear, use server redirect */
         setTimeout(function() {
           var cv = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1] || '';
           if (cv && cv !== '/en/en') {
-            _gtApply('');
-            setTimeout(_gtClear, 600);
+            var back = encodeURIComponent(location.pathname + location.search);
+            location.href = '/clear-lang?r=' + back;
           }
         }, 700);
       }
@@ -551,9 +551,9 @@
         _gtSet(code);
         if (!_gtApply(code)) location.reload();
       } else {
-        _gtClear();
-        _gtApply('');
-        setTimeout(_gtClear, 600);
+        /* Server-side redirect guarantees cookie deletion regardless of JS limitations */
+        var back = encodeURIComponent(location.pathname + location.search);
+        location.href = '/clear-lang?r=' + back;
       }
     };
 

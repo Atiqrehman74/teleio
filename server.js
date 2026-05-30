@@ -431,6 +431,19 @@ app.get('/api/travel/deals', async (req, res) => {
   }
 });
 
+// Clear googtrans cookie server-side (JS document.cookie cannot always delete it)
+app.get('/clear-lang', (req, res) => {
+  const host = req.hostname || 'teleiotourism.com';
+  const expired = 'expires=Thu, 01 Jan 1970 00:00:00 GMT';
+  res.setHeader('Set-Cookie', [
+    `googtrans=; path=/; ${expired}`,
+    `googtrans=; path=/; domain=${host}; ${expired}`,
+    `googtrans=; path=/; domain=.${host}; ${expired}`,
+  ]);
+  const back = req.query.r || '/';
+  res.redirect(302, back);
+});
+
 // Return publishable key to frontend (safe — it's public)
 app.get('/config', (req, res) => {
   res.json({ publishableKey: process.env.STRIPE_PUBLISHABLE_KEY });

@@ -88,13 +88,12 @@
       /* Non-English: trigger select as belt-and-suspenders */
       setTimeout(function() { _gtWait(_GT_INIT_CODE); }, 400);
     } else {
-      /* English: cookie clearing may have raced with GT's own cookie write.
-         After GT settles, force-reset the select and clear cookie again. */
+      /* English: if a stale googtrans cookie survived our JS clear, use server redirect */
       setTimeout(function() {
         var cv = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1] || '';
         if (cv && cv !== '/en/en') {
-          _gtApply('');          /* force GT to show English */
-          setTimeout(_gtClear, 600); /* clear whatever cookie GT wrote back */
+          var back = encodeURIComponent(location.pathname + location.search);
+          location.href = '/clear-lang?r=' + back;
         }
       }, 700);
     }
@@ -106,9 +105,9 @@
       _gtSet(code);
       if (!_gtApply(code)) location.reload();
     } else {
-      _gtClear();
-      _gtApply('');
-      setTimeout(_gtClear, 600); /* clear again after GT's own handler fires */
+      /* Server-side redirect guarantees cookie deletion regardless of JS limitations */
+      var back = encodeURIComponent(location.pathname + location.search);
+      location.href = '/clear-lang?r=' + back;
     }
   }
   </script>
