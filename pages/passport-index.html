@@ -95,13 +95,10 @@
     .pi-dash-compare { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
     .pi-dash-compare button { background:#1a1a1a; border:1px solid #2a2a2a; color:#c9a84c; padding:10px; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer; transition:all .2s; }
     .pi-dash-compare button:hover { background:#c9a84c; color:#000; border-color:#c9a84c; }
-    .pi-dash-social { display:flex; gap:10px; padding-top:8px; }
-    .pi-dash-social a { width:30px; height:30px; border-radius:50%; background:#1a1a1a; border:1px solid #2a2a2a; display:flex; align-items:center; justify-content:center; color:#666; text-decoration:none; transition:all .2s; font-size:13px; }
-    .pi-dash-social a:hover { background:#c9a84c; color:#000; border-color:#c9a84c; }
 
     /* Center map */
     .pi-dash-center { display:flex; flex-direction:column; padding:12px 16px; overflow:hidden; }
-    #pi-worldmap { height:280px; min-height:200px; }
+    #pi-worldmap { height:360px; min-height:240px; }
     .pi-mobility-bar { display:flex; gap:0; border-radius:0; overflow:hidden; margin-top:10px; font-size:13px; font-weight:700; }
     .pi-bar-seg { display:flex; align-items:center; justify-content:center; padding:10px 6px; gap:4px; min-width:24px; }
     .pi-bar-vf  { background:#4caf50; color:#fff; }
@@ -239,12 +236,6 @@
         <button>IMPROVE</button>
       </div>
       <div class="pi-dash-scores" id="pd-scores"></div>
-      <div class="pi-dash-social">
-        <a href="#" title="Share on X">&#120143;</a>
-        <a href="#" title="Share on Facebook"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
-        <a href="#" title="Share on LinkedIn"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zm2-3a2 2 0 110-4 2 2 0 010 4z"/></svg></a>
-        <a href="#" title="Share by Email"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg></a>
-      </div>
     </div>
     <!-- Center: map + chart -->
     <div class="pi-dash-center">
@@ -711,22 +702,28 @@ function renderChart(p) {
 }
 
 /* ── World Map ────────────────────────────────────────────────────────────── */
-/* jsvectormap uses uppercase 2-letter codes */
 function renderMap(p) {
   const container = document.getElementById('pi-worldmap');
   container.innerHTML = '';
   if (!window.jsVectorMap) return;
 
-  const series = {};
+  const colorMap = {};
   ALL.forEach(dest => {
     const st = visaStatus(p.iso, dest.iso);
-    const key = dest.iso.toUpperCase();
-    series[key] = st === 'vf' ? '#4caf50'
-                : st === 'voa' ? '#2196f3'
-                : st === 'eta' ? '#ff9800'
-                : '#f44336';
+    colorMap[dest.iso.toUpperCase()] =
+        st === 'vf'  ? '#3cba54'
+      : st === 'voa' ? '#f4b400'
+      : st === 'eta' ? '#ff9800'
+      : '#db4437';
   });
-  series[p.iso.toUpperCase()] = '#c9a84c'; // selected country
+  colorMap[p.iso.toUpperCase()] = '#c9a84c';
+
+  function applyColors() {
+    Object.entries(colorMap).forEach(([code, color]) => {
+      const el = container.querySelector(`[data-code="${code}"]`);
+      if (el) el.setAttribute('fill', color);
+    });
+  }
 
   try {
     _jvMap = new jsVectorMap({
@@ -734,14 +731,20 @@ function renderMap(p) {
       map: 'world',
       backgroundColor: '#0d0d0d',
       regionStyle: {
-        initial: { fill:'#1a1a1a', stroke:'#000', strokeWidth:0.5 },
-        selected: { fill:'#c9a84c' }
+        initial: { fill:'#2a2a2a', stroke:'#111', strokeWidth:0.3 },
+        hover:   { fill:'#444', cursor:'default' },
       },
-      series: { regions: [{ values: series, attribute:'fill' }] },
-      zoomButtons: true,
-      zoomOnScroll: true,
+      series: { regions: [{ values: colorMap, attribute: 'fill' }] },
+      zoomButtons: false,
+      zoomOnScroll: false,
     });
-  } catch(e) { console.warn('Map error:', e); }
+    /* Apply colors directly to SVG paths — works regardless of series API */
+    setTimeout(applyColors, 50);
+  } catch(e) {
+    console.warn('Map error:', e);
+    /* Retry direct paint if map threw but SVG may still be present */
+    setTimeout(applyColors, 200);
+  }
 }
 
 /* ── Visa List ────────────────────────────────────────────────────────────── */
