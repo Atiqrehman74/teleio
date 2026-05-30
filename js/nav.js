@@ -478,58 +478,16 @@
   /* ── Google Translate auto-translation ── */
   (function() {
     var GT_CODES = { ar:'ar', ur:'ur', hi:'hi', fr:'fr', de:'de', zh:'zh-CN', ru:'ru' };
+    var _savedCode = GT_CODES[localStorage.getItem('teleio_lang') || 'en'] || null;
 
-    function _gtClear() {
-      var exp = '; expires=' + new Date(0).toUTCString() + '; max-age=0';
+    function _gtSetCookie(code) {
       ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
-        document.cookie = 'googtrans=; path=/' + d + exp;
-        document.cookie = 'googtrans=; path=/' + d + exp + '; SameSite=Lax';
+        document.cookie = 'googtrans=/en/' + code + '; path=/' + d;
       });
     }
 
-    function _gtSet(code) {
-      ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
-        document.cookie = 'googtrans=/en/' + code + '; path=/' + d + '; SameSite=Lax';
-      });
-    }
-
-    function _gtApply(val) {
-      var s = document.querySelector('.goog-te-combo');
-      if (!s) return false;
-      s.value = val;
-      try { s.dispatchEvent(new Event('change', { bubbles: true, cancelable: true })); }
-      catch(e) { var ev = document.createEvent('HTMLEvents'); ev.initEvent('change', true, true); s.dispatchEvent(ev); }
-      return true;
-    }
-
-    function _gtWait(val) {
-      var end = Date.now() + 9000, done = false;
-      (function t() {
-        if (done) return;
-        if (_gtApply(val)) { done = true; return; }
-        if (Date.now() < end) setTimeout(t, 300);
-      })();
-    }
-
-    var _savedLang = localStorage.getItem('teleio_lang') || 'en';
-    var _savedCode = GT_CODES[_savedLang] || null;
-
-    if (_savedCode) {
-      /* Non-English: set cookie, hide page to prevent EN flash */
-      _gtSet(_savedCode);
-      document.documentElement.style.opacity = '0';
-      /* UNCONDITIONAL fallback — fires even if GT script is blocked or never loads */
-      setTimeout(function() { document.documentElement.style.opacity = '1'; }, 3000);
-    } else {
-      /* English: redirect NOW if stale cookie present — eliminates blink entirely */
-      if (/googtrans=\/en\/[a-z]/.test(document.cookie)) {
-        location.href = '/clear-lang?r=' + encodeURIComponent(location.pathname + location.search);
-      } else {
-        _gtClear();
-      }
-    }
-
-    function _gtReveal() { document.documentElement.style.opacity = '1'; }
+    /* Set cookie before GT script loads so it auto-translates */
+    if (_savedCode) { _gtSetCookie(_savedCode); }
 
     if (!document.getElementById('google_translate_element')) {
       var gtDiv = document.createElement('div');
@@ -544,25 +502,36 @@
         includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru',
         autoDisplay: false
       }, 'google_translate_element');
-
+      /* Also trigger via select as fallback */
       if (_savedCode) {
-        setTimeout(function() {
-          _gtWait(_savedCode);
-          setTimeout(_gtReveal, 700);
-        }, 300);
-        setTimeout(_gtReveal, 2500); /* hard cap */
+        var _c = _savedCode, _end = Date.now() + 6000, _done = false;
+        (function poll() {
+          if (_done) return;
+          var s = document.querySelector('.goog-te-combo');
+          if (s) {
+            _done = true;
+            s.value = _c;
+            try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
+            return;
+          }
+          if (Date.now() < _end) { setTimeout(poll, 300); }
+        })();
       }
     };
 
     window._doGoogleTranslate = function(lang) {
       var code = GT_CODES[lang] || null;
       if (code) {
-        _gtSet(code);
-        if (!_gtApply(code)) location.reload();
+        _gtSetCookie(code);
+        var s = document.querySelector('.goog-te-combo');
+        if (s) {
+          s.value = code;
+          try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
+        } else {
+          location.reload();
+        }
       } else {
-        /* Server-side redirect guarantees cookie deletion regardless of JS limitations */
-        var back = encodeURIComponent(location.pathname + location.search);
-        location.href = '/clear-lang?r=' + back;
+        location.href = '/clear-lang?r=' + encodeURIComponent(location.pathname + location.search);
       }
     };
 

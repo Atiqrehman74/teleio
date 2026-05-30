@@ -37,87 +37,53 @@
   <!-- Google Translate init -->
   <script>
   var _GT_CODES = {ar:'ar',ur:'ur',hi:'hi',fr:'fr',de:'de',zh:'zh-CN',ru:'ru'};
+  var _GT_CODE  = _GT_CODES[localStorage.getItem('teleio_lang') || 'en'] || null;
 
-  /* Clear ALL variants of the googtrans cookie */
-  function _gtClear() {
-    var exp = '; expires=' + new Date(0).toUTCString() + '; max-age=0';
+  function _gtSetCookie(code) {
     ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
-      document.cookie = 'googtrans=; path=/' + d + exp;
-      document.cookie = 'googtrans=; path=/' + d + exp + '; SameSite=Lax';
+      document.cookie = 'googtrans=/en/' + code + '; path=/' + d;
     });
   }
 
-  /* Set the googtrans cookie on all domain variants */
-  function _gtSet(code) {
-    ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
-      document.cookie = 'googtrans=/en/' + code + '; path=/' + d + '; SameSite=Lax';
-    });
-  }
-
-  /* Trigger GT combo select; returns true if select was found */
-  function _gtApply(val) {
-    var s = document.querySelector('.goog-te-combo');
-    if (!s) return false;
-    s.value = val;
-    try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); }
-    catch(e) { var ev = document.createEvent('HTMLEvents'); ev.initEvent('change',true,true); s.dispatchEvent(ev); }
-    return true;
-  }
-
-  /* Poll until GT select appears, then apply */
-  function _gtWait(val) {
-    var end = Date.now() + 9000, done = false;
-    (function t() {
-      if (done) return;
-      if (_gtApply(val)) { done = true; return; }
-      if (Date.now() < end) setTimeout(t, 300);
-    })();
-  }
-
-  var _GT_INIT_CODE = _GT_CODES[localStorage.getItem('teleio_lang') || 'en'] || null;
-
-  if (_GT_INIT_CODE) {
-    /* Non-English: set cookie so GT auto-translates, hide page to prevent EN flash */
-    _gtSet(_GT_INIT_CODE);
-    document.documentElement.style.opacity = '0';
-    /* UNCONDITIONAL fallback — fires even if GT script is blocked or never loads */
-    setTimeout(function() { document.documentElement.style.opacity = '1'; }, 3000);
-  } else {
-    /* English: if stale cookie present, redirect NOW before GT even loads — no blink */
-    var _stale = /googtrans=\/en\/[a-z]/.test(document.cookie);
-    if (_stale) {
-      location.href = '/clear-lang?r=' + encodeURIComponent(location.pathname + location.search);
-    } else {
-      _gtClear();
-    }
-  }
-
-  function _gtReveal() { document.documentElement.style.opacity = '1'; }
+  /* Set cookie before deferred GT script loads so it auto-translates */
+  if (_GT_CODE) { _gtSetCookie(_GT_CODE); }
 
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
-      pageLanguage: 'en', includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru', autoDisplay: false
+      pageLanguage: 'en',
+      includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru',
+      autoDisplay: false
     }, 'google_translate_element');
-
-    if (_GT_INIT_CODE) {
-      /* Trigger select then reveal — sooner than the 3s unconditional fallback */
-      setTimeout(function() {
-        _gtWait(_GT_INIT_CODE);
-        setTimeout(_gtReveal, 700);
-      }, 300);
-      setTimeout(_gtReveal, 2000); /* secondary cap inside GT callback
+    /* Also trigger via select as fallback in case cookie-based auto-translate lags */
+    if (_GT_CODE) {
+      var _c = _GT_CODE, _end = Date.now() + 6000, _done = false;
+      (function poll() {
+        if (_done) return;
+        var s = document.querySelector('.goog-te-combo');
+        if (s) {
+          _done = true;
+          s.value = _c;
+          try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
+          return;
+        }
+        if (Date.now() < _end) { setTimeout(poll, 300); }
+      })();
     }
   }
 
   function _doGoogleTranslate(lang) {
     var code = _GT_CODES[lang] || null;
     if (code) {
-      _gtSet(code);
-      if (!_gtApply(code)) location.reload();
+      _gtSetCookie(code);
+      var s = document.querySelector('.goog-te-combo');
+      if (s) {
+        s.value = code;
+        try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
+      } else {
+        location.reload();
+      }
     } else {
-      /* Server-side redirect guarantees cookie deletion regardless of JS limitations */
-      var back = encodeURIComponent(location.pathname + location.search);
-      location.href = '/clear-lang?r=' + back;
+      location.href = '/clear-lang?r=' + encodeURIComponent(location.pathname + location.search);
     }
   }
   </script>
