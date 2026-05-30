@@ -19,7 +19,7 @@
 
 const APP_CONFIG = {
   google: {
-    clientId: ''          // e.g. '123456789-abc.apps.googleusercontent.com'
+    clientId: '134155982934-lmjo40rqnsjia70t4hd09qoo43k4pkhs.apps.googleusercontent.com'
   },
   facebook: {
     appId:   '',          // e.g. '1234567890123456'
