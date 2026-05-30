@@ -479,39 +479,43 @@
   (function() {
     var GT_CODES = { ar:'ar', ur:'ur', hi:'hi', fr:'fr', de:'de', zh:'zh-CN', ru:'ru' };
 
-    function _setCookies(code) {
-      var val = code ? '/en/' + code : '';
-      var exp = code ? '' : '; expires=' + new Date(0).toGMTString();
+    function _gtClear() {
+      var exp = '; expires=' + new Date(0).toUTCString() + '; max-age=0';
       ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
-        document.cookie = 'googtrans=' + val + '; path=/' + d + exp;
+        document.cookie = 'googtrans=; path=/' + d + exp;
+        document.cookie = 'googtrans=; path=/' + d + exp + '; SameSite=Lax';
       });
     }
 
-    /* ── CRITICAL: set/clear cookie NOW, synchronously, BEFORE GT script loads ──
-       GT reads the cookie during initialisation. Setting it inside the callback
-       is too late — the page is already translated by then. */
-    var _savedLang = localStorage.getItem('teleio_lang') || 'en';
-    var _savedCode = GT_CODES[_savedLang] || null;
-    _setCookies(_savedCode); /* null → clears cookie (English), code → sets translation */
+    function _gtSet(code) {
+      ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
+        document.cookie = 'googtrans=/en/' + code + '; path=/' + d + '; SameSite=Lax';
+      });
+    }
 
-    function _triggerSelect(code) {
+    function _gtApply(val) {
       var s = document.querySelector('.goog-te-combo');
       if (!s) return false;
-      s.value = code;
+      s.value = val;
       try { s.dispatchEvent(new Event('change', { bubbles: true, cancelable: true })); }
       catch(e) { var ev = document.createEvent('HTMLEvents'); ev.initEvent('change', true, true); s.dispatchEvent(ev); }
       return true;
     }
 
-    function _waitAndApply(code) {
-      var deadline = Date.now() + 9000;
-      var done = false;
-      (function tick() {
+    function _gtWait(val) {
+      var end = Date.now() + 9000, done = false;
+      (function t() {
         if (done) return;
-        if (_triggerSelect(code)) { done = true; return; }
-        if (Date.now() < deadline) setTimeout(tick, 350);
+        if (_gtApply(val)) { done = true; return; }
+        if (Date.now() < end) setTimeout(t, 300);
       })();
     }
+
+    var _savedLang = localStorage.getItem('teleio_lang') || 'en';
+    var _savedCode = GT_CODES[_savedLang] || null;
+
+    /* Sync cookie BEFORE GT script is appended */
+    if (_savedCode) { _gtSet(_savedCode); } else { _gtClear(); }
 
     if (!document.getElementById('google_translate_element')) {
       var gtDiv = document.createElement('div');
@@ -527,28 +531,31 @@
         autoDisplay: false
       }, 'google_translate_element');
 
-      /* Cookie was already set above; just trigger the select so GT translates now */
-      if (_savedCode) setTimeout(function() { _waitAndApply(_savedCode); }, 400);
+      if (_savedCode) {
+        setTimeout(function() { _gtWait(_savedCode); }, 400);
+      } else {
+        /* English: if cookie clearing raced with GT's own write, force reset via select */
+        setTimeout(function() {
+          var cv = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1] || '';
+          if (cv && cv !== '/en/en') {
+            _gtApply('');
+            setTimeout(_gtClear, 600);
+          }
+        }, 700);
+      }
     };
 
     window._doGoogleTranslate = function(lang) {
       var code = GT_CODES[lang] || null;
-      _setCookies(code);
-      if (!code) { _resetGoogleTranslate(); return; }
-      if (!_triggerSelect(code)) location.reload();
+      if (code) {
+        _gtSet(code);
+        if (!_gtApply(code)) location.reload();
+      } else {
+        _gtClear();
+        _gtApply('');
+        setTimeout(_gtClear, 600);
+      }
     };
-
-    function _resetGoogleTranslate() {
-      try {
-        var frame = document.querySelector('iframe.goog-te-banner-frame');
-        if (frame) {
-          var doc = frame.contentDocument || frame.contentWindow.document;
-          var btn = doc.getElementById('restore');
-          if (btn) { btn.click(); return; }
-        }
-      } catch(e) {}
-      location.reload();
-    }
 
     if (!document.getElementById('gt-script')) {
       var s = document.createElement('script');

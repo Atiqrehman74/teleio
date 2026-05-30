@@ -38,50 +38,77 @@
   <script>
   var _GT_CODES = {ar:'ar',ur:'ur',hi:'hi',fr:'fr',de:'de',zh:'zh-CN',ru:'ru'};
 
-  function _gtSetCookies(code) {
-    var val = code ? '/en/' + code : '';
-    var exp = code ? '' : '; expires=' + new Date(0).toGMTString();
+  /* Clear ALL variants of the googtrans cookie */
+  function _gtClear() {
+    var exp = '; expires=' + new Date(0).toUTCString() + '; max-age=0';
     ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
-      document.cookie = 'googtrans=' + val + '; path=/' + d + exp;
+      document.cookie = 'googtrans=; path=/' + d + exp;
+      document.cookie = 'googtrans=; path=/' + d + exp + '; SameSite=Lax';
     });
   }
 
-  /* Sync cookie NOW — before the deferred GT script reads it */
+  /* Set the googtrans cookie on all domain variants */
+  function _gtSet(code) {
+    ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
+      document.cookie = 'googtrans=/en/' + code + '; path=/' + d + '; SameSite=Lax';
+    });
+  }
+
+  /* Trigger GT combo select; returns true if select was found */
+  function _gtApply(val) {
+    var s = document.querySelector('.goog-te-combo');
+    if (!s) return false;
+    s.value = val;
+    try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); }
+    catch(e) { var ev = document.createEvent('HTMLEvents'); ev.initEvent('change',true,true); s.dispatchEvent(ev); }
+    return true;
+  }
+
+  /* Poll until GT select appears, then apply */
+  function _gtWait(val) {
+    var end = Date.now() + 9000, done = false;
+    (function t() {
+      if (done) return;
+      if (_gtApply(val)) { done = true; return; }
+      if (Date.now() < end) setTimeout(t, 300);
+    })();
+  }
+
   var _GT_INIT_CODE = _GT_CODES[localStorage.getItem('teleio_lang') || 'en'] || null;
-  _gtSetCookies(_GT_INIT_CODE);
+
+  /* Sync cookie BEFORE deferred GT script reads it */
+  if (_GT_INIT_CODE) { _gtSet(_GT_INIT_CODE); } else { _gtClear(); }
 
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
-      pageLanguage: 'en',
-      includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru',
-      autoDisplay: false
+      pageLanguage: 'en', includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru', autoDisplay: false
     }, 'google_translate_element');
+
     if (_GT_INIT_CODE) {
-      var code = _GT_INIT_CODE, deadline = Date.now() + 9000, done = false;
-      (function tick() {
-        if (done) return;
-        var s = document.querySelector('.goog-te-combo');
-        if (s) {
-          done = true; s.value = code;
-          try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); }
-          catch(e) { var ev = document.createEvent('HTMLEvents'); ev.initEvent('change',true,true); s.dispatchEvent(ev); }
-          return;
+      /* Non-English: trigger select as belt-and-suspenders */
+      setTimeout(function() { _gtWait(_GT_INIT_CODE); }, 400);
+    } else {
+      /* English: cookie clearing may have raced with GT's own cookie write.
+         After GT settles, force-reset the select and clear cookie again. */
+      setTimeout(function() {
+        var cv = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1] || '';
+        if (cv && cv !== '/en/en') {
+          _gtApply('');          /* force GT to show English */
+          setTimeout(_gtClear, 600); /* clear whatever cookie GT wrote back */
         }
-        if (Date.now() < deadline) setTimeout(tick, 350);
-      })();
+      }, 700);
     }
   }
 
   function _doGoogleTranslate(lang) {
     var code = _GT_CODES[lang] || null;
-    _gtSetCookies(code);
-    var s = document.querySelector('.goog-te-combo');
-    if (s) {
-      s.value = code || ''; /* '' resets GT to English */
-      try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); }
-      catch(e) { var ev = document.createEvent('HTMLEvents'); ev.initEvent('change',true,true); s.dispatchEvent(ev); }
+    if (code) {
+      _gtSet(code);
+      if (!_gtApply(code)) location.reload();
     } else {
-      location.reload();
+      _gtClear();
+      _gtApply('');
+      setTimeout(_gtClear, 600); /* clear again after GT's own handler fires */
     }
   }
   </script>
