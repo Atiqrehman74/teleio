@@ -514,8 +514,20 @@
     var _savedLang = localStorage.getItem('teleio_lang') || 'en';
     var _savedCode = GT_CODES[_savedLang] || null;
 
-    /* Sync cookie BEFORE GT script is appended */
-    if (_savedCode) { _gtSet(_savedCode); } else { _gtClear(); }
+    if (_savedCode) {
+      /* Non-English: set cookie, hide page to prevent EN flash */
+      _gtSet(_savedCode);
+      document.documentElement.style.opacity = '0';
+    } else {
+      /* English: redirect NOW if stale cookie present — eliminates blink entirely */
+      if (/googtrans=\/en\/[a-z]/.test(document.cookie)) {
+        location.href = '/clear-lang?r=' + encodeURIComponent(location.pathname + location.search);
+      } else {
+        _gtClear();
+      }
+    }
+
+    function _gtReveal() { document.documentElement.style.opacity = '1'; }
 
     if (!document.getElementById('google_translate_element')) {
       var gtDiv = document.createElement('div');
@@ -532,16 +544,11 @@
       }, 'google_translate_element');
 
       if (_savedCode) {
-        setTimeout(function() { _gtWait(_savedCode); }, 400);
-      } else {
-        /* English: if a stale googtrans cookie survived JS clear, use server redirect */
         setTimeout(function() {
-          var cv = (document.cookie.match(/(?:^|;\s*)googtrans=([^;]+)/) || [])[1] || '';
-          if (cv && cv !== '/en/en') {
-            var back = encodeURIComponent(location.pathname + location.search);
-            location.href = '/clear-lang?r=' + back;
-          }
-        }, 700);
+          _gtWait(_savedCode);
+          setTimeout(_gtReveal, 700);
+        }, 300);
+        setTimeout(_gtReveal, 2500); /* hard cap */
       }
     };
 
