@@ -37,41 +37,52 @@
   <!-- Google Translate init -->
   <script>
   var _GT_CODES = {ar:'ar',ur:'ur',hi:'hi',fr:'fr',de:'de',zh:'zh-CN',ru:'ru'};
+
+  function _gtSetCookies(code) {
+    var val = code ? '/en/' + code : '';
+    var exp = code ? '' : '; expires=' + new Date(0).toGMTString();
+    ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
+      document.cookie = 'googtrans=' + val + '; path=/' + d + exp;
+    });
+  }
+
+  /* Sync cookie NOW — before the deferred GT script reads it */
+  var _GT_INIT_CODE = _GT_CODES[localStorage.getItem('teleio_lang') || 'en'] || null;
+  _gtSetCookies(_GT_INIT_CODE);
+
   function googleTranslateElementInit() {
     new google.translate.TranslateElement({
       pageLanguage: 'en',
       includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru',
       autoDisplay: false
     }, 'google_translate_element');
-    /* Do NOT auto-trigger here — googtrans cookie already applied by Google on load. */
-  }
-  function _doGoogleTranslate(lang) {
-    var code = _GT_CODES[lang];
-    if (!code) { _resetGT(); return; }
-    var sel = document.querySelector('.goog-te-combo');
-    if (sel) {
-      sel.value = code;
-      var ev = document.createEvent('HTMLEvents');
-      ev.initEvent('change', true, true);
-      sel.dispatchEvent(ev);
-    } else {
-      document.cookie = 'googtrans=/en/' + code + '; path=/';
-      location.reload();
+    if (_GT_INIT_CODE) {
+      var code = _GT_INIT_CODE, deadline = Date.now() + 9000, done = false;
+      (function tick() {
+        if (done) return;
+        var s = document.querySelector('.goog-te-combo');
+        if (s) {
+          done = true; s.value = code;
+          try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); }
+          catch(e) { var ev = document.createEvent('HTMLEvents'); ev.initEvent('change',true,true); s.dispatchEvent(ev); }
+          return;
+        }
+        if (Date.now() < deadline) setTimeout(tick, 350);
+      })();
     }
   }
-  function _resetGT() {
-    try {
-      var frame = document.querySelector('iframe.goog-te-banner-frame');
-      if (frame) {
-        var doc = frame.contentDocument || frame.contentWindow.document;
-        var btn = doc.getElementById('restore');
-        if (btn) { btn.click(); return; }
-      }
-    } catch(e) {}
-    var exp = new Date(0).toGMTString();
-    document.cookie = 'googtrans=; path=/; expires=' + exp;
-    document.cookie = 'googtrans=; path=/; domain=.' + location.hostname + '; expires=' + exp;
-    location.reload();
+
+  function _doGoogleTranslate(lang) {
+    var code = _GT_CODES[lang] || null;
+    _gtSetCookies(code);
+    var s = document.querySelector('.goog-te-combo');
+    if (s) {
+      s.value = code || ''; /* '' resets GT to English */
+      try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); }
+      catch(e) { var ev = document.createEvent('HTMLEvents'); ev.initEvent('change',true,true); s.dispatchEvent(ev); }
+    } else {
+      location.reload();
+    }
   }
   </script>
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" defer></script>
@@ -1981,4 +1992,4 @@ function switchHeroTab(tab) {
 })();
 </script>
 </body>
-</html>
+</html> 
