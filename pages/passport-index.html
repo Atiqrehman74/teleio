@@ -3,198 +3,708 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Passport Power Index - Teleio Tourism</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Passport Index – Explore World Passports | Teleio Tourism</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
-  <link rel="shortcut icon" href="/images/favicon.svg">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
+  <style>
+    body { margin:0; }
+    #pi-page { background:#0d0d0d; min-height:100vh; font-family:'Inter',sans-serif; color:#fff; }
+
+    /* ── Hero ── */
+    .pi-hero { background:#0d0d0d; padding:48px 24px 32px; text-align:center; border-bottom:1px solid #1e1e1e; }
+    .pi-hero h1 { font-size:clamp(22px,4vw,40px); font-weight:800; color:#c9a84c; margin:0 0 8px; letter-spacing:-0.5px; }
+    .pi-hero p  { color:#888; font-size:14px; margin:0 0 28px; }
+    .pi-search-bar { display:flex; align-items:center; gap:0; max-width:560px; margin:0 auto; background:#1a1a1a; border:1px solid #2e2e2e; border-radius:6px; overflow:hidden; }
+    .pi-search-bar input { flex:1; background:transparent; border:none; padding:13px 18px; color:#fff; font-size:15px; outline:none; }
+    .pi-search-bar input::placeholder { color:#555; }
+    .pi-search-bar button { background:#c9a84c; color:#000; border:none; padding:13px 28px; font-weight:800; font-size:13px; letter-spacing:1px; cursor:pointer; transition:background .2s; }
+    .pi-search-bar button:hover { background:#e0bc60; }
+
+    /* ── Filter bar ── */
+    .pi-filters { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:14px 24px; background:#111; border-bottom:1px solid #1e1e1e; }
+    .pi-filters select { background:#1a1a1a; color:#aaa; border:1px solid #2a2a2a; border-radius:5px; padding:7px 12px; font-size:13px; outline:none; cursor:pointer; }
+    .pi-filters select:focus { border-color:#c9a84c; }
+    .pi-count { margin-left:auto; color:#555; font-size:12px; }
+
+    /* ── Passport Grid ── */
+    .pi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:6px; padding:16px 20px 40px; max-width:1600px; margin:0 auto; }
+
+    /* ── Passport Card (thumbnail) ── */
+    .pi-card { cursor:pointer; text-align:center; transition:transform .18s; }
+    .pi-card:hover { transform:scale(1.06); z-index:2; position:relative; }
+    .pi-book-thumb {
+      position:relative; width:100%; aspect-ratio:0.7; border-radius:3px 6px 6px 3px;
+      overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      box-shadow:-3px 3px 10px rgba(0,0,0,.7);
+    }
+    .pi-book-thumb::before {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:10%;
+      background:rgba(0,0,0,.35); border-radius:3px 0 0 3px;
+    }
+    .pi-book-thumb img.pi-flag { width:65%; aspect-ratio:3/2; object-fit:cover; border-radius:2px; box-shadow:0 2px 8px rgba(0,0,0,.5); }
+    .pi-book-thumb .pi-country-label { font-size:8px; text-transform:uppercase; letter-spacing:.5px; color:rgba(255,255,255,.75); margin-top:5px; font-weight:600; padding:0 6px; line-height:1.3; }
+    .pi-card-name { font-size:10px; color:#777; margin-top:5px; line-height:1.3; }
+    .pi-rank-badge { position:absolute; top:4px; right:5px; background:rgba(201,168,76,.9); color:#000; font-size:7px; font-weight:800; padding:1px 4px; border-radius:3px; }
+
+    /* ── Detail Modal ── */
+    .pi-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px; }
+    .pi-modal-overlay.hidden { display:none; }
+    .pi-modal { background:#111; border:1px solid #222; border-radius:12px; width:min(420px,100%); padding:36px 28px 28px; text-align:center; position:relative; }
+    .pi-modal-close { position:absolute; top:14px; right:16px; background:none; border:none; color:#555; font-size:24px; cursor:pointer; line-height:1; }
+    .pi-modal-close:hover { color:#fff; }
+    .pi-modal-label { font-size:11px; letter-spacing:2px; color:#c9a84c; font-weight:600; margin-bottom:6px; }
+    .pi-modal-country { font-size:clamp(24px,5vw,36px); font-weight:900; color:#fff; margin-bottom:24px; line-height:1.1; }
+
+    /* Large passport book in modal */
+    .pi-book-large {
+      width:200px; aspect-ratio:0.68; border-radius:4px 10px 10px 4px; margin:0 auto 24px;
+      display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+      padding:20px 16px 16px; box-shadow:-8px 8px 28px rgba(0,0,0,.8); position:relative; overflow:hidden;
+    }
+    .pi-book-large::before { content:''; position:absolute; left:0; top:0; bottom:0; width:14%; background:rgba(0,0,0,.4); border-radius:4px 0 0 4px; }
+    .pi-book-large .pi-book-text { font-size:9px; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,.7); font-weight:600; }
+    .pi-book-large .pi-book-emblem { font-size:52px; margin:4px 0; }
+    .pi-book-large img.pi-flag-lg { width:80%; aspect-ratio:3/2; object-fit:cover; border-radius:4px; box-shadow:0 4px 16px rgba(0,0,0,.5); }
+    .pi-book-large .pi-book-passport { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.6); font-weight:700; border-top:1px solid rgba(255,255,255,.15); padding-top:10px; width:100%; text-align:center; }
+
+    /* Stats row */
+    .pi-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid #2a2a2a; border-radius:8px; overflow:hidden; margin-bottom:20px; }
+    .pi-stat { padding:14px 8px; text-align:center; border-right:1px solid #2a2a2a; }
+    .pi-stat:last-child { border-right:none; }
+    .pi-stat .val { font-size:clamp(20px,4vw,28px); font-weight:900; color:#fff; display:block; }
+    .pi-stat .lbl { font-size:10px; color:#c9a84c; font-weight:700; letter-spacing:.5px; display:block; margin-top:3px; }
+
+    /* Buttons */
+    .pi-btn-dashboard { width:100%; padding:14px; background:#c9a84c; color:#000; border:none; border-radius:8px; font-weight:800; font-size:14px; letter-spacing:1px; cursor:pointer; transition:background .2s; }
+    .pi-btn-dashboard:hover { background:#e0bc60; }
+
+    /* ── Dashboard Modal ── */
+    .pi-dash-overlay { position:fixed; inset:0; background:#0d0d0d; z-index:1100; overflow-y:auto; }
+    .pi-dash-overlay.hidden { display:none; }
+    .pi-dash-header { display:flex; align-items:center; gap:14px; padding:20px 28px; border-bottom:1px solid #1e1e1e; background:#111; }
+    .pi-dash-header img.flag-sm { width:40px; height:27px; object-fit:cover; border-radius:3px; }
+    .pi-dash-header h2 { font-size:clamp(14px,2.5vw,20px); font-weight:800; color:#fff; margin:0; flex:1; }
+    .pi-dash-back { background:none; border:1px solid #333; color:#aaa; padding:8px 18px; border-radius:6px; cursor:pointer; font-size:13px; font-weight:600; transition:all .2s; }
+    .pi-dash-back:hover { border-color:#c9a84c; color:#c9a84c; }
+
+    .pi-dash-body { display:grid; grid-template-columns:220px 1fr 310px; min-height:calc(100vh - 70px); }
+    @media(max-width:900px) { .pi-dash-body { grid-template-columns:1fr; } }
+
+    /* Left sidebar */
+    .pi-dash-left { padding:24px 20px; border-right:1px solid #1e1e1e; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .pi-dash-book { width:130px; aspect-ratio:0.68; border-radius:3px 8px 8px 3px; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:14px 10px 10px; box-shadow:-6px 6px 20px rgba(0,0,0,.8); position:relative; overflow:hidden; }
+    .pi-dash-book::before { content:''; position:absolute; left:0; top:0; bottom:0; width:14%; background:rgba(0,0,0,.4); border-radius:3px 0 0 3px; }
+    .pi-dash-book img { width:78%; aspect-ratio:3/2; object-fit:cover; border-radius:3px; box-shadow:0 3px 12px rgba(0,0,0,.5); }
+    .pi-dash-book .db-passport-label { font-size:7px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.55); border-top:1px solid rgba(255,255,255,.12); padding-top:7px; width:100%; text-align:center; font-weight:700; }
+    .pi-dash-scores { width:100%; }
+    .pi-dash-score-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid #1e1e1e; font-size:12px; }
+    .pi-dash-score-row:last-child { border-bottom:none; }
+    .pi-dash-score-label { color:#666; text-transform:uppercase; font-size:10px; letter-spacing:.5px; }
+    .pi-dash-score-val { color:#fff; font-weight:700; }
+    .pi-dash-compare { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .pi-dash-compare button { background:#1a1a1a; border:1px solid #2a2a2a; color:#c9a84c; padding:10px; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer; transition:all .2s; }
+    .pi-dash-compare button:hover { background:#c9a84c; color:#000; border-color:#c9a84c; }
+
+    /* Center map */
+    .pi-dash-center { display:flex; flex-direction:column; padding:16px; }
+    #pi-worldmap { flex:1; min-height:340px; }
+    .pi-mobility-bar { display:flex; gap:0; border-radius:6px; overflow:hidden; margin-top:12px; font-size:12px; font-weight:700; }
+    .pi-bar-seg { display:flex; align-items:center; justify-content:center; padding:8px 4px; color:#000; gap:4px; min-width:28px; }
+    .pi-bar-vf  { background:#4caf50; }
+    .pi-bar-voa { background:#2196f3; color:#fff; }
+    .pi-bar-eta { background:#ff9800; }
+    .pi-bar-vr  { background:#f44336; color:#fff; }
+    .pi-legend { display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
+    .pi-legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:#888; }
+    .pi-legend-dot { width:10px; height:10px; border-radius:2px; }
+
+    /* Right visa list */
+    .pi-dash-right { border-left:1px solid #1e1e1e; display:flex; flex-direction:column; }
+    .pi-dash-right-header { padding:16px 18px 10px; }
+    .pi-dash-right-header h3 { font-size:11px; color:#c9a84c; letter-spacing:1px; font-weight:700; margin:0 0 10px; text-transform:uppercase; }
+    .pi-visa-search { width:100%; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:5px; padding:8px 12px; color:#fff; font-size:13px; outline:none; box-sizing:border-box; }
+    .pi-visa-search::placeholder { color:#444; }
+    .pi-visa-search:focus { border-color:#c9a84c; }
+    .pi-visa-filters { display:flex; gap:6px; margin-top:8px; flex-wrap:wrap; }
+    .pi-vf-tab { background:transparent; border:1px solid #2a2a2a; color:#555; padding:4px 10px; border-radius:20px; font-size:11px; cursor:pointer; transition:all .15s; font-weight:600; }
+    .pi-vf-tab.active { background:#c9a84c; border-color:#c9a84c; color:#000; }
+    .pi-visa-list { flex:1; overflow-y:auto; }
+    .pi-visa-row { display:flex; align-items:center; justify-content:space-between; padding:10px 18px; border-bottom:1px solid #161616; transition:background .1s; }
+    .pi-visa-row:hover { background:#161616; }
+    .pi-visa-country { display:flex; align-items:center; gap:10px; font-size:13px; color:#ddd; }
+    .pi-visa-country img { width:28px; height:19px; object-fit:cover; border-radius:2px; }
+    .pi-visa-badge { font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; }
+    .badge-vf  { background:rgba(76,175,80,.2);  color:#4caf50; border:1px solid rgba(76,175,80,.3); }
+    .badge-voa { background:rgba(33,150,243,.2);  color:#64b5f6; border:1px solid rgba(33,150,243,.3); }
+    .badge-eta { background:rgba(255,152,0,.2);   color:#ffb74d; border:1px solid rgba(255,152,0,.3); }
+    .badge-vr  { background:rgba(244,67,54,.2);   color:#ef9a9a; border:1px solid rgba(244,67,54,.3); }
+    .badge-days { background:#1e1e1e; color:#888; border:1px solid #2a2a2a; font-size:9px; padding:2px 7px; border-radius:10px; margin-left:4px; }
+
+    /* jsvectormap override */
+    .jvectormap-container { background:#0d0d0d !important; }
+
+    /* Scrollbar */
+    .pi-visa-list::-webkit-scrollbar { width:4px; }
+    .pi-visa-list::-webkit-scrollbar-thumb { background:#2a2a2a; border-radius:2px; }
+
+    /* Responsive */
+    @media(max-width:600px) {
+      .pi-grid { grid-template-columns:repeat(auto-fill,minmax(76px,1fr)); gap:5px; padding:10px 12px 30px; }
+      .pi-dash-body { grid-template-columns:1fr; }
+      .pi-dash-left, .pi-dash-right { border:none; border-bottom:1px solid #1e1e1e; }
+    }
+  </style>
 </head>
 <body>
 <script src="../js/nav.js"></script>
 
-<div class="page-wrapper">
-  <div style="background:white;min-height:90vh;padding:40px 24px">
-    <div style="max-width:1100px;margin:0 auto">
+<div id="pi-page">
 
-      <a href="../index.html" class="back-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
-        Back to Tools
-      </a>
+  <!-- Hero -->
+  <div class="pi-hero">
+    <h1>Explore the world of passports</h1>
+    <p>Find your Passport. Explore them all.</p>
+    <div class="pi-search-bar">
+      <input type="text" id="pi-search" placeholder="Search country…" autocomplete="off">
+      <button onclick="piSearch()">FIND</button>
+    </div>
+  </div>
 
-      <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px">
-        <div style="width:48px;height:48px;background:#111;border-radius:10px;display:flex;align-items:center;justify-content:center">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+  <!-- Filters -->
+  <div class="pi-filters">
+    <select id="pi-region" onchange="piFilter()">
+      <option value="">All Regions</option>
+      <option value="Europe">Europe</option>
+      <option value="Asia">Asia</option>
+      <option value="Americas">Americas</option>
+      <option value="Africa">Africa</option>
+      <option value="Middle East">Middle East</option>
+      <option value="Oceania">Oceania</option>
+    </select>
+    <select id="pi-sort" onchange="piFilter()">
+      <option value="rank">Sort by Rank</option>
+      <option value="name">Sort by Name</option>
+      <option value="score">Sort by Mobility Score</option>
+    </select>
+    <span id="pi-count" class="pi-count"></span>
+  </div>
+
+  <!-- Passport Grid -->
+  <div class="pi-grid" id="pi-grid"></div>
+
+</div>
+
+<!-- ── Detail Modal ── -->
+<div class="pi-modal-overlay hidden" id="pi-detail-overlay" onclick="if(event.target===this)piCloseDetail()">
+  <div class="pi-modal">
+    <button class="pi-modal-close" onclick="piCloseDetail()">&#x2715;</button>
+    <div class="pi-modal-label">PASSPORT OF</div>
+    <div class="pi-modal-country" id="pm-country"></div>
+    <div class="pi-book-large" id="pm-book">
+      <span class="pi-book-text" id="pm-book-text"></span>
+      <img class="pi-flag-lg" id="pm-flag" src="" alt="">
+      <div class="pi-book-passport">PASSPORT</div>
+    </div>
+    <div class="pi-stats">
+      <div class="pi-stat"><span class="val" id="pm-score"></span><span class="lbl">MOBILITY SCORE</span></div>
+      <div class="pi-stat"><span class="val" id="pm-rank"></span><span class="lbl">GLOBAL RANK</span></div>
+      <div class="pi-stat"><span class="val" id="pm-vf"></span><span class="lbl">VISA-FREE</span></div>
+    </div>
+    <button class="pi-btn-dashboard" onclick="piOpenDash()">DASHBOARD</button>
+  </div>
+</div>
+
+<!-- ── Dashboard Modal ── -->
+<div class="pi-dash-overlay hidden" id="pi-dash-overlay">
+  <div class="pi-dash-header">
+    <img class="flag-sm" id="pd-flag" src="" alt="">
+    <h2 id="pd-title"></h2>
+    <button class="pi-dash-back" onclick="piCloseDash()">&#8592; Back</button>
+  </div>
+  <div class="pi-dash-body">
+    <!-- Left -->
+    <div class="pi-dash-left">
+      <div class="pi-dash-book" id="pd-book">
+        <img id="pd-book-flag" src="" alt="">
+        <div class="db-passport-label">PASSPORT</div>
+      </div>
+      <div class="pi-dash-scores" id="pd-scores"></div>
+      <div class="pi-dash-compare">
+        <button>COMPARE</button>
+        <button>IMPROVE</button>
+      </div>
+    </div>
+    <!-- Center: map -->
+    <div class="pi-dash-center">
+      <div id="pi-worldmap"></div>
+      <div class="pi-mobility-bar" id="pd-bar"></div>
+      <div class="pi-legend">
+        <div class="pi-legend-item"><div class="pi-legend-dot" style="background:#4caf50"></div>Visa-Free</div>
+        <div class="pi-legend-item"><div class="pi-legend-dot" style="background:#2196f3"></div>Visa on Arrival</div>
+        <div class="pi-legend-item"><div class="pi-legend-dot" style="background:#ff9800"></div>ETA</div>
+        <div class="pi-legend-item"><div class="pi-legend-dot" style="background:#f44336"></div>Visa Required</div>
+      </div>
+    </div>
+    <!-- Right: visa list -->
+    <div class="pi-dash-right">
+      <div class="pi-dash-right-header">
+        <h3 id="pd-visa-title">VISA REQUIREMENTS</h3>
+        <input class="pi-visa-search" id="pd-visa-search" type="text" placeholder="Find a country…" oninput="pdFilterVisa()">
+        <div class="pi-visa-filters">
+          <button class="pi-vf-tab active" data-tab="all" onclick="pdTabClick(this)">All</button>
+          <button class="pi-vf-tab" data-tab="vf"  onclick="pdTabClick(this)">Visa-Free</button>
+          <button class="pi-vf-tab" data-tab="voa" onclick="pdTabClick(this)">On Arrival</button>
+          <button class="pi-vf-tab" data-tab="eta" onclick="pdTabClick(this)">ETA</button>
+          <button class="pi-vf-tab" data-tab="vr"  onclick="pdTabClick(this)">Visa Required</button>
         </div>
-        <h1 style="font-size:36px;font-weight:800">Passport Power Index</h1>
       </div>
-      <p style="color:var(--text-muted);margin-bottom:40px">Discover the world's most powerful passports and explore visa-free travel destinations</p>
-
-      <!-- Top Passports -->
-      <h2 style="font-size:22px;font-weight:800;margin-bottom:6px">Top Passports</h2>
-      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px">Explore the world's most powerful passports</p>
-
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px">
-        <a href="passport-detail.html?country=singapore" class="passport-card">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#8B1A1A,#C0392B)">
-            <img src="https://flagcdn.com/w80/sg.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Singapore">
-            <div class="passport-rank">#1</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">Singapore</div>
-            <div class="passport-card-region">Asia</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>165</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:85%"></div></div>
-          </div>
-        </a>
-        <a href="passport-detail.html?country=belgium" class="passport-card">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#800020,#A0002E)">
-            <img src="https://flagcdn.com/w80/be.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Belgium">
-            <div class="passport-rank">#2</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">Belgium</div>
-            <div class="passport-card-region">Europe</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>163</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:83%"></div></div>
-          </div>
-        </a>
-        <a href="passport-detail.html?country=finland" class="passport-card">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#003580,#0053A0)">
-            <img src="https://flagcdn.com/w80/fi.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Finland">
-            <div class="passport-rank">#3</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">Finland</div>
-            <div class="passport-card-region">Europe</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>162</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:82%"></div></div>
-          </div>
-        </a>
-        <a href="passport-detail.html?country=france" class="passport-card">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#00267F,#0032A0)">
-            <img src="https://flagcdn.com/w80/fr.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="France">
-            <div class="passport-rank">#4</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">France</div>
-            <div class="passport-card-region">Europe</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>162</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:82%"></div></div>
-          </div>
-        </a>
-      </div>
-
-      <!-- Search & Filter -->
-      <div class="card mb-24">
-        <div class="passport-filter-bar">
-          <div class="search-box">
-            <span class="search-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            </span>
-            <input type="text" placeholder="Search by country name..." id="passportSearch">
-          </div>
-          <select class="form-control" id="regionFilter">
-            <option value="">All Regions</option>
-            <option value="Europe">Europe</option>
-            <option value="Asia">Asia</option>
-            <option value="Americas">Americas</option>
-            <option value="Africa">Africa</option>
-            <option value="Oceania">Oceania</option>
-            <option value="Middle East">Middle East</option>
-          </select>
-          <select class="form-control">
-            <option>Sort by Rank</option>
-            <option>Sort by Visa-Free</option>
-            <option>Sort by Name</option>
-          </select>
-          <button class="btn btn-dark" style="display:flex;align-items:center;gap:6px;white-space:nowrap">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
-            Compare Passports
-          </button>
-        </div>
-        <p style="font-size:12px;color:var(--text-muted);margin-top:10px;text-align:right">&#x2197; 10 passports found</p>
-      </div>
-
-      <!-- Passport List -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">
-        <a href="passport-detail.html?country=germany" class="passport-card passport-list-item" data-region="Europe">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#333,#555)">
-            <img src="https://flagcdn.com/w80/de.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Germany">
-            <div class="passport-rank">#5</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">Germany</div>
-            <div class="passport-card-region">Europe</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>161</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:81%"></div></div>
-          </div>
-        </a>
-        <a href="passport-detail.html?country=italy" class="passport-card passport-list-item" data-region="Europe">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#1a6b1a,#2E8B57)">
-            <img src="https://flagcdn.com/w80/it.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Italy">
-            <div class="passport-rank">#6</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">Italy</div>
-            <div class="passport-card-region">Europe</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>161</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:81%"></div></div>
-          </div>
-        </a>
-        <a href="passport-detail.html?country=japan" class="passport-card passport-list-item" data-region="Asia">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#1a1a4e,#2c2c7e)">
-            <img src="https://flagcdn.com/w80/jp.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Japan">
-            <div class="passport-rank">#7</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">Japan</div>
-            <div class="passport-card-region">Asia</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>160</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:80%"></div></div>
-          </div>
-        </a>
-        <a href="passport-detail.html?country=uk" class="passport-card passport-list-item" data-region="Europe">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#003580,#1a4a9a)">
-            <img src="https://flagcdn.com/w80/gb.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="United Kingdom">
-            <div class="passport-rank">#8</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">United Kingdom</div>
-            <div class="passport-card-region">Europe</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>157</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:79%"></div></div>
-          </div>
-        </a>
-        <a href="passport-detail.html?country=usa" class="passport-card passport-list-item" data-region="Americas">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#1a1a6e,#2c2c9e)">
-            <img src="https://flagcdn.com/w80/us.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="United States">
-            <div class="passport-rank">#9</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">United States</div>
-            <div class="passport-card-region">Americas</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>156</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:78%"></div></div>
-          </div>
-        </a>
-        <a href="passport-detail.html?country=canada" class="passport-card passport-list-item" data-region="Americas">
-          <div class="passport-cover" style="background:linear-gradient(135deg,#8B1A1A,#C0392B)">
-            <img src="https://flagcdn.com/w80/ca.png" style="width:70px;height:48px;object-fit:cover;border-radius:8px;box-shadow:0 3px 12px rgba(0,0,0,0.4)" alt="Canada">
-            <div class="passport-rank">#10</div>
-          </div>
-          <div class="passport-card-body">
-            <div class="passport-card-country">Canada</div>
-            <div class="passport-card-region">Americas</div>
-            <div class="passport-card-stat"><span>Visa-Free</span><strong>154</strong></div>
-            <div class="passport-progress"><div class="passport-progress-fill" style="width:77%"></div></div>
-          </div>
-        </a>
-      </div>
-
+      <div class="pi-visa-list" id="pd-visa-list"></div>
     </div>
   </div>
 </div>
 
-<script src="../js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"></script>
+<script>
+/* ── Passport Data ──────────────────────────────────────────────────────────
+   [name, iso2, passportColor, globalRank, mobilityScore, visaFree, visaOnArrival, eta, visaRequired, region]
+   ─────────────────────────────────────────────────────────────────────────── */
+const PI = [
+  ['Afghanistan','af','#1a3a6b',103,28,28,0,0,165,'Asia'],
+  ['Albania','al','#c0392b',47,122,101,14,7,71,'Europe'],
+  ['Algeria','dz','#006233',85,52,54,14,2,123,'Africa'],
+  ['Andorra','ad','#003399',15,179,141,25,13,14,'Europe'],
+  ['Angola','ao','#cc0000',95,50,55,8,0,130,'Africa'],
+  ['Antigua & Barbuda','ag','#ce1126',30,150,125,15,10,43,'Americas'],
+  ['Argentina','ar','#74acdf',20,172,136,22,14,21,'Americas'],
+  ['Armenia','am','#d90012',73,78,70,19,3,101,'Asia'],
+  ['Australia','au','#003087',8,186,154,15,17,7,'Oceania'],
+  ['Austria','at','#ed2939',3,192,156,19,17,1,'Europe'],
+  ['Azerbaijan','az','#00b5e2',78,68,72,12,4,105,'Asia'],
+  ['Bahamas','bs','#00778b',30,150,118,15,17,43,'Americas'],
+  ['Bahrain','bh','#ce1126',59,111,101,20,6,66,'Middle East'],
+  ['Bangladesh','bd','#006a4e',100,40,43,10,2,138,'Asia'],
+  ['Barbados','bb','#00267f',26,155,121,20,14,38,'Americas'],
+  ['Belarus','by','#cf101a',79,66,68,14,4,107,'Europe'],
+  ['Belgium','be','#1e1e1e',2,192,156,19,17,1,'Europe'],
+  ['Belize','bz','#003f87',52,114,98,12,10,73,'Americas'],
+  ['Benin','bj','#008751',88,48,54,10,2,127,'Africa'],
+  ['Bhutan','bt','#ff8000',91,47,51,10,1,131,'Asia'],
+  ['Bolivia','bo','#d52b1e',65,87,73,18,5,97,'Americas'],
+  ['Bosnia & Herzegovina','ba','#002395',60,105,96,14,8,74,'Europe'],
+  ['Botswana','bw','#75aadb',56,109,90,18,5,80,'Africa'],
+  ['Brazil','br','#009c3b',18,173,137,19,17,20,'Americas'],
+  ['Brunei','bn','#f7e017',20,172,134,22,16,21,'Asia'],
+  ['Bulgaria','bg','#003a83',16,178,143,22,13,15,'Europe'],
+  ['Burkina Faso','bf','#ef2b2d',93,43,48,10,2,133,'Africa'],
+  ['Burundi','bi','#ce1126',98,34,38,10,2,143,'Africa'],
+  ['Cambodia','kh','#032ea1',87,50,54,10,2,129,'Asia'],
+  ['Cameroon','cm','#007a5e',92,44,47,9,2,135,'Africa'],
+  ['Canada','ca','#ff0000',7,188,153,16,19,5,'Americas'],
+  ['Cape Verde','cv','#003893',55,110,90,18,7,78,'Africa'],
+  ['Central African Rep.','cf','#289728',101,33,35,8,2,148,'Africa'],
+  ['Chad','td','#002664',101,33,36,8,2,147,'Africa'],
+  ['Chile','cl','#d52b1e',16,178,142,24,12,15,'Americas'],
+  ['China','cn','#de2910',68,80,77,18,5,93,'Asia'],
+  ['Colombia','co','#fcd116',47,122,98,18,6,71,'Americas'],
+  ['Comoros','km','#3a75c4',98,34,38,10,0,145,'Africa'],
+  ['Congo (Rep.)','cg','#009543',95,40,44,9,2,138,'Africa'],
+  ['DR Congo','cd','#007fff',101,33,38,8,0,147,'Africa'],
+  ['Costa Rica','cr','#002b7f',23,165,130,20,13,30,'Americas'],
+  ['Croatia','hr','#ff0000',18,174,143,20,11,19,'Europe'],
+  ['Cuba','cu','#002a8f',78,68,63,12,8,110,'Americas'],
+  ['Cyprus','cy','#003480',9,185,155,18,12,8,'Europe'],
+  ['Czech Republic','cz','#d7141a',3,192,156,19,17,1,'Europe'],
+  ['Denmark','dk','#c60c30',3,192,156,19,17,1,'Europe'],
+  ['Djibouti','dj','#6ab2e7',90,46,52,8,2,132,'Africa'],
+  ['Dominica','dm','#006b3f',27,153,120,19,14,40,'Americas'],
+  ['Dominican Rep.','do','#002d62',60,105,89,16,10,78,'Americas'],
+  ['Ecuador','ec','#ffd100',60,105,86,19,9,79,'Americas'],
+  ['Egypt','eg','#ce1126',89,47,52,13,2,126,'Africa'],
+  ['El Salvador','sv','#0f47af',68,80,72,15,7,99,'Americas'],
+  ['Equatorial Guinea','gq','#3e9a00',92,44,48,8,2,135,'Africa'],
+  ['Eritrea','er','#4189dd',102,30,35,6,0,152,'Africa'],
+  ['Estonia','ee','#0072ce',3,192,156,19,17,1,'Europe'],
+  ['Eswatini','sz','#3e5eb9',83,55,58,15,2,117,'Africa'],
+  ['Ethiopia','et','#078930',94,41,48,9,3,133,'Africa'],
+  ['Fiji','fj','#68bfe5',60,105,87,18,10,78,'Oceania'],
+  ['Finland','fi','#003580',3,192,156,19,17,1,'Europe'],
+  ['France','fr','#002395',2,193,156,19,18,0,'Europe'],
+  ['Gabon','ga','#009e60',80,63,64,14,3,112,'Africa'],
+  ['Gambia','gm','#3a7728',90,46,52,8,2,132,'Africa'],
+  ['Georgia','ge','#da000d',54,113,93,18,7,75,'Asia'],
+  ['Germany','de','#2c2c2c',2,192,156,19,17,1,'Europe'],
+  ['Ghana','gh','#006b3f',78,68,70,16,4,103,'Africa'],
+  ['Greece','gr','#0d5eaf',2,192,156,19,17,1,'Europe'],
+  ['Grenada','gd','#ce1126',27,153,120,19,14,40,'Americas'],
+  ['Guatemala','gt','#4997d0',65,87,74,16,7,96,'Americas'],
+  ['Guinea','gn','#ce1126',96,38,43,10,2,138,'Africa'],
+  ['Guinea-Bissau','gw','#ce1126',93,43,48,10,2,133,'Africa'],
+  ['Guyana','gy','#009e60',68,80,69,16,7,101,'Americas'],
+  ['Haiti','ht','#00209f',97,35,36,10,2,145,'Americas'],
+  ['Honduras','hn','#0073cf',70,77,73,12,5,103,'Americas'],
+  ['Hungary','hu','#ce2939',6,189,155,18,16,3,'Europe'],
+  ['Iceland','is','#003897',3,192,156,19,17,1,'Europe'],
+  ['India','in','#ff9933',80,63,60,18,6,109,'Asia'],
+  ['Indonesia','id','#ce1126',72,74,72,18,4,99,'Asia'],
+  ['Iran','ir','#239f40',96,38,40,10,2,141,'Asia'],
+  ['Iraq','iq','#cf0001',102,30,32,8,0,152,'Asia'],
+  ['Ireland','ie','#169b62',3,192,156,19,17,1,'Europe'],
+  ['Israel','il','#0038b8',24,164,128,22,14,29,'Middle East'],
+  ['Italy','it','#003399',2,192,156,19,17,1,'Europe'],
+  ['Jamaica','jm','#000000',38,140,110,21,14,62,'Americas'],
+  ['Japan','jp','#bc002d',2,193,157,18,18,0,'Asia'],
+  ['Jordan','jo','#007a3d',72,74,70,16,4,103,'Middle East'],
+  ['Kazakhstan','kz','#00afca',72,74,68,18,4,103,'Asia'],
+  ['Kenya','ke','#006600',83,55,57,16,2,119,'Africa'],
+  ['Kiribati','ki','#ce1126',68,80,68,14,8,103,'Oceania'],
+  ['Kuwait','kw','#007a3d',60,105,95,16,8,74,'Middle East'],
+  ['Kyrgyzstan','kg','#e8112d',88,48,53,11,2,127,'Asia'],
+  ['Laos','la','#ce1126',90,46,52,10,2,130,'Asia'],
+  ['Latvia','lv','#9e3039',3,192,156,19,17,1,'Europe'],
+  ['Lebanon','lb','#00a651',97,35,38,9,2,144,'Middle East'],
+  ['Lesotho','ls','#009543',87,50,56,13,2,122,'Africa'],
+  ['Liberia','lr','#bf0a30',87,50,56,13,2,122,'Africa'],
+  ['Libya','ly','#000000',97,35,37,10,0,146,'Africa'],
+  ['Liechtenstein','li','#002b7f',3,192,156,19,17,1,'Europe'],
+  ['Lithuania','lt','#fdb913',3,192,156,19,17,1,'Europe'],
+  ['Luxembourg','lu','#ef3340',2,192,156,19,17,1,'Europe'],
+  ['Madagascar','mg','#fc3d32',90,46,52,9,2,131,'Africa'],
+  ['Malawi','mw','#2e3192',87,50,56,13,2,122,'Africa'],
+  ['Malaysia','my','#cc0001',11,184,149,19,16,9,'Asia'],
+  ['Maldives','mv','#d21034',65,87,73,18,6,96,'Asia'],
+  ['Mali','ml','#ce1126',95,40,45,9,2,137,'Africa'],
+  ['Malta','mt','#cf142b',3,192,156,19,17,1,'Europe'],
+  ['Marshall Islands','mh','#003da5',65,87,72,18,7,96,'Oceania'],
+  ['Mauritania','mr','#006233',95,40,44,9,2,139,'Africa'],
+  ['Mauritius','mu','#ea2839',33,148,114,20,14,55,'Africa'],
+  ['Mexico','mx','#006847',24,164,128,22,14,29,'Americas'],
+  ['Micronesia','fm','#75b2dd',65,87,72,18,7,96,'Oceania'],
+  ['Moldova','md','#003da5',65,87,73,18,6,96,'Europe'],
+  ['Monaco','mc','#ce1126',3,192,156,19,17,1,'Europe'],
+  ['Mongolia','mn','#c4272f',68,80,72,16,4,102,'Asia'],
+  ['Montenegro','me','#d4af37',27,153,119,19,15,40,'Europe'],
+  ['Morocco','ma','#c1272d',55,110,90,18,7,77,'Africa'],
+  ['Mozambique','mz','#009a44',90,46,52,9,2,131,'Africa'],
+  ['Myanmar','mm','#fecb00',94,41,47,9,2,136,'Asia'],
+  ['Namibia','na','#009543',73,78,70,18,3,102,'Africa'],
+  ['Nepal','np','#003893',96,38,43,10,2,139,'Asia'],
+  ['Netherlands','nl','#ae1c28',2,192,156,19,17,1,'Europe'],
+  ['New Zealand','nz','#003087',8,186,154,15,17,7,'Oceania'],
+  ['Nicaragua','ni','#3d6cb9',73,78,70,18,4,101,'Americas'],
+  ['Niger','ne','#e05206',95,40,44,9,2,139,'Africa'],
+  ['Nigeria','ng','#008751',85,52,52,14,4,123,'Africa'],
+  ['North Korea','kp','#024fa2',103,28,30,6,0,157,'Asia'],
+  ['North Macedonia','mk','#ce2028',33,148,117,18,15,58,'Europe'],
+  ['Norway','no','#ef2b2d',3,192,156,19,17,1,'Europe'],
+  ['Oman','om','#db161b',60,105,90,16,10,77,'Middle East'],
+  ['Pakistan','pk','#01411c',96,38,33,10,5,145,'Asia'],
+  ['Palau','pw','#0087dc',65,87,72,18,7,96,'Oceania'],
+  ['Panama','pa','#005293',38,140,110,21,14,62,'Americas'],
+  ['Papua New Guinea','pg','#000000',83,55,58,15,2,119,'Oceania'],
+  ['Paraguay','py','#d52b1e',65,87,73,18,5,97,'Americas'],
+  ['Peru','pe','#d91023',33,148,113,20,15,60,'Americas'],
+  ['Philippines','ph','#0038a8',73,78,69,18,4,102,'Asia'],
+  ['Poland','pl','#dc143c',3,192,156,19,17,1,'Europe'],
+  ['Portugal','pt','#006600',3,192,156,19,17,1,'Europe'],
+  ['Qatar','qa','#8d1b3d',59,111,100,20,7,66,'Middle East'],
+  ['Romania','ro','#002b7f',12,183,147,21,15,10,'Europe'],
+  ['Russia','ru','#d52b1e',49,118,88,22,10,73,'Europe'],
+  ['Rwanda','rw','#20603d',80,63,65,15,3,115,'Africa'],
+  ['Saint Kitts & Nevis','kn','#009e60',25,163,128,19,16,26,'Americas'],
+  ['Saint Lucia','lc','#65cfff',27,153,119,19,15,40,'Americas'],
+  ['Saint Vincent','vc','#009e60',30,150,118,18,14,43,'Americas'],
+  ['Samoa','ws','#ce1126',60,105,85,18,10,80,'Oceania'],
+  ['San Marino','sm','#5eb6e4',3,192,156,19,17,1,'Europe'],
+  ['São Tomé & Príncipe','st','#12ad2b',72,74,68,16,4,105,'Africa'],
+  ['Saudi Arabia','sa','#006c35',60,105,93,16,8,74,'Middle East'],
+  ['Senegal','sn','#00853f',85,52,52,13,4,124,'Africa'],
+  ['Serbia','rs','#c6363c',35,146,115,19,12,57,'Europe'],
+  ['Seychelles','sc','#003f87',22,167,129,21,17,26,'Africa'],
+  ['Sierra Leone','sl','#1eb53a',90,46,52,9,2,131,'Africa'],
+  ['Singapore','sg','#c0392b',1,193,159,20,14,0,'Asia'],
+  ['Slovakia','sk','#ee1c25',3,192,156,19,17,1,'Europe'],
+  ['Slovenia','si','#003da5',3,192,156,19,17,1,'Europe'],
+  ['Solomon Islands','sb','#0120b5',65,87,72,18,7,96,'Oceania'],
+  ['Somalia','so','#4189dd',102,30,32,6,0,155,'Africa'],
+  ['South Africa','za','#007a4d',52,114,95,17,6,75,'Africa'],
+  ['South Korea','kr','#003478',2,192,156,19,17,1,'Asia'],
+  ['South Sudan','ss','#078930',101,33,36,8,2,148,'Africa'],
+  ['Spain','es','#c60b1e',2,192,156,19,17,1,'Europe'],
+  ['Sri Lanka','lk','#8d153a',93,43,45,12,2,134,'Asia'],
+  ['Sudan','sd','#d21034',102,30,31,8,0,154,'Africa'],
+  ['Suriname','sr','#377e3f',65,87,73,18,5,97,'Americas'],
+  ['Sweden','se','#006aa7',3,192,156,19,17,1,'Europe'],
+  ['Switzerland','ch','#ff0000',3,192,156,19,17,1,'Europe'],
+  ['Syria','sy','#007a3d',103,28,29,6,0,158,'Asia'],
+  ['Taiwan','tw','#fe0000',35,146,116,18,12,57,'Asia'],
+  ['Tajikistan','tj','#cc0000',89,47,51,12,2,128,'Asia'],
+  ['Tanzania','tz','#1eb53a',83,55,57,15,3,119,'Africa'],
+  ['Thailand','th','#a51931',60,105,88,16,10,79,'Asia'],
+  ['Timor-Leste','tl','#dc241f',83,55,58,14,3,116,'Asia'],
+  ['Togo','tg','#006a4e',90,46,52,9,2,131,'Africa'],
+  ['Tonga','to','#c10000',65,87,72,18,7,96,'Oceania'],
+  ['Trinidad & Tobago','tt','#ce1126',43,133,109,14,10,60,'Americas'],
+  ['Tunisia','tn','#e70013',59,111,96,18,8,71,'Africa'],
+  ['Turkey','tr','#e30a17',52,114,94,18,6,75,'Asia'],
+  ['Turkmenistan','tm','#1db954',100,40,42,10,2,140,'Asia'],
+  ['Uganda','ug','#1e1e1e',83,55,57,15,3,119,'Africa'],
+  ['Ukraine','ua','#005bbb',38,140,110,18,12,62,'Europe'],
+  ['United Arab Emirates','ae','#00732f',15,179,140,25,14,14,'Middle East'],
+  ['United Kingdom','gb','#012169',6,188,153,15,20,5,'Europe'],
+  ['United States','us','#002868',7,186,152,15,19,6,'Americas'],
+  ['Uruguay','uy','#5f9ea0',16,178,142,22,14,19,'Americas'],
+  ['Uzbekistan','uz','#1eb53a',88,48,54,11,2,126,'Asia'],
+  ['Vanuatu','vu','#009543',38,140,109,19,12,63,'Oceania'],
+  ['Vatican','va','#ffe000',3,192,156,19,17,1,'Europe'],
+  ['Venezuela','ve','#cf142b',83,55,55,15,8,115,'Americas'],
+  ['Vietnam','vn','#da251d',73,78,69,18,4,102,'Asia'],
+  ['Yemen','ye','#ce1126',103,28,31,5,0,157,'Asia'],
+  ['Zambia','zm','#198a00',83,55,57,15,3,119,'Africa'],
+  ['Zimbabwe','zw','#006400',87,50,56,12,2,123,'Africa'],
+];
+
+/* ── Helpers ──────────────────────────────────────────────────────────────── */
+const F = (iso) => `https://flagcdn.com/w80/${iso}.png`;
+
+function passportData(row) {
+  return { name:row[0], iso:row[1], color:row[2], rank:row[3], score:row[4],
+           vf:row[5], voa:row[6], eta:row[7], vr:row[8], region:row[9] };
+}
+
+const ALL = PI.map(passportData);
+const BY_ISO = {};
+ALL.forEach(p => { BY_ISO[p.iso] = p; });
+
+/* Visa status: simplified tier model */
+function visaStatus(srcIso, destIso) {
+  if (srcIso === destIso) return 'citizen';
+  const src  = BY_ISO[srcIso];
+  const dest = BY_ISO[destIso];
+  if (!src || !dest) return 'vr';
+  const sRank = src.rank, dRank = dest.rank;
+  const hardRestricted = ['kp','sy','sd','ss','er','so'];
+  if (hardRestricted.includes(destIso) && sRank > 30) return 'vr';
+  if (src.vf >= 140) {
+    if (hardRestricted.includes(destIso)) return 'vr';
+    if (dest.region === 'Africa' && dRank > 75) return 'voa';
+    return 'vf';
+  }
+  if (src.vf >= 110) {
+    if (dRank <= 30 && ['Europe','Americas','Oceania'].includes(dest.region)) return 'vf';
+    if (hardRestricted.includes(destIso)) return 'vr';
+    if (dRank <= 60) return 'vf';
+    if (dRank <= 85) return 'voa';
+    return 'vr';
+  }
+  if (src.vf >= 80) {
+    if (['Europe'].includes(dest.region) && dRank <= 20) return 'vr';
+    if (['Americas','Asia'].includes(dest.region) && dRank <= 40) return 'vr';
+    if (dRank <= 70) return 'voa';
+    return 'vf';
+  }
+  // weak passport
+  if (['Europe','Americas'].includes(dest.region) && dRank <= 30) return 'vr';
+  if (dRank <= 50) return 'vr';
+  if (dRank <= 75) return 'voa';
+  return 'vf';
+}
+
+/* ── State ──────────────────────────────────────────────────────────────── */
+let _selected = null;
+let _pdVisaTab = 'all';
+let _jvMap = null;
+
+/* ── Render Grid ─────────────────────────────────────────────────────────── */
+function renderGrid(list) {
+  const grid = document.getElementById('pi-grid');
+  document.getElementById('pi-count').textContent = list.length + ' passports';
+  grid.innerHTML = list.map(p => `
+    <div class="pi-card" onclick="piOpenDetail('${p.iso}')">
+      <div class="pi-book-thumb" style="background:${p.color}">
+        <img class="pi-flag" src="${F(p.iso)}" alt="${p.name}" onerror="this.style.opacity=.3">
+        <div class="pi-country-label">${p.name}</div>
+        <div class="pi-rank-badge">#${p.rank}</div>
+      </div>
+      <div class="pi-card-name">${p.name}</div>
+    </div>`).join('');
+}
+
+/* ── Filter / Search ─────────────────────────────────────────────────────── */
+function piFilter() {
+  const q      = (document.getElementById('pi-search').value || '').toLowerCase();
+  const region = document.getElementById('pi-region').value;
+  const sort   = document.getElementById('pi-sort').value;
+  let list = ALL.filter(p =>
+    (!q || p.name.toLowerCase().includes(q)) &&
+    (!region || p.region === region)
+  );
+  if (sort === 'name')  list.sort((a,b) => a.name.localeCompare(b.name));
+  else if (sort === 'score') list.sort((a,b) => b.score - a.score);
+  else list.sort((a,b) => a.rank - b.rank);
+  renderGrid(list);
+}
+
+function piSearch() { piFilter(); }
+document.getElementById('pi-search').addEventListener('keyup', e => { if(e.key==='Enter') piFilter(); else piFilter(); });
+
+/* ── Detail Modal ────────────────────────────────────────────────────────── */
+function piOpenDetail(iso) {
+  const p = BY_ISO[iso];
+  if (!p) return;
+  _selected = p;
+  document.getElementById('pm-country').textContent = p.name;
+  document.getElementById('pm-book').style.background = `linear-gradient(145deg, ${p.color}, ${p.color}cc, ${p.color})`;
+  document.getElementById('pm-book-text').textContent = p.name.toUpperCase();
+  document.getElementById('pm-flag').src = F(p.iso);
+  document.getElementById('pm-flag').alt = p.name;
+  document.getElementById('pm-score').textContent = p.score;
+  document.getElementById('pm-rank').textContent = '#' + p.rank;
+  document.getElementById('pm-vf').textContent = p.vf;
+  document.getElementById('pi-detail-overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function piCloseDetail() {
+  document.getElementById('pi-detail-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+/* ── Dashboard Modal ─────────────────────────────────────────────────────── */
+function piOpenDash() {
+  const p = _selected;
+  if (!p) return;
+  piCloseDetail();
+  document.getElementById('pi-dash-overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+
+  // Header
+  document.getElementById('pd-flag').src = F(p.iso);
+  document.getElementById('pd-title').textContent = p.name.toUpperCase() + ' PASSPORT DASHBOARD';
+
+  // Left sidebar book
+  document.getElementById('pd-book').style.background = `linear-gradient(145deg, ${p.color}, ${p.color}cc)`;
+  document.getElementById('pd-book-flag').src = F(p.iso);
+
+  // Scores
+  document.getElementById('pd-scores').innerHTML = [
+    ['MOBILITY SCORE', p.score],
+    ['VISA-FREE', p.vf],
+    ['VISA ON ARRIVAL', p.voa],
+    ['ETA', p.eta],
+    ['VISA REQUIRED', p.vr],
+    ['GLOBAL RANK', '#' + p.rank],
+  ].map(([l,v]) => `<div class="pi-dash-score-row"><span class="pi-dash-score-label">${l}</span><span class="pi-dash-score-val">${v}</span></div>`).join('');
+
+  // Bar
+  const total = p.vf + p.voa + p.eta + p.vr;
+  const pct = (n) => Math.max(2, Math.round(n/total*100));
+  document.getElementById('pd-bar').innerHTML = `
+    <div class="pi-bar-seg pi-bar-vf"  style="flex:${pct(p.vf)}">${p.vf}</div>
+    <div class="pi-bar-seg pi-bar-voa" style="flex:${pct(p.voa)}">${p.voa}</div>
+    <div class="pi-bar-seg pi-bar-eta" style="flex:${pct(p.eta)}">${p.eta}</div>
+    <div class="pi-bar-seg pi-bar-vr"  style="flex:${pct(p.vr)}">${p.vr}</div>`;
+
+  // Visa title
+  document.getElementById('pd-visa-title').textContent = p.name.toUpperCase() + ' PASSPORT VISA REQUIREMENTS';
+
+  // Visa list
+  _pdVisaTab = 'all';
+  document.querySelectorAll('.pi-vf-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === 'all'));
+  renderVisaList(p);
+
+  // Map
+  setTimeout(() => renderMap(p), 80);
+}
+
+function piCloseDash() {
+  document.getElementById('pi-dash-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+  if (_jvMap) { try { _jvMap.destroy(); } catch(e){} _jvMap = null; }
+  document.getElementById('pi-worldmap').innerHTML = '';
+}
+
+/* ── World Map ────────────────────────────────────────────────────────────── */
+/* jsvectormap uses uppercase 2-letter codes */
+function renderMap(p) {
+  const container = document.getElementById('pi-worldmap');
+  container.innerHTML = '';
+  if (!window.jsVectorMap) return;
+
+  const series = {};
+  ALL.forEach(dest => {
+    const st = visaStatus(p.iso, dest.iso);
+    const key = dest.iso.toUpperCase();
+    series[key] = st === 'vf' ? '#4caf50'
+                : st === 'voa' ? '#2196f3'
+                : st === 'eta' ? '#ff9800'
+                : '#f44336';
+  });
+  series[p.iso.toUpperCase()] = '#c9a84c'; // selected country
+
+  try {
+    _jvMap = new jsVectorMap({
+      selector: '#pi-worldmap',
+      map: 'world',
+      backgroundColor: '#0d0d0d',
+      regionStyle: {
+        initial: { fill:'#1a1a1a', stroke:'#000', strokeWidth:0.5 },
+        selected: { fill:'#c9a84c' }
+      },
+      series: { regions: [{ values: series, attribute:'fill' }] },
+      zoomButtons: true,
+      zoomOnScroll: true,
+    });
+  } catch(e) { console.warn('Map error:', e); }
+}
+
+/* ── Visa List ────────────────────────────────────────────────────────────── */
+const VISA_DAYS = { vf:90, voa:30, eta:90 };
+const BADGE = {
+  vf:  ['badge-vf', 'VISA-FREE'],
+  voa: ['badge-voa','VISA ON ARRIVAL'],
+  eta: ['badge-eta','ETA'],
+  vr:  ['badge-vr', 'VISA REQUIRED'],
+};
+
+function renderVisaList(p) {
+  const q   = (document.getElementById('pd-visa-search').value || '').toLowerCase();
+  const tab = _pdVisaTab;
+  const rows = ALL
+    .map(dest => ({ dest, st: visaStatus(p.iso, dest.iso) }))
+    .filter(({dest, st}) =>
+      st !== 'citizen' &&
+      (!q || dest.name.toLowerCase().includes(q)) &&
+      (tab === 'all' || st === tab)
+    );
+  rows.sort((a,b) => a.dest.name.localeCompare(b.dest.name));
+  document.getElementById('pd-visa-list').innerHTML = rows.map(({dest,st}) => {
+    const [cls, label] = BADGE[st] || ['badge-vr','VISA REQUIRED'];
+    const days = VISA_DAYS[st] ? `<span class="badge-days">${VISA_DAYS[st]} days</span>` : '';
+    return `<div class="pi-visa-row">
+      <div class="pi-visa-country">
+        <img src="${F(dest.iso)}" alt="${dest.name}" onerror="this.style.opacity=.3">
+        ${dest.name}
+      </div>
+      <div style="display:flex;align-items:center;gap:4px">
+        <span class="pi-visa-badge ${cls}">${label}</span>${days}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function pdFilterVisa() { renderVisaList(_selected); }
+function pdTabClick(btn) {
+  _pdVisaTab = btn.dataset.tab;
+  document.querySelectorAll('.pi-vf-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderVisaList(_selected);
+}
+
+/* ── Init ─────────────────────────────────────────────────────────────────── */
+piFilter();
+</script>
 </body>
 </html>
