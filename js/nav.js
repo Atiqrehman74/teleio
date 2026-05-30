@@ -481,13 +481,15 @@
     var _savedCode = GT_CODES[localStorage.getItem('teleio_lang') || 'en'] || null;
 
     function _gtSetCookie(code) {
+      /* /en/en = no-op (English); /en/xx = translate to xx */
+      var val = (code && code !== 'en') ? '/en/' + code : '/en/en';
       ['', '; domain=' + location.hostname, '; domain=.' + location.hostname].forEach(function(d) {
-        document.cookie = 'googtrans=/en/' + code + '; path=/' + d;
+        document.cookie = 'googtrans=' + val + '; path=/' + d;
       });
     }
 
-    /* Set cookie before GT script loads so it auto-translates */
-    if (_savedCode) { _gtSetCookie(_savedCode); }
+    /* Always set cookie before GT loads — overwrites any stale cookie from previous language */
+    _gtSetCookie(_savedCode);
 
     if (!document.getElementById('google_translate_element')) {
       var gtDiv = document.createElement('div');
@@ -502,7 +504,7 @@
         includedLanguages: 'ar,ur,hi,fr,de,zh-CN,ru',
         autoDisplay: false
       }, 'google_translate_element');
-      /* Also trigger via select as fallback */
+      /* Fallback: also trigger via combo select */
       if (_savedCode) {
         var _c = _savedCode, _end = Date.now() + 6000, _done = false;
         (function poll() {
@@ -521,17 +523,13 @@
 
     window._doGoogleTranslate = function(lang) {
       var code = GT_CODES[lang] || null;
-      if (code) {
-        _gtSetCookie(code);
-        var s = document.querySelector('.goog-te-combo');
-        if (s) {
-          s.value = code;
-          try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
-        } else {
-          location.reload();
-        }
+      _gtSetCookie(code); /* set /en/en for English, /en/xx for others */
+      var s = document.querySelector('.goog-te-combo');
+      if (s) {
+        s.value = code || ''; /* '' = restore original in GT */
+        try { s.dispatchEvent(new Event('change', {bubbles:true,cancelable:true})); } catch(e) {}
       } else {
-        location.href = '/clear-lang?r=' + encodeURIComponent(location.pathname + location.search);
+        location.reload();
       }
     };
 
