@@ -34,6 +34,33 @@
   <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
   <link rel="shortcut icon" href="/images/favicon.svg">
   <script>try{if(localStorage.getItem('teleio_theme')==='dark'){document.documentElement.setAttribute('data-dark','1');}}catch(e){}</script>
+  <style>
+    /* ── Countries Explorer Tab ── */
+    @keyframes cexFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .cex-info-box{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px}
+    .cex-info-lbl{font-size:11px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+    .cex-info-val{font-size:13px;font-weight:600;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .cex-region-chip{background:#fff;border:1.5px solid #e2e8f0;border-radius:20px;padding:5px 13px;font-size:12px;font-weight:600;cursor:pointer;color:#475569;transition:all .15s;font-family:inherit}
+    .cex-region-chip:hover{border-color:#818cf8;color:#4f46e5;background:#eef2ff}
+    .cex-drop-item{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;transition:background .1s;font-size:13px;color:#1e293b}
+    .cex-drop-item:hover{background:#f1f5f9}
+    .cex-drop-item img{height:20px;width:28px;object-fit:cover;border-radius:3px;flex-shrink:0}
+    .cex-country-tile{display:flex;align-items:center;gap:8px;padding:7px 10px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;cursor:pointer;transition:all .15s;min-width:140px}
+    .cex-country-tile:hover{border-color:#818cf8;box-shadow:0 2px 8px rgba(79,70,229,.12)}
+    .cex-country-tile img{height:22px;width:32px;object-fit:cover;border-radius:3px}
+    .cex-country-tile span{font-size:12px;font-weight:600;color:#334155;white-space:nowrap}
+    [data-dark="1"] .cex-info-box{background:#1e293b;border-color:#334155}
+    [data-dark="1"] .cex-info-val{color:#e2e8f0}
+    [data-dark="1"] .cex-region-chip{background:#1e293b;border-color:#334155;color:#94a3b8}
+    [data-dark="1"] .cex-country-tile{background:#1e293b;border-color:#334155}
+    [data-dark="1"] .cex-country-tile span{color:#cbd5e1}
+    [data-dark="1"] #cex-card{background:linear-gradient(135deg,#1e293b,#1a1f2e);border-color:#334155}
+    [data-dark="1"] #cex-name{color:#e2e8f0}
+    [data-dark="1"] #cex-official{color:#94a3b8}
+    [data-dark="1"] #cex-drop{background:#1e293b;border-color:#334155}
+    [data-dark="1"] .cex-drop-item{color:#e2e8f0}
+    [data-dark="1"] .cex-drop-item:hover{background:#0f172a}
+  </style>
   <!-- Google Translate init -->
   <script>
   var _GT_CODES = {ar:'ar',ur:'ur',hi:'hi',fr:'fr',de:'de',zh:'zh-CN',ru:'ru'};
@@ -421,6 +448,10 @@ window.teleioInstallIOS = function(e) {
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
               Deals
             </button>
+            <button class="isw-tab" data-isw="countries" onclick="iswSwitch('countries',this)">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+              Countries
+            </button>
           </div>
 
           <!-- Panels -->
@@ -530,6 +561,78 @@ window.teleioInstallIOS = function(e) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
                 Search Deals
               </button>
+            </div>
+
+            <!-- Countries -->
+            <div class="isw-panel" id="isw-countries">
+              <!-- Search row -->
+              <div class="isw-row" style="align-items:flex-end">
+                <div class="isw-field isw-fw3" style="position:relative">
+                  <label class="isw-lbl">COUNTRY NAME</label>
+                  <input id="cex-input" class="isw-inp" type="text" placeholder="e.g. Japan, France, UAE…" autocomplete="off" oninput="cexSearch(this.value)" onfocus="cexSearch(this.value)">
+                  <div id="cex-drop" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;max-height:220px;overflow-y:auto;margin-top:4px"></div>
+                </div>
+                <div class="isw-field" style="flex:0 0 auto">
+                  <label class="isw-lbl">REGION</label>
+                  <select id="cex-region" class="isw-inp" style="min-width:130px" onchange="cexByRegion(this.value)">
+                    <option value="">All Regions</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Americas">Americas</option>
+                    <option value="Africa">Africa</option>
+                    <option value="Oceania">Oceania</option>
+                  </select>
+                </div>
+                <button class="isw-btn" style="flex:0 0 auto;margin-bottom:0" onclick="cexExplore()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                  Explore
+                </button>
+              </div>
+
+              <!-- Result card (hidden until a country is selected) -->
+              <div id="cex-card" style="display:none;margin-top:14px;background:linear-gradient(135deg,#f8faff 0%,#eef2ff 100%);border:1px solid #c7d2fe;border-radius:14px;padding:16px 20px;animation:cexFadeIn .3s ease">
+                <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+                  <img id="cex-flag" src="" alt="" style="height:52px;width:auto;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.15);flex-shrink:0">
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                      <span id="cex-name" style="font-size:20px;font-weight:700;color:#1e293b"></span>
+                      <span id="cex-region-tag" style="font-size:11px;font-weight:600;background:#ede9fe;color:#6d28d9;padding:2px 8px;border-radius:20px"></span>
+                    </div>
+                    <div id="cex-official" style="font-size:12px;color:#64748b;margin-top:2px"></div>
+                  </div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0">
+                    <a id="cex-visa-btn" href="pages/apply-visa.html" style="background:#002AD1;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20"/></svg>
+                      Apply Visa
+                    </a>
+                    <a id="cex-flight-btn" href="pages/travel.html#flights" style="background:#fff;color:#002AD1;border:1.5px solid #c7d2fe;border-radius:8px;padding:8px 16px;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px">
+                      ✈️ Flights
+                    </a>
+                  </div>
+                </div>
+                <!-- Info grid -->
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px">
+                  <div class="cex-info-box"><div class="cex-info-lbl">🏙️ Capital</div><div id="cex-capital" class="cex-info-val">—</div></div>
+                  <div class="cex-info-box"><div class="cex-info-lbl">💰 Currency</div><div id="cex-currency" class="cex-info-val">—</div></div>
+                  <div class="cex-info-box"><div class="cex-info-lbl">🗣️ Language</div><div id="cex-language" class="cex-info-val">—</div></div>
+                  <div class="cex-info-box"><div class="cex-info-lbl">👥 Population</div><div id="cex-population" class="cex-info-val">—</div></div>
+                  <div class="cex-info-box"><div class="cex-info-lbl">🕐 Timezone</div><div id="cex-timezone" class="cex-info-val">—</div></div>
+                  <div class="cex-info-box"><div class="cex-info-lbl">🌍 Region</div><div id="cex-subregion" class="cex-info-val">—</div></div>
+                </div>
+              </div>
+
+              <!-- Region grid (shown before any search) -->
+              <div id="cex-region-grid" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+                <span style="font-size:12px;color:#94a3b8;align-self:center;margin-right:2px">Browse:</span>
+                <button onclick="cexByRegion('Asia')" class="cex-region-chip">🌏 Asia</button>
+                <button onclick="cexByRegion('Europe')" class="cex-region-chip">🏰 Europe</button>
+                <button onclick="cexByRegion('Americas')" class="cex-region-chip">🗽 Americas</button>
+                <button onclick="cexByRegion('Africa')" class="cex-region-chip">🦁 Africa</button>
+                <button onclick="cexByRegion('Oceania')" class="cex-region-chip">🌊 Oceania</button>
+              </div>
+
+              <!-- Region results grid -->
+              <div id="cex-region-results" style="display:none;margin-top:12px;max-height:180px;overflow-y:auto;display:none"></div>
             </div>
 
           </div><!-- /.isw-body -->
@@ -1445,6 +1548,158 @@ window.teleioInstallIOS = function(e) {
 <script src="js/auth.js"></script>
 <script src="js/main.js"></script>
 <script src="js/bot.js" defer></script>
+
+<!-- ── Countries Explorer (REST Countries API) ── -->
+<script>
+(function(){
+  var CEX_API = 'https://restcountries.com/v3.1';
+  var _all = null;        // cached full list
+  var _current = null;    // currently displayed country
+
+  /* ── Fetch full list once ── */
+  function loadAll(cb){
+    if (_all){ cb(_all); return; }
+    fetch(CEX_API + '/all?fields=name,flags,capital,region,subregion,currencies,languages,population,timezones,cca2')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        _all = d.sort(function(a,b){ return a.name.common.localeCompare(b.name.common); });
+        cb(_all);
+      })
+      .catch(function(){ console.warn('[CEX] Failed to load countries'); });
+  }
+
+  /* ── Autocomplete search ── */
+  window.cexSearch = function(val){
+    var drop = document.getElementById('cex-drop');
+    if (!val || val.length < 2){ drop.style.display = 'none'; return; }
+    loadAll(function(list){
+      var q = val.toLowerCase();
+      var hits = list.filter(function(c){
+        return c.name.common.toLowerCase().includes(q) ||
+               (c.name.official || '').toLowerCase().includes(q);
+      }).slice(0, 8);
+      if (!hits.length){ drop.style.display = 'none'; return; }
+      drop.innerHTML = hits.map(function(c){
+        return '<div class="cex-drop-item" onclick="cexShow(' + JSON.stringify(JSON.stringify(c)) + ')">' +
+          '<img src="' + (c.flags && c.flags.png ? c.flags.png : '') + '" alt="">' +
+          '<span>' + c.name.common + '</span>' +
+          '<span style="margin-left:auto;font-size:11px;color:#94a3b8">' + (c.region||'') + '</span>' +
+        '</div>';
+      }).join('');
+      drop.style.display = 'block';
+    });
+  };
+
+  /* ── Show a country card ── */
+  window.cexShow = function(jsonStr){
+    var c = typeof jsonStr === 'string' ? JSON.parse(jsonStr) : jsonStr;
+    _current = c;
+
+    // Hide dropdown + region results
+    var drop = document.getElementById('cex-drop');
+    if (drop) drop.style.display = 'none';
+    var rr = document.getElementById('cex-region-results');
+    if (rr) rr.style.display = 'none';
+
+    // Update search input
+    var inp = document.getElementById('cex-input');
+    if (inp) inp.value = c.name.common;
+
+    // Flag
+    document.getElementById('cex-flag').src = c.flags && c.flags.png ? c.flags.png : '';
+    document.getElementById('cex-flag').alt = c.flags && c.flags.alt ? c.flags.alt : c.name.common + ' flag';
+
+    // Name
+    document.getElementById('cex-name').textContent = c.name.common;
+    document.getElementById('cex-official').textContent = c.name.official && c.name.official !== c.name.common ? c.name.official : '';
+    document.getElementById('cex-region-tag').textContent = c.subregion || c.region || '';
+
+    // Capital
+    document.getElementById('cex-capital').textContent = c.capital && c.capital.length ? c.capital.join(', ') : '—';
+
+    // Currency
+    var curs = c.currencies ? Object.values(c.currencies) : [];
+    document.getElementById('cex-currency').textContent = curs.length
+      ? curs.map(function(x){ return x.symbol + ' ' + x.name; }).join(', ')
+      : '—';
+
+    // Language
+    var langs = c.languages ? Object.values(c.languages) : [];
+    document.getElementById('cex-language').textContent = langs.slice(0,3).join(', ') + (langs.length > 3 ? '…' : '') || '—';
+
+    // Population
+    document.getElementById('cex-population').textContent = c.population
+      ? c.population.toLocaleString()
+      : '—';
+
+    // Timezone
+    document.getElementById('cex-timezone').textContent = c.timezones && c.timezones.length
+      ? c.timezones[0] + (c.timezones.length > 1 ? ' +' + (c.timezones.length-1) : '')
+      : '—';
+
+    // Subregion
+    document.getElementById('cex-subregion').textContent = c.region || '—';
+
+    // Update CTA links with country name
+    var slug = encodeURIComponent(c.name.common);
+    document.getElementById('cex-visa-btn').href = 'pages/apply-visa.html?country=' + slug;
+    document.getElementById('cex-flight-btn').href = 'pages/travel.html?to=' + slug + '#flights';
+
+    // Show card, hide region grid
+    document.getElementById('cex-card').style.display = 'block';
+    document.getElementById('cex-region-grid').style.display = 'none';
+  };
+
+  /* ── Explore button ── */
+  window.cexExplore = function(){
+    var val = (document.getElementById('cex-input').value || '').trim();
+    var region = document.getElementById('cex-region').value;
+    if (val.length >= 2){
+      fetch(CEX_API + '/name/' + encodeURIComponent(val) + '?fields=name,flags,capital,region,subregion,currencies,languages,population,timezones,cca2')
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          if (Array.isArray(d) && d.length) cexShow(d[0]);
+        })
+        .catch(function(){});
+    } else if (region){
+      cexByRegion(region);
+    }
+  };
+
+  /* ── Browse by region ── */
+  window.cexByRegion = function(region){
+    if (!region){ return; }
+    document.getElementById('cex-region').value = region;
+    document.getElementById('cex-card').style.display = 'none';
+    document.getElementById('cex-region-grid').style.display = 'none';
+
+    var rr = document.getElementById('cex-region-results');
+    rr.innerHTML = '<div style="padding:8px 0;font-size:12px;color:#94a3b8">Loading…</div>';
+    rr.style.display = 'block';
+
+    loadAll(function(list){
+      var filtered = list.filter(function(c){ return c.region === region; });
+      rr.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:6px;padding:2px 0">' +
+        filtered.map(function(c){
+          return '<div class="cex-country-tile" onclick="cexShow(' + JSON.stringify(JSON.stringify(c)) + ')">' +
+            '<img src="' + (c.flags && c.flags.png ? c.flags.png : '') + '" alt="">' +
+            '<span>' + c.name.common + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+    });
+  };
+
+  /* ── Close dropdown on outside click ── */
+  document.addEventListener('click', function(e){
+    var drop = document.getElementById('cex-drop');
+    var inp  = document.getElementById('cex-input');
+    if (drop && inp && !inp.contains(e.target) && !drop.contains(e.target)){
+      drop.style.display = 'none';
+    }
+  });
+})();
+</script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
